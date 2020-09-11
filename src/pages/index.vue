@@ -17,7 +17,11 @@ export default {};
   display: flex;
   height: 393px;
   width: 1480px;
-  margin: 200px auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -197px;
+  margin-left: -740px;
   .tab {
     width: 370px;
     height: 393px;
