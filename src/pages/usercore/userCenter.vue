@@ -10,12 +10,39 @@
       </div>
     </div>
     <div class="user_bottom">
-      
+      <ul>
+        <li>
+          <span>姓名:</span>
+          <p>李杰</p>
+        </li>
+        <li>
+          <span>班级:</span>
+          <p>123456</p>
+        </li>
+        <li>
+          <span>手机号:</span>
+          <input class="text_box" type="text" v-model="phone" />
+        </li>
+        <li>
+          <span>邮箱:</span>
+          <input class="text_box" type="text" v-model="email" />
+        </li>
+      </ul>
+      <button class="submit">保存</button>
     </div>
-    <button>保存</button>
   </div>
 </template>
-
+<script>
+export default {
+  name: "user-center",
+  data() {
+    return {
+      phone: "123456789012",
+      email: "123455678@qq.com",
+    };
+  },
+};
+</script>
 <style lang="scss">
 .user_center {
   .user_top {
@@ -54,20 +81,33 @@
     }
   }
   .user_bottom {
-    width: 800px;
+    width: 1000px;
+    margin: 0 auto;
     ul {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
       li {
-        width: 700px;
+        display: flex;
+        width: 350px;
+        height: 45px;
+        line-height: 45px;
+        margin-left: 100px;
+        margin-top: 80px;
+        span {
+          margin-right: 10px;
+        }
+        .text_box {
+          width: 275px;
+        }
       }
     }
-  }
-  button{
+    .submit {
       width: 270px;
       height: 30px;
       line-height: 30px;
-      background-color:rgb(0,235,255);
-      border: rgb(0,235,255);
-      border-radius: 5px;
+      margin: 50px auto;
+    }
   }
 }
 </style>

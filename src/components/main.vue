@@ -44,9 +44,19 @@ export default {
   }
   .user_main {
     width: 90%;
+    min-width: 1200px;
     background: url('../assets/public/box.png') no-repeat center;
     background-size: 100% 100%;
     margin-right: 40px;
+    position: relative;
+  }
+  @media (max-width: 1397px) {
+      .user_menu{
+        display: none;
+      }
+      .user_main{
+        margin: 0 auto;
+      }
   }
 }
 </style>
