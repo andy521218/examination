@@ -128,8 +128,8 @@ const routes = [
         component: () => import('../pages/admin/adminStatistics'),
       },
       {
-        path: '/adminteacher',
-        name: 'adminteacher',
+        path: '/adminmaster',
+        name: 'adminmaster',
         component: () => import('../pages/admin/adminTeacher'),
       },
     ]

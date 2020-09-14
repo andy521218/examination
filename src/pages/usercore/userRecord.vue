@@ -205,6 +205,11 @@ export default {
       border-bottom: rgb(0, 235, 255) 1px solid;
       color: rgb(0, 235, 255);
     }
+    tr:hover td>span {
+    color: rgb(0, 0, 0);
+    border-bottom: rgb(0, 0, 0) 1px solid;
+    background: rgb(3, 198, 216) !important;
+  }
   }
 }
 </style>

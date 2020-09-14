@@ -7,7 +7,8 @@ import 'nprogress/nprogress.css'
 import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
-
+import { Switch } from 'view-design';
+Vue.component('i-switch', Switch);
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
@@ -24,7 +25,7 @@ router.beforeEach((to, from, next) => {
   if (/admin/.test(to.name)) {
     store.state.menu = ["教师管理", "编制管理", "数据管理", "内容管理", "LOGO修改","算分逻辑"],
       store.state.routerData = [
-        "adminteacher",
+        "adminmaster",
         "adminorganization",
         "adminstatistics",
         "admincontent",
