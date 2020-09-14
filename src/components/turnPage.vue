@@ -1,6 +1,8 @@
 <template>
   <div class="turn_page">
-    <el-pagination background layout="prev, pager, next" :total="100"></el-pagination>
+    <div class="pagination">
+      <Page :total="1000" />
+    </div>
     <div class="count">
       <span>共20条数据/每页10条</span>
     </div>
@@ -8,8 +10,23 @@
 </template>
 
 <script>
+import { Page } from "view-design";
 export default {
   name: "turn_page",
+  data() {
+    return {
+      list: [1, 2, 3, 4, 5, 6, 7],
+      pageNumber: "0",
+    };
+  },
+  methods: {
+    page(index) {
+      this.pageNumber = index;
+    },
+  },
+  components: {
+    Page,
+  },
 };
 </script>
 
@@ -20,24 +37,42 @@ export default {
   display: flex;
   margin-top: 30px;
   .count {
-      margin-right: 32px;
+    margin-right: 32px;
   }
-  .el-pagination {
-    width: 450px;
+  .pagination {
+    width: 430px;
     margin: 0 auto;
-    .el-pagination.is-background .el-pager li:not(.disabled).active {
-      border: none;
-      background-color: '';
-    }
-    .active{
-      background: rgb(3,198,216) !important;
-    }
-    .el-pagination.is-background .btn-next,
-    .el-pagination.is-background .btn-prev,
-    .el-pagination.is-background .el-pager li {
-      border: 1px solid rgb(255, 255, 255);
-      background-color: rgba(10, 30, 63, 0.1);
-      color: rgb(255, 255, 255);
+    .ivu-page {
+      text-align: center;
+      a {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+      }
+      .ivu-page-item {
+        background: transparent;
+        border: 1px solid rgb(255, 255, 255);
+      }
+      .ivu-page-next,
+      .ivu-page-prev {
+        background: transparent;
+      }
+      .ivu-page-item a,
+      .ivu-page-next a,
+      .ivu-page-prev a {
+        color: rgb(255, 255, 255);
+      }
+      .ivu-page-item:hover,
+      .ivu-page-next:hover,
+      .ivu-page-prev:hover,
+      .ivu-page-item-jump-next:hover {
+        color: rgb(255, 255, 255);
+        background: rgb(0, 235, 255);
+        border: 1px solid rgb(0, 235, 255);
+      }
+      .ivu-page-item-active{
+        border: 1px solid rgb(0, 235, 255);
+        background: rgb(0, 235, 255) !important;
+      }
     }
   }
 }

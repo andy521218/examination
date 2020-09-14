@@ -8,9 +8,8 @@
       <span class="field">消息</span>
       <span class="user_log" @mouseleave="leave" @mouseenter="enter">
         <img src="../assets/img/home/user.png" alt />
-        <div class="select" :style="{ display: active}">
+        <div class="headr_select" :style="{ display: active}">
           <div class="pseudo"></div>
-          <!-- <div class="triangle"></div> -->
           <div class="select_name">用户名</div>
           <div class="select_list">
             <ul>
@@ -102,12 +101,13 @@ export default {
       border-radius: 50%;
       z-index: 3;
     }
-    .select {
+    .headr_select {
       width: 150px;
       position: absolute;
       text-align: center;
       left: -50px;
       top: 5px;
+      z-index: 999999;
       .pseudo {
         height: 50px;
         position: relative;

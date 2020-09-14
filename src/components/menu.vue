@@ -9,17 +9,16 @@
 <script>
 export default {
     name:'menu-tab',
-    props:['menuData'],
+    props:['menuData','routerData'],
     data(){
         return{
             bgIndex:'-1',
-            arrRouter:['usercenter','userpassword','userrecord','userachievement','userstatistics']
         }
     },
     methods:{
         linkRouting(index){
             this.bgIndex=index;
-            this.$router.push(this.arrRouter[index])
+            this.$router.push(this.routerData[index])
         }
     }
 }

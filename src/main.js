@@ -4,16 +4,46 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import { Pagination} from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
-
-Vue.use(Pagination);
 
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
+  if (/user/.test(to.name)) {
+    store.state.menu = ["个人信息", "修改密码", "学习记录", "考试成绩", "数据统计"],
+      store.state.routerData = [
+        "usercenter",
+        "userpassword",
+        "userrecord",
+        "userachievement",
+        "userstatistics",
+      ]
+  }
+  if (/admin/.test(to.name)) {
+    store.state.menu = ["教师管理", "编制管理", "数据管理", "内容管理", "LOGO修改","算分逻辑"],
+      store.state.routerData = [
+        "adminteacher",
+        "adminorganization",
+        "adminstatistics",
+        "admincontent",
+        "adminlogo",
+        "adminnumber"
+      ]
+  }
+
+  if (/teacher/.test(to.name)) {
+    store.state.menu = ["账号管理", "班级管理", "学生成绩", "案例管理", "发布考试","数据分析"],
+      store.state.routerData = [
+        "teachertuser",
+        "teacherclass",
+        "teacherstudent",
+        "teachercase",
+        "teacherrelease",
+        "teacherstatistics"
+      ]
+  }
   NProgress.start()
   next()
 })

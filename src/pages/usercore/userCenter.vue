@@ -50,10 +50,14 @@ export default {
     height: 315px;
     margin: 0 auto;
     border-bottom: 1px solid rgb(9, 124, 168);
+    position: relative;
     .user_big {
       width: 215px;
       height: 215px;
-      margin: 50px auto;
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      margin-left: -108px;
       border: 1px solid rgb(9, 124, 168);
       border-radius: 50%;
       .user_small {
@@ -93,7 +97,7 @@ export default {
         height: 45px;
         line-height: 45px;
         margin-left: 100px;
-        margin-top: 80px;
+        margin-top: 70px;
         span {
           margin-right: 10px;
         }
@@ -103,10 +107,10 @@ export default {
       }
     }
     .submit {
-      width: 270px;
-      height: 30px;
+      width: 370px;
+      height: 45px;
       line-height: 30px;
-      margin: 50px auto;
+      margin: 90px auto;
     }
   }
 }

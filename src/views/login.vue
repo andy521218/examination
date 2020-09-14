@@ -94,26 +94,10 @@ export default {
       display: flex;
       margin: 30px auto;
       position: relative;
-
-      ::-webkit-input-placeholder {
-        /* WebKit, Blink, Edge */
-        color: rgb(255, 255, 255);
-      }
-      :-moz-placeholder {
-        /* Mozilla Firefox 4 to 18 */
-        color: rgb(255, 255, 255);
-      }
-      ::-moz-placeholder {
-        /* Mozilla Firefox 19+ */
-        color: rgb(255, 255, 255);
-      }
-      :-ms-input-placeholder {
-        /* Internet Explorer 10-11 */
-        color: rgb(255, 255, 255);
-      }
       input {
-        height: 49px;
+        height: 47px;
         width: 310px;
+        line-height: 47px;
         margin-left: 10px;
         color: rgb(255, 255, 255);
         background-color: rgb(20, 37, 75);

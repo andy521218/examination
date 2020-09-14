@@ -25,8 +25,8 @@ export default {
   margin-top: -197px;
   margin-left: -740px;
   .tab {
-    width: 370px;
-    height: 393px;
+    width: 390px;
+    height: 420px;
   }
   .train {
     background: url("../assets/img/home/train.png") no-repeat center;
