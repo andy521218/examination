@@ -202,14 +202,11 @@ export default {
     span {
       cursor: pointer;
       margin-right: 10px;
-      border-bottom: rgb(0, 235, 255) 1px solid;
       color: rgb(0, 235, 255);
     }
-    tr:hover td>span {
-    color: rgb(0, 0, 0);
-    border-bottom: rgb(0, 0, 0) 1px solid;
-    background: rgb(3, 198, 216) !important;
-  }
+    td span:hover{
+      border-bottom: 1px solid rgb(0, 235, 255);
+    }
   }
 }
 </style>

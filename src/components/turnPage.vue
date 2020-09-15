@@ -37,6 +37,7 @@ export default {
   display: flex;
   margin-top: 30px;
   .count {
+    margin-top: 10px;
     margin-right: 32px;
   }
   .pagination {

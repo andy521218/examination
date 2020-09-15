@@ -112,16 +112,7 @@ export default {
         height: 50px;
         position: relative;
       }
-      // .triangle {
-      //   width: 50px;
-      //   height: 50px;
-      //   background: rgb(255, 255, 255);
-      //   transform: rotate(-45deg);
-      //   margin-left: 50px;
-      //   margin-top: -10px;
-      //   position: absolute;
-      //   // z-index: -999999;
-      // }
+
       .select_name {
         background: rgb(255, 255, 255);
         color: rgb(34, 163, 247);

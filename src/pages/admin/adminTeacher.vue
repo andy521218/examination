@@ -1,6 +1,30 @@
 <template>
   <div class="admin_record">
-    <edit-teacher></edit-teacher>
+    <edit-user v-if="true" :title="title">
+      <template v-slot:user>
+        <div class="edit_left">
+          <span class="edit_red">*</span>
+          <span class="edit_text">用户名/工号:</span>
+        </div>
+        <input type="text" class="text_box" v-if="title" placeholder="请输入用户名/工号" />
+        <span class="edit_text_i" v-else>20200521</span>
+        <p class="edit_tips">1111111111111</p>
+      </template>
+      <template v-slot:select>
+        <div class="edit_left">
+          <span class="edit_red">*</span>
+          <span class="edit_text">院系:</span>
+        </div>
+        <select name id class="select" v-if="title">
+          <option value>1</option>
+          <option value>1</option>
+          <option value>1</option>
+          <option value>1</option>
+        </select>
+        <span class="edit_text_i" v-else>医学院</span>
+        <p class="edit_tips"></p>
+      </template>
+    </edit-user>
     <div class="main_header">
       <button class="add">添加教师</button>
       <button class="import">教师导入</button>
@@ -49,7 +73,7 @@
             <td>中医药1班</td>
             <td>2020-07-01 15:30</td>
             <td>
-              <i-switch v-model="switchValue" true-color="rgb(0,235,255)" ></i-switch>
+              <i-switch v-model="switchValue" true-color="rgb(0,235,255)"></i-switch>
             </td>
             <td>
               <span>编辑</span>
@@ -78,18 +102,19 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-import editTeacher from "../../components/editTeacher";
+import editUser from "../../components/editUser";
 
 export default {
   name: "admin-teacher",
-  data() {
-    return {
-      switchValue: true,
-    };
+  data(){
+    return{
+      title:true,
+      switchValue:''
+    }
   },
   components: {
     turnPage,
-    editTeacher
+    editUser,
   },
 };
 </script>
@@ -112,13 +137,6 @@ export default {
     .import {
       margin-right: 180px;
     }
-  }
-  tbody span {
-    color: rgb(0, 235, 255);
-  }
-  tr:hover td > span {
-    color: rgb(0, 0, 0);
-    background: rgb(3, 198, 216) !important;
   }
 }
 </style>
