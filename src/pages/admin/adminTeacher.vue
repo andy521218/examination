@@ -1,6 +1,6 @@
 <template>
   <div class="admin_record">
-    <edit-user v-if="true" :title="title">
+    <edit-user v-if="1" :title="title">
       <template v-slot:user>
         <div class="edit_left">
           <span class="edit_red">*</span>
@@ -102,13 +102,13 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-import editUser from "../../components/editUser";
+import editUser from "../../components/edit/editUser";
 
 export default {
   name: "admin-teacher",
   data(){
     return{
-      title:true,
+      title:false,
       switchValue:''
     }
   },
@@ -135,7 +135,7 @@ export default {
       margin-right: 15px;
     }
     .import {
-      margin-right: 180px;
+      margin-right: 185px;
     }
   }
 }

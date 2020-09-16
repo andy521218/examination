@@ -16,8 +16,9 @@ export default {
 .logo{
     position: relative;
     width: 50px;
-    top: 30px;
+    top: 15px;
     left: 40px;
+    display: inline-block;
     cursor: pointer;
     h1{
         width: 38px;

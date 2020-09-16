@@ -1,12 +1,15 @@
 <template>
   <div class="teacher_user">
-    <view-records></view-records>
-    <edit-dele :edit_title='edit_title' v-if="false">
+    <!-- 学习记录 -->
+    <view-records v-if="0"></view-records>
+    <!-- switch -->
+    <edit-dele :edit_title='edit_title' v-if="0">
       <template v-slot:edit_p>
         <p>确定将学生状态改为禁用?</p>
       </template>
     </edit-dele>
-    <edit-user :title="title" v-if="false">
+    <!-- 编辑 添加 -->
+    <edit-user :title="title" v-if="1">
       <template v-slot:user>
         <div class="edit_left">
           <span class="edit_red">*</span>
@@ -31,6 +34,7 @@
         <p class="edit_tips"></p>
       </template>
     </edit-user>
+
     <div class="main_header">
       <button class="add">添加学生</button>
       <button class="import">导入学生</button>
@@ -251,15 +255,15 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-import editUser from "../../components/editUser";
-import editDele from "../../components/editDele";
-import viewRecords from "../../components/viewRecords";
+import editUser from "../../components/edit/editUser";
+import editDele from "../../components/edit/editDele";
+import viewRecords from "../../components/edit/viewRecords";
 
 export default {
   name: "teacher-user",
   data() {
     return {
-      title: true,
+      title: false,
       edit_title:'提示',
       switchValue: "",
     };
@@ -276,20 +280,8 @@ export default {
 <style lang="scss">
 .teacher_user {
   .main_header {
-    input,
-    .select {
-      width: 250px;
-    }
-    .submit {
-      width: 100px;
-      margin-left: 40px;
-    }
-    label {
-      margin-left: 45px;
-      margin-right: 15px;
-    }
     .import {
-      margin-right: 180px;
+      margin-right: 213px;
     }
   }
 }

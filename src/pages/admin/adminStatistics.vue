@@ -88,7 +88,7 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-import editDele from "../../components/editDele";
+import editDele from "../../components/edit/editDele";
 export default {
   name: "admin-statistics",
   data() {
@@ -117,8 +117,8 @@ export default {
     }
     label {
       margin-left: 45px;
+      margin-right: 15px;
     }
-    margin-right: 15px;
   }
 }
 </style>

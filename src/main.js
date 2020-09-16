@@ -8,8 +8,14 @@ import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
 import { Switch } from 'view-design';
+// import admin from './router/admin'
+
 Vue.component('i-switch', Switch);
+
+
 Vue.config.productionTip = false
+
+// router.addRoutes(admin)
 
 router.beforeEach((to, from, next) => {
   if (/user/.test(to.name)) {

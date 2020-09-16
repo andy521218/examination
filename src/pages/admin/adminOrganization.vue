@@ -101,14 +101,14 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-import editAdmin from "../../components/editAdmin";
+import editAdmin from "../../components/edit/editAdmin";
 export default {
   name: "admin_tion",
   data(){
     return{
       data:{
         title:'编辑',
-        text:'请输入年级'
+        text:'请输入专业'
       }
     }
   },

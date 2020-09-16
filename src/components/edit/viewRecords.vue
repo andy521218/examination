@@ -199,7 +199,7 @@ export default {
 .view_records {
   .edit {
     margin-left: 11%;
-    width: 74%;
+    width: 1224px;
   }
   .records_bottom {
     text-align: center;

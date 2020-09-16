@@ -14,8 +14,8 @@
           <span class="edit_text">密码:</span>
         </div>
         <input :type="type" class="text_box" placeholder="请输入密码"/>
-        <img src="../assets/public/pwd.png" class="edit_pwd" alt v-if="pwdSwitch" @click="pwdShow" />
-        <img src="../assets/public/pwdmove.png" class="edit_pwd" alt v-else @click="pwdShow" />
+        <img src="../../assets/public/pwd.png" class="edit_pwd" alt v-if="pwdSwitch" @click="pwdShow" />
+        <img src="../../assets/public/pwdmove.png" class="edit_pwd" alt v-else @click="pwdShow" />
         <p class="edit_tips">22222222222222</p>
       </li>
       <li>
