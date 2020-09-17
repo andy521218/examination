@@ -8,29 +8,27 @@
       <div class="user_menu">
         <menuTab :menuData="menu" :routerData="routerData"></menuTab>
       </div>
-      <div class="user_main">
-        <router-view></router-view>
+      <div class="user_main" v-show="this.$store.state.flag">
+        <router-view name="main"></router-view>
       </div>
     </div>
+    <router-view name="index"></router-view>
   </div>
 </template>
 
 <script>
+/*eslint-disable */
 import user from "../components/user";
 import menuTab from "../components/menu";
 import logo from "../components/logo";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 export default {
   name: "user-home",
   data() {
-    return {
-    };
+    return {};
   },
-  computed:{
-    ...mapState([
-      'menu',
-      'routerData'
-    ])
+  computed: {
+    ...mapState(["menu", "routerData"]),
   },
   components: {
     user,
@@ -52,7 +50,7 @@ export default {
   }
   .user_main {
     width: 90%;
-    min-width: 1200px;
+    min-width: 1375px;
     background: url("../assets/public/box.png") no-repeat center;
     background-size: 100% 100%;
     margin-right: 40px;

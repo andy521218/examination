@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import home from '../views/home'
 
 Vue.use(VueRouter)
 
@@ -13,13 +13,14 @@ const routes = [
   {
     path: '/home',
     name: 'home',
-    component: () => import('../components/home.vue'),
-    redirect: '/index',
+    component: home,
     children: [
       {
         path: '/index',
-        name: 'index',
-        component: () => import('../pages/index'),
+        name:"index",
+        components: {
+          index: ()=>import('../pages/index'),      
+        }
       },
     ]
   },
@@ -27,33 +28,43 @@ const routes = [
   {
     path: '/usercore',
     name: 'usercore',
-    component: () => import('../components/main.vue'),
+    component:home,
     children: [
       {
         path: '/userachievement',
         name: 'userachievement',
-        component: () => import('../pages/usercore/userAchievement'),
+        components:{
+          main:() => import('../pages/usercore/userAchievement'),
+        } 
       },
       {
         path: '/usercenter',
         name: 'usercenter',
-        component: () => import('../pages/usercore/userCenter'),
+        components:{
+          main:() => import('../pages/usercore/userCenter'),
+        } 
       },
       {
         path: '/userpassword',
         name: 'userpassword',
-        component: () => import('../pages/usercore/userPassword'),
+        components:{
+          main:() => import('../pages/usercore/userPassword'),
+        } 
       },
 
       {
         path: '/userrecord',
         name: 'userrecord',
-        component: () => import('../pages/usercore/userRecord'),
+        components:{
+          main:() => import('../pages/usercore/userRecord'),
+        } 
       },
       {
         path: '/userstatistics',
         name: 'userstatistics',
-        component: () => import('../pages/usercore/userStatistics'),
+        components:{
+          main:() => import('../pages/usercore/userStatistics'),
+        } 
       },
     ]
   },
@@ -61,38 +72,50 @@ const routes = [
   {
     path: '/teacher',
     name: 'teacher',
-    component: () => import('../components/main.vue'),
+    component: home,
     children: [
       {
         path: '/teachercase',
         name: 'teachercase',
-        component: () => import('../pages/teacher/teacherCase'),
+        components:{
+          main:() => import('../pages/teacher/teacherCase'),
+        },
       },
       {
         path: '/teacherclass',
         name: 'teacherclass',
-        component: () => import('../pages/teacher/teacherClass'),
+        components:{
+          main:() => import('../pages/teacher/teacherClass'),
+        },
       },
       {
         path: '/teacherrelease',
         name: 'teacherrelease',
-        component: () => import('../pages/teacher/teacherRelease'),
+        components:{
+          main:() => import('../pages/teacher/teacherRelease'),
+        },
       },
 
       {
         path: '/teacherstatistics',
         name: 'teacherstatistics',
-        component: () => import('../pages/teacher/teacherStatistics'),
+        components:{
+          main:() => import('../pages/teacher/teacherStatistics'),
+        },
       },
       {
         path: '/teacherstudent',
         name: 'teacherstudent',
-        component: () => import('../pages/teacher/teacherStudent'),
+        components:{
+          main:() => import('../pages/teacher/teacherStudent'),
+        },
       },
       {
-        path: '/teachertuser',
-        name: 'teachertuser',
-        component: () => import('../pages/teacher/teacherUser'),
+        path: '/teacheruser',
+        name: 'teacheruser',
+        components:{
+          main:() => import('../pages/teacher/teacherUser'),
+        },
       },
     ]
   },
@@ -100,40 +123,79 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: () => import('../components/main.vue'),
+    component: home,
     children: [
       {
         path: '/admincontent',
         name: 'admincontent',
-        component: () => import('../pages/admin/adminContent'),
+        components:{
+          main:() => import('../pages/admin/adminContent'),
+        },
       },
       {
         path: '/adminlogo',
         name: 'adminlogo',
-        component: () => import('../pages/admin/adminLogo'),
+        components: {main:() => import('../pages/admin/adminLogo')},
       },
       {
         path: '/adminnumber',
         name: 'adminnumber',
-        component: () => import('../pages/admin/adminNumber'),
+        components: {main:() => import('../pages/admin/adminNumber')},
       },
       {
         path: '/adminorganization',
         name: 'adminorganization',
-        component: () => import('../pages/admin/adminOrganization'),
+        components: {main:() => import('../pages/admin/adminOrganization')},
       },
       {
         path: '/adminstatistics',
         name: 'adminstatistics',
-        component: () => import('../pages/admin/adminStatistics'),
+        components: {main:() => import('../pages/admin/adminStatistics')},
       },
       {
         path: '/adminmaster',
         name: 'adminmaster',
-        component: () => import('../pages/admin/adminTeacher'),
+        components: {main:() => import('../pages/admin/adminTeacher')},
       },
     ]
   },
+ //message
+ {
+   path:'/message',
+   name:'message',
+   component:home,
+   redirect:'messageforum',
+   children:[
+      {
+        path: '/messageforum',
+        name: 'messageforum',
+        components:{
+          main:() => import('../pages/message/messageForum'),
+        },
+      },
+      {
+        path: '/messagemy',
+        name: 'messagemy',
+        components:{
+          main:() => import('../pages/message/messageMy'),
+        },
+      },
+      {
+        path: '/messageprivate',
+        name: 'messageprivate',
+        components:{
+          main:() => import('../pages/message/messagePrivate'),
+        },
+      },
+      {
+        path: '/messagePublish',
+        name: 'messagepublish',
+        components:{
+          main:() => import('../pages/message/messagePublish'),
+        },
+      },
+   ]
+ }
 ]
 
 const router = new VueRouter({

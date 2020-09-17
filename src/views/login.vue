@@ -63,7 +63,7 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    min-width: 1200px;
+    min-width: 1375px;
     min-height: 920px;
     overflow: hidden;
     background: url("../assets/img/login/bg.png") no-repeat;
