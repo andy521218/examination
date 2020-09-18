@@ -56,7 +56,7 @@ export default {
     margin-right: 40px;
     position: relative;
   }
-  @media (max-width: 1397px) {
+  @media (max-width: 1600px) {
     .user_menu {
       display: none;
     }

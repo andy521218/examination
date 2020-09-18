@@ -48,7 +48,7 @@ export default {
       this.isChecked = !this.isChecked;
     },
     login() {
-      this.$router.replace("/home");
+      this.$router.replace("/index");
     },
   },
 };
