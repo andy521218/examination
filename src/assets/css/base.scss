@@ -55,9 +55,41 @@ body,
   color: rgb(255, 255, 255);
 }
 
+textarea {
+  border: rgb(42, 147, 252) 1px solid;
+  resize: none;
+}
+
+textarea::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: rgb(110, 111, 113);
+}
+
+textarea:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: rgb(110, 111, 113);
+}
+
+textarea::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: rgb(110, 111, 113);
+}
+
+textarea:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: rgb(110, 111, 113);
+}
+
+textarea:focus {
+  outline: none !important;
+  border-color: rgb(0, 235, 255) !important;
+}
+
+
 //选择框样式
 .edit_class {
-//单选框
+
+  //单选框
   input[type="radio"] {
     margin-right: 5px;
     cursor: pointer;
@@ -132,7 +164,6 @@ body,
     border-radius: 3px;
     background: url('../public/checkbox.png') no-repeat center;
     background-size: 100% 100%;
-    background-color: rgb(88, 187, 254);
   }
 }
 
@@ -169,19 +200,21 @@ body,
   line-height: 38px;
   margin-left: 15px;
   margin-right: 15px;
+  opacity: 0.9;
 }
 
 .dele {
   cursor: pointer;
   width: 115px;
   color: rgb(255, 255, 255);
-  background-color: rgb(252,94,95);
-  border: rgb(252,94,95);
+  background-color: rgb(252, 94, 95);
+  border: rgb(252, 94, 95);
   border-radius: 3px;
   display: block;
   outline: none;
   height: 38px;
   line-height: 38px;
+  opacity: 0.9;
 }
 
 .import {
@@ -195,6 +228,7 @@ body,
   outline: none;
   height: 38px;
   line-height: 38px;
+  opacity: 0.9;
 }
 
 .add_case {
@@ -208,6 +242,7 @@ body,
   outline: none;
   height: 38px;
   line-height: 38px;
+  opacity: 0.9;
 }
 
 .edit_cancel,
@@ -220,11 +255,13 @@ body,
   border-radius: 3px;
   outline: none;
   background: rgb(10, 55, 97);
+  opacity: 0.9;
 }
 
 .edit_submit {
   border: rgb(0, 235, 255);
   background: rgb(26, 178, 243);
+  opacity: 0.9;
 }
 
 .main_header {
@@ -232,6 +269,35 @@ body,
     height: 38px;
     line-height: 38px;
   }
+}
+
+.messageBtn {
+  cursor: pointer;
+  width: 115px;
+  min-width: 115px;
+  color: rgb(255, 255, 255);
+  background-image: linear-gradient(to right,
+      rgb(18, 195, 237),
+      rgb(47, 138, 255));
+  border: 1px solid;
+  border-radius: 3px;
+  display: block;
+  outline: none;
+  height: 38px;
+  line-height: 38px;
+  margin-left: 15px;
+  margin-right: 15px;
+  opacity: 0.9;
+}
+
+.messageBtn:hover,
+.add:hover,
+.dele:hover,
+.import:hover,
+.add_case:hover,
+.edit_cancel:hover,
+.edit_submit:hover {
+  opacity: 1;
 }
 
 //下拉框样式
@@ -243,6 +309,11 @@ body,
   border: rgb(9, 124, 168) 1px solid;
   color: rgb(255, 255, 255);
   padding-left: 15px;
+}
+
+.select:focus {
+  outline: none;
+  border: 1px solid rgb(0, 235, 255);
 }
 
 //主体内容布局
@@ -435,7 +506,7 @@ body,
 
       input,
       .select {
-        background: rgb(8, 75, 130);
+        // background: rgb(8, 75, 130);
         width: 265px;
         height: 41px;
       }
@@ -471,7 +542,7 @@ body,
 
 //滚动条
 
-.scrollbar{
+.scrollbar {
   ::-webkit-scrollbar {
     width: 10px;
     background-color: transparent;
@@ -490,6 +561,7 @@ body,
     // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: rgb(0, 235, 255);
   }
+
   /*定义最上方和最下方的按钮*/
   ::-webkit-scrollbar-button {
     display: none;

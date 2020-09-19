@@ -5,7 +5,9 @@
       <span class="discuss_icon"></span>
     </div>
     <div class="discuss_cont">
-        <textarea></textarea>
+      <textarea placeholder="请输入回复内容..." maxlength="130" v-model="textVal"></textarea>
+      <span>{{textVal.length}}/130</span>
+      <button class="messageBtn">确定</button>
     </div>
   </div>
 </template>
@@ -13,6 +15,11 @@
 <script>
 export default {
   name: "add-discuss",
+  data() {
+    return {
+      textVal: "",
+    };
+  },
 };
 </script>
 
@@ -35,7 +42,6 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid transparent;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     .discuss_icon {
@@ -44,8 +50,8 @@ export default {
       margin-right: 20px;
       background: url("../../assets/public/switch.png") no-repeat center;
     }
-    span{
-        margin-left: 25px;
+    span {
+      margin-left: 25px;
     }
   }
   .discuss_cont {
@@ -55,6 +61,22 @@ export default {
     order: 1px solid transparent;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    position: relative;
+    .messageBtn {
+      margin: 10px auto;
+    }
+    textarea {
+      width: 360px;
+      height: 220px;
+      margin: 15px 23px;
+      padding: 10px 15px;
+    }
+    span {
+      color: rgb(110, 111, 113);
+      position: absolute;
+      right: 30px;
+      bottom: 105px;
+    }
   }
 }
 </style>

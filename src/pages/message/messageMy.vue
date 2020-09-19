@@ -1,9 +1,26 @@
 <template>
-    <h1>我的问题</h1>
+  <div class="message_forum">
+    <discuss :dele="dele">
+      <template v-slot:page>
+        <turn-page></turn-page>
+      </template>
+    </discuss>
+  </div>
 </template>
 
 <script>
+import discuss from "../../components/discuss";
+import turnPage from "../../components/turnPage";
 export default {
-    name:'message-my'
-}
+  name: "message-my",
+  data() {
+    return {
+      dele: true,
+    };
+  },
+  components: {
+    discuss,
+    turnPage,
+  },
+};
 </script>
