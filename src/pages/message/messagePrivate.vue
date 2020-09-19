@@ -8,7 +8,7 @@
         <ul class="dialogue edit_class">
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <div class="border"></div>
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
@@ -20,7 +20,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -31,7 +31,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -42,7 +42,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -53,7 +53,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -64,7 +64,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -75,7 +75,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -86,7 +86,7 @@
           </li>
           <li>
             <input type="checkbox" />
-            <div class="private_user_img">
+            <div class="user_img">
               <img src="../../assets/img/home/user.png" alt />
               <span>张三张三是</span>
             </div>
@@ -176,7 +176,7 @@ export default {
             margin-left: 25px;
             margin-top: 30px;
           }
-          .private_user_img {
+          .user_img {
             width: 60px;
             display: flex;
             flex-direction: column;
@@ -191,15 +191,6 @@ export default {
             }
             span {
               font-size: 12px;
-            }
-            .border {
-              background: rgb(255, 0, 0);
-              border-radius: 50%;
-              width: 13px;
-              height: 13px;
-              position: absolute;
-              right: 0px;
-              top: 5px;
             }
           }
           .private_title {
