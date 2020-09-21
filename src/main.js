@@ -33,6 +33,8 @@ router.beforeEach((to, from, next) => {
       ]   
   }
   if (/admin/.test(to.name)) {
+    // store.state.menu = ["教师管理", "编制管理", "数据管理", ["内容管理",'望诊诊断','切诊诊断','病名症型','治则治法','方剂方药'], "LOGO修改","算分逻辑"],
+    // store.state.menu = [["教师管理"], ["编制管理"], ["数据管理"], ["内容管理",'望诊诊断','切诊诊断','病名症型','治则治法','方剂方药'], ["LOGO修改"],["算分逻辑"]],
     store.state.menu = ["教师管理", "编制管理", "数据管理", "内容管理", "LOGO修改","算分逻辑"],
       store.state.routerData = [
         "adminmaster",

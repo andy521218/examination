@@ -17,7 +17,6 @@
 </template>
 
 <script>
-/*eslint-disable */
 import user from "../components/user";
 import menuTab from "../components/menu";
 import logo from "../components/logo";

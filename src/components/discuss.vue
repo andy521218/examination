@@ -1,7 +1,7 @@
 <template>
   <div class="message_forum scrollbar">
     <add-discuss v-if="0"></add-discuss>
-    <see-img :url='url' v-if="0"></see-img>
+    <see-img :url="url" v-if="0"></see-img>
     <div class="main_header">
       <button class="dele" v-if="dele">批量删除</button>
       <label for>分类</label>
@@ -21,8 +21,8 @@
         <!-- 1级问题 -->
         <li class="message_item edit_class">
           <div class="load">
-            <span class="load_text">展开回复</span>
             <span class="load_icon"></span>
+            <span class="load_text">展开回复</span>
           </div>
           <div class="message_left">
             <input type="checkbox" v-if="dele" />
@@ -62,7 +62,7 @@
                   </div>
                   <span>同学1:</span>
                 </div>
-                
+
                 <div class="message_two_item_bottom">
                   <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
                   <div class="message_two_item_right">
@@ -71,8 +71,7 @@
                     <span class="message_two_item_time">2020-07-13 18:20</span>
                   </div>
                 </div>
-         
-               
+
                 <!-- 三级回复 -->
                 <div class="message_three_cont" v-if="1">
                   <ul class="message_two">
@@ -94,7 +93,7 @@
                         </div>
                       </div>
                     </li>
-                       <li class="message_two_item three">
+                    <li class="message_two_item three">
                       <div class="message_two_top">
                         <div class="message_user_img">
                           <img src="../assets/img/home/user.png" alt />
@@ -112,7 +111,7 @@
                         </div>
                       </div>
                     </li>
-                       <li class="message_two_item three">
+                    <li class="message_two_item three">
                       <div class="message_two_top">
                         <div class="message_user_img">
                           <img src="../assets/img/home/user.png" alt />
@@ -132,15 +131,14 @@
                     </li>
                   </ul>
                 </div>
-
               </li>
             </ul>
           </div>
         </li>
-         <li class="message_item edit_class">
+        <li class="message_item edit_class">
           <div class="load">
-            <span class="load_text">展开回复</span>
             <span class="load_icon"></span>
+            <span class="load_text">展开回复</span>
           </div>
           <div class="message_left">
             <input type="checkbox" v-if="dele" />
@@ -213,7 +211,6 @@
                   </ul>
                 </div>
               </li>
-              
             </ul>
           </div>
         </li>
@@ -305,7 +302,8 @@ export default {
   name: "discuss",
   data() {
     return {
-      url:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600503265386&di=d1fea52a78eeff71cf94e6555e73b2d7&imgtype=0&src=http%3A%2F%2Ft9.baidu.com%2Fit%2Fu%3D3363001160%2C1163944807%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D830'
+      url:
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600503265386&di=d1fea52a78eeff71cf94e6555e73b2d7&imgtype=0&src=http%3A%2F%2Ft9.baidu.com%2Fit%2Fu%3D3363001160%2C1163944807%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D830",
     };
   },
   components: {
@@ -351,6 +349,17 @@ export default {
           color: rgb(0, 235, 255);
           left: 85%;
           bottom: 0;
+          height: 22px;
+          .load_icon {
+            display: inline-block;
+            background: url("../assets/public/message.png") no-repeat center;
+            background-size: 100% 100%;
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            left: -16px;
+            top: 3px;
+          }
         }
         .load:hover .load_text {
           border-bottom: 1px solid rgb(0, 235, 255);
@@ -607,7 +616,7 @@ export default {
 }
 @media (max-width: 1700px) {
   .load {
-    left: 93% !important;
+    left: 95% !important;
   }
 }
 </style>

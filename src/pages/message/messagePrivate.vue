@@ -259,7 +259,7 @@ export default {
               padding: 15px;
               span {
                 display: inline-block;
-                max-width: 200px;
+                max-width: 410px;
               }
               div {
                 width: 15px;
@@ -289,7 +289,7 @@ export default {
               padding: 15px;
               span {
                 display: inline-block;
-                max-width: 200px;
+                max-width: 410px;
               }
               div {
                 width: 15px;

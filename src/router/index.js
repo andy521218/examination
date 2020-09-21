@@ -123,7 +123,8 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    component: home,
+    // component: ()=>import('../pages/admin/adminIndex'),
+  component:home,
     children: [
       {
         path: '/admincontent',
