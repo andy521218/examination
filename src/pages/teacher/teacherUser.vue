@@ -1,7 +1,7 @@
 <template>
   <div class="teacher_user">
     <!-- 学习记录 -->
-    <view-records v-if="0"></view-records>
+    <view-records v-if="1"></view-records>
     <!-- switch -->
     <edit-dele :edit_title='edit_title' v-if="0">
       <template v-slot:edit_p>

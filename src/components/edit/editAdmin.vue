@@ -27,8 +27,3 @@ export default {
   props:['data']
 };
 </script>
-
-<style lang="scss">
-.edit_admin {
-}
-</style>

@@ -3,13 +3,15 @@
     <div class="tab train"></div>
     <div class="tab assessment"></div>
     <div class="tab problem"></div>
-    <div class="tab care"></div>
+    <router-link to="/message">
+      <div class="tab care"></div>
+    </router-link>
   </div>
 </template>
 
 <script>
 export default {
-  name:'index'
+  name: "index",
 };
 </script>
 

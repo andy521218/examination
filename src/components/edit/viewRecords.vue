@@ -5,7 +5,7 @@
         <span class="title">学习记录</span>
         <span class="edit_switch"></span>
       </div>
-      <div class="records_bottom">
+      <div class="records_bottom scrollbar">
         <ul class="records_header">
           <li class="table_smal">病系</li>
           <li class="table_smal">患者</li>
@@ -237,28 +237,6 @@ export default {
       li:nth-child(even) {
         background: rgb(10, 40, 72);
       }
-    }
-    ::-webkit-scrollbar {
-      width: 10px;
-      background-color: transparent;
-    }
-
-    /*定义滚动条轨道 内阴影+圆角*/
-    ::-webkit-scrollbar-track {
-      // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
-      background-color: rgb(75, 111, 143);
-    }
-
-    /*定义滑块 内阴影+圆角*/
-    ::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      background-color: rgb(0, 235, 255);
-    }
-    /*定义最上方和最下方的按钮*/
-    ::-webkit-scrollbar-button {
-      display: none;
     }
   }
 }
