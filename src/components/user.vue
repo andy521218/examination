@@ -380,7 +380,7 @@ export default {
     align-content: center;
     align-items: center;
     margin-right: 50px;
-    margin-left: 30px;
+    margin-left: 15px;
     position: relative;
     .user_img_big {
       margin-right: 10px;

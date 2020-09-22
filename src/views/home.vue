@@ -4,11 +4,11 @@
       <logo></logo>
       <user></user>
     </header>
-    <div class="user_core">
+    <div class="user_core"  v-show="this.$store.state.flag">
       <div class="user_menu">
         <menuTab :menuData="menu" :routerData="routerData"></menuTab>
       </div>
-      <div class="user_main" v-show="this.$store.state.flag">
+      <div class="user_main">
         <router-view name="main"></router-view>
       </div>
     </div>

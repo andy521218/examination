@@ -123,8 +123,7 @@ const routes = [
   {
     path: '/admin',
     name: 'admin',
-    // component: ()=>import('../pages/admin/adminIndex'),
-  component:home,
+    component:home,
     children: [
       {
         path: '/admincontent',
@@ -132,6 +131,38 @@ const routes = [
         components:{
           main:() => import('../pages/admin/adminContent'),
         },
+        children:[
+          {
+            path:'/adminhear',
+            name:'adminhear',
+           component:()=>import('../pages/admin/adminCont/hear')
+          },
+          {
+            path:'/adminlook',
+            name:'adminlook',
+           component:()=>import('../pages/admin/adminCont/look')
+          },
+          {
+            path:'/adminname',
+            name:'adminname',
+           component:()=>import('../pages/admin/adminCont/name')
+          },
+          {
+            path:'/adminprescription',
+            name:'adminprescription',
+           component:()=>import('../pages/admin/adminCont/prescription')
+          },
+          {
+            path:'/adminpulse',
+            name:'adminpulse',
+           component:()=>import('../pages/admin/adminCont/pulse')
+          },
+          {
+            path:'/admintreatment',
+            name:'admintreatment',
+           component:()=>import('../pages/admin/adminCont/treatment')
+          }
+        ]
       },
       {
         path: '/adminlogo',

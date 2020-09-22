@@ -1,52 +1,102 @@
 <template>
-  <div class="menu">
-    <ul>
-      <li
-        v-for="(item,index) in menuData"
-        :key="index"
-        :class="{'active':bgIndex==index}"
-        @click="linkRouting(index)"
-      >{{item}}</li>
-    </ul>
+  <div class="user_menu">
+    <div class="admin_menu_item" v-for="(item,index) in menu" :key="index">
+      <p :class="{'active':bgIndex==index}" @click="oneRouting(index)">{{item.title}}</p>
+      <ul :class="{'show':bgIndex==index}">
+        <li v-for="(item,i) in item.item" :key="i" :class="{'color':i==colorIndex}">
+          <i></i>
+          <span @click="twoRouting(index,i)">{{item}}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  name: "menu-tab",
-  props: ["menuData", "routerData"],
+  name: "user-home",
   data() {
     return {
       bgIndex: "-1",
+      colorIndex: "-1",
     };
   },
+  computed: {
+    ...mapState(["menu", "routerData"]),
+  },
   methods: {
-    linkRouting(index) {
+    oneRouting(index) {
       this.bgIndex = index;
-      this.$router.push(this.routerData[index]);
+      this.menu[index].show=! this.menu[index].show
+      this.$router.push(this.routerData[index].router);
+      console.log(this.menu[index])
+    },
+    twoRouting(index, i) {
+      this.colorIndex = i;
+      this.$router.push(this.routerData[index].itemRouter[i]);
     },
   },
 };
 </script>
 
 <style lang="scss">
-.menu {
+.admin_menu_item {
   width: 157px;
-  li {
-    cursor: pointer;
-    width: 100%;
+  margin-bottom: 29px;
+  p {
     height: 54px;
     line-height: 54px;
-    margin-bottom: 29px;
     text-align: center;
     font-size: 20px;
     background: url("../assets/public/menu.png");
+    cursor: pointer;
   }
-  li:hover {
+  p:hover {
     background: url("../assets/public/menumove.png");
   }
   .active {
     background: url("../assets/public/menumove.png");
+  }
+  ul {
+    width: 100%;
+    margin-top: 25px;
+    display: none;
+    li {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      cursor: pointer;
+      i {
+        width: 13px;
+        height: 13px;
+        background: rgb(255, 255, 255);
+        border-radius: 50%;
+        margin-left: 35px;
+        margin-right: 15px;
+      }
+      span {
+        font-size: 20px;
+      }
+      i:hover {
+        background: rgb(0, 235, 255);
+      }
+      span:hover {
+        color: rgb(0, 235, 255);
+      }
+    }
+    .color {
+      i {
+        background: rgb(0, 235, 255);
+      }
+      span {
+        color: rgb(0, 235, 255);
+      }
+    }
+  }
+  .show {
+    display: block;
   }
 }
 </style>

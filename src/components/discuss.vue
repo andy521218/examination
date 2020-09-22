@@ -372,8 +372,8 @@ export default {
           float: left;
           height: 100px;
           input {
-            width: 22px;
-            height: 22px;
+            // width: 22px;
+            // height: 22px;
             margin: 25px 30px 0 15px;
           }
           .message_img {

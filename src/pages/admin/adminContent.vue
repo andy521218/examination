@@ -1,3 +1,3 @@
 <template>
-    <h1>内容管理</h1>
+    <router-view></router-view>
 </template>
