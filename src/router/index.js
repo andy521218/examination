@@ -68,7 +68,7 @@ const routes = [
       },
     ]
   },
-  //教师
+  //教师 
   {
     path: '/teacher',
     name: 'teacher',
