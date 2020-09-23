@@ -8,7 +8,6 @@ export default new Vuex.Store({
     menu: [],
     routerData: [],
     flag:false,
-    titleName:''
   },
   mutations: {
   },

@@ -1,8 +1,8 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">{{titleName}}结果</span>
-      <span class="edit_switch"></span>
+      <span class="title">添加诊断结果</span>
+      <span class="edit_switch" @click="editResult()"></span>
     </div>
     <ul class="edit_class">
       <li>
@@ -50,18 +50,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 export default {
   name: "edit-result",
   data() {
-    return {
-      look: "false",
-      local: "false",
-      tongue: "false",
-    };
+    return {};
   },
-  computed: {
-    ...mapState(["titleName"]),
+  props: ["editshow"],
+  methods: {
+    editResult() {
+      this.$emit("editshow",false);
+    },
   },
 };
 </script>

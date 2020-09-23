@@ -1,20 +1,20 @@
 <template>
   <div class="look_diagnosis">
-    <edit-result></edit-result>
-    <cont-bg :data="cont" :title="title.one"></cont-bg>
-    <cont-bg :data="cont1" :title="title.two"></cont-bg>
-    <cont-bg :data="cont2" :title="title.three"></cont-bg>
+    <edit-result v-if="editShow" @editshow="edit"></edit-result>
+    <look-box :data="cont" :title="title.one" @editshow="edit"></look-box>
+    <look-box :data="cont1" :title="title.two" @editshow="edit"></look-box>
+    <look-box :data="cont2" :title="title.three" @editshow="edit"></look-box>
   </div>
 </template>
 
 <script>
-import contBg from "../../../components/contBg";
+import lookBox from "../../../components/lookBox";
 import editResult from "../edit/editResult";
 
 export default {
   name: "look-diagnosis",
   components: {
-    contBg,
+    lookBox,
     editResult,
   },
   data() {
@@ -24,6 +24,7 @@ export default {
         two: "望局部",
         three: "望舌",
       },
+      editShow: false,
       cont: [
         {
           title: "我的提问",
@@ -92,6 +93,11 @@ export default {
       ],
     };
   },
+  methods: {
+    edit(flag) {
+      this.editShow = flag;
+    },
+  },
 };
 </script>
 
@@ -101,5 +107,8 @@ export default {
   height: 100%;
   display: flex;
   padding: 3% 5%;
+  .cont_bg {
+    width: 30%;
+  }
 }
 </style>
