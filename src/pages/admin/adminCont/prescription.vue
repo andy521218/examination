@@ -3,10 +3,10 @@
     <!-- 左侧内容 -->
     <div class="cont_bg">
       <!-- 左侧弹窗 -->
-      <div class="edit">
+      <div class="edit" v-if="drug">
         <div class="edit_title">
           <span class="title">添加常见方剂</span>
-          <span class="edit_switch" @click="editSwitch()"></span>
+          <span class="edit_switch" @click="closeDrug()"></span>
         </div>
         <ul class="edit_class">
           <li>
@@ -14,7 +14,12 @@
               <span class="edit_red">*</span>
               <span class="edit_text">诊断结果:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
@@ -41,7 +46,7 @@
           </div>
         </li>
       </ul>
-      <button class="addResult" @click="editImg()">+</button>
+      <button class="addResult" @click="addDrug()">+</button>
     </div>
     <!-- 右侧内容 -->
     <div class="cont_bg">
@@ -57,7 +62,12 @@
               <span class="edit_red">*</span>
               <span class="edit_text">方药名称:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
           <li class="flex">
@@ -103,16 +113,23 @@ export default {
   data() {
     return {
       prescription: false,
+      drug: false,
     };
   },
-  methods:{
-      closePrescription(){
-          this.prescription=false
-      },
-      addPrescription(){
-          this.prescription=true
-      }
-  }
+  methods: {
+    closePrescription() {
+      this.prescription = false;
+    },
+    addPrescription() {
+      this.prescription = true;
+    },
+    closeDrug() {
+      this.drug = false;
+    },
+    addDrug() {
+      this.drug = true;
+    },
+  },
 };
 </script>
 <style lang="scss">
