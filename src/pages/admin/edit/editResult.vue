@@ -1,21 +1,16 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">添加诊断结果</span>
-      <span class="edit_switch" @click="editResult()"></span>
+      <span class="title">添加{{ editTitle }}结果</span>
+      <span class="edit_switch" @click="closeResult()"></span>
     </div>
     <ul class="edit_class">
       <li>
         <div class="edit_left">
-          <span class="edit_red">*</span>
+          <span class="edit_red"></span>
           <span class="edit_text">分类:</span>
         </div>
-        <input class="edit_radio" type="radio" value="0" name="result" />
-        <label for class="edit_off">望神色形态</label>
-        <input class="edit_radio" type="radio" value="1" name="result" />
-        <label for class="edit_off">望局部</label>
-        <input class="edit_radio" type="radio" value="1" name="result" />
-        <label for class="edit_off">望舌</label>
+        <span class="edit_text_i">望神</span>
       </li>
       <li>
         <div class="edit_left">
@@ -44,8 +39,10 @@
         <p class="edit_tips"></p>
       </li>
     </ul>
-    <button class="edit_cancel">取消</button>
-    <button class="edit_submit">确定</button>
+    <div class="edit_btn_box">
+      <button class="edit_cancel">取消</button>
+      <button class="edit_submit">确定</button>
+    </div>
   </div>
 </template>
 
@@ -55,23 +52,11 @@ export default {
   data() {
     return {};
   },
-  props: ["editshow"],
+  props: ["result", "editTitle"],
   methods: {
-    editResult() {
-      this.$emit("editshow",false);
+    closeResult() {
+      this.$parent.result = false;
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.edit {
-  top: 0;
-  .edit_off {
-    margin-right: 20px;
-  }
-  .select {
-    width: 200px;
-  }
-}
-</style>

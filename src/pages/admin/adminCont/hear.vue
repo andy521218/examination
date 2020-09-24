@@ -1,5 +1,5 @@
 <template>
-  <div class="hear_diagnosis">
+  <div class="hear diagnosis">
     <hear-box :data="cont" :title="title.one"></hear-box>
     <hear-box :data="cont2" :title="title.two"></hear-box>
   </div>
@@ -74,27 +74,16 @@ export default {
 };
 </script>
 <style lang="scss">
-.hear_diagnosis {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 3% 5%;
+.hear {
   .cont_bg {
     width: 40%;
     .edit {
-      width: 100%;
-      margin: 0 auto;
-      min-width: 595px;
+     left: 50%;
+     margin-left: -235px;
+     top: 45px;
       li {
         border: none;
       }
-    }
-    .edit ul li input,
-    .edit ul li .select {
-      width: 410px;
-    }
-    .edit .edit_cancel {
-      margin-left: 165px;
     }
   }
 }

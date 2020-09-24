@@ -1,7 +1,7 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">添加闻诊-{{hearData.sex}}</span>
+      <span class="title">添加闻诊-{{ hearData.sex }}</span>
       <span class="edit_switch" @click="editResult()"></span>
     </div>
     <ul class="edit_class">
@@ -23,7 +23,12 @@
           <span class="edit_red">*</span>
           <span class="edit_text">诊断结果:</span>
         </div>
-        <input type="text" class="text_box" v-if="hearData.id" placeholder="请输入院/系" />
+        <input
+          type="text"
+          class="text_box"
+          v-if="hearData.id"
+          placeholder="请输入院/系"
+        />
         <span class="edit_text_i" v-else>20200521</span>
       </li>
       <li class="relative">
@@ -35,8 +40,10 @@
         <input type="file" id="file" ref="file" @change="changVal" />
       </li>
     </ul>
-    <button class="edit_cancel">取消</button>
-    <button class="edit_submit" @click="fn">确定</button>
+    <div class="edit_btn_box">
+      <button class="edit_cancel">取消</button>
+      <button class="edit_submit">确定</button>
+    </div>
   </div>
 </template>
 
@@ -64,7 +71,6 @@ export default {
 };
 </script>
 <style lang="scss">
-
 #file {
   display: inline-block;
   width: 80px;
@@ -73,22 +79,23 @@ export default {
   margin-left: 20px;
   position: relative;
   outline: none;
-  &::after{
+  &::after {
     content: "选择";
     position: absolute;
     width: 80px;
     height: 40px;
     line-height: 40px;
     text-align: center;
-    background: rgb(0,235,255);
+    background: rgb(0, 235, 255);
     left: 0;
     border-radius: 3px;
   }
 }
 #fileName {
-  background: rgb(255,255,255);
-  color: rgb(0,0,0);
+  background: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   border: none;
-  width: 310px;
+  width: 165px;
+  padding-left: 15px;
 }
 </style>

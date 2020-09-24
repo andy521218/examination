@@ -1,7 +1,8 @@
 <template>
-  <div class="name_diagnosis">
+  <div class="name diagnosis">
     <div class="cont_bg">
       <!-- 弹窗 -->
+       <div class="mask"  v-if="name"></div>
       <div class="edit" v-if="name">
         <div class="edit_title">
           <span class="title">添加病名</span>
@@ -13,12 +14,19 @@
               <span class="edit_red">*</span>
               <span class="edit_text">病名:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <!-- 左侧内容 -->
       <div class="cont_header">病名</div>
@@ -53,6 +61,7 @@
 
     <div class="cont_bg">
       <!-- 弹窗 -->
+       <div class="mask"  v-if="symptom"></div>
       <div class="edit" v-if="symptom">
         <div class="edit_title">
           <span class="title">添加症型</span>
@@ -64,12 +73,19 @@
               <span class="edit_red">*</span>
               <span class="edit_text">症型:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <!-- 右侧内容 -->
       <div class="cont_header">症型</div>
@@ -131,16 +147,16 @@ export default {
 </script>
 
 <style lang="scss">
-.name_diagnosis {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 3% 5%;
+.name {
   .cont_bg {
     width: 40%;
-    .edit{
+    .edit {
+      top: 45px;
       left: 50%;
       margin-left: -235px;
+      li {
+        border: none;
+      }
     }
   }
 }

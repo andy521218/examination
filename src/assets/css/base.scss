@@ -475,7 +475,7 @@ textarea:focus {
       margin: 0 auto;
       margin-top: 25px;
       padding-bottom: 10px;
-      font-size: 18px;
+      font-size: 16px;
       text-align: center;
       width: 120px;
       border-bottom: 3px solid rgb(0, 235, 255);
@@ -550,15 +550,14 @@ textarea:focus {
     }
   }
 
-  .edit_cancel {
-    margin-left: 120px;
-    margin-right: 45px;
-  }
 
-  .edit_cancel,
-  .edit_submit {
-    margin-top: 50px;
-    margin-bottom: 50px;
+  .edit_btn_box {
+    width: 270px;
+    margin: 50px auto;
+
+    .edit_cancel {
+      margin-right: 45px;
+    }
   }
 }
 
@@ -627,6 +626,16 @@ textarea:focus {
   margin: 0 auto;
   position: relative;
 
+  .mask {
+    background: url('../public/mask.png') no-repeat center;
+    background-size: 100% 100%;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    opacity: 0.3;
+  }
+
   .cont_header {
     width: 96%;
     height: 55px;
@@ -644,13 +653,17 @@ textarea:focus {
     li {
       width: 100%;
       border-bottom: 1px solid rgb(8, 111, 148);
-      padding: 10px;
+      padding: 0px 10px 0 10px;
 
       .item_cont {
         display: flex;
         justify-content: space-between;
+        cursor: pointer;
 
         .item_left {
+          height: 40px;
+          line-height: 40px;
+
           i {
             background: rgb(255, 255, 255);
             width: 10px;
@@ -664,9 +677,10 @@ textarea:focus {
         .item_right {
           width: 0;
           height: 0;
-          border: 10px solid;
+          border: 8px solid;
           transform: rotate(-90deg);
           border-color: rgb(255, 255, 255) transparent transparent;
+          margin-top: 12px;
         }
 
         .transform {
@@ -678,9 +692,10 @@ textarea:focus {
         width: 100%;
         padding-left: 25px;
         display: none;
+        margin-top: -10px;
 
         p {
-          padding: 5px;
+          padding: 10px 5px;
         }
       }
 
@@ -695,6 +710,8 @@ textarea:focus {
         span {
           cursor: pointer;
           color: rgb(0, 235, 255);
+          height: 40px;
+          line-height: 41px;
           margin-left: 10px;
         }
 
@@ -704,4 +721,11 @@ textarea:focus {
       }
     }
   }
+}
+
+.diagnosis {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  padding: 3% 5%;
 }

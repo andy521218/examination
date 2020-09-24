@@ -1,7 +1,8 @@
 <template>
-  <div class="pulse_diagnosis">
+  <div class="pulse diagnosis">
     <div class="cont_bg">
       <!-- 弹窗 -->
+      <div class="mask"  v-if="imgShow"></div>
       <div class="edit" v-if="imgShow">
         <div class="edit_title">
           <span class="title">添加诊断结果</span>
@@ -13,7 +14,12 @@
               <span class="edit_red">*</span>
               <span class="edit_text">诊断结果:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
           <li>
@@ -21,7 +27,12 @@
               <span class="edit_red">*</span>
               <span class="edit_text">诊断结果:</span>
             </div>
-            <input type="text" class="text_box" v-if="true" placeholder="请输入院/系" />
+            <input
+              type="text"
+              class="text_box"
+              v-if="true"
+              placeholder="请输入院/系"
+            />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
           <li class="display">
@@ -35,8 +46,10 @@
             </div>
           </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <!-- 左侧内容 -->
       <div class="cont_header">脉诊</div>
@@ -101,8 +114,9 @@
       <button class="addResult" @click="editImg()">+</button>
     </div>
 
-    <div class="cont_bg">
+    <div class="cont_bg right">
       <!-- 弹窗 -->
+       <div class="mask"  v-if="addCont"></div>
       <div class="edit" v-if="addCont">
         <div class="edit_title">
           <span class="title">添加诊断结果</span>
@@ -129,8 +143,10 @@
             <input type="text" class="text_box" placeholder="请输入院/系" />
           </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <!-- 右侧内容 -->
       <div class="cont_header">按诊</div>
@@ -142,11 +158,10 @@
               <span>迟脉</span>
             </div>
             <div class="item_left right">
-              <i></i>
               <span>迟脉</span>
-              <i></i>
+
               <span>迟脉</span>
-              <i></i>
+
               <span>迟脉</span>
             </div>
           </div>
@@ -183,17 +198,14 @@ export default {
 };
 </script>
 <style lang="scss">
-.pulse_diagnosis {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 3% 5%;
+.pulse {
   .cont_bg {
     width: 40%;
-    .edit{
-      width: 100%;
-      margin-left: 0;
-      li{
+    .edit {
+      top: 45px;
+      width: 96%;
+      margin-left: 2%;
+      li {
         border: none;
       }
     }
@@ -236,9 +248,14 @@ export default {
         .right {
           margin-left: 20px;
           color: rgb(0, 235, 255);
-          i {
-            background: rgb(0, 235, 255);
+          span{
+            border-left: 1px solid rgb(0, 235, 255);
+            padding-left: 10px;;
+            margin-left: 10px;
           }
+        }
+        .item_cont {
+          margin-bottom: 0;
         }
       }
     }
@@ -248,6 +265,13 @@ export default {
     }
     .edit.big .edit_cancel {
       margin-left: 165px;
+    }
+  }
+  .right{
+    .edit{
+      width: 470px;
+     left: 50%;
+     margin-left: -235px;
     }
   }
 }

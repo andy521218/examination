@@ -1,21 +1,17 @@
 <template>
-  <div class="look_diagnosis">
-    <edit-result v-if="editShow" @editshow="edit"></edit-result>
-    <look-box :data="cont" :title="title.one" @editshow="edit"></look-box>
-    <look-box :data="cont1" :title="title.two" @editshow="edit"></look-box>
-    <look-box :data="cont2" :title="title.three" @editshow="edit"></look-box>
+  <div class="look diagnosis">
+    <look-box :data="cont" :title="title.one"></look-box>
+    <look-box :data="cont1" :title="title.two"></look-box>
+    <look-box :data="cont2" :title="title.three"></look-box>
   </div>
 </template>
 
 <script>
 import lookBox from "../../../components/lookBox";
-import editResult from "../edit/editResult";
-
 export default {
   name: "look-diagnosis",
   components: {
     lookBox,
-    editResult,
   },
   data() {
     return {
@@ -93,20 +89,11 @@ export default {
       ],
     };
   },
-  methods: {
-    edit(flag) {
-      this.editShow = flag;
-    },
-  },
 };
 </script>
 
 <style lang="scss">
-.look_diagnosis {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 3% 5%;
+.look {
   .cont_bg {
     width: 30%;
   }

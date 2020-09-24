@@ -57,8 +57,10 @@
           <label for class="edit_off">禁用</label>
         </li>
       </ul>
-      <button class="edit_cancel">取消</button>
-      <button class="edit_submit">确定</button>
+      <div class="edit_btn_box">
+        <button class="edit_cancel">取消</button>
+        <button class="edit_submit">确定</button>
+      </div>
     </div>
   </div>
 </template>

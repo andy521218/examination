@@ -1,8 +1,9 @@
 <template>
-  <div class="prescription_diagnosis">
+  <div class="prescription diagnosis">
     <!-- 左侧内容 -->
     <div class="cont_bg">
       <!-- 左侧弹窗 -->
+       <div class="mask"  v-if="drug"></div>
       <div class="edit" v-if="drug">
         <div class="edit_title">
           <span class="title">添加常见方剂</span>
@@ -12,7 +13,7 @@
           <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
-              <span class="edit_text">诊断结果:</span>
+              <span class="edit_text">方剂名称:</span>
             </div>
             <input
               type="text"
@@ -22,9 +23,57 @@
             />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方剂组成:</span>
+            </div>
+            <select name id class="select">
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+            </select>
+            <p class="edit_tips">
+              <img src="../../../assets/public/dele.png" alt="" />
+            </p>
+          </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方剂组成:</span>
+            </div>
+            <select name id class="select">
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+            </select>
+            <p class="edit_tips">
+              <img src="../../../assets/public/dele.png" alt="" />
+            </p>
+          </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方剂组成:</span>
+            </div>
+            <select name id class="select">
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+              <option value>1</option>
+            </select>
+            <p class="edit_tips">
+              <img src="../../../assets/public/dele.png" alt="" />
+            </p>
+          </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <i class="addList">+</i>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <div class="cont_header">常见方剂</div>
       <ul>
@@ -45,12 +94,39 @@
             </div>
           </div>
         </li>
+        <li>
+          <div class="item_cont">
+            <div class="item_left">
+              <i></i>
+              <span>迟脉</span>
+            </div>
+            <div class="item_container_between">
+              <div>
+                <span>查看</span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item_cont">
+            <div class="item_left">
+              <i></i>
+              <span>迟脉</span>
+            </div>
+            <div class="item_container_between">
+              <div>
+                <span>查看</span>
+              </div>
+            </div>
+          </div>
+        </li>
       </ul>
       <button class="addResult" @click="addDrug()">+</button>
     </div>
     <!-- 右侧内容 -->
     <div class="cont_bg">
       <!-- 右侧弹窗 -->
+       <div class="mask"  v-if="prescription"></div>
       <div class="edit" v-if="prescription">
         <div class="edit_title">
           <span class="title">添加常见方药</span>
@@ -79,8 +155,10 @@
             <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
       </div>
       <div class="cont_header">常见方药</div>
       <ul>
@@ -133,21 +211,29 @@ export default {
 };
 </script>
 <style lang="scss">
-.prescription_diagnosis {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  padding: 3% 5%;
+.prescription {
+  .edit_btn_box{
+    margin-top: 70px;
+  }
   .cont_bg {
     width: 47%;
     .edit {
+      top: 45px;
       left: 50%;
       margin-left: -235px;
+      .select{
+        width: 235px;
+      }
+      li{
+        border: none;
+      }
     }
     .display {
       display: flex;
       justify-content: space-between;
       margin-top: 20px;
+      border-bottom: none;
+      margin-bottom: 10px;
       button {
         width: 115px;
       }
@@ -189,7 +275,39 @@ export default {
       }
     }
     li {
-      border: none;
+      // height: 40px;
+      .edit_tips {
+        width: 20px;
+        height: 30px;
+        right: 62px;
+        top: 8px;
+        display: inline-block;
+        img {
+          width: 20px;
+          height: 24px;
+        }
+      }
+      .edit_tips:hover {
+        border-bottom: 2px solid rgb(255, 0, 0);
+      }
+    }
+    .addList {
+      display: block;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      font-size: 30px;
+      background: rgb(8, 75, 130);
+      border: rgb(9, 124, 168) 1px solid;
+      float: right;
+      margin-right: 68px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .addList:hover {
+      cursor: pointer;
+      color: rgb(0, 235, 255);
     }
   }
 }

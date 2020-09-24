@@ -1,10 +1,11 @@
 <template>
   <div class="cont_bg">
     <edit-hear v-if="hearData.show" :hearData="hearData"></edit-hear>
+    <div class="mask"  v-if="hearData.show"></div>
     <div class="cont_header">{{title}}</div>
     <ul>
-      <li v-for="(item,index) in data" :key="index" @click="tabShow(index)">
-        <div class="item_cont">
+      <li v-for="(item,index) in data" :key="index">
+        <div class="item_cont" @click="tabShow(index)">
           <div class="item_left">
             <i></i>
             <span>{{item.title}}</span>
