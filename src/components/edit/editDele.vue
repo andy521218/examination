@@ -3,7 +3,7 @@
     <div class="edit">
       <div class="edit_title">
         <span class="title">{{edit_title}}</span>
-        <span class="edit_switch"></span>
+        <span class="edit_switch" @click="close"></span>
       </div>
       <ul>
         <li>
@@ -21,7 +21,12 @@
 <script>
 export default {
   name: "edit-dele",
-  props:['edit_title']
+  props:['edit_title'],
+  methods:{
+    close(){
+      this.$parent.allShow=false
+    }
+  }
 };
 </script>
 

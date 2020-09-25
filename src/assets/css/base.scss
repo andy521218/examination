@@ -89,84 +89,88 @@ textarea:focus {
 
 
 //选择框样式
-.edit_class {
 
-  //单选框
-  input[type="radio"] {
-    margin-right: 5px;
-    cursor: pointer;
-    width: 22px;
-    height: 22px;
-    position: relative;
-    vertical-align: middle;
-  }
 
-  input[type="radio"]:after {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    top: 0;
-    content: " ";
-    background-color: rgb(6, 73, 141);
-    border: 1px solid rgb(0, 150, 255);
-    border-radius: 3px;
-    display: inline-block;
-    visibility: visible;
-    padding: 0px 3px;
-  }
+//单选框
+input[type="radio"] {
+  margin-right: 5px;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  vertical-align: middle;
+}
 
-  input[type="radio"]:checked:before {
-    content: '';
-    display: block;
-    position: relative;
-    width: 22px;
-    height: 22px;
-    z-index: 1;
-    border-radius: 3px;
-    background: url('../public/radio.png') no-repeat center;
-    background-size: 100% 100%;
-    background-color: rgb(88, 187, 254);
-  }
+.edit_radio {
+  width: 22px !important;
+  height: 22px !important;
+}
 
-  .edit_off {
-    margin-right: 45px;
-  }
+input[type="radio"]:after {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 0;
+  content: " ";
+  background-color: rgb(6, 73, 141);
+  border: 1px solid rgb(0, 150, 255);
+  border-radius: 3px;
+  display: inline-block;
+  visibility: visible;
+  padding: 0px 3px;
+}
 
-  //checkbox
-  input[type="checkbox"] {
-    margin-right: 5px;
-    cursor: pointer;
-    width: 22px;
-    height: 22px;
-    position: relative;
-    vertical-align: middle;
-  }
+input[type="radio"]:checked:before {
+  content: '';
+  display: block;
+  position: relative;
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  border-radius: 3px;
+  background: url('../public/radio.png') no-repeat center;
+  background-size: 100% 100%;
+  background-color: rgb(88, 187, 254);
+}
 
-  input[type="checkbox"]:after {
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    top: 0;
-    content: " ";
-    background-color: rgb(6, 73, 141);
-    border: 1px solid rgb(0, 150, 255);
-    border-radius: 3px;
-    display: inline-block;
-    visibility: visible;
-    padding: 0px 3px;
-  }
+.edit_off {
+  margin-right: 45px;
+}
 
-  input[type="checkbox"]:checked:before {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 22px;
-    height: 22px;
-    z-index: 1;
-    border-radius: 3px;
-    background: url('../public/checkbox.png') no-repeat center;
-    background-size: 100% 100%;
-  }
+//checkbox
+input[type="checkbox"] {
+  margin-right: 5px;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:after {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 0;
+  content: " ";
+  background-color: rgb(6, 73, 141);
+  border: 1px solid rgb(0, 150, 255);
+  border-radius: 3px;
+  display: inline-block;
+  visibility: visible;
+  padding: 0px 3px;
+}
+
+input[type="checkbox"]:checked:before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  z-index: 1;
+  border-radius: 3px;
+  background: url('../public/checkbox.png') no-repeat center;
+  background-size: 100% 100%;
 }
 
 
@@ -379,12 +383,13 @@ textarea:focus {
 //表单样式
 .main_table {
   width: 99%;
+  max-height: 680px;
   margin: 0 auto;
 
   td,
   th {
-    height: 45px;
-    line-height: 45px;
+    height: 53px;
+    line-height: 53px;
     text-align: center;
   }
 
@@ -729,3 +734,157 @@ textarea:focus {
   display: flex;
   padding: 3% 5%;
 }
+
+.case {
+  height: 100%;
+
+  .main_header {
+    .one {
+      width: 150px;
+      background: rgb(8, 119, 252);
+    }
+
+    .two {
+      width: 150px;
+      margin-left: 15px;
+      margin-right: 414px;
+      background: rgb(0, 186, 201);
+    }
+  }
+
+  .main_table {
+    height: 591px;
+
+    .caseList {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      flex-grow: 1;
+
+      li {
+        width: 280px;
+        margin: 10px 25px 10px 25px;
+
+        .case_top {
+          width: 280px;
+          height: 240px;
+          background: url("../../assets/public/caseBox.png") no-repeat center;
+          background-size: 100% 100%;
+          position: relative;
+          border: 1px;
+
+          img {
+            position: absolute;
+            top: 1%;
+            left: 1%;
+            width: 98%;
+            height: 98%;
+          }
+
+          .state {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            height: 80px;
+
+            input {
+              margin: 15px;
+            }
+
+            .state_item {
+              display: flex;
+              margin-top: 4px;
+              color: rgb(255, 255, 255);
+              text-align: center;
+
+              .item_one {
+                background: url("../../assets/public/red.png") no-repeat center;
+                width: 33px;
+                height: 80px;
+                padding: 3px;
+              }
+
+              .item_two {
+                background: url("../../assets/public/blue.png") no-repeat center;
+                width: 33px;
+                height: 50px;
+                padding: 3px;
+              }
+
+              .item_three {
+                background: url("../../assets/public/violet.png") no-repeat center;
+                width: 33px;
+                height: 50px;
+                padding: 3px;
+              }
+            }
+          }
+
+          .bottom {
+            width: 96%;
+            height: 45px;
+            background: rgb(5, 61, 118);
+            position: absolute;
+            bottom: 3px;
+            left: 2%;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+
+            .bottom_edit {
+              width: 50%;
+              color: rgb(0, 235, 255);
+
+              i {
+                background: url("../../assets/public/edit.png") no-repeat center;
+                background-size: 100% 100%;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 5px;
+              }
+            }
+
+            .bottom_dele {
+              width: 50%;
+              color: red;
+              border-left: 1px rgb(25, 179, 243) solid;
+
+              i {
+                background: url("../../assets/public/dele.png") no-repeat center;
+                background-size: 100% 100%;
+                width: 20px;
+                height: 20px;
+                display: inline-block;
+                margin-right: 5px;
+              }
+            }
+
+            .bottom_edit:hover,
+            .bottom_dele:hover {
+              color: rgb(255, 255, 255);
+              cursor: pointer;
+            }
+          }
+        }
+
+        .case_bottom {
+          margin-left: 56px;
+          width: 224px;
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 5px;
+
+          span {
+            height: 20px;
+            line-height: 20px;
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+}
+

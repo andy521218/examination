@@ -1,0 +1,8 @@
+<template>
+    <h1>问</h1>
+</template>
+<script>
+export default {
+    name:'edit-ask'
+}
+</script>

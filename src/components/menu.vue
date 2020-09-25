@@ -1,11 +1,17 @@
 <template>
   <div class="user_menu">
-    <div class="admin_menu_item" v-for="(item,index) in menu" :key="index">
-      <p :class="{'active':bgIndex==index}" @click="oneRouting(index)">{{item.title}}</p>
-      <ul :class="{'show':bgIndex==index}">
-        <li v-for="(item,i) in item.item" :key="i" :class="{'color':i==colorIndex}">
+    <div class="admin_menu_item" v-for="(item, index) in menu" :key="index">
+      <p :class="{ active: bgIndex == index }" @click="oneRouting(index)">
+        {{ item.title }}
+      </p>
+      <ul :class="{ show: bgIndex == index }">
+        <li
+          v-for="(item, i) in item.item"
+          :key="i"
+          :class="{ color: i == colorIndex }"
+        >
           <i></i>
-          <span @click="twoRouting(index,i)">{{item}}</span>
+          <span @click="twoRouting(index, i)">{{ item }}</span>
         </li>
       </ul>
     </div>
@@ -28,9 +34,8 @@ export default {
   methods: {
     oneRouting(index) {
       this.bgIndex = index;
-      this.menu[index].show=! this.menu[index].show
+      this.menu[index].show = !this.menu[index].show;
       this.$router.push(this.routerData[index].router);
-      console.log(this.menu[index])
     },
     twoRouting(index, i) {
       this.colorIndex = i;

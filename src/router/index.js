@@ -227,6 +227,40 @@ const routes = [
         },
       },
    ]
+ },
+ //案例管理
+ {
+   path:'/case',
+   name:'case',
+   component:()=>import('../pages/teacher/edit/index'),
+   redirect: "editlook",
+   children:[
+     {
+       path:'/editlook',
+       name:'/editlook',
+       component:()=>import('../pages/teacher/edit/editLook')
+     },
+     {
+      path:'/edithear',
+      name:'/edithear',
+      component:()=>import('../pages/teacher/edit/editHear')
+    },
+    {
+      path:'/editask',
+      name:'/editask',
+      component:()=>import('../pages/teacher/edit/editAsk')
+    },
+    {
+      path:'/editcut',
+      name:'/editcut',
+      component:()=>import('../pages/teacher/edit/editCut')
+    },
+    {
+      path:'/editdialectical',
+      name:'/editdialectical',
+      component:()=>import('../pages/teacher/edit/editDialectical')
+    },
+   ]
  }
 ]
 

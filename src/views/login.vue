@@ -48,7 +48,13 @@ export default {
       this.isChecked = !this.isChecked;
     },
     login() {
-      this.$router.replace("/index");
+      // this.$router.replace("/index");
+      this.axios.post('login',{
+        username:'student1',
+        password:'123456'
+      }).then(res=>{
+        console.log(res)
+      })
     },
   },
 };

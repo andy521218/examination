@@ -1,14 +1,18 @@
 <template>
-    <div class="logo">
+    <div class="logo" @click="link">
         <h1></h1>
-        <span>首页</span>
+        <span >首页</span>
     </div>
 </template>
 
 <script>
 export default {
     name:'logo',
-
+    methods:{
+        link(){
+            this.$router.push('/index')
+        }
+    }
 }
 </script>
 
@@ -16,7 +20,7 @@ export default {
 .logo{
     position: relative;
     width: 50px;
-    top: 15px;
+    top: 25px;
     left: 40px;
     display: inline-block;
     cursor: pointer;

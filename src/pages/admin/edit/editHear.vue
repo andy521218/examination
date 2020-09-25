@@ -60,10 +60,6 @@ export default {
     editResult() {
       this.$parent.hearData.show = false;
     },
-    fn() {
-      this.textValue = "";
-      console.log(this.fileValue);
-    },
     changVal() {
       this.fileValue = this.$refs.file.value;
     },

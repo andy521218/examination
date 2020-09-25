@@ -1,0 +1,130 @@
+<template>
+  <div class="home">
+    <header class="home_header">
+      <logo></logo>
+      <div class="home_user">
+        <div class="home_case_left">
+          <div class="stop">
+            <img src="../../../assets/public/stop.png" alt="" />
+            <span>暂停</span>
+          </div>
+          <div class="close">
+            <img src="../../../assets/public/close.png" alt="" />
+            <span>取消</span>
+          </div>
+          <div class="sonserve">
+            <img src="../../../assets/public/sonserve.png" alt="" />
+            <span>保存</span>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="case_container">
+      <div class="case_menu">
+        <ul>
+          <li v-for="(item, index) in item" :key="index">
+            <a :href="item.link">{{ item.name }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="case_main">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import logo from "../../../components/logo";
+export default {
+  name: "case-index",
+  data() {
+    return {
+      item: [
+        {
+          name: "望",
+          link: "editlook",
+        },
+        {
+          name: "闻",
+          link: "edithear",
+        },
+        {
+          name: "问",
+          link: "editask",
+        },
+        {
+          name: "切",
+          link: "editcut",
+        },
+        {
+          name: "辩证",
+          link: "editdialectical",
+        },
+      ],
+    };
+  },
+  components: {
+    logo,
+  },
+};
+</script>
+
+<style lang="scss">
+.home_case_left {
+  margin-right: 50px;
+  display: flex;
+  align-items: center;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+
+    img {
+      margin-bottom: 5px;
+    }
+  }
+
+  div:hover {
+    cursor: pointer;
+    color: rgb(0, 235, 255);
+  }
+}
+.case_container {
+  width: 100%;
+  height: 791px;
+  margin-top: 43px;
+  display: flex;
+  .case_menu {
+    width: 100px;
+    height: 100%;
+    li {
+      width: 100%;
+      height: 55px;
+      margin-top: 30px;
+      background: url("../../../assets/public/menu.png") no-repeat center;
+      background-size: 100% 100%;
+      text-align: center;
+      a {
+        color: rgb(255, 255, 255);
+        font-size: 20px;
+        line-height: 55px;
+        text-decoration: none;
+      }
+    }
+    li:hover {
+      background: url("../../../assets/public/menumove.png") no-repeat center;
+      background-size: 100% 100%;
+    }
+  }
+  .case_main {
+    width: 1745px;
+    height: 100%;
+    margin-left: 40px;
+    background: url('../../../assets/public/box.png') no-repeat center;
+    background-size: 100% 100%;
+    padding: 30px;
+  }
+}
+</style>
