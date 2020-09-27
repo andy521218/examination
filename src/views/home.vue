@@ -4,7 +4,7 @@
       <logo></logo>
       <user></user>
     </header>
-    <div class="user_core"  v-show="this.$store.state.flag">
+    <div class="user_core" v-if="this.$store.state.flag">
       <div class="user_menu">
         <menuTab :menuData="menu" :routerData="routerData"></menuTab>
       </div>
@@ -12,7 +12,7 @@
         <router-view name="main"></router-view>
       </div>
     </div>
-    <router-view name="index"></router-view>
+    <router-view name="index" v-if="!this.$store.state.flag"></router-view>
   </div>
 </template>
 

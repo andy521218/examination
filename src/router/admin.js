@@ -1,39 +1,77 @@
-export const admin =[ {
+import home from '../views/home'
+
+export const admin =[//管理员
+  {
     path: '/admin',
     name: 'admin',
-    component: () => import('../components/main.vue'),
+    component:home,
     children: [
       {
         path: '/admincontent',
         name: 'admincontent',
-        component: () => import('../pages/admin/adminContent'),
+        components:{
+          main:() => import('../pages/admin/adminContent'),
+        },
+        children:[
+          {
+            path:'/adminhear',
+            name:'adminhear',
+           component:()=>import('../pages/admin/adminCont/hear')
+          },
+          {
+            path:'/adminlook',
+            name:'adminlook',
+           component:()=>import('../pages/admin/adminCont/look')
+          },
+          {
+            path:'/adminname',
+            name:'adminname',
+           component:()=>import('../pages/admin/adminCont/name')
+          },
+          {
+            path:'/adminprescription',
+            name:'adminprescription',
+           component:()=>import('../pages/admin/adminCont/prescription')
+          },
+          {
+            path:'/adminpulse',
+            name:'adminpulse',
+           component:()=>import('../pages/admin/adminCont/pulse')
+          },
+          {
+            path:'/admintreatment',
+            name:'admintreatment',
+           component:()=>import('../pages/admin/adminCont/treatment')
+          }
+        ]
       },
       {
         path: '/adminlogo',
         name: 'adminlogo',
-        component: () => import('../pages/admin/adminLogo'),
+        components: {main:() => import('../pages/admin/adminLogo')},
       },
       {
         path: '/adminnumber',
         name: 'adminnumber',
-        component: () => import('../pages/admin/adminNumber'),
+        components: {main:() => import('../pages/admin/adminNumber')},
       },
       {
         path: '/adminorganization',
         name: 'adminorganization',
-        component: () => import('../pages/admin/adminOrganization'),
+        components: {main:() => import('../pages/admin/adminOrganization')},
       },
       {
         path: '/adminstatistics',
         name: 'adminstatistics',
-        component: () => import('../pages/admin/adminStatistics'),
+        components: {main:() => import('../pages/admin/adminStatistics')},
       },
       {
         path: '/adminmaster',
         name: 'adminmaster',
-        component: () => import('../pages/admin/adminTeacher'),
+        components: {main:() => import('../pages/admin/adminTeacher')},
       },
     ]
   },]
 
   export default admin;
+  

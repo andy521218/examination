@@ -19,12 +19,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -34,12 +34,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -49,12 +49,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -64,12 +64,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -79,12 +79,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -94,12 +94,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -109,12 +109,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -124,12 +124,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -139,12 +139,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -154,12 +154,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -169,12 +169,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -184,12 +184,12 @@
                 <img :src="url" alt />
               </div>
               <div class="user_column">
-                <div
-                  class="title"
-                >XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</div>
-                <div
-                  class="cont"
-                >我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?</div>
+                <div class="title">
+                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                </div>
+                <div class="cont">
+                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                </div>
                 <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
@@ -207,11 +207,13 @@
           <div class="select_list">
             <ul>
               <li
-                v-for="(item,index) in list"
+                v-for="(item, index) in list"
                 :key="index"
-                :class="{'select_item':itemIndex==index}"
+                :class="{ select_item: itemIndex == index }"
                 @click="isbg(index)"
-              >{{item}}</li>
+              >
+                {{ item }}
+              </li>
             </ul>
           </div>
         </div>
@@ -235,6 +237,10 @@ export default {
   methods: {
     isbg(i) {
       this.itemIndex = i;
+      if (this.list.length - 1 == i) {
+        this.axios.get("logout");
+        this.$router.push("/login");
+      }
     },
   },
 };

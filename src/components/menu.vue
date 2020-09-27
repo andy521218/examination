@@ -1,6 +1,6 @@
 <template>
   <div class="user_menu">
-    <div class="admin_menu_item" v-for="(item, index) in menu" :key="index">
+    <div class="admin_menu_item" v-for="(item, index) in menuData" :key="index">
       <p :class="{ active: bgIndex == index }" @click="oneRouting(index)">
         {{ item.title }}
       </p>
@@ -29,7 +29,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["menu", "routerData"]),
+    ...mapState(["menuData"]),
   },
   methods: {
     oneRouting(index) {
@@ -39,7 +39,7 @@ export default {
     },
     twoRouting(index, i) {
       this.colorIndex = i;
-      this.$router.push(this.routerData[index].itemRouter[i]);
+      this.$router.push(this.menuData[index].router);
     },
   },
 };

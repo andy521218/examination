@@ -1,38 +1,141 @@
-export const teacher=[{
+import home from '../views/home'
+
+export const teacher=[
+  {
+    path: '/home',
+    name: 'home',
+    component: home,
+    children: [
+      {
+        path: '/index',
+        name:"index",
+        components: {
+          index: ()=>import('../pages/index'),      
+        }
+      },
+    ]
+  },
+  {
     path: '/teacher',
     name: 'teacher',
-    component: () => import('../components/main.vue'),
+    component: home,
     children: [
       {
         path: '/teachercase',
         name: 'teachercase',
-        component: () => import('../pages/teacher/teacherCase'),
+        components:{
+          main:() => import('../pages/teacher/teacherCase'),
+        },
       },
       {
         path: '/teacherclass',
         name: 'teacherclass',
-        component: () => import('../pages/teacher/teacherClass'),
+        components:{
+          main:() => import('../pages/teacher/teacherClass'),
+        },
       },
       {
         path: '/teacherrelease',
         name: 'teacherrelease',
-        component: () => import('../pages/teacher/teacherRelease'),
+        components:{
+          main:() => import('../pages/teacher/teacherRelease'),
+        },
       },
 
       {
         path: '/teacherstatistics',
         name: 'teacherstatistics',
-        component: () => import('../pages/teacher/teacherStatistics'),
+        components:{
+          main:() => import('../pages/teacher/teacherStatistics'),
+        },
       },
       {
         path: '/teacherstudent',
         name: 'teacherstudent',
-        component: () => import('../pages/teacher/teacherStudent'),
+        components:{
+          main:() => import('../pages/teacher/teacherStudent'),
+        },
       },
       {
-        path: '/teachertuser',
-        name: 'teachertuser',
-        component: () => import('../pages/teacher/teacherUser'),
+        path: '/teacheruser',
+        name: 'teacheruser',
+        components:{
+          main:() => import('../pages/teacher/teacherUser'),
+        },
       },
     ]
-  },]
+  },
+   //message
+ {
+  path:'/message',
+  name:'message',
+  component:home,
+  redirect:'messageforum',
+  children:[
+     {
+       path: '/messageforum',
+       name: 'messageforum',
+       components:{
+         main:() => import('../pages/message/messageForum'),
+       },
+     },
+     {
+       path: '/messagemy',
+       name: 'messagemy',
+       components:{
+         main:() => import('../pages/message/messageMy'),
+       },
+     },
+     {
+       path: '/messageprivate',
+       name: 'messageprivate',
+       components:{
+         main:() => import('../pages/message/messagePrivate'),
+       },
+     },
+     {
+       path: '/messagePublish',
+       name: 'messagepublish',
+       components:{
+         main:() => import('../pages/message/messagePublish'),
+       },
+     },
+  ]
+},
+//案例管理
+{
+  path:'/case',
+  name:'case',
+  component:()=>import('../pages/teacher/edit/index'),
+  redirect: "editlook",
+  children:[
+    {
+      path:'/editlook',
+      name:'/editlook',
+      component:()=>import('../pages/teacher/edit/editLook')
+    },
+    {
+     path:'/edithear',
+     name:'/edithear',
+     component:()=>import('../pages/teacher/edit/editHear')
+   },
+   {
+     path:'/editask',
+     name:'/editask',
+     component:()=>import('../pages/teacher/edit/editAsk')
+   },
+   {
+     path:'/editcut',
+     name:'/editcut',
+     component:()=>import('../pages/teacher/edit/editCut')
+   },
+   {
+     path:'/editdialectical',
+     name:'/editdialectical',
+     component:()=>import('../pages/teacher/edit/editDialectical')
+   },
+  ]
+}
+]
+
+export default teacher

@@ -7,11 +7,21 @@
       <div class="login-right">
         <div class="login-box user">
           <img src="../assets/img/login/user.png" alt />
-          <input type="text" v-model="user" placeholder="用户名" />
+          <input
+            type="text"
+            v-model="user"
+            placeholder="用户名"
+            @change="userName"
+          />
         </div>
         <div class="login-box pwd">
           <img src="../assets/img/login/pwd.png" alt />
-          <input type="password" v-model="pwd" placeholder="请输入密码......" />
+          <input
+            type="password"
+            v-model="pwd"
+            placeholder="请输入密码......"
+            @change="password"
+          />
         </div>
         <div class="related">
           <div class="related_left">
@@ -47,14 +57,36 @@ export default {
     checked() {
       this.isChecked = !this.isChecked;
     },
+    userName() {
+      if (!this.user) {
+        return false;
+      }
+      return true;
+    },
+    password() {
+      if (!this.pwd) {
+        return false;
+      }
+      return true;
+    },
     login() {
-      // this.$router.replace("/index");
-      this.axios.post('login',{
-        username:'student1',
-        password:'123456'
-      }).then(res=>{
-        console.log(res)
-      })
+      if (!this.userName() || !this.password()) {
+        return this.$Message.error("用户名或密码不能为空");
+      }
+      this.axios
+        .post("login", {
+          username: this.user,
+          password: this.pwd,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$store.state.authority = res.data.authority;
+            this.$Message.warning(`${this.user},登入成功!`);
+            this.$router.push("/index");
+            return;
+          }
+          this.$Message.error("用户名或密码错误");
+        });
     },
   },
 };
@@ -148,6 +180,7 @@ export default {
       background: url("../assets/img/login/btn.png") no-repeat center;
       margin: 10px auto;
       position: relative;
+      cursor: pointer;
       span {
         width: 49px;
         height: 49px;
