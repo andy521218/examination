@@ -1,8 +1,8 @@
 <template>
   <div class="teacher_student">
-   <edit-score v-if="0"></edit-score>
+    <edit-score v-if="0"></edit-score>
     <div class="main_header">
-      <button class="add">批量存档</button>
+      <button class="add" style="margin-right: 644px">批量存档</button>
       <label for>班级</label>
       <select name id class="select">
         <option value>1</option>
@@ -13,7 +13,7 @@
         <option value>1</option>
       </select>
       <label for class="big_left">试卷名称</label>
-      <select name id class="select">
+      <select name id class="select" style="width: 250px">
         <option value>1</option>
         <option value>1</option>
         <option value>1</option>
@@ -24,7 +24,10 @@
       <button class="submit">检索</button>
     </div>
     <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th>序号</th>
@@ -56,7 +59,7 @@
             <td>
               <p>查看</p>
             </td>
-             <td>
+            <td>
               <p>打分</p>
             </td>
           </tr>
@@ -67,26 +70,13 @@
   </div>
 </template>
 <script>
-import turnPage from "../../components/turnPage"
-import editScore from "../../components/edit/editScore"
+import turnPage from "../../components/turnPage";
+import editScore from "../../components/edit/editScore";
 export default {
-  name:'teahcer-student',
-  components:{
+  name: "teahcer-student",
+  components: {
     turnPage,
-    editScore
-  }
-}
+    editScore,
+  },
+};
 </script>
-
-<style lang="scss">
-.teacher_student {
-  .main_header {
-    .select {
-      width: 250px;
-    }
-    .add {
-      margin-right: 644px;
-    }
-  }
-}
-</style>

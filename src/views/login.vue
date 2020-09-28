@@ -43,12 +43,15 @@
 </template>
 
 <script>
+import user from "../router/user";
+import admin from "../router/admin";
+import teacher from "../router/teacher";
 export default {
   name: "login",
   data() {
     return {
-      user: "",
-      pwd: "",
+      user: "student1",
+      pwd: "123456",
       isShow: true,
       isChecked: false,
     };
@@ -80,6 +83,18 @@ export default {
         })
         .then((res) => {
           if (res.code == "000000") {
+            if (res.data.authority == "STUDENT") {
+              this.$router.addRoutes(user);
+            }
+            if (res.data.authority == "ADMIN") {
+              this.$router.addRoutes(admin);
+              this.$Message.warning(`${this.user},登入成功!`);
+              this.$router.push("/home");
+              return;
+            }
+            if (res.data.authority == "TEACHER") {
+              this.$router.addRoutes(teacher);
+            }
             this.$store.state.authority = res.data.authority;
             this.$Message.warning(`${this.user},登入成功!`);
             this.$router.push("/index");

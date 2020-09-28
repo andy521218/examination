@@ -1,5 +1,9 @@
 <template>
-  <div class="case_layout">
+  <div class="case_layout"> 
+    <!-- 编辑弹窗 -->
+    <case-problem v-if="edit_cont"></case-problem>
+    <!-- 提示弹窗 -->
+    <tips v-if="tips"></tips>
     <div class="case_left">
       <header>
         <img src="../../../assets/public/timg1.jpg" alt="" />
@@ -27,142 +31,137 @@
         </ul>
       </header>
       <main>
-        <ul>
+        <ul class="main_tab">
           <li
             v-for="(item, index) in tab"
             :key="index"
+            class="item_title"
             @click="container(index)"
           >
             {{ item }}
             <div :class="{ active: tabIndex == index }"></div>
           </li>
-          <i></i>
+          <i class="tips" @click="opneTips"></i>
         </ul>
         <div class="content scrollbar">
           <div class="content_scrollbar">
-           <ul>
-             <li>
-               <div class="item_cont"></div>
-               <div class="item_edit"></div>
-             </li>
-           </ul>
+            <ul>
+              <li>
+                <div class="item_cont">
+                  <i></i>
+                  <span>问:您好,您叫什么名字?</span>
+                  <span>答:张三问:您好,您叫什么名字?</span>
+                </div>
+                <div class="item_edit">
+                  <i class="icon_edit" @click="openCont()"></i>
+                  <i class="icon_dele"></i>
+                </div>
+              </li>
+              <li>
+                <div class="item_cont">
+                  <i></i>
+                  <span>问:您好,您叫什么名字?</span>
+                  <span>答:张三问:您好,您叫什么名字?</span>
+                </div>
+                <div class="item_edit">
+                  <i class="icon_edit"></i>
+                  <i class="icon_dele"></i>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="content_bottom"></div>
+        <div class="content_bottom">
+          <input type="checkbox" />
+          <label for="">干扰项</label>
+          <input type="text" class="text_box" />
+          <input type="text" class="text_box" />
+          <button class="submit">添加</button>
+        </div>
       </main>
     </div>
-    <div class="case_right"></div>
+    <div class="case_right">
+      <div class="case_right_title">
+        <span>导入问诊问题及答案</span>
+      </div>
+      <div class="case_right_cont">
+        <ul>
+          <li>
+            <i>*</i>
+            <span>第一步:</span>
+          </li>
+          <li>
+            <button class="submit">下载模板</button>
+            <div class="case_rigt_tips">
+              <span>请先下载Excel模板</span>
+              <span>(已有模板请执行第二步)</span>
+            </div>
+          </li>
+          <li>
+            <i>*</i>
+            <span>第二步:</span>
+          </li>
+          <li>
+            <div class="upload">
+              <button class="submit">选择文件</button>
+              <input type="file" @change="upload()" ref="file" />
+            </div>
+            <div>
+              <span>仅支持Excel文件</span>
+            </div>
+          </li>
+          <li>
+            <input type="text" disabled class="disabled" v-model="route" />
+          </li>
+        </ul>
+        <div class="edit_btn_box">
+          <button class="edit_cancel">取消</button>
+          <button class="edit_submit">确定</button>
+        </div>
+        <div class="case_right_desc">
+          <span>提示:</span>
+          <span>
+            1.下载问诊问题模板,在模板中输入问题及答案,上传模板后即可导入问诊数据
+          </span>
+          <span> 2.上传完成后可以在网页中直接修改 </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 
 <script>
+import caseProblem from "../edit/caseProblem";
+import tips from "../edit/tips";
 export default {
   name: "edit-look",
+  components: {
+    caseProblem,
+    tips,
+  },
   data() {
     return {
       tab: ["主诉", "现病史", "疾病史", "个人史", "婚育史", "家族史"],
       tabIndex: "",
+      route: "",
+      edit_cont: false,
+      tips: false,
     };
   },
   methods: {
     container(i) {
       this.tabIndex = i;
     },
+    upload() {
+      this.route = this.$refs.file.value;
+    },
+    openCont() {
+      this.edit_cont = true;
+    },
+    opneTips() {
+      this.tips = true;
+    },
   },
 };
 </script>
-
-<style lang="scss">
-.case_layout {
-  width: 100%;
-  height: 100%;
-  .case_left {
-    width: 1140px;
-    height: 100%;
-    header {
-      display: flex;
-      width: 100%;
-      height: 95px;
-      img {
-        width: 95px;
-        height: 95px;
-        border-radius: 50%;
-        margin-right: 35px;
-        margin-left: 40px;
-      }
-      ul {
-        width: 50%;
-        display: flex;
-        flex-wrap: wrap;
-        align-content: center;
-        li {
-          width: 33%;
-          height: 45px;
-          span {
-            display: inline-block;
-            height: 45px;
-            line-height: 45px;
-          }
-        }
-      }
-    }
-    main {
-      width: 100%;
-      height: 615px;
-      margin-top: 20px;
-      background-color: rgb(5, 61, 118, 0.3);
-      border: rgb(9, 124, 168) 1px solid;
-      ul {
-        display: flex;
-        margin-top: 25px;
-        position: relative;
-        li {
-          cursor: pointer;
-          width: 80px;
-          height: 30px;
-          line-height: 30px;
-          text-align: center;
-          margin-left: 20px;
-          font-size: 18px;
-          position: relative;
-        }
-        .active {
-          position: absolute;
-          width: 80px;
-          bottom: -5px;
-          left: 0;
-          border: 3px solid rgb(0, 235, 255);
-          border-radius: 3px;
-        }
-        i {
-          background: url("../../../assets/public/time.png") no-repeat center;
-          width: 30px;
-          height: 30px;
-          position: absolute;
-          right: 20px;
-          top: -5px;
-        }
-      }
-      .content {
-        width: 100%;
-        height: 468px;
-        margin-top: 30px;
-        .content_scrollbar {
-          overflow-y: auto;
-          height: 468px;
-          width: 99%;
-          div {
-            height: 300px;
-          }
-        }
-      }
-      .content_bottom {
-        height: 40px;
-        margin-top: 10px;
-        background: salmon;
-      }
-    }
-  }
-}
-</style>

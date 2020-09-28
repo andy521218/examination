@@ -2,10 +2,10 @@
   <div class="container">
     <div class="tab train"></div>
     <div class="tab assessment"></div>
-    <div class="tab problem"></div>
-    <router-link to="/message">
-      <div class="tab care"></div>
+    <router-link to="/messagemy">
+      <div class="tab problem"></div>
     </router-link>
+    <div class="tab care"></div>
   </div>
 </template>
 

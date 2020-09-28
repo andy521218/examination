@@ -2,7 +2,7 @@
   <div class="teacher_class">
     <edit-class v-if="1"></edit-class>
     <div class="main_header">
-      <button class="add">新建班级</button>
+      <button class="add" style=" margin-right: 423px;">新建班级</button>
       <label for>专业</label>
       <select name id class="select">
         <option value>1</option>
@@ -22,7 +22,7 @@
         <option value>1</option>
       </select>
       <label for>状态</label>
-      <select name id class="select smal">
+      <select name id class="select" style=" width: 170px;">
         <option value>1</option>
         <option value>1</option>
         <option value>1</option>
@@ -90,15 +90,3 @@ export default {
     }
 }
 </script>
-<style lang="scss">
-.teacher_class {
-  .main_header {
-    .add {
-      margin-right: 423px;
-    }
-    .smal {
-      width: 170px;
-    }
-  }
-}
-</style>

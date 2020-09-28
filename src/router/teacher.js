@@ -13,13 +13,6 @@ export const teacher=[
           index: ()=>import('../pages/index'),      
         }
       },
-    ]
-  },
-  {
-    path: '/teacher',
-    name: 'teacher',
-    component: home,
-    children: [
       {
         path: '/teachercase',
         name: 'teachercase',
@@ -63,45 +56,32 @@ export const teacher=[
           main:() => import('../pages/teacher/teacherUser'),
         },
       },
+      
+     {
+      path: '/messageforum',
+      name: 'messageforum',
+      components:{
+        main:() => import('../pages/message/messageForum'),
+      },
+    },
+    {
+      path: '/messagemy',
+      name: 'messagemy',
+      components:{
+        main:() => import('../pages/message/messageMy'),
+      },
+    },
+    {
+      path: '/messageprivate',
+      name: 'messageprivate',
+      components:{
+        main:() => import('../pages/message/messagePrivate'),
+      },
+    },
+   
     ]
   },
-   //message
- {
-  path:'/message',
-  name:'message',
-  component:home,
-  redirect:'messageforum',
-  children:[
-     {
-       path: '/messageforum',
-       name: 'messageforum',
-       components:{
-         main:() => import('../pages/message/messageForum'),
-       },
-     },
-     {
-       path: '/messagemy',
-       name: 'messagemy',
-       components:{
-         main:() => import('../pages/message/messageMy'),
-       },
-     },
-     {
-       path: '/messageprivate',
-       name: 'messageprivate',
-       components:{
-         main:() => import('../pages/message/messagePrivate'),
-       },
-     },
-     {
-       path: '/messagePublish',
-       name: 'messagepublish',
-       components:{
-         main:() => import('../pages/message/messagePublish'),
-       },
-     },
-  ]
-},
+ 
 //案例管理
 {
   path:'/case',

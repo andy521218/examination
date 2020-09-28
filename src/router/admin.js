@@ -2,8 +2,8 @@ import home from '../views/home'
 
 export const admin =[//管理员
   {
-    path: '/admin',
-    name: 'admin',
+    path: '/home',
+    name: 'home',
     component:home,
     children: [
       {

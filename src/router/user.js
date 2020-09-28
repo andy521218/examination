@@ -1,22 +1,9 @@
 import home from '../views/home'
 
-export const user=[{
+export const user=[
+{
   path: '/home',
   name: 'home',
-  component: home,
-  children: [
-    {
-      path: '/index',
-      name:"index",
-      components: {
-        index: ()=>import('../pages/index'),      
-      }
-    },
-  ]
-},
-{
-  path: '/usercore',
-  name: 'usercore',
   component:home,
   children: [
     {
@@ -25,6 +12,13 @@ export const user=[{
       components:{
         main:() => import('../pages/usercore/userAchievement'),
       } 
+    },
+    {
+      path: '/index',
+      name:"index",
+      components: {
+        index: ()=>import('../pages/index'),      
+      }
     },
     {
       path: '/usercenter',
@@ -55,43 +49,34 @@ export const user=[{
         main:() => import('../pages/usercore/userStatistics'),
       } 
     },
-  ]
-},
- //message
- {
-  path:'/message',
-  name:'message',
-  component:home,
-  redirect:'messageforum',
-  children:[
-     {
-       path: '/messageforum',
-       name: 'messageforum',
-       components:{
-         main:() => import('../pages/message/messageForum'),
-       },
-     },
-     {
-       path: '/messagemy',
-       name: 'messagemy',
-       components:{
-         main:() => import('../pages/message/messageMy'),
-       },
-     },
-     {
-       path: '/messageprivate',
-       name: 'messageprivate',
-       components:{
-         main:() => import('../pages/message/messagePrivate'),
-       },
-     },
-     {
-       path: '/messagePublish',
-       name: 'messagepublish',
-       components:{
-         main:() => import('../pages/message/messagePublish'),
-       },
-     },
+    {
+      path: '/messageforum',
+      name: 'messageforum',
+      components:{
+        main:() => import('../pages/message/messageForum'),
+      },
+    },
+    {
+      path: '/messagemy',
+      name: 'messagemy',
+      components:{
+        main:() => import('../pages/message/messageMy'),
+      },
+    },
+    {
+      path: '/messageprivate',
+      name: 'messageprivate',
+      components:{
+        main:() => import('../pages/message/messagePrivate'),
+      },
+    },
+    {
+      path: '/messagePublish',
+      name: 'messagepublish',
+      components:{
+        main:() => import('../pages/message/messagePublish'),
+      },
+    },
   ]
 },
 ]

@@ -3,7 +3,7 @@
     <!-- 学习记录 -->
     <view-records v-if="1"></view-records>
     <!-- switch -->
-    <edit-dele :edit_title='edit_title' v-if="0">
+    <edit-dele :edit_title="edit_title" v-if="0">
       <template v-slot:edit_p>
         <p>确定将学生状态改为禁用?</p>
       </template>
@@ -15,7 +15,12 @@
           <span class="edit_red">*</span>
           <span class="edit_text">用户名/学号:</span>
         </div>
-        <input type="text" class="text_box" v-if="title" placeholder="请输入用户名/学号" />
+        <input
+          type="text"
+          class="text_box"
+          v-if="title"
+          placeholder="请输入用户名/学号"
+        />
         <span class="edit_text_i" v-else>20200521</span>
         <p class="edit_tips">1111111111111</p>
       </template>
@@ -37,7 +42,7 @@
 
     <div class="main_header">
       <button class="add">添加学生</button>
-      <button class="import">导入学生</button>
+      <button class="import" style="margin-right: 213px">导入学生</button>
       <label for>班级</label>
       <select name id class="select">
         <option value>1</option>
@@ -61,7 +66,10 @@
       <button class="submit">检索</button>
     </div>
     <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th class="table_5">序号</th>
@@ -264,7 +272,7 @@ export default {
   data() {
     return {
       title: false,
-      edit_title:'提示',
+      edit_title: "提示",
       switchValue: "",
     };
   },
@@ -272,17 +280,7 @@ export default {
     turnPage,
     editUser,
     editDele,
-    viewRecords
+    viewRecords,
   },
 };
 </script>
-
-<style lang="scss">
-.teacher_user {
-  .main_header {
-    .import {
-      margin-right: 213px;
-    }
-  }
-}
-</style>

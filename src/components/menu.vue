@@ -34,8 +34,8 @@ export default {
   methods: {
     oneRouting(index) {
       this.bgIndex = index;
-      this.menu[index].show = !this.menu[index].show;
-      this.$router.push(this.routerData[index].router);
+      this.menuData[index].show = !this.menuData[index].show;
+      this.$router.push(this.menuData[index].router);
     },
     twoRouting(index, i) {
       this.colorIndex = i;

@@ -239,7 +239,10 @@ export default {
       this.itemIndex = i;
       if (this.list.length - 1 == i) {
         this.axios.get("logout");
-        this.$router.push("/login");
+        this.$router.push("/");
+      }
+      if(i==0){
+        this.$router.push('/home')
       }
     },
   },
