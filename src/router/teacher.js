@@ -114,6 +114,11 @@ export const teacher=[
      name:'/editdialectical',
      component:()=>import('../pages/teacher/edit/editDialectical')
    },
+   {
+    path:'/edittreatment',
+    name:'/edittreatment',
+    component:()=>import('../pages/teacher/edit/editTreatment')
+  },
   ]
 }
 ]

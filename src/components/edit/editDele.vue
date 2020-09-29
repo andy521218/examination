@@ -2,7 +2,7 @@
   <div class="edit_dele">
     <div class="edit">
       <div class="edit_title">
-        <span class="title">{{edit_title}}</span>
+        <span class="title">{{edit_title?edit_title:'删除'}}</span>
         <span class="edit_switch" @click="close"></span>
       </div>
       <ul>

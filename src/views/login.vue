@@ -35,7 +35,7 @@
         <div class="btn" @click="login">
           <span>登 入</span>
         </div>
-        <span class="count">访问次数:123456次</span>
+        <span class="count" @click="fn()">访问次数:123456次</span>
         <div class="notes">技术支持:上海域园信息科技有限公司</div>
       </div>
     </div>
@@ -50,7 +50,7 @@ export default {
   name: "login",
   data() {
     return {
-      user: "student1",
+      user: "teacher1",
       pwd: "123456",
       isShow: true,
       isChecked: false,
@@ -103,6 +103,17 @@ export default {
           this.$Message.error("用户名或密码错误");
         });
     },
+    fn(){
+      this.axios.get('case',{
+        params:{
+          diseaseType:'1',
+          page:'5',
+          size:'10'
+        }
+      }).then(res=>{
+        console.log(res)
+      })
+    }
   },
 };
 </script>

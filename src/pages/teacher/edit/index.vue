@@ -22,8 +22,8 @@
     <div class="case_container">
       <div class="case_menu">
         <ul>
-          <li v-for="(item, index) in item" :key="index">
-            <a :href="item.link">{{ item.name }}</a>
+          <li v-for="(item, index) in item" :key="index" :class="{'active':bgIndex==index}" @click="routeLink(index)">
+            <span>{{item.name}}</span>
           </li>
         </ul>
       </div>
@@ -61,12 +61,23 @@ export default {
           name: "辩证",
           link: "editdialectical",
         },
+         {
+          name: "治疗",
+          link: "edittreatment",
+        },
       ],
+      bgIndex:'-1'
     };
   },
   components: {
     logo,
   },
+  methods:{
+    routeLink(i){
+      this.bgIndex=i;
+      this.$router.push(this.item[i].link)
+    }
+  }
 };
 </script>
 
@@ -106,14 +117,22 @@ export default {
       background: url("../../../assets/public/menu.png") no-repeat center;
       background-size: 100% 100%;
       text-align: center;
-      a {
+      span {
         color: rgb(255, 255, 255);
         font-size: 20px;
         line-height: 55px;
         text-decoration: none;
       }
     }
+    li:nth-child(1){
+      margin-top: 0;
+    }
+    .active{
+      background: url("../../../assets/public/menumove.png") no-repeat center;
+       background-size: 100% 100%;
+    }
     li:hover {
+      cursor: pointer;
       background: url("../../../assets/public/menumove.png") no-repeat center;
       background-size: 100% 100%;
     }
