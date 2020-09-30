@@ -104,11 +104,9 @@ export default {
         });
     },
     fn(){
-      this.axios.get('case',{
+      this.axios.get('/meta/case/ask/module',{
         params:{
-          diseaseType:'1',
-          page:'5',
-          size:'10'
+         caseId:'1'
         }
       }).then(res=>{
         console.log(res)

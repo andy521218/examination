@@ -194,30 +194,9 @@ export default {
           position: relative;
           input {
             width: 100%;
-            padding-right: 45px;
-            background-image: url("../../../assets/public/search.png");
-            background-repeat: no-repeat;
-            background-position: 98% 50%;
           }
-          .search_down {
+          .search_down{
             width: 100%;
-            max-height: 300px;
-            background-color: rgb(5, 61, 118);
-            border: 1px solid rgb(9, 124, 168);
-            z-index: 9999;
-            position: absolute;
-            .search_down_cont {
-              overflow-y: auto;
-              max-height: 300px;
-              .search_item {
-                height: 30px;
-                line-height: 30px;
-                padding: 0 15px;
-              }
-              .search_item:hover {
-                background: rgb(9, 124, 168);
-              }
-            }
           }
         }
       }
