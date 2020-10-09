@@ -5,13 +5,13 @@
       <span class="edit_switch" @click="closeResult()"></span>
     </div>
     <ul class="edit_class">
-      <li>
+      <!-- <li>
         <div class="edit_left">
           <span class="edit_red"></span>
           <span class="edit_text">分类:</span>
         </div>
-        <span class="edit_text_i">望神</span>
-      </li>
+        <span class="edit_text_i">{{editTitle}}</span>
+      </li> -->
       <li>
         <div class="edit_left">
           <span class="edit_red">*</span>
@@ -30,18 +30,13 @@
           <span class="edit_red">*</span>
           <span class="edit_text">诊断结果:</span>
         </div>
-        <select name id class="select">
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-        </select>
+        <input type="text" class="text_box">
         <p class="edit_tips"></p>
       </li>
     </ul>
     <div class="edit_btn_box">
       <button class="edit_cancel">取消</button>
-      <button class="edit_submit">确定</button>
+      <button class="edit_submit" @click="submit">确定</button>
     </div>
   </div>
 </template>
@@ -57,6 +52,11 @@ export default {
     closeResult() {
       this.$parent.result = false;
     },
+    submit(){
+      this.axios.post(`/api/meta/case/watch/1/optionss`).then(res=>{
+        console.log(res)
+      })
+    }
   },
 };
 </script>

@@ -11,7 +11,7 @@
           :class="{ color: i == colorIndex }"
         >
           <i></i>
-          <span @click="twoRouting(index, i)">{{ item }}</span>
+          <span @click="twoRouting(index,i)">{{ item }}</span>
         </li>
       </ul>
     </div>
@@ -37,9 +37,9 @@ export default {
       this.menuData[index].show = !this.menuData[index].show;
       this.$router.push(this.menuData[index].router);
     },
-    twoRouting(index, i) {
+    twoRouting(index,i) {
       this.colorIndex = i;
-      this.$router.push(this.menuData[index].router);
+      this.$router.push(this.menuData[index].itemRouter[i])
     },
   },
 };

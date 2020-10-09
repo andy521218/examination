@@ -35,7 +35,7 @@
         <div class="btn" @click="login">
           <span>登 入</span>
         </div>
-        <span class="count" @click="fn()">访问次数:123456次</span>
+        <span class="count">访问次数:123456次</span>
         <div class="notes">技术支持:上海域园信息科技有限公司</div>
       </div>
     </div>
@@ -50,8 +50,8 @@ export default {
   name: "login",
   data() {
     return {
-      user: "teacher1",
-      pwd: "123456",
+      user: "admin",
+      pwd: "admin",
       isShow: true,
       isChecked: false,
     };
@@ -89,6 +89,7 @@ export default {
             if (res.data.authority == "ADMIN") {
               this.$router.addRoutes(admin);
               this.$Message.warning(`${this.user},登入成功!`);
+              this.$store.state.authority = res.data.authority;
               this.$router.push("/home");
               return;
             }
@@ -103,15 +104,6 @@ export default {
           this.$Message.error("用户名或密码错误");
         });
     },
-    fn(){
-      this.axios.get('/meta/case/ask/module',{
-        params:{
-         caseId:'1'
-        }
-      }).then(res=>{
-        console.log(res)
-      })
-    }
   },
 };
 </script>
