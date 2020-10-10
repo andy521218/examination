@@ -84,12 +84,11 @@ export default {
         .then((res) => {
           if (res.code == "000000") {
             if (res.data.authority == "STUDENT") {
-              this.$router.addRoutes(user);
+              localStorage.setItem("user", user);
             }
             if (res.data.authority == "ADMIN") {
-              this.$router.addRoutes(admin);
               this.$Message.warning(`${this.user},登入成功!`);
-              this.$store.state.authority = res.data.authority;
+              this.$router.addRoutes(admin);
               this.$router.push("/home");
               return;
             }
@@ -99,6 +98,7 @@ export default {
             this.$store.state.authority = res.data.authority;
             this.$Message.warning(`${this.user},登入成功!`);
             this.$router.push("/index");
+            localStorage.setItem("router", teacher);
             return;
           }
           this.$Message.error("用户名或密码错误");

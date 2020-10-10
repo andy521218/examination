@@ -6,7 +6,7 @@
     </header>
     <div class="user_core" v-if="this.$store.state.flag">
       <div class="user_menu">
-        <menuTab :menuData="menu" :routerData="routerData"></menuTab>
+        <menuTab></menuTab>
       </div>
       <div class="user_main">
         <router-view name="main"></router-view>
@@ -20,15 +20,9 @@
 import user from "../components/user";
 import menuTab from "../components/menu";
 import logo from "../components/logo";
-import { mapState } from "vuex";
+
 export default {
   name: "user-home",
-  data() {
-    return {};
-  },
-  computed: {
-    ...mapState(["menu", "routerData"]),
-  },
   components: {
     user,
     menuTab,
