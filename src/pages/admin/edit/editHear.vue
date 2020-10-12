@@ -42,7 +42,7 @@
     </ul>
     <div class="edit_btn_box">
       <button class="edit_cancel">取消</button>
-      <button class="edit_submit">确定</button>
+      <button class="edit_submit" @click="submit">确定</button>
     </div>
   </div>
 </template>
@@ -62,6 +62,17 @@ export default {
     },
     changVal() {
       this.fileValue = this.$refs.file.value;
+    },
+    submit() {
+      console.log(this.fileValue);
+      // this.axios.post('/upload' , {   
+      //   headers: { "Content-Type": " application/json" },
+      //   transformRequest: [
+      //     function (data) {
+      //       return data;
+      //     },
+      //   ],
+      // });
     },
   },
 };

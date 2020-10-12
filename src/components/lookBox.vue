@@ -1,19 +1,22 @@
 <template>
   <div class="cont_bg look_box">
-    <edit-result v-if="result" :editTitle="editTitle"></edit-result>
-    <div class="mask"   v-if="result"></div>
+    <edit-result v-if="result" :title="title" :type="type" @getItemData='getItemData'></edit-result>
+    <div class="mask" v-if="result"></div>
     <div class="cont_header">{{ title }}诊断</div>
     <ul>
       <li v-for="(item, index) in data" :key="index" @click="tabShow(index)">
         <div class="item_cont">
           <div class="item_left">
             <i></i>
-            <span>{{ item.title }}</span>
+            <span>{{ item.name }}</span>
           </div>
-          <div class="item_right" :class="{ transform: item.show }"></div>
+          <div
+            class="item_right"
+            :class="{ transform: indexShow == index }"
+          ></div>
         </div>
-        <div class="item_container" :class="{ active: item.show }">
-          <p v-for="(i, index) in item.item" :key="index">{{ i }}</p>
+        <div class="item_container" :class="{ active: indexShow == index }">
+          <p v-for="(i, index) in item.options" :key="index">{{ i }}</p>
         </div>
       </li>
     </ul>
@@ -27,23 +30,39 @@ export default {
   name: "look-box",
   data() {
     return {
-      index: "1",
+      indexShow: "1",
       transformIndex: "-1",
       result: false,
-      editTitle: this.title,
+      type: "",
+      data: "",
     };
   },
   components: {
     editResult,
   },
-  props: ["data", "title", "editshow"],
+  props: ["title", "editshow"],
   methods: {
     tabShow(index) {
-      this.data[index].show = !this.data[index].show;
+      this.indexShow = index;
     },
     editResult() {
       this.result = true;
     },
+    getItemData() {
+      this.axios.get(`/meta/watch/${this.type}/options`).then((res) => {
+        this.data = res.data;
+      });
+    },
+  },
+  mounted() {
+    if (this.title == "望神色") {
+      this.type = 0;
+    } else if (this.title == "望局部") {
+      this.type = 1;
+    } else if (this.title == "望舌") {
+      this.type = 2;
+    }
+    this.getItemData()
   },
 };
 </script>
@@ -57,7 +76,7 @@ export default {
     .title {
       width: 135px;
     }
-    .edit_left{
+    .edit_left {
       width: 100px;
     }
     li {

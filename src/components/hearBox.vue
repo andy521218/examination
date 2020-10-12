@@ -16,7 +16,7 @@
           <div class="item_container_between" v-for="(i,index) in item.item" :key="index">
             <p>{{i}}</p>
             <div>
-              <span>查看</span>
+              <span>播放</span>
               <span>编辑</span>
             </div>
           </div>

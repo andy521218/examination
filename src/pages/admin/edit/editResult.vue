@@ -1,37 +1,32 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">添加{{ editTitle }}结果</span>
+      <span class="title">添加{{ title }}结果</span>
       <span class="edit_switch" @click="closeResult()"></span>
     </div>
     <ul class="edit_class">
-      <!-- <li>
-        <div class="edit_left">
-          <span class="edit_red"></span>
-          <span class="edit_text">分类:</span>
-        </div>
-        <span class="edit_text_i">{{editTitle}}</span>
-      </li> -->
       <li>
         <div class="edit_left">
           <span class="edit_red">*</span>
           <span class="edit_text">诊断项:</span>
         </div>
-        <select name id class="select">
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-        </select>
-        <p class="edit_tips"></p>
+        <input type="text" class="text_box" v-model="name" />
+        <p class="edit_tips" style="top: 42px; right: 40px">{{ tipsName }}</p>
       </li>
       <li>
         <div class="edit_left">
           <span class="edit_red">*</span>
           <span class="edit_text">诊断结果:</span>
         </div>
-        <input type="text" class="text_box">
-        <p class="edit_tips"></p>
+        <input
+          type="text"
+          class="text_box"
+          v-model="options"
+          placeholder="请以逗号分隔"
+        />
+        <p class="edit_tips" style="top: 42px; right: 40px">
+          {{ tipsOptions }}
+        </p>
       </li>
     </ul>
     <div class="edit_btn_box">
@@ -45,18 +40,54 @@
 export default {
   name: "edit-result",
   data() {
-    return {};
+    return {
+      name: "",
+      options: "",
+      tipsName: "",
+      tipsOptions: "",
+    };
   },
-  props: ["result", "editTitle"],
+  props: ["title",'type'],
+ 
   methods: {
     closeResult() {
       this.$parent.result = false;
     },
-    submit(){
-      this.axios.post(`/api/meta/case/watch/1/optionss`).then(res=>{
-        console.log(res)
-      })
-    }
+    submit() {
+      if (!this.name) {
+        return (this.tipsName = "请输入诊断项");
+      }
+      this.tipsName = "";
+      if (!this.options) {
+        return (this.tipsOptions = "请输入诊断结果");
+      }
+      this.tipsOptions = "";
+      this.options = this.options.split(",");
+      var str = {
+        name: this.name,
+        options: this.options,
+        type: this.type,
+      };
+      this.axios
+        .post(`/meta/watch/${this.type}/options`, JSON.stringify(str), {
+          headers: { "Content-Type": " application/json" },
+          transformRequest: [
+            function (data) {
+              return data;
+            },
+          ],
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$parent.result = false;
+            this.$emit('getItemData')
+            this.$Message.warning("添加成功!");
+          }
+        })
+        .catch(() => {
+          this.$Message.error("遇到未知错误,查看格式是否正确!");
+        });
+    },
   },
 };
 </script>

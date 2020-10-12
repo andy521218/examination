@@ -8,6 +8,7 @@ import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
 import { Switch ,Message} from 'view-design';
+import qs from 'qs'
 import axios from "axios"
 import VueAxios from "vue-axios"
 import admin from "./router/admin"
@@ -16,6 +17,7 @@ import user from "./router/user"
 
 Vue.component('i-switch', Switch);
 Vue.use(VueAxios,axios);
+Vue.prototype.$qs = qs
 Vue.prototype.$Message=Message
 
 Vue.config.productionTip = false
@@ -35,6 +37,7 @@ axios.defaults.transformRequest = [function (data) {
 axios.interceptors.response.use(function onFulfilled(response) {
   return response.data;
 }, function onRejected(reason) {
+  // Message.error('连接服务器超时')
   return Promise.reject(reason);
 });
 

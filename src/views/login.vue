@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       user: "admin",
-      pwd: "admin",
+      pwd: "123456!!",
       isShow: true,
       isChecked: false,
     };
@@ -101,6 +101,8 @@ export default {
             localStorage.setItem("router", teacher);
             return;
           }
+        })
+        .catch(() => {
           this.$Message.error("用户名或密码错误");
         });
     },
