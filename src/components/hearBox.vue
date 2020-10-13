@@ -1,23 +1,30 @@
 <template>
   <div class="cont_bg">
-    <edit-hear v-if="hearData.show" :hearData="hearData"></edit-hear>
-    <div class="mask"  v-if="hearData.show"></div>
-    <div class="cont_header">{{title}}</div>
+    <edit-hear v-if="show" :hearData="hearData" @getData='getData'></edit-hear>
+    <div class="mask" v-if="show"></div>
+    <div class="cont_header">{{ title }}性闻诊数据</div>
     <ul>
-      <li v-for="(item,index) in data" :key="index">
+      <li v-for="(item, index) in data" :key="index">
         <div class="item_cont" @click="tabShow(index)">
           <div class="item_left">
             <i></i>
-            <span>{{item.title}}</span>
+            <span>{{ item.name }}</span>
           </div>
-          <div class="item_right" :class="{'transform':item.show}"></div>
+          <div
+            class="item_right"
+            :class="{ transform: showIndex == index }"
+          ></div>
         </div>
-        <div class="item_container" :class="{'active':item.show}">
-          <div class="item_container_between" v-for="(i,index) in item.item" :key="index">
-            <p>{{i}}</p>
+        <div class="item_container" :class="{ active: showIndex == index }">
+          <div
+            class="item_container_between"
+            v-for="(i, index) in item.options"
+            :key="index"
+          >
+            <p>{{ i }}</p>
             <div>
               <span>播放</span>
-              <span>编辑</span>
+              <span @click="editSong(item)">编辑</span>
             </div>
           </div>
         </div>
@@ -38,23 +45,34 @@ export default {
     return {
       index: "1",
       transformIndex: "-1",
-      hearData: {
-        show: false,
-        sex: "男",
-        id: true,
-      },
+      show: "",
+      hearData: {},
+      showIndex: "",
+      gender: "",
+      data: "",
     };
   },
-  props: ["data", "title", "editshow"],
+  props: ["title", "editshow"],
+  mounted() {
+    this.title == "男" ? (this.gender = false) : (this.gender = true);
+    this.getData()
+  },
   methods: {
+    getData() {
+      this.axios.get(`/meta/listen/${this.gender}`).then((res) => {
+        this.data = res.data;
+      });
+    },
     tabShow(index) {
-      this.data[index].show = !this.data[index].show;
+      this.showIndex = index;
     },
     editResult() {
-      /男/.test(this.title)
-        ? (this.hearData.sex = "男")
-        : (this.hearData.sex = "女");
-      this.hearData.show = true;
+      this.show = true;
+    },
+    editSong(item) {
+      this.show = true;
+      this.hearData = item;
+      console.log(item);
     },
   },
 };

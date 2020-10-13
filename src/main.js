@@ -42,7 +42,7 @@ axios.interceptors.response.use(function onFulfilled(response) {
 });
 
 axios.defaults.validateStatus = function (status) {
-  return /^(2|3)\d{2}$/.test(status);
+  return /^(2|3|4)\d{2}$/.test(status);
 }
 
 axios.defaults.withCredentials = true;
