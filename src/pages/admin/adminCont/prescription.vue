@@ -3,13 +3,13 @@
     <!-- 左侧内容 -->
     <div class="cont_bg">
       <!-- 左侧弹窗 -->
-       <div class="mask"  v-if="drug"></div>
+      <div class="mask" v-if="drug"></div>
       <div class="edit" v-if="drug">
         <div class="edit_title">
           <span class="title">添加常见方剂</span>
           <span class="edit_switch" @click="closeDrug()"></span>
         </div>
-        <ul class="edit_class">
+        <ul class="edit_class" ref="list">
           <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
@@ -19,60 +19,33 @@
               type="text"
               class="text_box"
               v-if="true"
-              placeholder="请输入院/系"
+              placeholder="请输入方剂名称"
+              v-model="prescription.description"
             />
             <span class="edit_text_i" v-else>20200521</span>
           </li>
-          <li>
+          <li v-for="(item, index) in addArr" :key="index">
             <div class="edit_left">
               <span class="edit_red">*</span>
               <span class="edit_text">方剂组成:</span>
             </div>
-            <select name id class="select">
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-            </select>
+            <input type="text" class="text_box" style="width: 240px" />
             <p class="edit_tips">
-              <img src="../../../assets/public/dele.png" alt="" />
-            </p>
-          </li>
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂组成:</span>
-            </div>
-            <select name id class="select">
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-            </select>
-            <p class="edit_tips">
-              <img src="../../../assets/public/dele.png" alt="" />
-            </p>
-          </li>
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂组成:</span>
-            </div>
-            <select name id class="select">
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-              <option value>1</option>
-            </select>
-            <p class="edit_tips">
-              <img src="../../../assets/public/dele.png" alt="" />
+              <img
+                src="../../../assets/public/dele.png"
+                alt=""
+                :data-num="item"
+                @click="dele($event)"
+              />
             </p>
           </li>
         </ul>
-        <i class="addList">+</i>
+        <i class="addList" @click="add()">+</i>
         <div class="edit_btn_box">
-          <button class="edit_cancel">取消</button>
-          <button class="edit_submit">确定</button>
+          <button class="edit_cancel" @click="closeDrug()">取消</button>
+          <button class="edit_submit" @click="submitPrescription()">
+            确定
+          </button>
         </div>
       </div>
       <div class="cont_header">常见方剂</div>
@@ -126,8 +99,8 @@
     <!-- 右侧内容 -->
     <div class="cont_bg">
       <!-- 右侧弹窗 -->
-       <div class="mask"  v-if="prescription"></div>
-      <div class="edit" v-if="prescription">
+      <div class="mask" v-if="prescriptionShow"></div>
+      <div class="edit" v-if="prescriptionShow">
         <div class="edit_title">
           <span class="title">添加常见方药</span>
           <span class="edit_switch" @click="closePrescription()"></span>
@@ -141,40 +114,46 @@
             <input
               type="text"
               class="text_box"
-              v-if="true"
-              placeholder="请输入院/系"
+              placeholder="请输方药名称"
+              v-model="name"
             />
-            <span class="edit_text_i" v-else>20200521</span>
-          </li>
-          <li class="flex">
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方法用药:</span>
-            </div>
-            <textarea placeholder="请输入回复内容..." v-if="false"></textarea>
-            <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
         <div class="edit_btn_box">
-          <button class="edit_cancel">取消</button>
-          <button class="edit_submit">确定</button>
+          <button class="edit_cancel" @click="closePrescription()">取消</button>
+          <button class="edit_submit" @click="submitName()">确定</button>
         </div>
       </div>
       <div class="cont_header">常见方药</div>
       <ul>
         <li class="display">
-          <input type="text" class="text_box" />
+          <input
+            type="text"
+            class="text_box"
+            v-model="nameSearch"
+            @blur="searchShow = false"
+            @focus="
+              searchShow = true;
+              nameSearchData = '';
+            "
+          />
           <button class="submit">检索</button>
-        </li>
-        <li class>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟脉</span>
+          <div class="search_box" v-show="searchShow">
+            <div v-for="(item, index) in nameSearchData" :key="index">
+              {{ item.name }}
             </div>
-            <div class="item_container_between">
-              <div>
-                <span>查看</span>
+          </div>
+        </li>
+        <li>
+          <div class="item_cont">
+            <div class="item_left" style="display: flex">
+              <div
+                style="margin-left: 5px"
+                v-for="(item, index) in nameData"
+                :key="index"
+              >
+                <i></i>
+                <span>{{ item.name }}</span>
               </div>
             </div>
           </div>
@@ -190,16 +169,26 @@ export default {
   name: "prescription-diagnosis",
   data() {
     return {
-      prescription: false,
+      prescriptionShow: false,
       drug: false,
+      prescription: {},
+      name: "",
+      nameData: "",
+      nameSearch: "",
+      nameSearchData: "",
+      searchShow: false,
+      addArr: ["1"],
     };
+  },
+  mounted() {
+    this.getName();
   },
   methods: {
     closePrescription() {
-      this.prescription = false;
+      this.prescriptionShow = false;
     },
     addPrescription() {
-      this.prescription = true;
+      this.prescriptionShow = true;
     },
     closeDrug() {
       this.drug = false;
@@ -207,12 +196,65 @@ export default {
     addDrug() {
       this.drug = true;
     },
+    add() {
+      this.addArr.push(this.addArr.length + 1);
+    },
+
+    dele(e) {
+      let li = e.target.parentNode.parentNode;
+      this.$refs.list.removeChild(li);
+    },
+    getName() {
+      this.axios.get("/meta/druggery").then((res) => {
+        this.nameData = res.data.rows;
+      });
+    },
+    submitName() {
+      if (!this.name) return this.$Message.warning("方药名称不能为空");
+      this.axios
+        .post(
+          "/meta/druggery",
+          JSON.stringify({
+            name: this.name,
+          }),
+          {
+            headers: { "Content-Type": " application/json" },
+            transformRequest: [
+              function (data) {
+                return data;
+              },
+            ],
+          }
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("添加成功!");
+            this.drug = false;
+          }
+        })
+        .catch(() => {
+          this.$Message.error("遇到未知错误,请稍后再试!");
+        });
+    },
+  },
+  watch: {
+    nameSearch: function () {
+      this.axios
+        .get("/meta/druggery", {
+          params: {
+            name: this.nameSearch,
+          },
+        })
+        .then((res) => {
+          this.nameSearchData = res.data.rows;
+        });
+    },
   },
 };
 </script>
 <style lang="scss">
 .prescription {
-  .edit_btn_box{
+  .edit_btn_box {
     margin-top: 70px;
   }
   .cont_bg {
@@ -221,10 +263,10 @@ export default {
       top: 45px;
       left: 50%;
       margin-left: -235px;
-      .select{
+      .select {
         width: 235px;
       }
-      li{
+      li {
         border: none;
       }
     }
@@ -234,6 +276,14 @@ export default {
       margin-top: 20px;
       border-bottom: none;
       margin-bottom: 10px;
+      position: relative;
+      .search_box {
+        position: absolute;
+        top: 39px;
+        width: 100%;
+        background-color: rgb(5, 61, 118);
+        border: rgb(9, 124, 168) 1px solid;
+      }
       button {
         width: 115px;
       }

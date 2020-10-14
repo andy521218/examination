@@ -12,47 +12,30 @@
           <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
-              <span class="edit_text">病名:</span>
+              <span class="edit_text">治则治法:</span>
             </div>
             <input
               type="text"
               class="text_box"
-              v-if="true"
-              placeholder="请输入院/系"
+              placeholder="请输入治则治法"
+              v-model="name"
             />
-            <span class="edit_text_i" v-else>20200521</span>
           </li>
         </ul>
         <div class="edit_btn_box">
-          <button class="edit_cancel">取消</button>
-          <button class="edit_submit">确定</button>
+          <button class="edit_cancel" @click="editSwitch()">取消</button>
+          <button class="edit_submit" @click="submit()">确定</button>
         </div>
       </div>
 
       <!-- 内容 -->
       <div class="cont_header">治则治法</div>
       <ul>
-        <li>
+        <li v-for="(item,index) in data" :key="index">
           <div class="item_cont">
             <div class="item_left">
               <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
+              <span>{{item.name}}</span>
             </div>
           </div>
         </li>
@@ -68,7 +51,12 @@ export default {
   data() {
     return {
       treatment: false,
+      data:'',
+      name:''
     };
+  },
+  mounted(){
+    this.getData()
   },
   methods: {
     editSwitch() {
@@ -77,6 +65,25 @@ export default {
     addTreatment() {
       this.treatment = true;
     },
+    getData(){
+      this.axios.get('/meta/treat').then(res=>{
+        this.data=res.data
+      })
+    },
+    submit(){
+      if(!this.name) return this.$Message.error('内容不能为空!')
+      this.axios.post('/meta/treat',{
+        name:this.name
+      }).then(res=>{
+        if(res.code=='000000'){
+          this.treatment=false;
+          this.getData()
+          this.$Message.warning('添加成功!')
+        }
+      }).catch(()=>[
+        this.$Message.error('遇到未知错误,查看后再试!')
+      ])
+    }
   },
 };
 </script>

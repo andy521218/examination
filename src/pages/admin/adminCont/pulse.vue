@@ -17,11 +17,11 @@
             <input
               type="text"
               class="text_box"
-              v-if="true"
+              v-if="pulseShow"
               placeholder="请输入脉枕名称"
               v-model="pulse.name"
             />
-            <span class="edit_text_i" v-else>20200521</span>
+            <span class="edit_text_i" v-else>{{ pulse.name }}</span>
           </li>
           <li>
             <div class="edit_left">
@@ -31,11 +31,11 @@
             <input
               type="text"
               class="text_box"
-              v-if="true"
-              placeholder="请输入院/系"
+              v-if="pulseShow"
+              placeholder="请输入脉枕描述"
               v-model="pulse.description"
             />
-            <span class="edit_text_i" v-else>20200521</span>
+            <span class="edit_text_i" v-else>{{ pulse.description }}</span>
           </li>
           <li class="display">
             <div class="edit_left">
@@ -49,23 +49,27 @@
           </li>
         </ul>
         <div class="edit_btn_box">
-          <button class="edit_cancel" @click="editSwitch()">取消</button>
-          <button class="edit_submit" @click="submitPulse">确定</button>
+          <button class="edit_cancel" @click="editSwitch()" v-if="pulseShow">
+            取消
+          </button>
+          <button class="edit_submit" @click="submitPulse" v-if="pulseShow">
+            确定
+          </button>
         </div>
       </div>
       <!-- 左侧内容 -->
       <div class="cont_header">脉诊</div>
       <ul>
-        <li>
+        <li v-for="(item, index) in pulseData" :key="index">
           <div class="item_cont">
             <div class="item_left">
               <i></i>
-              <span>迟脉</span>
+              <span>{{ item.name }}</span>
             </div>
             <div class="item_container_between">
               <div>
-                <span>查看</span>
-                <span>编辑</span>
+                <span @click="seePulse(item)">查看</span>
+                <span @click="editPulse(item)">编辑</span>
               </div>
             </div>
           </div>
@@ -120,18 +124,16 @@
       <!-- 右侧内容 -->
       <div class="cont_header">按诊</div>
       <ul>
-        <li>
+        <li v-for="(item, index) in diagnosisData" :key="index">
           <div class="item_cont content">
             <div class="item_left">
               <i></i>
-              <span>迟脉</span>
+              <span>{{ item.name }}</span>
             </div>
             <div class="item_left right">
-              <span>迟脉</span>
-
-              <span>迟脉</span>
-
-              <span>迟脉</span>
+              <span v-for="(i, index) in item.options" :key="index">{{
+                i
+              }}</span>
             </div>
           </div>
         </li>
@@ -149,7 +151,10 @@ export default {
       imgShow: false,
       addCont: false,
       pulse: {},
+      pulseShow: true,
+      pulseData: "",
       diagnosis: {},
+      diagnosisData: "",
       itemDown: ["头部", "胸部", "虚里", "心下"],
     };
   },
@@ -162,7 +167,10 @@ export default {
       this.imgShow = true;
     },
     editSwitch() {
+      this.pulse = {};
+      this.pulseShow = true;
       this.imgShow = false;
+      this.getData0();
     },
     addResult() {
       this.addCont = true;
@@ -172,12 +180,12 @@ export default {
     },
     getData0() {
       this.axios.get(`/meta/feel/0`).then((res) => {
-        console.log(res);
+        this.pulseData = res.data;
       });
     },
     getData1() {
       this.axios.get(`/meta/feel/1`).then((res) => {
-        console.log(res);
+        this.diagnosisData = res.data;
       });
     },
     submitDiagnosis() {
@@ -200,35 +208,53 @@ export default {
           if (res.code == "000000") {
             this.$Message.warning("添加成功!");
             this.getData1();
-            this.imgShow = false;
+            this.addCont = false;
           } else {
             this.$Message.error(res.msg);
           }
         });
     },
 
-    submitPulse() {
+    postPulse(methods, url,config) {
       if (!this.pulse.name) return this.$Message.warning("请填写脉枕名称");
       if (!this.pulse.description)
         return this.$Message.warning("请填写脉枕描述");
-      this.axios
-        .post(`/meta/feel/0`, JSON.stringify(this.pulse), {
-          headers: { "Content-Type": " application/json" },
-          transformRequest: [
-            function (data) {
-              return data;
-            },
-          ],
-        })
-        .then((res) => {
-          if (res.code == "000000") {
-            this.$Message.warning("添加成功!");
-            this.getData0();
-            this.imgShow = false;
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
+      this.axios[methods](url, JSON.stringify(this.pulse), {
+        headers: { "Content-Type": " application/json" },
+        transformRequest: [
+          function (data) {
+            return data;
+          },
+        ],
+      }).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning(`${config}成功!`);
+          this.getData0();
+          this.pulse = {};
+          this.imgShow = false;
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
+    },
+    submitPulse() {
+      if (this.pulseShow) {
+        if (!this.pulse.name) {
+          return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`,'修改');
+        }
+      }
+      this.postPulse("post", "/meta/feel/0",'添加');
+    },
+
+    seePulse(item) {
+      this.pulseShow = false;
+      this.pulse = item;
+      this.imgShow = true;
+    },
+    editPulse(item) {
+      this.pulseShow = true;
+      this.pulse = item;
+      this.imgShow = true;
     },
   },
 };

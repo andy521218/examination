@@ -77,7 +77,7 @@
             <input
               type="text"
               class="text_box"
-              v-model="symptom.options"
+              v-model="symptom.name"
               placeholder="请输入症型,以逗号分隔"
             />
           </li>
@@ -176,12 +176,12 @@ export default {
 
     submitSymptom() {
       if (!this.symptom.id) return this.$Message.warning("请选择病名");
-      if (!this.symptom.options) return this.$Message.warning("请选择症型");
+      if (!this.symptom.name) return this.$Message.warning("请选择症型");
       // this.symptom.options = this.symptom.options.split(",");
       this.axios
-        .post(`/meta/disease/name/${this.symptom.id}`, {
-          // id: this.symptom.id,
-          name: this.symptom.options,
+        .post(`/meta/disease/${this.symptom.id}`, {
+          id: this.symptom.id,
+          name: this.symptom.name,
         })
         .then((res) => {
           if (res.code == "000000") {

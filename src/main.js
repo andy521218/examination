@@ -42,6 +42,7 @@ axios.interceptors.response.use(function onFulfilled(response) {
 });
 
 axios.defaults.validateStatus = function (status) {
+ if(status=='401') return  Message.warning('长时间未操作,请重新登入!')
   return /^(2|3|4)\d{2}$/.test(status);
 }
 
