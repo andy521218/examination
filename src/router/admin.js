@@ -42,6 +42,11 @@ export const admin =[//管理员
             path:'/admintreatment',
             name:'admintreatment',
            component:()=>import('../pages/admin/adminCont/treatment')
+          },
+          {
+            path:'/adminHerb',
+            name:'adminHerb',
+           component:()=>import('../pages/admin/adminCont/herb')
           }
         ]
       },

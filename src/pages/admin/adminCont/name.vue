@@ -177,7 +177,6 @@ export default {
     submitSymptom() {
       if (!this.symptom.id) return this.$Message.warning("请选择病名");
       if (!this.symptom.name) return this.$Message.warning("请选择症型");
-      // this.symptom.options = this.symptom.options.split(",");
       this.axios
         .post(`/meta/disease/${this.symptom.id}`, {
           id: this.symptom.id,

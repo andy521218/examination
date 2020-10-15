@@ -8,8 +8,8 @@ import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
 import { Switch ,Message} from 'view-design';
-import qs from 'qs'
 import axios from "axios"
+import http from "../src/http/http"
 import VueAxios from "vue-axios"
 import admin from "./router/admin"
 import teacher from "./router/teacher"
@@ -17,11 +17,9 @@ import user from "./router/user"
 
 Vue.component('i-switch', Switch);
 Vue.use(VueAxios,axios);
-Vue.prototype.$qs = qs
+Vue.prototype.http = http
 Vue.prototype.$Message=Message
-
 Vue.config.productionTip = false
-
 
 axios.defaults.baseURL = '/api';
 axios.defaults.timeout=8000;
@@ -47,8 +45,6 @@ axios.defaults.validateStatus = function (status) {
 }
 
 axios.defaults.withCredentials = true;
-
-
 
 router.beforeEach((to, from, next) => {
   to.name=='index'?store.state.flag=false:store.state.flag=true

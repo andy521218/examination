@@ -192,9 +192,7 @@ export default {
       if (!this.diagnosis.name) return this.$Message.warning("请选择按诊类别");
       if (!this.diagnosis.options)
         return this.$Message.warning("请填写按诊结果");
-
       this.diagnosis.options = this.diagnosis.options.split(",");
-      console.log(this.diagnosis);
       this.axios
         .post(`/meta/feel/1`, JSON.stringify(this.diagnosis), {
           headers: { "Content-Type": " application/json" },

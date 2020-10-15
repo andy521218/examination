@@ -57,6 +57,7 @@ export default {
             "病名诊断",
             "治则治法",
             "方剂方药",
+            "药材库",
           ],
           show: false,
           router: "admincontent",
@@ -67,6 +68,7 @@ export default {
             "adminname",
             "admintreatment",
             "adminprescription",
+            "adminHerb",
           ],
         },
         {

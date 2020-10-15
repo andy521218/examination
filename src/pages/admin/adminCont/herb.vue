@@ -18,34 +18,29 @@
             <input
               type="text"
               class="text_box"
-              v-if="true"
+              v-if="!prescription.name"
               placeholder="请输入方剂名称"
-              v-model="prescription.description"
+              v-model="prescription.name"
             />
-            <span class="edit_text_i" v-else>20200521</span>
+            <span class="edit_text_i" v-else>{{ prescription.name }}</span>
           </li>
-          <li v-for="(item, index) in addArr" :key="index">
+          <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
-              <span class="edit_text">方剂组成:</span>
+              <span class="edit_text">方剂方药:</span>
             </div>
             <input
               type="text"
               class="text_box"
-              style="width: 240px"
-              v-model="prescription[`value${item}`]"
+              placeholder="请以逗号分隔"
+              v-if="!prescription.name"
+              v-model="prescription.description"
             />
-            <p class="edit_tips">
-              <img
-                src="../../../assets/public/dele.png"
-                alt=""
-                :index="item"
-                @click="dele($event)"
-              />
-            </p>
+            <span class="edit_text_i" v-else>{{
+              prescription.druggeries
+            }}</span>
           </li>
         </ul>
-        <i class="addList" @click="add()">+</i>
         <div class="edit_btn_box">
           <button class="edit_cancel" @click="closeDrug()">取消</button>
           <button class="edit_submit" @click="submitPrescription()">
@@ -54,33 +49,6 @@
         </div>
       </div>
 
-      <div class="edit" v-if="drugSee">
-        <div class="edit_title">
-          <span class="title">添加常见方剂</span>
-          <span class="edit_switch" @click="closeDrug()"></span>
-        </div>
-        <ul class="edit_class" ref="list">
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂名称:</span>
-            </div>
-            <span class="edit_text_i">{{ prescriptionItemData.name }}</span>
-          </li>
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂组成:</span>
-            </div>
-            <span
-              class="edit_text_i"
-              v-for="(item, index) in prescriptionItemData.druggeries"
-              :key="index"
-              >{{ item.name }},</span
-            >
-          </li>
-        </ul>
-      </div>
       <div class="cont_header">常见方剂</div>
       <ul>
         <li class="display">
@@ -107,6 +75,12 @@
             <div class="item_container_between">
               <div>
                 <span @click="seePrescription(item)">查看</span>
+                <span @click="editPrescription(item)">修改</span>
+                <span
+                  class="item_container_between_dele"
+                  @click="delePrescription(item)"
+                  >删除</span
+                >
               </div>
             </div>
           </div>
@@ -132,9 +106,55 @@
             <input
               type="text"
               class="text_box"
-              placeholder="请输方药名称"
-              v-model="name"
+              placeholder="请输入方药名称"
+              v-model="druggery.alias"
             />
+          </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方药别名:</span>
+            </div>
+            <input
+              type="text"
+              class="text_box"
+              placeholder="请输入方药别名"
+              v-model="druggery.name"
+            />
+          </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方药用法:</span>
+            </div>
+            <input
+              type="text"
+              class="text_box"
+              placeholder="请输入方药用法"
+              v-model="druggery.notice"
+            />
+          </li>
+          <li>
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">注意事项:</span>
+            </div>
+            <input
+              type="text"
+              class="text_box"
+              placeholder="请输入注意事项"
+              v-model="druggery.usage"
+            />
+          </li>
+          <li class="display">
+            <div class="edit_left">
+              <span class="edit_red">*</span>
+              <span class="edit_text">方药图片:</span>
+            </div>
+            <div class="uploadImg">
+              <input type="file" />
+              <img src="../../../assets/public/uploadImg.png" alt />
+            </div>
           </li>
         </ul>
         <div class="edit_btn_box">
@@ -200,8 +220,7 @@ export default {
       nameSearch: "",
       nameSearchData: "",
       searchShow: false,
-      drugSee: false,
-      addArr: ["1"],
+      druggery: {},
     };
   },
   mounted() {
@@ -216,18 +235,18 @@ export default {
       this.prescriptionShow = true;
     },
     closeDrug() {
-      this.drugSee = false;
+      this.prescription = {};
       this.drug = false;
     },
     addDrug() {
       this.drug = true;
     },
-    add() {
-      this.addArr.push(this.addArr.length + 1);
-    },
+    editPrescription() {},
+    delePrescription() {},
     seePrescription(e) {
-      this.drugSee = true;
-      this.prescriptionItemData = e;
+      this.drug = true;
+      console.log(e);
+      this.prescription = e;
     },
     getPrescriptionData() {
       this.axios.get("/meta/agentia").then((res) => {
@@ -237,19 +256,15 @@ export default {
     submitPrescription() {
       if (!this.prescription.description)
         return this.$Message.error("方剂名称不能为空");
-      this.prescription.druggeryIds = [];
-      for (const key in this.prescription) {
-        for (const i in this.nameData) {
-          if (this.prescription[key] == this.nameData[i].name) {
-            this.prescription.druggeryIds.push(this.nameData[i].id);
-          }
-        }
-      }
+
       this.http
-        .post("/meta/agentia", {
-          druggeryIds: this.prescription.druggeryIds,
-          name: this.prescription.description,
-        })
+        .post(
+          "/meta/agentia",
+          {
+            description: this.prescription.description,
+            name: this.prescription.name,
+          }
+        )
         .then((res) => {
           if (res.code == "000000") {
             this.$Message.warning("添加成功!");
@@ -283,20 +298,27 @@ export default {
         });
     },
     submitName() {
-      if (!this.name) return this.$Message.warning("方药名称不能为空");
+      if (!this.druggery.alias)
+        return this.$Message.warning("方药名称不能为空");
+      if (!this.druggery.name) return this.$Message.warning("方药别名不能为空");
+      if (!this.druggery.notice)
+        return this.$Message.warning("方药用法不能为空");
+      if (!this.druggery.usage)
+        return this.$Message.warning("注意事项不能为空");
       this.http
         .post(
-          "/meta/druggery",
+          "/meta/herb/druggery",
           {
-            name: this.name,
+            alias: this.druggery.alias,
+            name: this.druggery.name,
+            notice: this.druggery.notice,
+            usage: this.druggery.usage,
           }
         )
         .then((res) => {
-          console.log(res);
           if (res.code == "000000") {
             this.$Message.warning("添加成功!");
-            this.prescriptionShow = false;
-            this.getName();
+            this.drug = false;
           }
         })
         .catch(() => {
@@ -346,6 +368,34 @@ export default {
       }
       li {
         border: none;
+        .uploadImg {
+          width: 265px;
+          height: 140px;
+          background-color: rgb(5, 61, 118);
+          border: rgb(9, 124, 168) 1px solid;
+          position: relative;
+          margin-right: 50px;
+          input {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            opacity: 0;
+          }
+          img {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+            pointer-events: none;
+          }
+        }
       }
     }
     .display {
@@ -436,6 +486,12 @@ export default {
     .addList:hover {
       cursor: pointer;
       color: rgb(0, 235, 255);
+    }
+    .item_container_between_dele {
+      color: rgb(252, 94, 95);
+    }
+    .item_container_between_dele:hover {
+      border-bottom-color: rgb(252, 94, 95);
     }
   }
 }

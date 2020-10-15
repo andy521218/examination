@@ -47,8 +47,8 @@ export default {
       tipsOptions: "",
     };
   },
-  props: ["title",'type'],
- 
+  props: ["title", "type"],
+
   methods: {
     closeResult() {
       this.$parent.result = false;
@@ -68,19 +68,12 @@ export default {
         options: this.options,
         type: this.type,
       };
-      this.axios
-        .post(`/meta/watch/${this.type}/options`, JSON.stringify(str), {
-          headers: { "Content-Type": " application/json" },
-          transformRequest: [
-            function (data) {
-              return data;
-            },
-          ],
-        })
+      this.http
+        .post(`/meta/watch/${this.type}/options`, str)
         .then((res) => {
           if (res.code == "000000") {
             this.$parent.result = false;
-            this.$emit('getItemData')
+            this.$emit("getItemData");
             this.$Message.warning("添加成功!");
           }
         })

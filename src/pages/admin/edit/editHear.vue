@@ -82,7 +82,7 @@ export default {
           return (this.tipsOptions = "请输入诊断结果");
         }
         this.tipsOptions = "";
-        this.axios
+        this.http
           .post(
             "/meta/listen",
             JSON.stringify({
@@ -91,14 +91,6 @@ export default {
               options: [this.options],
               videoUrl: "",
             }),
-            {
-              headers: { "Content-Type": " application/json" },
-              transformRequest: [
-                function (data) {
-                  return data;
-                },
-              ],
-            }
           )
           .then((res) => {
             if (res.code == "000000") {
