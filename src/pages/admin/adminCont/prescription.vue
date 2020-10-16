@@ -92,11 +92,11 @@
             @focus="prescriptionSearchShow = true"
           />
           <button class="submit">检索</button>
-          <div class="search_box" v-show="prescriptionSearchShow">
+          <!-- <div class="search_box" v-show="prescriptionSearchShow">
             <div v-for="(item, index) in prescriptionSearchData" :key="index">
               {{ item.name }}
             </div>
-          </div>
+          </div> -->
         </li>
         <li v-for="(item, index) in prescriptionData" :key="index">
           <div class="item_cont">
@@ -156,11 +156,11 @@
             "
           />
           <button class="submit">检索</button>
-          <div class="search_box" v-show="searchShow">
+          <!-- <div class="search_box" v-show="searchShow">
             <div v-for="(item, index) in nameSearchData" :key="index">
               {{ item.name }}
             </div>
-          </div>
+          </div> -->
         </li>
         <li>
           <div class="item_cont">
@@ -256,9 +256,6 @@ export default {
             this.drug = false;
             this.getPrescriptionData();
           }
-        })
-        .catch(() => {
-          this.$Message.error("遇到未知错误,查看后再试!");
         });
     },
     dele(e) {
@@ -285,22 +282,16 @@ export default {
     submitName() {
       if (!this.name) return this.$Message.warning("方药名称不能为空");
       this.http
-        .post(
-          "/meta/druggery",
-          {
-            name: this.name,
-          }
-        )
+        .post("/meta/druggery", {
+          name: this.name,
+        })
         .then((res) => {
-          console.log(res);
           if (res.code == "000000") {
             this.$Message.warning("添加成功!");
             this.prescriptionShow = false;
+            this.name = "";
             this.getName();
           }
-        })
-        .catch(() => {
-          this.$Message.error("遇到未知错误,请稍后再试!");
         });
     },
   },
@@ -310,10 +301,11 @@ export default {
         .get("/meta/druggery", {
           params: {
             name: this.nameSearch,
+            size: "500",
           },
         })
         .then((res) => {
-          this.nameSearchData = res.data.rows;
+          this.nameData = res.data.rows;
         });
     },
     prescriptionSearch: function () {
@@ -324,7 +316,7 @@ export default {
           },
         })
         .then((res) => {
-          this.prescriptionSearchData = res.data.rows;
+          this.prescriptionData = res.data.rows;
         });
     },
   },

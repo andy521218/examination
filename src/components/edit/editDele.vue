@@ -2,7 +2,7 @@
   <div class="edit_dele">
     <div class="edit">
       <div class="edit_title">
-        <span class="title">{{edit_title?edit_title:'删除'}}</span>
+        <span class="title">{{ edit_title ? edit_title : "删除" }}</span>
         <span class="edit_switch" @click="close"></span>
       </div>
       <ul>
@@ -10,9 +10,9 @@
           <slot name="edit_p"></slot>
         </li>
       </ul>
-     <div class="edit_btn_box">
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+      <div class="edit_btn_box">
+        <button class="edit_cancel" @click="close">取消</button>
+        <button class="edit_submit" @click="submit">确定</button>
       </div>
     </div>
   </div>
@@ -21,12 +21,17 @@
 <script>
 export default {
   name: "edit-dele",
-  props:['edit_title'],
-  methods:{
-    close(){
-      this.$parent.allShow=false
-    }
-  }
+  props: ["edit_title"],
+  methods: {
+    close() {
+      this.$emit("closeEdit");
+      this.$parent.allShow = false;
+    },
+    submit() {
+      this.$parent.allShow = false;
+      this.$emit("deleSubmit");
+    },
+  },
 };
 </script>
 

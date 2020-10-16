@@ -80,9 +80,7 @@ export default {
           this.getData()
           this.$Message.warning('添加成功!')
         }
-      }).catch(()=>[
-        this.$Message.error('遇到未知错误,查看后再试!')
-      ])
+      })
     }
   },
 };

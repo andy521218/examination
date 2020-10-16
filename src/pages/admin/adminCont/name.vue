@@ -169,9 +169,7 @@ export default {
             this.$Message.warning("添加成功!");
           }
         })
-        .catch(() => {
-          this.$Message.error("遇到未知错误!");
-        });
+        ;
     },
 
     submitSymptom() {
@@ -188,9 +186,7 @@ export default {
             this.$Message.warning("添加成功!");
           }
         })
-        .catch(() => {
-          this.$Message.error("遇到未知错误!");
-        });
+        ;
     },
   },
 };

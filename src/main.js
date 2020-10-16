@@ -10,6 +10,7 @@ import "./assets/css/base.scss"
 import { Switch ,Message} from 'view-design';
 import axios from "axios"
 import http from "../src/http/http"
+import upload from "../src/http/upload"
 import VueAxios from "vue-axios"
 import admin from "./router/admin"
 import teacher from "./router/teacher"
@@ -18,6 +19,7 @@ import user from "./router/user"
 Vue.component('i-switch', Switch);
 Vue.use(VueAxios,axios);
 Vue.prototype.http = http
+Vue.prototype.upload = upload
 Vue.prototype.$Message=Message
 Vue.config.productionTip = false
 

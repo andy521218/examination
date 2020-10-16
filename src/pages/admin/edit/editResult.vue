@@ -68,18 +68,13 @@ export default {
         options: this.options,
         type: this.type,
       };
-      this.http
-        .post(`/meta/watch/${this.type}/options`, str)
-        .then((res) => {
-          if (res.code == "000000") {
-            this.$parent.result = false;
-            this.$emit("getItemData");
-            this.$Message.warning("添加成功!");
-          }
-        })
-        .catch(() => {
-          this.$Message.error("遇到未知错误,查看格式是否正确!");
-        });
+      this.http.post(`/meta/watch/${this.type}/options`, str).then((res) => {
+        if (res.code == "000000") {
+          this.$parent.result = false;
+          this.$emit("getItemData");
+          this.$Message.warning("添加成功!");
+        }
+      });
     },
   },
 };
