@@ -193,38 +193,22 @@ export default {
       if (!this.diagnosis.options)
         return this.$Message.warning("请填写按诊结果");
       this.diagnosis.options = this.diagnosis.options.split(",");
-      this.axios
-        .post(`/meta/feel/1`, JSON.stringify(this.diagnosis), {
-          headers: { "Content-Type": " application/json" },
-          transformRequest: [
-            function (data) {
-              return data;
-            },
-          ],
-        })
-        .then((res) => {
-          if (res.code == "000000") {
-            this.$Message.warning("添加成功!");
-            this.getData1();
-            this.addCont = false;
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
+      this.http.post(`/meta/feel/1`, this.diagnosis).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("添加成功!");
+          this.getData1();
+          this.addCont = false;
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
 
-    postPulse(methods, url,config) {
+    postPulse(methods, url, config) {
       if (!this.pulse.name) return this.$Message.warning("请填写脉枕名称");
       if (!this.pulse.description)
         return this.$Message.warning("请填写脉枕描述");
-      this.axios[methods](url, JSON.stringify(this.pulse), {
-        headers: { "Content-Type": " application/json" },
-        transformRequest: [
-          function (data) {
-            return data;
-          },
-        ],
-      }).then((res) => {
+      this.http[methods](url, this.pulse).then((res) => {
         if (res.code == "000000") {
           this.$Message.warning(`${config}成功!`);
           this.getData0();
@@ -238,10 +222,10 @@ export default {
     submitPulse() {
       if (this.pulseShow) {
         if (!this.pulse.name) {
-          return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`,'修改');
+          return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`, "修改");
         }
       }
-      this.postPulse("post", "/meta/feel/0",'添加');
+      this.postPulse("post", "/meta/feel/0", "添加");
     },
 
     seePulse(item) {

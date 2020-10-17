@@ -625,6 +625,13 @@ input[type="checkbox"]:checked:before {
   }
 }
 
+.main_mask {
+  background: rgb(0, 0, 0, 0.3);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .cont_bg {
   background: url('../public/contbg.png') no-repeat center;
   background-size: 100% 100%;

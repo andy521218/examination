@@ -2,7 +2,7 @@ import axios from "axios";
 import {Message} from 'view-design';
 
 axios.defaults.baseURL = '/api';
-axios.defaults.timeout=8000;
+axios.defaults.timeout=8000;             
 axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.transformRequest = [function (data) {
   let ret = ''

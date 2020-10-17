@@ -1,10 +1,10 @@
 <template>
   <div class="turn_page">
     <div class="pagination">
-      <Page :total="1000" />
+      <Page :total="totaltotal" :page-size="size" @on-change="change" />
     </div>
     <div class="count">
-      <span>共20条数据/每页10条</span>
+      <span>共{{ totaltotal }}条数据/每页{{ size }}条</span>
     </div>
   </div>
 </template>
@@ -13,15 +13,18 @@
 import { Page } from "view-design";
 export default {
   name: "turn_page",
+  props: ["totaltotal", "size"],
   data() {
     return {
-      list: [1, 2, 3, 4, 5, 6, 7],
-      pageNumber: "0",
+      pageNumber: "",
     };
   },
   methods: {
     page(index) {
       this.pageNumber = index;
+    },
+    change(page) {
+      this.$emit("getData", page);
     },
   },
   components: {
@@ -70,7 +73,7 @@ export default {
         background: rgb(0, 235, 255);
         border: 1px solid rgb(0, 235, 255);
       }
-      .ivu-page-item-active{
+      .ivu-page-item-active {
         border: 1px solid rgb(0, 235, 255);
         background: rgb(0, 235, 255) !important;
       }

@@ -3,7 +3,7 @@
     <input type="file" ref="fileId" @change="getFile" />
     <button @click="importRow">11111111111</button>
     <img
-      src="http://59.110.218.110:8080/api/download/C4/1602844813327.png"
+      src="http://localhost:8080/api/download/43/1602896667540.png"
       alt=""
     />
     <button @click="fn">getget</button>
@@ -38,7 +38,7 @@ export default {
       });
     },
     fn() {
-      this.axios.get("/download/C4/1602844813327.png").then((res) => {
+      this.axios.get("/download/B9/1602896424212.png").then((res) => {
         console.log(res);
       });
     },
