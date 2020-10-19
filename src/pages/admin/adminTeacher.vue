@@ -6,23 +6,12 @@
           <span class="edit_red">*</span>
           <span class="edit_text">用户名/工号:</span>
         </div>
-        <input type="text" class="text_box" v-if="title" placeholder="请输入用户名/工号" />
-        <span class="edit_text_i" v-else>20200521</span>
-        <p class="edit_tips">1111111111111</p>
       </template>
       <template v-slot:select>
         <div class="edit_left">
           <span class="edit_red">*</span>
           <span class="edit_text">院系:</span>
         </div>
-        <select name id class="select" v-if="title">
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-          <option value>1</option>
-        </select>
-        <span class="edit_text_i" v-else>医学院</span>
-        <p class="edit_tips"></p>
       </template>
     </edit-user>
     <div class="main_header">
@@ -51,7 +40,10 @@
       <button class="submit">检索</button>
     </div>
     <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th class="table_5">序号</th>
@@ -73,7 +65,10 @@
             <td>中医药1班</td>
             <td>2020-07-01 15:30</td>
             <td>
-              <i-switch v-model="switchValue" true-color="rgb(0,235,255)"></i-switch>
+              <i-switch
+                v-model="switchValue"
+                true-color="rgb(0,235,255)"
+              ></i-switch>
             </td>
             <td>
               <span>编辑</span>
@@ -87,7 +82,10 @@
             <td>中医药1班</td>
             <td>2020-07-01 15:30</td>
             <td>
-              <i-switch v-model="switchValue" true-color="rgb(0,235,255)"></i-switch>
+              <i-switch
+                v-model="switchValue"
+                true-color="rgb(0,235,255)"
+              ></i-switch>
             </td>
             <td>
               <span>编辑</span>
@@ -106,11 +104,11 @@ import editUser from "../../components/edit/editUser";
 
 export default {
   name: "admin-teacher",
-  data(){
-    return{
-      title:false,
-      switchValue:''
-    }
+  data() {
+    return {
+      title: false,
+      switchValue: "",
+    };
   },
   components: {
     turnPage,

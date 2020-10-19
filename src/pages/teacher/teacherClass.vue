@@ -1,39 +1,53 @@
 <template>
   <div class="teacher_class">
-    <edit-class v-if="1"></edit-class>
+    <edit-class
+      v-if="editClass"
+      :specialtyData="specialtyData"
+      :gradeData="gradeData"
+      :departmentsData="departmentsData"
+      :editData="editData"
+      :tips="tips"
+      @getData="getData"
+    ></edit-class>
     <div class="main_header">
-      <button class="add" style=" margin-right: 423px;">新建班级</button>
+      <button class="add" style="margin-right: 423px" @click="addClass()">
+        新建班级
+      </button>
       <label for>专业</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select class="select" v-model="upData.sid">
+        <option :value='selected'>请选择专业</option>
+        <option
+          :value="item.id"
+          v-for="(item, index) in specialtyData"
+          :key="index"
+        >
+          {{ item.name }}
+        </option>
       </select>
       <label for>年级</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select v-if="1" class="select" v-model="upData.gradeId">
+        <option :value='selected'>请选择年纪</option>
+        <option
+          :value="item.id"
+          v-for="(item, index) in gradeData"
+          :key="index"
+        >
+          {{ item.name }}
+        </option>
       </select>
       <label for>状态</label>
-      <select name id class="select" style=" width: 170px;">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select class="select" style="width: 170px" v-model="status">
+        <option value>请选择状态</option>
+        <option value="true">正常</option>
+        <option value="false">禁用</option>
       </select>
-      <button class="submit">检索</button>
+      <button class="submit" @click="search()">检索</button>
     </div>
     <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th class="table_5">序号</th>
@@ -47,46 +61,131 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>20200521</td>
-            <td>123456</td>
-            <td>张三</td>
-            <td>中医药1班</td>
-            <td>2020-07-01 15:30</td>
+          <tr v-for="(item, index) in classroomsData" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.departmentName }}</td>
+            <td>{{ item.specialtyName }}</td>
+            <td>{{ item.gradeName }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.studentCnt }}</td>
             <td>
-              <i-switch true-color="rgb(0,235,255)"></i-switch>
+              <i-switch
+                true-color="rgb(0,235,255)"
+                v-model="item.status"
+                @on-change="switchChange(item.status)"
+              ></i-switch>
             </td>
             <td>
-              <span>编辑</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>20200521</td>
-            <td>123456</td>
-            <td>张三</td>
-            <td>中医药1班</td>
-            <td>2020-07-01 15:30</td>
-            <td>
-              <i-switch true-color="rgb(0,235,255)"></i-switch>
-            </td>
-            <td>
-              <span>编辑</span>
+              <span @click="edit(item)">编辑</span>
             </td>
           </tr>
         </tbody>
       </table>
+      <turn-page
+        class="admin_page"
+        :totaltotal="Number(total)"
+        :size="10"
+        @getData="getData"
+      ></turn-page>
     </div>
   </div>
 </template>
 
 <script>
-import editClass from "../../components/edit/editClass"
+import editClass from "../../components/edit/editClass";
+import turnPage from "../../components/turnPage";
 export default {
-    name:'teacher-class',
-    components:{
-      editClass
-    }
-}
+  name: "teacher-class",
+  components: {
+    editClass,
+    turnPage,
+  },
+  data() {
+    return {
+      editClass: false,
+      classroomsData: "",
+      specialtyData: "",
+      gradeData: "",
+      departmentsData: "",
+      page: "1",
+      size: "200",
+      total: "",
+      status: "",
+      upData: {},
+      editData: {},
+      tips: true,
+      selected:undefined
+    };
+  },
+  mounted() {
+    this.getSpecialty();
+    this.getDepartments();
+    this.getGrade();
+    this.getData();
+  },
+  methods: {
+    addClass() {
+      this.tips = false;
+      this.editClass = true;
+    },
+    getClassrooms(name) {
+      this.axios("classrooms", {
+        name: name,
+      });
+    },
+    getSpecialty() {
+      this.axios
+        .get("/specialty", {
+          params: { page: this.page, size: this.size },
+        })
+        .then((res) => {
+          this.specialtyData = res.data.rows;
+        });
+    },
+    getGrade() {
+      this.axios
+        .get("/grade", {
+          params: { page: this.page, size: this.size },
+        })
+        .then((res) => {
+          this.gradeData = res.data.rows;
+        });
+    },
+    getDepartments() {
+      this.axios
+        .get("/departments", {
+          params: { page: this.page, size: this.size },
+        })
+        .then((res) => {
+          this.departmentsData = res.data.rows;
+        });
+    },
+    search() {
+      this.getData();
+    },
+    getData(page = 1) {
+      this.axios
+        .get("classrooms", {
+          params: {
+            gradeId: this.upData.gradeId,
+            specialtyId: this.upData.specialtyId,
+            status: this.status,
+            page: page,
+            size: "10",
+          },
+        })
+        .then((res) => {
+          this.total = res.data.total;
+          this.classroomsData = res.data.rows;
+        });
+    },
+    switchChange(status) {
+      console.log(status);
+    },
+    edit(e) {
+      this.editClass = true;
+      this.editData = e;
+    },
+  },
+};
 </script>

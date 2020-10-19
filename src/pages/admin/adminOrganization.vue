@@ -53,7 +53,7 @@
           <thead class="thead-dark">
             <tr>
               <th class="table_10">序号</th>
-              <th class="table_80">年级</th>
+              <th class="table_80">院/系</th>
               <th class="tabble_10">操作</th>
             </tr>
           </thead>

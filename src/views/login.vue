@@ -85,6 +85,7 @@ export default {
           if (res.code == "000000") {
             if (res.data.authority == "STUDENT") {
               localStorage.setItem("user", user);
+              return;
             }
             if (res.data.authority == "ADMIN") {
               this.$Message.warning(`${this.user},登入成功!`);
@@ -100,11 +101,10 @@ export default {
             this.$router.push("/index");
             localStorage.setItem("router", teacher);
             return;
+          }else{
+            this.$Message.error(res.msg)
           }
         })
-        .catch(() => {
-          this.$Message.error("用户名或密码错误");
-        });
     },
   },
 };

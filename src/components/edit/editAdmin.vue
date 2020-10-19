@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import Qs from "qs";
 export default {
   name: "edit-admin",
   props: ["data"],
@@ -63,7 +62,7 @@ export default {
       if (!this.data.id) {
         methods = "post";
       }
-      var updata = Qs.stringify({
+      var updata = this.qs.stringify({
         name: this.name,
       });
       this.axios[methods](`${url}/${id}?${updata}`).then((res) => {
