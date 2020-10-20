@@ -28,8 +28,8 @@ body,
   border: rgb(9, 124, 168) 1px solid;
   color: rgb(255, 255, 255);
   padding-left: 15px;
-  height: 38px;
-  line-height: 38px;
+  height: 55px;
+  line-height: 55px;
 }
 
 .text_box:focus {
@@ -535,7 +535,7 @@ input[type="checkbox"]:checked:before {
       .select {
         // background: rgb(8, 75, 130);
         width: 265px;
-        height: 41px;
+        height: 43px;
       }
 
       .edit_text_i {
@@ -972,7 +972,7 @@ input[type="checkbox"]:checked:before {
         }
 
         .tips {
-          background: url("../../assets/public/time.png") no-repeat center;
+          background: url("../../assets/public/tips.png") no-repeat center;
           width: 30px;
           height: 30px;
           position: absolute;

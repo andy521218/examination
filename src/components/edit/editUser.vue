@@ -1,7 +1,7 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">{{ tips ? "编辑" : "添加教师" }}</span>
+      <span class="title">{{ tips ? "添加" : "编辑" }}{{ title }}</span>
       <span class="edit_switch" @click="close"></span>
     </div>
     <ul>
@@ -10,13 +10,11 @@
         <input
           type="text"
           class="text_box"
-          v-if="tips"
           placeholder="请输入用户名/学号"
-          v-model="upData.avatar"
-          @change="checkavatar"
+          v-model="upData.userName"
+          @change="checkuserName"
         />
-        <span class="edit_text_i" v-else>{{ upData.avatar }}</span>
-        <p class="edit_tips">{{ avaterText }}</p>
+        <p class="edit_tips">{{ userNameText }}</p>
       </li>
       <li>
         <div class="edit_left">
@@ -54,33 +52,16 @@
         <input
           type="text"
           class="text_box"
+          v-if="tips"
           placeholder="请输入姓名"
-          v-model="upData.userName"
-          @change="checkuserName"
+          v-model="upData.name"
+          @change="checkavatar"
         />
-        <p class="edit_tips">{{ userNameText }}</p>
+        <span class="edit_text_i" v-else>{{ upData.name }}</span>
+        <p class="edit_tips">{{ avaterText }}</p>
       </li>
       <li>
         <slot name="select"></slot>
-        <select
-          name
-          id
-          class="select"
-          v-if="tips"
-          v-model="upData.classRoomId"
-          @change="checkclassRoomId"
-        >
-          <option :value="selected">请选择班级</option>
-          <option
-            :value="item.id"
-            v-for="(item, index) in classRoom"
-            :key="index"
-          >
-            {{ item.name }}
-          </option>
-        </select>
-        <span class="edit_text_i" v-else>{{ upData.classRoomName }}</span>
-        <p class="edit_tips">{{ classRoomIdText }}</p>
       </li>
       <li>
         <div class="edit_left">
@@ -123,45 +104,24 @@ export default {
     return {
       pwdSwitch: true,
       type: "password",
-      upData: {},
       classRoom: "",
       mobileText: "",
       emailText: "",
       avaterText: "",
       passwdText: "",
       userNameText: "",
-      classRoomIdText: "",
-      selected: undefined,
     };
   },
-  props: ["tips", "editData"],
-  mounted() {
-    this.getclassRoom();
-    if (!this.tips) {
-      this.upData = this.editData;
-    }
-  },
+  props: ["tips", "upData", "title"],
   methods: {
     pwdShow() {
       this.pwdSwitch = !this.pwdSwitch;
       this.pwdSwitch ? (this.type = "password") : (this.type = "text");
     },
     close() {
-      this.upData = {};
+      this.$parent.upData = {};
       this.$parent.tips = true;
       this.$parent.editStudentShow = false;
-    },
-    getclassRoom() {
-      this.axios
-        .get("/classrooms", {
-          params: {
-            page: "1",
-            size: "200",
-          },
-        })
-        .then((res) => {
-          this.classRoom = res.data.rows;
-        });
     },
     checkavatar() {
       if (!this.upData.avatar) {
@@ -187,14 +147,7 @@ export default {
       this.userNameText = "";
       return true;
     },
-    checkclassRoomId() {
-      if (!this.upData.classRoomId) {
-        this.classRoomIdText = "请选择班级";
-        return false;
-      }
-      this.classRoomIdText = "";
-      return true;
-    },
+
     checkPhone() {
       if (!this.upData.mobile) {
         this.mobileText = "";
@@ -224,38 +177,9 @@ export default {
       return true;
     },
     submit() {
-      var methods = "post",
-        url = "",
-        msg = "添加";
-      if (!this.tips) {
-        methods = "put";
-        url = this.upData.id;
-        msg = "编辑";
-      }
       if (this.checkEmail() || this.checkPhone()) {
-        if (
-          this.checkavatar() &&
-          this.checkpasswd() &&
-          this.checkuserName() &&
-          this.checkclassRoomId()
-        ) {
-          this.http[methods](`/users/student/${url}`, {
-            avatar: this.upData.avatar,
-            passwd: this.upData.passwd,
-            userName: this.upData.userName,
-            classRoomId: this.upData.classRoomId,
-            mobile: this.upData.mobile,
-            status: this.status,
-            email: this.upData.email,
-          }).then((res) => {
-            if (res.code == "000000") {
-              this.close();
-              this.$emit('getData')
-              this.$Message.warning(`${msg}成功!`);
-            } else {
-              this.$Message.error(res.msg);
-            }
-          });
+        if (this.checkavatar() && this.checkpasswd() && this.checkuserName()) {
+          this.$emit("submit");
         }
       }
     },

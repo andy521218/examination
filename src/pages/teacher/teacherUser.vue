@@ -12,8 +12,9 @@
     <edit-user
       :tips="tips"
       v-if="editStudentShow"
-      :editData="editData"
-      @getData="getData"
+      title="学生"
+      :upData="upData"
+      @submit="submit"
     >
       <template v-slot:user>
         <div class="edit_left">
@@ -26,6 +27,23 @@
           <span class="edit_red">*</span>
           <span class="edit_text">班级:</span>
         </div>
+        <select
+          class="select"
+          v-if="tips"
+          v-model="upData.classRoomId"
+          @change="checkclassRoomId"
+        >
+          <option :value="selected">请选择班级</option>
+          <option
+            :value="item.id"
+            v-for="(item, index) in classRoom"
+            :key="index"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <span class="edit_text_i" v-else>{{ upData.classRoomName }}</span>
+        <p class="edit_tips">{{ classRoomIdText }}</p>
       </template>
     </edit-user>
 
@@ -79,9 +97,9 @@
         <tbody>
           <tr v-for="(item, index) in studentData" :key="index">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.avatar }}</td>
-            <td>{{ item.passwd }}</td>
             <td>{{ item.userName }}</td>
+            <td>{{ item.passwd }}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.classRoomName }}</td>
             <td>2020-07-01 15:30</td>
             <td>
@@ -127,11 +145,13 @@ export default {
       size: "10",
       total: "",
       searchName: "",
-      status: '',
+      status: "",
       classRoom: "",
-      classRoomID:'',
+      classRoomID: "",
       studentData: {},
-      editData: {},
+      upData: {},
+      selected: undefined,
+      classRoomIdText: "",
     };
   },
   components: {
@@ -152,9 +172,9 @@ export default {
       this.axios
         .get("/users/student", {
           params: {
-            classRoomId:this.classRoomID,
-            fuzzyName:this.searchName,
-            status:this.status,
+            classRoomId: this.classRoomID,
+            fuzzyName: this.searchName,
+            status: this.status,
             page: this.page,
             size: this.size,
           },
@@ -179,7 +199,47 @@ export default {
     edit(e) {
       this.tips = false;
       this.editStudentShow = true;
-      this.editData = e;
+      this.upData = e;
+    },
+    checkclassRoomId() {
+      if (!this.upData.classRoomId) {
+        this.classRoomIdText = "请选择班级";
+        return false;
+      }
+      this.classRoomIdText = "";
+      return true;
+    },
+    submit() {
+      if (!this.checkclassRoomId()) return;
+      var methods = "post",
+        url = "",
+        msg = "添加";
+      if (!this.tips) {
+        methods = "put";
+        url = this.upData.id;
+        msg = "编辑";
+      }
+      {
+        this.http[methods](`/users/student/${url}`, {
+          avatar: this.upData.avatar,
+          passwd: this.upData.passwd,
+          userName: this.upData.userName,
+          classRoomId: this.upData.classRoomId,
+          mobile: this.upData.mobile,
+          status: this.status,
+          email: this.upData.email,
+        }).then((res) => {
+          if (res.code == "000000") {
+            this.getData();
+            this.upData = {};
+            this.tips = true;
+            this.editStudentShow = false;
+            this.$Message.warning(`${msg}成功!`);
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+      }
     },
   },
 };

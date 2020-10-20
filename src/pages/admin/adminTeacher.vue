@@ -1,10 +1,11 @@
 <template>
   <div class="admin_record">
     <edit-user
-      v-if="editStudentShow"
-      :editData="editData"
       :tips="tips"
-      @getData="getData"
+      v-if="editStudentShow"
+      title="教师"
+      :upData="upData"
+      @submit="submit"
     >
       <template v-slot:user>
         <div class="edit_left">
@@ -17,32 +18,53 @@
           <span class="edit_red">*</span>
           <span class="edit_text">院系:</span>
         </div>
+        <select
+          class="select"
+          v-if="tips"
+          v-model="upData.did"
+          @change="checkDid"
+        >
+          <option :value="selected">请选择院系</option>
+          <option
+            :value="item.id"
+            v-for="(item, index) in departments"
+            :key="index"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <span class="edit_text_i" v-else>{{ upData.departmentName }}</span>
+        <p class="edit_tips">{{ departmentsText }}</p>
       </template>
     </edit-user>
     <div class="main_header">
       <button class="add" @click="addTeacher">添加教师</button>
       <button class="import">教师导入</button>
-      <label for>班级</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <label for>院系</label>
+      <select class="select" v-model="departmentId">
+        <option value>请选择院系</option>
+        <option
+          v-for="(item, index) in departments"
+          :key="index"
+          :value="item.id"
+        >
+          {{ item.name }}
+        </option>
       </select>
       <label for>状态</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select class="select" style="width: 170px" v-model="status">
+        <option value>请选择状态</option>
+        <option value="true">正常</option>
+        <option value="false">禁用</option>
       </select>
       <label for>教师姓名</label>
-      <input type="text" class="text_box" placeholder="请输入教师姓名" />
-      <button class="submit">检索</button>
+      <input
+        type="text"
+        class="text_box"
+        v-model="searchName"
+        placeholder="请输入教师姓名"
+      />
+      <button class="submit" @click="getData">检索</button>
     </div>
     <div class="main_table">
       <table
@@ -64,9 +86,9 @@
         <tbody>
           <tr v-for="(item, index) in studentData" :key="index">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.avatar }}</td>
-            <td>{{ item.passwd }}</td>
             <td>{{ item.userName }}</td>
+            <td>{{ item.passwd }}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.classRoomName }}</td>
             <td>2020-07-01 15:30</td>
             <td>
@@ -77,9 +99,6 @@
             </td>
             <td>
               <span @click="edit(item)">编辑</span>
-            </td>
-            <td>
-              <p>学习记录</p>
             </td>
           </tr>
         </tbody>
@@ -102,7 +121,7 @@ export default {
   name: "admin-teacher",
   data() {
     return {
-      editData: {},
+      upData: {},
       tips: true,
       switchValue: "",
       editStudentShow: false,
@@ -112,6 +131,10 @@ export default {
       searchName: "",
       status: "",
       studentData: {},
+      departments: "",
+      departmentsText: "",
+      departmentId: "",
+      selected: undefined,
     };
   },
   components: {
@@ -120,16 +143,32 @@ export default {
   },
   mounted() {
     this.getData();
+    this.getdepartments();
   },
   methods: {
     addTeacher() {
       this.editStudentShow = true;
     },
+    getdepartments() {
+      this.axios
+        .get("/departments", {
+          params: {
+            classRoomId: this.classRoomID,
+            fuzzyName: this.searchName,
+            status: this.status,
+            page: this.page,
+            size: this.size,
+          },
+        })
+        .then((res) => {
+          this.departments = res.data.rows;
+        });
+    },
     getData() {
       this.axios
         .get("/users/teacher", {
           params: {
-            classRoomId: this.classRoomID,
+            departmentId: this.departmentId,
             fuzzyName: this.searchName,
             status: this.status,
             page: this.page,
@@ -140,6 +179,53 @@ export default {
           this.studentData = res.data.rows;
           this.total = res.data.total;
         });
+    },
+    checkDid() {
+      if (!this.upData.did) {
+        this.departmentsText = "请选择院系";
+        return false;
+      }
+      this.departmentsText = "";
+      return true;
+    },
+    edit(e) {
+      this.tips = false;
+      this.editStudentShow = true;
+      this.upData = e;
+      this.upData.did = e.departmentId;
+    },
+    submit() {
+      if (!this.checkDid()) return;
+      var methods = "post",
+        url = "",
+        id = this.upData.did,
+        msg = "添加";
+      if (!this.tips) {
+        methods = "put";
+        id = this.upData.did;
+        url = this.upData.id;
+        msg = "编辑";
+      }
+      console.log(this.upData);
+      this.http[methods](`/users/${id}/teacher/${url}`, {
+        avatar: this.upData.avatar,
+        passwd: this.upData.passwd,
+        userName: this.upData.userName,
+        classRoomId: this.upData.classRoomId,
+        mobile: this.upData.mobile,
+        status: this.status,
+        email: this.upData.email,
+      }).then((res) => {
+        if (res.code == "000000") {
+          this.getData();
+          this.upData = {};
+          this.tips = true;
+          this.editStudentShow = false;
+          this.$Message.warning(`${msg}成功!`);
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };

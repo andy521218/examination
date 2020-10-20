@@ -17,19 +17,17 @@
     </edit-dele>
 
     <!-- 新增案例 -->
-    <add-case v-if="addCase"></add-case>
+    <add-case v-if="addCase" :list="list"></add-case>
     <div class="main_header">
       <button class="add" @click="add">新增案例</button>
       <button class="add_case one" @click="addAssessment">设为考核案例</button>
       <button class="add_case two">设为训练案例</button>
       <label for>病系</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select v-model="diseaseType" class="select">
+        <option value>请选择病系</option>
+        <option v-for="(item, index) in list" :key="index" :value="item.id">
+          {{ item.name }}
+        </option>
       </select>
       <label for>分类</label>
       <select name id class="select">
@@ -44,35 +42,7 @@
     </div>
     <div class="main_table">
       <ul class="caseList">
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
+        <li v-for="(item, index) in manageData" :key="index">
           <div class="case_top">
             <img src="../../assets/public/timg.png" alt="" />
             <div class="state">
@@ -95,154 +65,19 @@
             </div>
           </div>
           <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
-          </div>
-        </li>
-        <li>
-          <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
-            <div class="state">
-              <input type="checkbox" />
-              <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
-              </div>
-            </div>
-            <div class="bottom">
-              <span class="bottom_edit">
-                <i></i>
-                编 辑
-              </span>
-              <span class="bottom_dele" @click="dele">
-                <i></i>
-                删 除
-              </span>
-            </div>
-          </div>
-          <div class="case_bottom">
-            <span>张三</span>
-            <span>性别: 女</span>
-            <span>年龄: 75岁</span>
+            <span>{{ item.name }}</span>
+            <span>性别: {{ item.gender ? "男" : "女" }}</span>
+            <span>年龄: {{item.age}}岁</span>
           </div>
         </li>
       </ul>
     </div>
-    <turn-page></turn-page>
+    <turn-page
+      class="admin_page"
+      :totaltotal="Number(total)"
+      :size="Number(size)"
+      @getData="getManage"
+    ></turn-page>
   </div>
 </template>
 
@@ -259,11 +94,41 @@ export default {
   },
   data() {
     return {
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
       addCase: false,
       allShow: false,
       text: "",
       itps: "",
+      diseaseType: "",
+      manageData: {},
+      total: "",
+      size: "10",
+      page: "1",
     };
+  },
+  mounted() {
+    this.getManage();
   },
   methods: {
     dele() {
@@ -274,14 +139,29 @@ export default {
     add() {
       this.addCase = true;
     },
+    getManage() {
+      this.axios
+        .get("/case/manage", {
+          params: {
+            diseaseType: this.diseaseType,
+            size: this.size,
+            page: this.page,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.manageData = res.data.rows;
+          this.total = res.data.totalPage;
+        });
+    },
     addAssessment() {
       this.text = "确定将选中的案例设为考核案例?";
       this.itps = "(设置后无法更改)";
       this.allShow = true;
     },
-    link(){
-      this.$router.push('/case')
-    }
+    link() {
+      this.$router.push("/case");
+    },
   },
 };
 </script>
