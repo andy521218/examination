@@ -8,7 +8,7 @@ export default new Vuex.Store({
     menuData:[],
     messageData:[],
     flag:false,
-    authority:''
+    authority:'',
   },
   mutations: {
   },

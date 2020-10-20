@@ -157,7 +157,7 @@
           />
           <button class="submit">检索</button>
           <!-- <div class="search_box" v-show="searchShow">
-            <div v-for="(item, index) in nameSearchData" :key="index">
+            <div v-for="(item, index) in nameData" :key="index">
               {{ item.name }}
             </div>
           </div> -->
@@ -232,6 +232,7 @@ export default {
     getPrescriptionData() {
       this.axios.get("/meta/agentia").then((res) => {
         this.prescriptionData = res.data.rows;
+        this.nameSearchData = res.data.rows;
       });
     },
     submitPrescription() {

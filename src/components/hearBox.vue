@@ -72,7 +72,6 @@ export default {
     editSong(item) {
       this.show = true;
       this.hearData = item;
-      console.log(item);
     },
   },
 };

@@ -218,7 +218,7 @@
           </div>
         </div>
       </div>
-      <span>段颖</span>
+      <span>{{ name }}</span>
     </div>
   </div>
 </template>
@@ -232,7 +232,11 @@ export default {
         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600668765311&di=942d4b57df1934ca5fa4ef29310f1acd&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F12%2F20200612180401_mvgks.thumb.400_0.jpeg",
       list: ["个人信息", "密码修改", "学习记录", "数据统计", "退出登入"],
       itemIndex: "-1",
+      name: "",
     };
+  },
+  mounted() {
+    this.name = localStorage.getItem("name");
   },
   methods: {
     isbg(i) {
@@ -241,8 +245,8 @@ export default {
         this.axios.get("logout");
         this.$router.push("/");
       }
-      if(i==0){
-        this.$router.push('/home')
+      if (i == 0) {
+        this.$router.push("/home");
       }
     },
   },

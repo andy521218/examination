@@ -1,6 +1,11 @@
 <template>
   <div class="admin_record">
-    <edit-user v-if="1" :title="title">
+    <edit-user
+      v-if="editStudentShow"
+      :editData="editData"
+      :tips="tips"
+      @getData="getData"
+    >
       <template v-slot:user>
         <div class="edit_left">
           <span class="edit_red">*</span>
@@ -15,7 +20,7 @@
       </template>
     </edit-user>
     <div class="main_header">
-      <button class="add">添加教师</button>
+      <button class="add" @click="addTeacher">添加教师</button>
       <button class="import">教师导入</button>
       <label for>班级</label>
       <select name id class="select">
@@ -57,44 +62,35 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>20200521</td>
-            <td>123456</td>
-            <td>张三</td>
-            <td>中医药1班</td>
+          <tr v-for="(item, index) in studentData" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.avatar }}</td>
+            <td>{{ item.passwd }}</td>
+            <td>{{ item.userName }}</td>
+            <td>{{ item.classRoomName }}</td>
             <td>2020-07-01 15:30</td>
             <td>
               <i-switch
-                v-model="switchValue"
                 true-color="rgb(0,235,255)"
+                v-model="item.status"
               ></i-switch>
             </td>
             <td>
-              <span>编辑</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>20200521</td>
-            <td>123456</td>
-            <td>张三</td>
-            <td>中医药1班</td>
-            <td>2020-07-01 15:30</td>
-            <td>
-              <i-switch
-                v-model="switchValue"
-                true-color="rgb(0,235,255)"
-              ></i-switch>
+              <span @click="edit(item)">编辑</span>
             </td>
             <td>
-              <span>编辑</span>
+              <p>学习记录</p>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-    <turn-page></turn-page>
+    <turn-page
+      class="admin_page"
+      :totaltotal="Number(total)"
+      :size="Number(size)"
+      @getData="getData"
+    ></turn-page>
   </div>
 </template>
 
@@ -106,13 +102,45 @@ export default {
   name: "admin-teacher",
   data() {
     return {
-      title: false,
+      editData: {},
+      tips: true,
       switchValue: "",
+      editStudentShow: false,
+      total: "",
+      page: "1",
+      size: "10",
+      searchName: "",
+      status: "",
+      studentData: {},
     };
   },
   components: {
     turnPage,
     editUser,
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    addTeacher() {
+      this.editStudentShow = true;
+    },
+    getData() {
+      this.axios
+        .get("/users/teacher", {
+          params: {
+            classRoomId: this.classRoomID,
+            fuzzyName: this.searchName,
+            status: this.status,
+            page: this.page,
+            size: this.size,
+          },
+        })
+        .then((res) => {
+          this.studentData = res.data.rows;
+          this.total = res.data.total;
+        });
+    },
   },
 };
 </script>

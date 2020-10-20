@@ -84,8 +84,7 @@ export default {
         .then((res) => {
           if (res.code == "000000") {
             if (res.data.authority == "STUDENT") {
-              localStorage.setItem("user", user);
-              return;
+              this.$router.addRoutes(user);
             }
             if (res.data.authority == "ADMIN") {
               this.$Message.warning(`${this.user},登入成功!`);
@@ -99,12 +98,11 @@ export default {
             this.$store.state.authority = res.data.authority;
             this.$Message.warning(`${this.user},登入成功!`);
             this.$router.push("/index");
-            localStorage.setItem("router", teacher);
             return;
-          }else{
-            this.$Message.error(res.msg)
+          } else {
+            this.$Message.error(res.msg);
           }
-        })
+        });
     },
   },
 };
