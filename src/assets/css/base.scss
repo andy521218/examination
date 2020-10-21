@@ -7,7 +7,7 @@ body,
 //主页
 .home {
   height: 100%;
-  min-width: 1560px;
+  min-width: 1920px;
   min-height: 920px;
   background: url("../img/home/bg.png");
   background-size: 100% 100%;
@@ -28,8 +28,8 @@ body,
   border: rgb(9, 124, 168) 1px solid;
   color: rgb(255, 255, 255);
   padding-left: 15px;
-  height: 55px;
-  line-height: 55px;
+  height: 38px;
+  line-height: 38px;
 }
 
 .text_box:focus {
@@ -630,6 +630,7 @@ input[type="checkbox"]:checked:before {
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 99;
 }
 
 .cont_bg {

@@ -47,6 +47,9 @@
       </template>
     </edit-user>
 
+    <!-- 导入 导出 -->
+
+    <edit-import></edit-import>
     <div class="main_header">
       <button class="add" @click="addStudent">添加学生</button>
       <button class="import" style="margin-right: 213px">导入学生</button>
@@ -106,6 +109,7 @@
               <i-switch
                 true-color="rgb(0,235,255)"
                 v-model="item.status"
+                @on-change="switchChange(item)"
               ></i-switch>
             </td>
             <td>
@@ -131,6 +135,7 @@
 import turnPage from "../../components/turnPage";
 import editUser from "../../components/edit/editUser";
 import editDele from "../../components/edit/editDele";
+import editImport from "../../components/edit/editImport";
 import viewRecords from "../../components/edit/viewRecords";
 
 export default {
@@ -159,6 +164,7 @@ export default {
     editUser,
     editDele,
     viewRecords,
+    editImport,
   },
   mounted() {
     this.getData();
@@ -221,7 +227,7 @@ export default {
       }
       {
         this.http[methods](`/users/student/${url}`, {
-          avatar: this.upData.avatar,
+          name: this.upData.name,
           passwd: this.upData.passwd,
           userName: this.upData.userName,
           classRoomId: this.upData.classRoomId,
@@ -240,6 +246,24 @@ export default {
           }
         });
       }
+    },
+    switchChange(e) {
+      if (e.status) {
+        return this.axios.put(`/users/${e.id}/enable`).then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning(`${e.name}已启用!`);
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+      }
+      this.axios.delete(`/users/${e.id}/disable`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning(`${e.name}已禁用!`);
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };

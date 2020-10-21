@@ -2,7 +2,7 @@
   <div class="edit_dele">
     <div class="edit">
       <div class="edit_title">
-        <span class="title">{{ edit_title ? edit_title : "删除" }}</span>
+        <span class="title">{{ title }}</span>
         <span class="edit_switch" @click="close"></span>
       </div>
       <ul>
@@ -21,14 +21,16 @@
 <script>
 export default {
   name: "edit-dele",
-  props: ["edit_title"],
+  props: ["title"],
   methods: {
     close() {
       this.$emit("closeEdit");
       this.$parent.allShow = false;
+      this.$parent.deleshow = false;
+      this.$parent.caseId = "";
+      this.$parent.mask = false;
     },
     submit() {
-      this.$parent.allShow = false;
       this.$emit("deleSubmit");
     },
   },

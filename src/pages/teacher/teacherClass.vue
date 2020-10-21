@@ -14,8 +14,8 @@
         新建班级
       </button>
       <label for>专业</label>
-      <select class="select" v-model="upData.sid">
-        <option :value='selected'>请选择专业</option>
+      <select class="select" v-model="upData.specialtyId">
+        <option :value="selected">请选择专业</option>
         <option
           :value="item.id"
           v-for="(item, index) in specialtyData"
@@ -26,7 +26,7 @@
       </select>
       <label for>年级</label>
       <select v-if="1" class="select" v-model="upData.gradeId">
-        <option :value='selected'>请选择年纪</option>
+        <option :value="selected">请选择年纪</option>
         <option
           :value="item.id"
           v-for="(item, index) in gradeData"
@@ -72,7 +72,7 @@
               <i-switch
                 true-color="rgb(0,235,255)"
                 v-model="item.status"
-                @on-change="switchChange(item.status)"
+                @on-change="switchChange(item)"
               ></i-switch>
             </td>
             <td>
@@ -114,7 +114,7 @@ export default {
       upData: {},
       editData: {},
       tips: true,
-      selected:undefined
+      selected: undefined,
     };
   },
   mounted() {
@@ -179,8 +179,24 @@ export default {
           this.classroomsData = res.data.rows;
         });
     },
-    switchChange(status) {
-      console.log(status);
+    switchChange(e) {
+      this.axios
+        .put(
+          `/classrooms/${e.id}?${this.qs.stringify({
+            did: e.departmentId,
+            name: e.name,
+            gradeId: e.gradeId,
+            sid: e.specialtyId,
+            status: e.status,
+          })}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("修改班级成功!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
     },
     edit(e) {
       this.editClass = true;

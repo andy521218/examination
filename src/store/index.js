@@ -9,6 +9,7 @@ export default new Vuex.Store({
     messageData:[],
     flag:false,
     authority:'',
+    caseId:''
   },
   mutations: {
   },

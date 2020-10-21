@@ -1,23 +1,24 @@
 <template>
-  <div class="teacher case">
+  <div class="teacher case" style="min-width: 1670px">
+    <div class="main_mask" v-if="mask"></div>
     <!-- 删除案例 -->
-    <edit-dele :edit_title="`删除`" v-if="allShow">
+    <edit-dele v-if="deleshow" :title="`删除案例`" @deleSubmit="deleSubmit">
       <template v-slot:edit_p>
-        <p>{{ text }}</p>
-        <p class="edit_dele_p">{{ itps }}</p>
+        <p>确定删除案例?</p>
+        <p class="edit_dele_p">(删除后无法找回)</p>
       </template>
     </edit-dele>
     <!-- 设为考核案例 -->
 
-    <edit-dele :edit_title="`设为考核案例`" v-if="allShow">
+    <edit-dele :title="`设为考核案例`" v-if="allShow">
       <template v-slot:edit_p>
-        <p>{{ text }}</p>
-        <p class="edit_dele_p">{{ itps }}</p>
+        <p>确定将选中的案例设为考核案例?</p>
+        <p class="edit_dele_p">(设置后无法更改)</p>
       </template>
     </edit-dele>
 
     <!-- 新增案例 -->
-    <add-case v-if="addCase" :list="list"></add-case>
+    <add-case v-if="addCase" :list="list" @getManage="getManage"></add-case>
     <div class="main_header">
       <button class="add" @click="add">新增案例</button>
       <button class="add_case one" @click="addAssessment">设为考核案例</button>
@@ -54,11 +55,11 @@
               </div>
             </div>
             <div class="bottom">
-              <span class="bottom_edit" @click="link">
+              <span class="bottom_edit" @click="link(item.caseId)">
                 <i></i>
                 编 辑
               </span>
-              <span class="bottom_dele" @click="dele">
+              <span class="bottom_dele" @click="dele(item)">
                 <i></i>
                 删 除
               </span>
@@ -66,8 +67,8 @@
           </div>
           <div class="case_bottom">
             <span>{{ item.name }}</span>
-            <span>性别: {{ item.gender ? "男" : "女" }}</span>
-            <span>年龄: {{item.age}}岁</span>
+            <span>性别: {{ item.gender ? "女" : "男" }}</span>
+            <span>年龄: {{ item.age }}岁</span>
           </div>
         </li>
       </ul>
@@ -117,6 +118,7 @@ export default {
         },
       ],
       addCase: false,
+      deleshow: false,
       allShow: false,
       text: "",
       itps: "",
@@ -124,43 +126,55 @@ export default {
       manageData: {},
       total: "",
       size: "10",
-      page: "1",
+      caseId: "",
+      mask: false,
     };
   },
   mounted() {
     this.getManage();
   },
   methods: {
-    dele() {
-      this.text = "确定删除案例?";
-      this.itps = "(删除后无法找回)";
-      this.allShow = true;
+    dele(e) {
+      this.deleshow = true;
+      this.mask = true;
+      this.caseId = e.caseId;
+    },
+    deleSubmit() {
+      this.axios.delete(`/case/manage/${this.caseId}`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("删除案例成功!");
+          this.deleshow = false;
+          this.mask = true;
+          this.getManage();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
     add() {
+      this.mask = true;
       this.addCase = true;
     },
-    getManage() {
+    getManage(page = "1") {
       this.axios
         .get("/case/manage", {
           params: {
             diseaseType: this.diseaseType,
             size: this.size,
-            page: this.page,
+            page: page,
           },
         })
         .then((res) => {
-          console.log(res);
           this.manageData = res.data.rows;
-          this.total = res.data.totalPage;
+          this.total = res.data.total;
         });
     },
     addAssessment() {
-      this.text = "确定将选中的案例设为考核案例?";
-      this.itps = "(设置后无法更改)";
       this.allShow = true;
     },
-    link() {
+    link(caseId) {
       this.$router.push("/case");
+      localStorage.setItem("caseId", caseId);
     },
   },
 };

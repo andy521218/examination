@@ -236,13 +236,16 @@ export default {
     };
   },
   mounted() {
-    this.name = localStorage.getItem("name");
+    this.axios.get("/users/current").then((res) => {
+      this.name = res.data.name;
+    });
   },
   methods: {
     isbg(i) {
       this.itemIndex = i;
       if (this.list.length - 1 == i) {
         this.axios.get("logout");
+        localStorage.clear();
         this.$router.push("/");
       }
       if (i == 0) {

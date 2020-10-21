@@ -89,12 +89,13 @@
             <td>{{ item.userName }}</td>
             <td>{{ item.passwd }}</td>
             <td>{{ item.name }}</td>
-            <td>{{ item.classRoomName }}</td>
+            <td>{{ item.departmentName }}</td>
             <td>2020-07-01 15:30</td>
             <td>
               <i-switch
                 true-color="rgb(0,235,255)"
                 v-model="item.status"
+                @on-change="switchChange(item)"
               ></i-switch>
             </td>
             <td>
@@ -206,12 +207,10 @@ export default {
         url = this.upData.id;
         msg = "编辑";
       }
-      console.log(this.upData);
       this.http[methods](`/users/${id}/teacher/${url}`, {
-        avatar: this.upData.avatar,
+        name: this.upData.name,
         passwd: this.upData.passwd,
         userName: this.upData.userName,
-        classRoomId: this.upData.classRoomId,
         mobile: this.upData.mobile,
         status: this.status,
         email: this.upData.email,
@@ -226,6 +225,25 @@ export default {
           this.$Message.error(res.msg);
         }
       });
+    },
+    switchChange(e) {
+      this.http
+        .put(`/users/${e.departmentId}/teacher/${e.id}`, {
+          avatar: e.avatar,
+          passwd: e.passwd,
+          userName: e.userName,
+          classRoomId: e.classRoomId,
+          mobile: e.mobile,
+          status: e.status,
+          email: e.email,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("修改成功!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
     },
   },
 };

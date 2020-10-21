@@ -69,10 +69,10 @@
         <div class="case_right_cont">
           <div class="case_right_cont_upload">
             <div class="case_right_cont_upload_img">
-                <img src="../../../assets/public/uploadImg.png" alt="">
-                <span>请选择图片</span>
+              <img src="../../../assets/public/uploadImg.png" alt="" />
+              <span>请选择图片</span>
             </div>
-            <input type="file">
+            <input type="file" />
           </div>
         </div>
       </div>
@@ -101,15 +101,19 @@ export default {
           option: "急促",
         },
         {
-          title: "失音",
+          title: "失音",  
           option: "淡白",
         },
       ],
+      caseId: "",
       tabIndex: "",
       route: "",
       optionShow: false,
       optionTitle: "",
     };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
   },
   methods: {
     container(i) {
@@ -157,13 +161,13 @@ export default {
       top: 50%;
       margin-left: -40px;
       margin-top: -40px;
-      input{
+      input {
         width: 80px;
         height: 80px;
         position: absolute;
         opacity: 0;
       }
-      .case_right_cont_upload_img{
+      .case_right_cont_upload_img {
         position: absolute;
         width: 80px;
         height: 80px;
@@ -171,7 +175,7 @@ export default {
         align-content: center;
         align-items: center;
         flex-direction: column;
-        span{
+        span {
           margin-top: 5px;
         }
       }

@@ -100,6 +100,7 @@ export default {
     close() {
       this.upData = {};
       this.$parent.addCase = false;
+      this.$parent.mask = false;
     },
     changeName() {
       if (!this.upData.name) {
@@ -141,6 +142,7 @@ export default {
           .then((res) => {
             if (res.code == "000000") {
               this.$Message.warning("添加案例成功!");
+              this.$emit('getManage')
               this.close();
             } else {
               this.$Message.error(res.msg);

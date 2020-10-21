@@ -124,8 +124,8 @@ export default {
       this.$parent.editStudentShow = false;
     },
     checkavatar() {
-      if (!this.upData.avatar) {
-        this.avaterText = "请输入用户名/学号";
+      if (!this.upData.name) {
+        this.avaterText = "请输入姓名";
         return false;
       }
       this.avaterText = "";
@@ -141,7 +141,7 @@ export default {
     },
     checkuserName() {
       if (!this.upData.userName) {
-        this.userNameText = "请输入密码";
+        this.userNameText = "请输入用户名";
         return false;
       }
       this.userNameText = "";
@@ -178,7 +178,7 @@ export default {
     },
     submit() {
       if (this.checkEmail() || this.checkPhone()) {
-        if (this.checkavatar() && this.checkpasswd() && this.checkuserName()) {
+        if (this.checkuserName() && this.checkpasswd() && this.checkavatar()) {
           this.$emit("submit");
         }
       }
