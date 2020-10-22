@@ -11,7 +11,7 @@
             <span class="edit_red">*</span>
             <span class="edit_text">问题:</span>
           </div>
-          <input type="text" class="text_box" placeholder="请输入姓名" />
+          <input type="text" class="text_box" maxlength="27" v-model="editData.answer" />
           <p class="edit_tips"></p>
         </li>
         <li>
@@ -19,7 +19,7 @@
             <span class="edit_red">*</span>
             <span class="edit_text">答案:</span>
           </div>
-          <input type="text" class="text_box" placeholder="请输入姓名" />
+          <input type="text" class="text_box" maxlength="41" v-model="editData.question" />
           <p class="edit_tips"></p>
         </li>
         <li>
@@ -33,25 +33,50 @@
         </li>
       </ul>
       <div class="edit_btn_box">
-        <button class="edit_cancel">取消</button>
-        <button class="edit_submit">确定</button>
+        <button class="edit_cancel" @click="close">取消</button>
+        <button class="edit_submit" @click="submit">确定</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import customizeSelect from "../../../components/customizeSelect"
+import customizeSelect from "../../../components/customizeSelect";
 export default {
   name: "case-problem",
-  components:{
-    customizeSelect
+  props: ["editData"],
+  components: {
+    customizeSelect,
   },
-  methods:{
-    close(){
-      this.$parent.edit_cont=false
-    }
-  }
+  data() {
+    return {
+      caseId: "",
+    };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+  },
+  methods: {
+    close() {
+      this.$parent.edit_cont = false;
+    },
+    submit() {
+      this.http
+        .put(
+          `/case/manage/${this.caseId}/ask/${this.editData.id}`,
+          this.editData
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.close();
+            this.$emit('getcaseData')
+            this.$Message.warning("编辑成功!");
+          } else {
+            this.message.error(res.msg);
+          }
+        });
+    },
+  },
 };
 </script>
 

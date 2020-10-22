@@ -2,7 +2,7 @@
   <div class="select_layout">
     <div class="select_title" @click="down">
       <i :style="{ background: rgb }"></i>
-      <p>{{ selectVal }}</p>
+      <p>{{ title }}</p>
       <a href="javascript:;"></a>
     </div>
     <div class="select_down" v-if="show" style="border-top: none">
@@ -10,7 +10,7 @@
         class="select_item"
         v-for="(item, index) in select"
         :key="index"
-        @click="option(item)"
+        @click="option(item, index)"
       >
         <i :style="{ background: item.color }"></i>
         <p>{{ item.title }}</p>
@@ -51,17 +51,23 @@ export default {
         },
       ],
       show: false,
-      rgb: "rgb(255,167,39)",
-      selectVal: "发病情况",
+      itemNmae: "",
+      rgb: "",
+      title: "",
     };
+  },
+  mounted() {
+    this.rgb = this.select[this.$parent.editData.colorId].color;
+    this.title = this.select[this.$parent.editData.colorId].title;
   },
   methods: {
     down() {
       this.show = !this.show;
     },
-    option(item) {
+    option(item, index) {
       this.rgb = item.color;
       this.selectVal = item.title;
+      this.$parent.editData.colorId = index;
       this.show = false;
     },
   },

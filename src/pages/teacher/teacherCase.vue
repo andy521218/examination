@@ -39,7 +39,7 @@
         <option value>1</option>
         <option value>1</option>
       </select>
-      <button class="submit">检索</button>
+      <button class="submit" @click="getManage('1')">检索</button>
     </div>
     <div class="main_table">
       <ul class="caseList">

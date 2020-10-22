@@ -115,6 +115,7 @@ export default {
       editData: {},
       tips: true,
       selected: undefined,
+      searchName: "",
     };
   },
   mounted() {
@@ -169,6 +170,7 @@ export default {
           params: {
             gradeId: this.upData.gradeId,
             specialtyId: this.upData.specialtyId,
+            fuzzyName: this.searchName,
             status: this.status,
             page: page,
             size: "10",

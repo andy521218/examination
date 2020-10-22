@@ -49,10 +49,12 @@
 
     <!-- 导入 导出 -->
 
-    <edit-import></edit-import>
+    <edit-import @getData="getData" v-if="editload"></edit-import>
     <div class="main_header">
       <button class="add" @click="addStudent">添加学生</button>
-      <button class="import" style="margin-right: 213px">导入学生</button>
+      <button class="import" style="margin-right: 213px" @click="importstudent">
+        导入学生
+      </button>
       <label for>班级</label>
       <select class="select" v-model="classRoomID">
         <option value>请选择班级</option>
@@ -157,6 +159,7 @@ export default {
       upData: {},
       selected: undefined,
       classRoomIdText: "",
+      editload: false,
     };
   },
   components: {
@@ -173,6 +176,9 @@ export default {
   methods: {
     addStudent() {
       this.editStudentShow = true;
+    },
+    importstudent() {
+      this.editload = true;
     },
     getData() {
       this.axios
