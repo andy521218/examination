@@ -37,7 +37,7 @@
               @click="container(index)"
             >
               {{ item }}
-              <div :class="{ active: tabIndex == index }"></div>
+              <div :class="{ active: typeId == index }"></div>
             </li>
             <i class="tips"></i>
           </ul>
@@ -87,7 +87,7 @@ export default {
           option: "淡白",
         },
       ],
-      tabIndex: "",
+      typeId: "",
       optionTitle: "",
       optionShow: false,
     };

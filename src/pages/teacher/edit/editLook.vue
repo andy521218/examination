@@ -2,7 +2,8 @@
   <div class="case_look">
     <case-option
       :option="option"
-      v-show="optionShow"
+      :radioName="radioName"
+      v-if="optionShow"
       @editcaseData="editcaseData"
     ></case-option>
     <div class="case_layout">
@@ -54,15 +55,10 @@
                   v-for="(item, index) in watchData"
                   :key="index"
                 >
-                  <div class="item_cont">
+                  <div class="item_cont" @click="openOption(item)">
                     <p class="item_cont_title">{{ item.name }}</p>
-                    <p
-                      class="item_cont_option"
-                      @click="openOption(item)"
-                      v-for="(i, index) in item.options"
-                      :key="index"
-                    >
-                      {{ i }}
+                    <p class="item_cont_option">
+                      {{ item.answer }}
                     </p>
                   </div>
                 </li>
@@ -112,12 +108,14 @@ export default {
       watchData: "",
       imgurl: "",
       caseData: {},
+      radioName: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.getwatchdata();
     this.getcasedata();
+    this.radioData = this.option.answer;
   },
   methods: {
     container(i) {
@@ -171,7 +169,11 @@ export default {
           })}`
         )
         .then((res) => {
-          console.log(res);
+          if (res.code == "000000") {
+            this.$Message.warning("编辑成功!");
+            this.optionShow = false;
+            this.getwatchdata();
+          }
         });
     },
     getcasedata() {

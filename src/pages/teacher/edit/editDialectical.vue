@@ -10,7 +10,7 @@
           @click="container(index)"
         >
           {{ item }}
-          <div :class="{ active: tabIndex == index }"></div>
+          <div :class="{ active: typeId == index }"></div>
         </li>
       </ul>
       <div class="scrollbar">
@@ -90,7 +90,7 @@
           @click="container(index)"
         >
           {{ item }}
-          <div :class="{ active: tabIndex == index }"></div>
+          <div :class="{ active: typeId == index }"></div>
         </li>
       </ul>
       <div class="scrollbar">
@@ -143,13 +143,13 @@ export default {
   data() {
     return {
       tab: ["望", "闻", "问", "切"],
-      tabIndex: "",
+      typeId: "",
       step: true,
     };
   },
   methods: {
     container(i) {
-      this.tabIndex = i;
+      this.typeId = i;
     },
     changeView() {
       this.step = !this.step;

@@ -1,5 +1,10 @@
 <template>
   <div class="case_cut">
+    <case-option
+      :option="option"
+      v-if="optionShow"
+      @editcaseData="editcaseData"
+    ></case-option>
     <div class="case_layout">
       <div class="case_left" style="width: 1000px">
         <header>
@@ -7,7 +12,7 @@
           <ul>
             <li>
               <span>姓名:</span>
-              <span>张三</span>
+              <span>{{ caseData.name }}</span>
             </li>
             <li>
               <span>病系:</span>
@@ -15,11 +20,11 @@
             </li>
             <li>
               <span>性别:</span>
-              <span>女</span>
+              <span>{{ caseData.gender ? "女" : "男" }}</span>
             </li>
             <li>
               <span>年龄:</span>
-              <span>75岁</span>
+              <span>{{ caseData.age }}</span>
             </li>
             <li>
               <span>工作:</span>
@@ -36,37 +41,44 @@
               @click="container(index)"
             >
               {{ item }}
-              <div :class="{ active: tabIndex == index }"></div>
+              <div :class="{ active: typeId == index }"></div>
             </li>
             <i class="tips" @click="opneTips"></i>
           </ul>
           <div class="content scrollbar">
             <div class="content_scrollbar">
-              <ul v-show="tabIndex == 0">
+              <ul v-show="typeId == 0">
                 <li style="border: none">
                   <p>点击右侧空白处选择一个设置为正确选项:</p>
                 </li>
                 <li
                   class="item_cont_border"
-                  v-for="(item, index) in list"
+                  v-for="(item, index) in pulseData.optinos"
                   :key="index"
+                  @click="seeImg(item)"
                 >
                   <div class="item_cont">
                     <input
                       type="radio"
                       name="option"
                       style="margin-right: 20px"
+                      v-model="answer"
+                      :value="item.name"
+                      @change="putPulse"
                     />
-                    <p class="item_cont_title">{{ item.title }}</p>
+                    <p class="item_cont_title">{{ item.name }}</p>
                   </div>
                 </li>
               </ul>
-              <ul v-show="tabIndex == 1">
+              <ul v-show="typeId == 1">
                 <li>
                   <p>点击右侧空白处选择一个设置为正确选项:</p>
                 </li>
                 <li
                   style="border: 1px solid rgb(9, 124, 168); border-top: none"
+                  v-for="(item, index) in pressData.list"
+                  :key="index"
+                  @click="editPress(item)"
                 >
                   <div class="item_cont">
                     <span
@@ -74,43 +86,9 @@
                         width: 200px;
                         border-right: 1px solid rgb(9, 124, 168);
                       "
-                      >左胸</span
+                      >{{ item.name }}</span
                     >
-                    <span>疼痛</span>
-                  </div>
-                  <div class="item_edit">
-                    <input type="checkbox" />
-                  </div>
-                </li>
-                <li
-                  style="border: 1px solid rgb(9, 124, 168); border-top: none"
-                >
-                  <div class="item_cont">
-                    <span
-                      style="
-                        width: 200px;
-                        border-right: 1px solid rgb(9, 124, 168);
-                      "
-                      >左胸</span
-                    >
-                    <span>疼痛</span>
-                  </div>
-                  <div class="item_edit">
-                    <input type="checkbox" />
-                  </div>
-                </li>
-                <li
-                  style="border: 1px solid rgb(9, 124, 168); border-top: none"
-                >
-                  <div class="item_cont">
-                    <span
-                      style="
-                        width: 200px;
-                        border-right: 1px solid rgb(9, 124, 168);
-                      "
-                      >左胸</span
-                    >
-                    <span>疼痛</span>
+                    <span>{{ item.answer }}</span>
                   </div>
                   <div class="item_edit">
                     <input type="checkbox" />
@@ -125,8 +103,8 @@
         <div class="case_right_title">
           <span>脉诊图片</span>
         </div>
-        <img v-show="tabIndex == 0" src="../../../assets/public/1.png" alt="" />
-        <img v-show="tabIndex == 1" src="../../../assets/public/2.png" alt="" />
+        <img :src="imgsUrl" v-if="imgsUrl" alt="" class="seeimg" />
+        <p class="seedesc">{{ imgDesc }}</p>
       </div>
     </div>
   </div>
@@ -134,35 +112,40 @@
 
 
 <script>
+import caseOption from "../edit/caseOption";
 export default {
   name: "edit-look",
+  components: {
+    caseOption,
+  },
   data() {
     return {
       tab: ["脉诊", "按诊"],
-      list: [
-        {
-          title: "紧脉",
-          option: "正常",
-        },
-        {
-          title: "划脉",
-          option: "急促",
-        },
-        {
-          title: "散脉",
-          option: "淡白",
-        },
-      ],
-      tabIndex: "",
+      typeId: "",
       route: "",
       edit_cont: false,
       tips: false,
       allShow: false,
+      optionShow: false,
+      answer: "",
+      imgsUrl: "",
+      imgDesc: "",
+      caseData: {},
+      caseId: "",
+      pressData: {},
+      pulseData: {},
+      option: {},
     };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.getcasedata();
+    this.getpressData();
+    this.getpulseData();
   },
   methods: {
     container(i) {
-      this.tabIndex = i;
+      this.typeId = i;
     },
     upload() {
       this.route = this.$refs.file.value;
@@ -175,6 +158,67 @@ export default {
     },
     openDele() {
       this.allShow = true;
+    },
+    seeImg(e) {
+      this.imgsUrl = e.picUrl;
+      this.imgDesc = e.description;
+    },
+    editPress(e) {
+      this.optionShow = true;
+      this.option = e;
+    },
+    editcaseData() {
+      this.axios
+        .put(
+          `/case/manage/${this.caseId}/feel/press/${
+            this.option.id
+          }?${this.qs.stringify({
+            answer: this.$children[0].radioData,
+          })}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("编辑成功!");
+            this.optionShow = false;
+            this.getpressData();
+          }
+        });
+    },
+    getcasedata() {
+      this.axios.get(`/case/${this.caseId}`).then((res) => {
+        this.caseData = res.data;
+      });
+    },
+    getpressData() {
+      this.axios.get(`/case/manage/${this.caseId}/feel/press`).then((res) => {
+        this.pressData = res.data;
+      });
+    },
+    async getpulseData() {
+      this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
+        this.pulseData = res.data;
+        this.answer = res.data.answer;
+        res.data.optinos.forEach((item) => {
+          if (res.data.answer == item.name) {
+            this.imgsUrl = item.picUrl;
+          }
+        });
+      });
+    },
+    putPulse() {
+      this.http
+        .put(
+          `/case/manage/${this.caseId}/feel/pulse?${this.qs.stringify({
+            answer: this.answer,
+          })}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            return this.$Message.warning("更改答案成功!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
     },
   },
 };

@@ -12,13 +12,13 @@
           <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
-              <span class="edit_text">脉枕名称:</span>
+              <span class="edit_text">脉诊名称:</span>
             </div>
             <input
               type="text"
               class="text_box"
               v-if="pulseShow"
-              placeholder="请输入脉枕名称"
+              placeholder="请输入脉诊名称"
               v-model="pulse.name"
             />
             <span class="edit_text_i" v-else>{{ pulse.name }}</span>
@@ -26,13 +26,13 @@
           <li>
             <div class="edit_left">
               <span class="edit_red">*</span>
-              <span class="edit_text">脉枕描述:</span>
+              <span class="edit_text">脉诊描述:</span>
             </div>
             <input
               type="text"
               class="text_box"
               v-if="pulseShow"
-              placeholder="请输入脉枕描述"
+              placeholder="请输入脉诊描述"
               v-model="pulse.description"
             />
             <span class="edit_text_i" v-else>{{ pulse.description }}</span>
@@ -43,8 +43,13 @@
               <span class="edit_text">脉诊图片:</span>
             </div>
             <div class="uploadImg">
-              <input type="file" />
-              <img src="../../../assets/public/uploadImg.png" alt />
+              <input type="file" ref="imgs" @change="uploadImg" />
+              <img :src="imgUrl" v-if="imgUrl" class="tipsImg" alt="" />
+              <img
+                src="../../../assets/public/uploadImg.png"
+                v-if="!imgUrl"
+                alt
+              />
             </div>
           </li>
         </ul>
@@ -93,7 +98,7 @@
               <span class="edit_text">按诊部位:</span>
             </div>
             <select name id class="select" v-model="diagnosis.name">
-              <option value>请选择</option>
+              <option :value="selectdefault">请选择</option>
               <option
                 :value="item"
                 v-for="(item, index) in itemDown"
@@ -156,6 +161,9 @@ export default {
       diagnosis: {},
       diagnosisData: "",
       itemDown: ["头部", "胸部", "虚里", "心下"],
+      imgsData: "",
+      imgUrl: "",
+      selectdefault: undefined,
     };
   },
   mounted() {
@@ -168,6 +176,7 @@ export default {
     },
     editSwitch() {
       this.pulse = {};
+      this.imgUrl = "";
       this.pulseShow = true;
       this.imgShow = false;
       this.getData0();
@@ -176,6 +185,7 @@ export default {
       this.addCont = true;
     },
     addSwitch() {
+      this.diagnosis = {};
       this.addCont = false;
     },
     getData0() {
@@ -197,7 +207,7 @@ export default {
         if (res.code == "000000") {
           this.$Message.warning("添加成功!");
           this.getData1();
-          this.addCont = false;
+          this.addSwitch();
         } else {
           this.$Message.error(res.msg);
         }
@@ -205,25 +215,46 @@ export default {
     },
 
     postPulse(methods, url, config) {
-      if (!this.pulse.name) return this.$Message.warning("请填写脉枕名称");
+      if (!this.pulse.name) return this.$Message.warning("请填写脉诊名称");
       if (!this.pulse.description)
-        return this.$Message.warning("请填写脉枕描述");
-      this.http[methods](url, this.pulse).then((res) => {
+        return this.$Message.warning("请填写脉诊描述");
+      if (!this.imgsData) return this.$Message.error("请先选择图片");
+
+      let imgData = new window.FormData();
+      imgData.append("file", this.imgsData);
+
+      this.upload.post("/upload", imgData).then((res) => {
         if (res.code == "000000") {
-          this.$Message.warning(`${config}成功!`);
-          this.getData0();
-          this.pulse = {};
-          this.imgShow = false;
+          let imgurl = `http://localhost:8080/api/download/${res.data}`;
+          this.pulse.picUrl = imgurl;
+          console.log(this.pulse);
+          this.http[methods](url, this.pulse).then((res) => {
+            if (res.code == "000000") {
+              this.$Message.warning(`${config}成功!`);
+              this.editSwitch();
+              this.imgShow = false;
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
         } else {
           this.$Message.error(res.msg);
         }
       });
     },
+    uploadImg() {
+      this.imgsData = this.$refs.imgs.files[0];
+
+      let fileExample = new FileReader();
+      fileExample.readAsDataURL(this.imgsData);
+      fileExample.onload = (ev) => {
+        this.imgUrl = ev.target.result;
+      };
+    },
+
     submitPulse() {
-      if (this.pulseShow) {
-        if (!this.pulse.name) {
-          return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`, "修改");
-        }
+      if (this.pulse.id) {
+        return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`, "修改");
       }
       this.postPulse("post", "/meta/feel/0", "添加");
     },
@@ -232,11 +263,13 @@ export default {
       this.pulseShow = false;
       this.pulse = item;
       this.imgShow = true;
+      this.imgUrl = item.picUrl;
     },
     editPulse(item) {
       this.pulseShow = true;
       this.pulse = item;
       this.imgShow = true;
+      this.imgUrl = item.picUrl;
     },
   },
 };
@@ -263,6 +296,13 @@ export default {
           background-color: rgb(5, 61, 118);
           border: rgb(9, 124, 168) 1px solid;
           position: relative;
+          .tipsImg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            left: 50px;
+            top: 50px;
+          }
           input {
             width: 100px;
             height: 100px;

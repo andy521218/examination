@@ -1,8 +1,10 @@
 <template>
   <div class="select_layout">
     <div class="select_title" @click="down">
-      <i :style="{ background: rgb }"></i>
-      <p>{{ title }}</p>
+      <i
+        :style="{ background: select[this.$parent.editData.colorId].color }"
+      ></i>
+      <p>{{ select[this.$parent.editData.colorId].title }}</p>
       <a href="javascript:;"></a>
     </div>
     <div class="select_down" v-if="show" style="border-top: none">
@@ -52,13 +54,7 @@ export default {
       ],
       show: false,
       itemNmae: "",
-      rgb: "",
-      title: "",
     };
-  },
-  mounted() {
-    this.rgb = this.select[this.$parent.editData.colorId].color;
-    this.title = this.select[this.$parent.editData.colorId].title;
   },
   methods: {
     down() {

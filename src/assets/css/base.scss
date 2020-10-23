@@ -1050,6 +1050,7 @@ input[type="checkbox"]:checked:before {
         margin-top: 10px;
         display: flex;
         align-items: center;
+        position: relative;
 
         input[type="checkbox"] {
           margin-left: 10px;
@@ -1063,6 +1064,17 @@ input[type="checkbox"]:checked:before {
         .text_box {
           width: 430px;
           margin-right: 15px;
+          padding-right: 47px;
+        }
+
+        .answer {
+          position: absolute;
+          left: 498px;
+        }
+
+        .question {
+          position: absolute;
+          right: 160px;
         }
 
         .submit {
@@ -1077,7 +1089,7 @@ input[type="checkbox"]:checked:before {
     margin-left: 65px;
     background-color: rgb(5, 61, 118, 0.3);
     border: rgb(9, 124, 168) 1px solid;
-
+    position: relative;
     .case_right_title {
       width: 100%;
       margin-top: 25px;
@@ -1089,6 +1101,18 @@ input[type="checkbox"]:checked:before {
         padding-bottom: 5px;
         border-bottom: 2px solid rgb(0, 235, 255);
       }
+    }
+
+    .seeimg {
+      width: 582px;
+      height: 215px;
+    }
+
+    .seedesc {
+      position: absolute;
+      top: 270px;
+      left: 50px;
+      font-size: 16px;
     }
 
     .case_right_cont {

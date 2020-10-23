@@ -36,13 +36,17 @@ export default {
       radioData: "",
     };
   },
+  mounted() {
+    this.radioData = this.option.answer;
+  },
   methods: {
     close() {
       this.$parent.optionShow = false;
+      this.radioData = "";
     },
     submit() {
-      if(!this.radioData) return this.$Message.error('请选择一项正确答案')
-      this.$emit('editcaseData')
+      if (!this.radioData) return this.$Message.error("请选择一项正确答案");
+      this.$emit("editcaseData");
     },
   },
 };
@@ -54,10 +58,10 @@ export default {
     ul {
       display: flex;
       flex-wrap: wrap;
+      width: 100%;
       li {
-        text-align: center;
-        width: 155px;
-        margin-left: 40px;
+        margin-left: 70px;
+        width: 150px;
       }
     }
   }

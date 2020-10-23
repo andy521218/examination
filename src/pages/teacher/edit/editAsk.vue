@@ -4,7 +4,8 @@
     <case-problem
       v-if="edit_cont"
       :editData="editData"
-      @getcaseData="getcaseData"
+      :typeId="typeId"
+      @getaskData="getaskData"
     ></case-problem>
     <!-- 提示弹窗 -->
     <tips v-if="tips"></tips>
@@ -21,7 +22,7 @@
         <ul>
           <li>
             <span>姓名:</span>
-            <span>张三</span>
+            <span>{{ caseData.name }}</span>
           </li>
           <li>
             <span>病系:</span>
@@ -29,11 +30,11 @@
           </li>
           <li>
             <span>性别:</span>
-            <span>女</span>
+            <span>{{ caseData.gender ? "女" : "男" }}</span>
           </li>
           <li>
             <span>年龄:</span>
-            <span>75岁</span>
+            <span>{{ caseData.age }}</span>
           </li>
           <li>
             <span>工作:</span>
@@ -57,9 +58,12 @@
         <div class="content scrollbar">
           <div class="content_scrollbar">
             <ul>
-              <li v-for="(item, index) in caseData" :key="index">
+              <li v-for="(item, index) in askData" :key="index">
                 <div class="item_cont">
-                  <i v-if="typeId == 1"></i>
+                  <i
+                    v-if="typeId == 1"
+                    :style="{ background: select[item.colorId].color }"
+                  ></i>
                   <span>{{ item.answer }}</span>
                   <span>{{ item.question }}</span>
                 </div>
@@ -79,17 +83,17 @@
             class="text_box"
             v-model="answer"
             placeholder="请输入问题..."
-            maxlength="27"
-            @change="maxNumber"
+            maxlength="30"
           />
+          <p class="answer">{{ answerLength }}/30</p>
           <input
             type="text"
             class="text_box"
             v-model="question"
-            placeholder="请输入答案..."
-            maxlength="41"
-            @change="maxNumber"
+            placeholder="请输入答案.."
+            maxlength="37"
           />
+          <p class="question">{{ questionLength }}/37</p>
           <button class="submit" @click="submit">添加</button>
         </div>
       </main>
@@ -159,6 +163,32 @@ export default {
   data() {
     return {
       tab: ["主诉", "现病史", "疾病史", "个人史", "婚育史", "家族史"],
+      select: [
+        {
+          title: "发病情况",
+          color: "rgb(255,167,39)",
+        },
+        {
+          title: "主症特点",
+          color: "rgb(254,236,74)",
+        },
+        {
+          title: "伴随症状及鉴别诊断症状",
+          color: "rgb(115,213,114)",
+        },
+        {
+          title: "诊疗过程",
+          color: "rgb(36,169,245)",
+        },
+        {
+          title: "发作情况",
+          color: "rgb(150,117,206)",
+        },
+        {
+          title: "刻下症",
+          color: "rgb(0,230,255)",
+        },
+      ],
       typeId: "0",
       itemid: "",
       upDatacorrect: false,
@@ -168,19 +198,23 @@ export default {
       tips: false,
       allShow: false,
       answer: "",
+      answerLength: "0",
       question: "",
-      caseData: {},
+      questionLength: "0",
+      askData: {},
       editData: {},
+      caseData: {},
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
+    this.getaskData();
     this.getcaseData();
   },
   methods: {
     container(i) {
       this.typeId = i;
-      this.getcaseData();
+      this.getaskData();
     },
     upload() {
       this.route = this.$refs.file.value;
@@ -196,19 +230,13 @@ export default {
       this.allShow = true;
       this.itemid = e.id;
     },
-    maxNumber() {
-      if (this.answer.length > "27")
-        return this.$Message.error("超出最大字符27");
-      if (this.question.length > "41")
-        return this.$Message.error("超出最大字符41");
-    },
     deleSubmit() {
       this.axios
         .delete(`/case/manage/${this.caseId}/ask/${this.itemid}`)
         .then((res) => {
           if (res.code == "000000") {
             this.$Message.warning("删除成功!");
-            this.getcaseData();
+            this.getaskData();
             this.allShow = false;
           } else {
             this.$Message.error(res.msg);
@@ -231,7 +259,7 @@ export default {
             this.answer = "";
             this.question = "";
             this.upDatacorrect = false;
-            this.getcaseData();
+            this.getaskData();
             this.$Message.warning("添加成功!");
           } else {
             this.$Message.error(res.msg);
@@ -239,6 +267,11 @@ export default {
         });
     },
     getcaseData() {
+      this.axios.get(`/case/${this.caseId}`).then((res) => {
+        this.caseData = res.data;
+      });
+    },
+    getaskData() {
       this.axios
         .get(`/case/${this.caseId}/ask`, {
           params: {
@@ -249,9 +282,17 @@ export default {
         })
         .then((res) => {
           if (res.code == "000000") {
-            this.caseData = res.data.rows;
+            this.askData = res.data.rows;
           }
         });
+    },
+  },
+  watch: {
+    answer: function () {
+      this.answerLength = this.answer.length;
+    },
+    question: () => {
+      this.questionLength = this.question.length;
     },
   },
 };

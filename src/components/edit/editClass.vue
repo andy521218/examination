@@ -2,7 +2,7 @@
   <div class="edit_class">
     <div class="edit">
       <div class="edit_title">
-        <span class="title">{{ tips ? "编辑" : "新建" }}</span>
+        <span class="title">{{ tips ? "编辑" : "新建" }}班级</span>
         <span class="edit_switch" @click="close"></span>
       </div>
       <ul>
