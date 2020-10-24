@@ -10,19 +10,25 @@
     </edit-dele>
     <!-- 设为考核案例 -->
 
-    <edit-dele :title="`设为考核案例`" v-if="allShow">
+    <edit-dele :title="`设为考核案例`" @deleSubmit="addExam" v-if="allShow">
       <template v-slot:edit_p>
         <p>确定将选中的案例设为考核案例?</p>
         <p class="edit_dele_p">(设置后无法更改)</p>
       </template>
     </edit-dele>
 
+    <edit-dele :title="`设为训练案例`" @deleSubmit="addTrain" v-if="trainshow">
+      <template v-slot:edit_p>
+        <p>确定将选中的案例设为训练案例?</p>
+        <p class="edit_dele_p">(设置后无法更改)</p>
+      </template>
+    </edit-dele>
     <!-- 新增案例 -->
     <add-case v-if="addCase" :list="list" @getManage="getManage"></add-case>
     <div class="main_header">
       <button class="add" @click="add">新增案例</button>
       <button class="add_case one" @click="addAssessment">设为考核案例</button>
-      <button class="add_case two">设为训练案例</button>
+      <button class="add_case two" @click="addAssessTrain">设为训练案例</button>
       <label for>病系</label>
       <select v-model="diseaseType" class="select">
         <option value>请选择病系</option>
@@ -31,13 +37,15 @@
         </option>
       </select>
       <label for>分类</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select v-model="searchOptions" class="select">
+        <option value="">请选择分类</option>
+        <option
+          v-for="(item, index) in options"
+          :key="index"
+          :value="item.upName"
+        >
+          {{ item.name }}
+        </option>
       </select>
       <button class="submit" @click="getManage('1')">检索</button>
     </div>
@@ -47,11 +55,16 @@
           <div class="case_top">
             <img src="../../assets/public/timg.png" alt="" />
             <div class="state">
-              <input type="checkbox" />
+              <input
+                type="radio"
+                v-model="check"
+                name="caseId"
+                :value="item.caseId"
+              />
               <div class="state_item">
-                <div class="item_one">未完成</div>
-                <div class="item_two">训</div>
-                <div class="item_three">考</div>
+                <div class="item_one" v-if="!item.complete">未完成</div>
+                <div class="item_two" v-if="item.train">训</div>
+                <div class="item_three" v-if="item.exam">考</div>
               </div>
             </div>
             <div class="bottom">
@@ -117,6 +130,24 @@ export default {
           name: "肾系病",
         },
       ],
+      options: [
+        {
+          upName: "isExam",
+          name: "考核案例",
+        },
+        {
+          upName: "isTrain",
+          name: "训练案例",
+        },
+        {
+          upName: "isCompelete",
+          name: "完成案例",
+        },
+        {
+          upName: "Compelete",
+          name: "未完成案例",
+        },
+      ],
       addCase: false,
       deleshow: false,
       allShow: false,
@@ -128,6 +159,9 @@ export default {
       size: "10",
       caseId: "",
       mask: false,
+      check: "",
+      trainshow: false,
+      searchOptions: "",
     };
   },
   mounted() {
@@ -155,11 +189,45 @@ export default {
       this.mask = true;
       this.addCase = true;
     },
+    addAssessTrain() {
+      if (!this.check) return this.$Message.error("请选择一项案例!");
+      this.trainshow = true;
+    },
+    addExam() {
+      this.axios.put(`/case/manage/${this.check}/exam`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("设为考核案例成功!");
+          this.allShow = false;
+        } else {
+          this.$Message.error("案例未完成,不可以设置为考核案例!");
+        }
+      });
+    },
+    addTrain() {
+      this.axios.put(`/case/manage/${this.check}/train`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("设为训练案例成功!");
+          this.trainshow = false;
+        } else {
+          this.$Message.error("案例未完成,不可以设置为训练案例!");
+        }
+      });
+    },
     getManage(page = "1") {
+      let isExam = "",
+        isTrain = "",
+        isCompelete = "";
+      if (this.searchOptions == "isExam") isExam = true;
+      if (this.searchOptions == "isTrain") isTrain = true;
+      if (this.searchOptions == "isCompelete") isCompelete = true;
+      if (this.searchOptions == "Compelete") isCompelete = false;
       this.axios
         .get("/case/manage", {
           params: {
             diseaseType: this.diseaseType,
+            isExam: isExam,
+            isTrain: isTrain,
+            isCompelete: isCompelete,
             size: this.size,
             page: page,
           },
@@ -170,6 +238,7 @@ export default {
         });
     },
     addAssessment() {
+      if (!this.check) return this.$Message.error("请选择一项案例!");
       this.allShow = true;
     },
     link(caseId) {

@@ -1,6 +1,6 @@
 <template>
   <div class="cont_bg">
-    <edit-hear v-if="show" :hearData="hearData" @getData='getData'></edit-hear>
+    <edit-hear v-if="show" :hearData="hearData" @getData="getData"></edit-hear>
     <div class="mask" v-if="show"></div>
     <div class="cont_header">{{ title }}性闻诊数据</div>
     <ul>
@@ -18,12 +18,18 @@
         <div class="item_container" :class="{ active: showIndex == index }">
           <div
             class="item_container_between"
-            v-for="(i, index) in item.options"
+            v-for="(i, index) in item.results"
             :key="index"
           >
-            <p>{{ i }}</p>
+            <p>{{ i.name }}</p>
             <div>
-              <span>播放</span>
+              <audio
+                hidden="true"
+                style="display: none"
+                id="song"
+                ref="song"
+              ></audio>
+              <span @click="play(i)">播放</span>
               <span @click="editSong(item)">编辑</span>
             </div>
           </div>
@@ -50,16 +56,23 @@ export default {
       showIndex: "",
       gender: "",
       data: "",
+      songUrl: "",
     };
   },
-  props: ["title", "editshow"],
+  props: ["title", "groupData"],
   mounted() {
-    this.title == "男" ? (this.gender = false) : (this.gender = true);
-    this.getData()
+    this.title == "男"
+      ? (this.hearData.gender = false)
+      : (this.hearData.gender = true);
+    this.getData();
   },
   methods: {
     getData() {
-      this.axios.get(`/meta/listen/${this.gender}`).then((res) => {
+      let groupId = "1";
+      if (!this.hearData.gender) {
+        groupId = "0";
+      }
+      this.axios.get(`/meta/listen/${groupId}`).then((res) => {
         this.data = res.data;
       });
     },
@@ -72,6 +85,11 @@ export default {
     editSong(item) {
       this.show = true;
       this.hearData = item;
+    },
+    play(e) {
+      const song = document.getElementById("song");
+      song.src = e.videoUrl;
+      song.play();
     },
   },
 };

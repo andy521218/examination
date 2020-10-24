@@ -17,31 +17,7 @@
       </template>
     </edit-dele>
     <div class="case_left">
-      <header>
-        <img src="../../../assets/public/timg1.jpg" alt="" />
-        <ul>
-          <li>
-            <span>姓名:</span>
-            <span>{{ caseData.name }}</span>
-          </li>
-          <li>
-            <span>病系:</span>
-            <span>肝病系</span>
-          </li>
-          <li>
-            <span>性别:</span>
-            <span>{{ caseData.gender ? "女" : "男" }}</span>
-          </li>
-          <li>
-            <span>年龄:</span>
-            <span>{{ caseData.age }}</span>
-          </li>
-          <li>
-            <span>工作:</span>
-            <span>退休人员</span>
-          </li>
-        </ul>
-      </header>
+      <case-header :caseData="caseData"></case-header>
       <main>
         <ul class="main_tab">
           <li
@@ -151,6 +127,7 @@
 
 <script>
 import caseProblem from "../edit/caseProblem";
+import caseHeader from "../edit/caseHeader";
 import tips from "../edit/tips";
 import editDele from "../../../components/edit/editDele";
 export default {
@@ -159,10 +136,33 @@ export default {
     caseProblem,
     tips,
     editDele,
+    caseHeader,
   },
   data() {
     return {
       tab: ["主诉", "现病史", "疾病史", "个人史", "婚育史", "家族史"],
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
       select: [
         {
           title: "发病情况",
@@ -269,6 +269,7 @@ export default {
     getcaseData() {
       this.axios.get(`/case/${this.caseId}`).then((res) => {
         this.caseData = res.data;
+        this.caseData.diseaseTypeName = this.list[res.data.diseaseType].name;
       });
     },
     getaskData() {

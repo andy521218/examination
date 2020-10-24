@@ -12,10 +12,10 @@
               type="radio"
               name="option"
               style="width: 22px; height: 22px"
-              :value="item"
+              :value="item.name ? item.name : item"
               v-model="radioData"
             />
-            <label for="">{{ item }} </label>
+            <label for="">{{ item.name ? item.name : item }} </label>
           </li>
         </ul>
         <div class="edit_btn_box">

@@ -227,7 +227,6 @@ export default {
         if (res.code == "000000") {
           let imgurl = `http://localhost:8080/api/download/${res.data}`;
           this.pulse.picUrl = imgurl;
-          console.log(this.pulse);
           this.http[methods](url, this.pulse).then((res) => {
             if (res.code == "000000") {
               this.$Message.warning(`${config}成功!`);

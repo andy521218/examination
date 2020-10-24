@@ -806,6 +806,7 @@ input[type="checkbox"]:checked:before {
               margin-top: 4px;
               color: rgb(255, 255, 255);
               text-align: center;
+              margin-right: 4px;
 
               .item_one {
                 background: url("../../assets/public/red.png") no-repeat center;
@@ -1090,6 +1091,7 @@ input[type="checkbox"]:checked:before {
     background-color: rgb(5, 61, 118, 0.3);
     border: rgb(9, 124, 168) 1px solid;
     position: relative;
+
     .case_right_title {
       width: 100%;
       margin-top: 25px;

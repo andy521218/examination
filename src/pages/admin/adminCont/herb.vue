@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import leftHerb from './leftHerb'
-import rightHerb from './rightHerb'
+import leftHerb from "./leftHerb";
+import rightHerb from "./rightHerb";
 export default {
   name: "prescription-diagnosis",
-  components:{
+  components: {
     leftHerb,
-    rightHerb
-  }
+    rightHerb,
+  },
 };
 </script>
 <style lang="scss">

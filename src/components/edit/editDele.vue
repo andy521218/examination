@@ -29,6 +29,8 @@ export default {
       this.$parent.deleshow = false;
       this.$parent.caseId = "";
       this.$parent.mask = false;
+      this.$parent.trainshow = false;
+      this.$parent.check = '';
     },
     submit() {
       this.$emit("deleSubmit");

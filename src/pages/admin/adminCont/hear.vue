@@ -1,7 +1,7 @@
 <template>
   <div class="hear diagnosis">
-    <hear-box :title="title.one"></hear-box>
-    <hear-box :title="title.two"></hear-box>
+    <hear-box :title="`男`"></hear-box>
+    <hear-box :title="`女`"></hear-box>
   </div>
 </template>
 
@@ -11,20 +11,6 @@ export default {
   name: "hear-diagnosis",
   components: {
     hearBox,
-  },
-  data() {
-    return {
-      title: {
-        one: "男",
-        two: "女",
-      },
-      editShow: false,
-    };
-  },
-  methods: {
-    edit(flag) {
-      this.editShow = flag;
-    },
   },
 };
 </script>

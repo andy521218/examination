@@ -1,33 +1,14 @@
 <template>
   <div class="case_hear">
-    <case-option :optionTitle="optionTitle" v-if="optionShow"></case-option>
+    <case-option
+      :option="option"
+      v-if="optionShow"
+      :radioName="radioName"
+      @editcaseData="editcaseData"
+    ></case-option>
     <div class="case_layout">
       <div class="case_left">
-        <header>
-          <img src="../../../assets/public/timg1.jpg" alt="" />
-          <ul>
-            <li>
-              <span>姓名:</span>
-              <span>张三</span>
-            </li>
-            <li>
-              <span>病系:</span>
-              <span>肝病系</span>
-            </li>
-            <li>
-              <span>性别:</span>
-              <span>女</span>
-            </li>
-            <li>
-              <span>年龄:</span>
-              <span>75岁</span>
-            </li>
-            <li>
-              <span>工作:</span>
-              <span>退休人员</span>
-            </li>
-          </ul>
-        </header>
+        <case-header :caseData="caseData"></case-header>
         <main>
           <ul class="main_tab">
             <li
@@ -47,13 +28,13 @@
                 <li><p>点击右侧空白处选择一个设置为正确选项:</p></li>
                 <li
                   class="item_cont_border"
-                  v-for="(item, index) in list"
+                  v-for="(item, index) in listenData"
                   :key="index"
                 >
-                  <div class="item_cont">
-                    <p class="item_cont_title">{{ item.title }}</p>
-                    <p class="item_cont_option" @click="openOption(item.title)">
-                      {{ item.option }}
+                  <div class="item_cont" @click="openOption(item)">
+                    <p class="item_cont_title">{{ item.name }}</p>
+                    <p class="item_cont_option">
+                      {{ item.answer }}
                     </p>
                   </div>
                 </li>
@@ -68,6 +49,7 @@
 
 <script>
 import caseOption from "../edit/caseOption";
+import caseHeader from "../edit/caseHeader";
 export default {
   name: "edit-hear",
   data() {
@@ -75,30 +57,75 @@ export default {
       tab: ["闻诊"],
       list: [
         {
-          title: "语言",
-          option: "正常",
+          id: 1,
+          name: "心系病",
         },
         {
-          title: "呼吸",
-          option: "急促",
+          id: 2,
+          name: "肝系病",
         },
         {
-          title: "失音",
-          option: "淡白",
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
         },
       ],
       typeId: "",
-      optionTitle: "",
       optionShow: false,
+      radioName: "",
+      caseData: {},
+      caseId: "",
+      listenData: {},
     };
   },
   components: {
     caseOption,
+    caseHeader,
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.getcasedata();
+    this.getListenData();
   },
   methods: {
-    openOption(title) {
+    openOption(e) {
+      this.option = e;
       this.optionShow = true;
-      this.optionTitle = title;
+    },
+    getcasedata() {
+      this.axios.get(`/case/${this.caseId}`).then((res) => {
+        this.caseData = res.data;
+        this.caseData.diseaseTypeName = this.list[res.data.diseaseType].name;
+      });
+    },
+    getListenData() {
+      this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
+        this.listenData = res.data;
+      });
+    },
+    editcaseData() {
+      this.axios
+        .put(
+          `/case/manage/${this.caseId}/listen/${
+            this.option.id
+          }?${this.qs.stringify({
+            answer: this.$children[0].radioData,
+          })}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("编辑成功!");
+            this.optionShow = false;
+            this.getListenData();
+          }
+        });
     },
   },
 };

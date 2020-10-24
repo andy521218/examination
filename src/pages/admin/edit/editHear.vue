@@ -10,13 +10,16 @@
           <span class="edit_red">*</span>
           <span class="edit_text">检查项:</span>
         </div>
-        <input
-          type="text"
-          class="text_box"
-          v-if="!hearData.id"
-          placeholder="请输入检查项"
-          v-model="name"
-        />
+        <select v-if="!hearData.id" v-model="groupId" class="select">
+          <option value="">请选择检查项</option>
+          <option
+            v-for="(item, index) in groupData"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
         <span class="edit_text_i" v-else>{{ hearData.name }}</span>
         <p class="edit_tips">{{ tipsName }}</p>
       </li>
@@ -30,9 +33,9 @@
           class="text_box"
           v-if="!hearData.id"
           placeholder="请输入诊断结果"
-          v-model="options"
+          v-model="name"
         />
-        <span class="edit_text_i" v-else>{{ hearData.options[0] }}</span>
+        <span class="edit_text_i" v-else>{{ hearData.results[0].name }}</span>
         <p class="edit_tips">{{ tipsOptions }}</p>
       </li>
       <li class="relative">
@@ -42,6 +45,7 @@
         </div>
         <input type="text" id="fileName" v-model="fileValue" disabled />
         <input type="file" id="file" ref="file" @change="changVal" />
+        <p class="edit_tips">{{ tipsFile }}</p>
       </li>
     </ul>
     <div class="edit_btn_box">
@@ -58,70 +62,95 @@ export default {
   data() {
     return {
       fileValue: "",
-      data: "",
       name: "",
       tipsName: "",
-      options: "",
+      tipsFile: "",
       tipsOptions: "",
+      fileData: "",
+      groupData: {},
+      groupId: "",
     };
+  },
+  mounted() {
+    this.getGroupdata();
   },
   methods: {
     editResult() {
       this.$parent.show = false;
+      this.$parent.hearData = false;
     },
     changVal() {
       this.fileValue = this.$refs.file.value;
+      this.fileData = this.$refs.file.files[0];
+    },
+    getGroupdata() {
+      this.axios.get("/meta/listen/group").then((res) => {
+        this.groupData = res.data;
+      });
     },
     submit() {
       if (!this.hearData.id) {
-        if (!this.name) {
-          return (this.tipsName = "请输入诊断项");
+        if (!this.groupId) {
+          return (this.tipsName = "请选择诊断项");
         }
         this.tipsName = "";
-        if (!this.options) {
+        if (!this.name) {
           return (this.tipsOptions = "请输入诊断结果");
         }
         this.tipsOptions = "";
-        this.http
-          .post(
-            "/meta/listen",
-            JSON.stringify({
-              gender: this.gender,
-              name: this.name,
-              options: [this.options],
-              videoUrl: "",
-            }),
-          )
-          .then((res) => {
-            if (res.code == "000000") {
-              this.$Message.warning("添加成功!");
-              this.$emit("getData");
-              this.$parent.show = false;
-            } else {
-              this.$Message.error("请稍后再试!");
-            }
-          });
+        if (!this.fileData) return (this.tipsFile = "请上传音频");
+        this.tipsFile = "";
+
+        let formData = new window.FormData();
+        formData.append("file", this.fileData);
+        this.upload.post("/upload", formData).then((res) => {
+          let url = `http://localhost:8080/api/download/${res.data}`;
+          if (res.code == "000000") {
+            this.http
+              .post(`/meta/listen/${this.groupId}`, {
+                gender: this.hearData.gender,
+                name: this.name,
+                videoUrl: url,
+              })
+              .then((res) => {
+                if (res.code == "000000") {
+                  this.$Message.warning("添加成功!");
+                  this.$emit("getData");
+                  this.$parent.show = false;
+                } else {
+                  this.$Message.error("请稍后再试!");
+                }
+              });
+          }
+        });
+      } else {
+        this.tipsOptions = "";
+        if (!this.fileData) return (this.tipsFile = "请上传音频");
+        this.tipsFile = "";
+
+        let formData = new window.FormData();
+        formData.append("file", this.fileData);
+        this.upload.post("/upload", formData).then((res) => {
+          let url = `http://localhost:8080/api/download/${res.data}`;
+          if (res.code == "000000") {
+            this.http
+              .put(`/meta/listen/${this.hearData.id}`, {
+                gender: this.hearData.gender,
+                name: this.hearData.name,
+                videoUrl: url,
+              })
+              .then((res) => {
+                if (res.code == "000000") {
+                  this.$Message.warning("添加成功!");
+                  this.$emit("getData");
+                  this.$parent.show = false;
+                } else {
+                  this.$Message.error("请稍后再试!");
+                }
+              });
+          }
+        });
       }
-      // var formData = new FileReader();
-      // formData.readAsDataURL(this.$refs.file.files[0]);
-      // formData.onload = () => {
-      //   this.data = formData.result;
-      // };
-      // console.log(this.data);
-      // formData.onloadend = () => {
-      //   var data = this.data;
-      //   this.axios
-      //     .post(
-      //       "/upload",
-      //       { data },
-      //       {
-      //         headers: { "Content-Type": "application/octet-stream" },
-      //       }
-      //     )
-      //     .then((res) => {
-      //       console.log(res);
-      //     });
-      // };
     },
   },
 };
