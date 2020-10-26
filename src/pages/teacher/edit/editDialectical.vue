@@ -13,29 +13,94 @@
           <div :class="{ active: typeId == index }"></div>
         </li>
       </ul>
-      <div class="scrollbar">
+
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="typeId == 0">
         <ul class="main_cont">
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
-          <li>您有什么地方不舒服?---- 自觉心慌</li>
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="typeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- 问诊 -->
+      <div class="scrollbar" v-show="typeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in askData"
+            :key="index"
+            style="display: flex"
+          >
+            {{ item.answer }}
+            <p></p>
+            {{ item.question }}
+          </li>
+        </ul>
+      </div>
+      <!-- 切诊 -->
+      <div class="scrollbar" v-show="typeId == 3">
+        <ul class="main_cont">
+          <li style="display: flex">
+            脉诊
+            <p></p>
+            {{ pulseData }}
+          </li>
+          <li
+            v-for="(item, index) in pressData"
+            :key="index"
+            style="display: flex"
+          >
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
         </ul>
       </div>
     </div>
+
     <div class="dialectical_layout_right" v-show="step">
       <ul>
-        <li><p class="tips">提示:根据病史合成选择病名和证型</p></li>
+        <li><p class="tips">提示:根据病史合成选择病名和症型</p></li>
         <li>病名</li>
         <li>
           <div class="search">
-            <input type="text" class="text_box" />
+            <input
+              type="text"
+              class="text_box"
+              v-model="searchDisease"
+              @focus="diseaseNameShow = true"
+              @blur="timerDiseaseout"
+            />
             <div class="search_down scrollbar">
-              <div class="search_down_cont">
-                <div class="search_item">1</div>
-                <div class="search_item">1</div>
-                <div class="search_item">1</div>
+              <div class="search_down_cont" v-show="diseaseNameShow">
+                <div
+                  class="search_item"
+                  v-for="(item, index) in diseaseNameData"
+                  :key="index"
+                  @click="diseaseVal(item)"
+                >
+                  {{ item.name }}
+                </div>
               </div>
             </div>
           </div>
@@ -143,9 +208,32 @@ export default {
   data() {
     return {
       tab: ["望", "闻", "问", "切"],
+      diseaseNameShow: false,
+      caseId: "",
       typeId: "",
       step: true,
+      listenData: {},
+      askData: [],
+      pressData: {},
+      pulseData: {},
+      searchDisease: "",
+      diseaseNameData: {},
+      wachData: [],
     };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.getListendata();
+    this.getAskdata();
+    this.getPressData();
+    this.getPulseData();
+    // 获取望诊数据
+    for (let i = 0; i < 3; i++) {
+      this.axios.get(`/case/manage/${this.caseId}/watch/${i}`).then((res) => {
+        this.wachData.push(res.data.list);
+        this.wachData = this.wachData.flat();
+      });
+    }
   },
   methods: {
     container(i) {
@@ -153,6 +241,67 @@ export default {
     },
     changeView() {
       this.step = !this.step;
+    },
+    timerDiseaseout() {
+      setTimeout(() => {
+        this.diseaseNameShow = false;
+      }, 500);
+    },
+    // 获取闻诊数据
+    getListendata() {
+      this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
+        this.listenData = res.data;
+      });
+    },
+    //获取问诊数据
+    getAskdata() {
+      this.axios
+        .get(`/case/manage/${this.caseId}/ask`, {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          let data = res.data.rows;
+          data.forEach((item) => {
+            if (!item.correct) {
+              this.askData.push(item);
+            }
+          });
+        });
+    },
+    //获取按诊数据
+    getPressData() {
+      this.axios.get(`/case/manage/${this.caseId}/feel/press`).then((res) => {
+        this.pressData = res.data.list;
+      });
+    },
+    //获取脉诊数据
+    getPulseData() {
+      this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
+        this.pulseData = res.data.answer;
+      });
+    },
+    // 设置正确病名
+    diseaseVal(e) {
+      this.searchDisease = e.name;
+      this.axios.get(`/meta/disease/${e.id}`).then((res) => {
+        console.log(res);
+      });
+    },
+  },
+  watch: {
+    searchDisease: function () {
+      this.axios
+        .get("/meta/disease/name", {
+          params: {
+            name: this.searchDisease,
+          },
+        })
+        .then((res) => {
+          this.diseaseNameData = res.data;
+        });
     },
   },
 };
@@ -195,7 +344,7 @@ export default {
           input {
             width: 100%;
           }
-          .search_down{
+          .search_down {
             width: 100%;
           }
         }
@@ -280,6 +429,17 @@ export default {
       line-height: 45px;
       height: 45px;
       padding-left: 15px;
+      position: relative;
+      p {
+        width: 30px;
+        margin: 0 10px;
+        position: relative;
+        &::after {
+          position: absolute;
+          content: "____";
+          bottom: 7px;
+        }
+      }
     }
   }
 }

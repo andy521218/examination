@@ -1220,6 +1220,7 @@ input[type="checkbox"]:checked:before {
       max-height: 300px;
 
       .search_item {
+        z-index: 99;
         height: 30px;
         line-height: 30px;
         padding: 0 15px;

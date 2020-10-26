@@ -5,12 +5,24 @@
         <div class="title">
           <p>治则治法</p>
           <div class="search">
-            <input type="text" class="text_box" />
+            <input
+              type="text"
+              class="text_box"
+              v-model="searchTreat"
+              @focus="treatShow = true"
+              @blur="timerOuttreat"
+            />
             <div class="search_down scrollbar">
-              <div class="search_down_cont">
-                <!-- <div class="search_item">1</div>
-                <div class="search_item">1</div>
-                <div class="search_item">1</div> -->
+              <div
+                class="search_down_cont"
+                v-for="(item, index) in treatData"
+                :key="index"
+                @click="treatVal(item)"
+                v-show="treatShow"
+              >
+                <div class="search_item">
+                  {{ item.name }}
+                </div>
               </div>
             </div>
           </div>
@@ -24,50 +36,56 @@
             <div class="prescription">
               <p>常见方剂</p>
               <div class="search">
-                <input type="text" class="text_box" />
-                <div class="search_down scrollbar">
+                <input
+                  type="text"
+                  class="text_box"
+                  v-model="searchAgentia"
+                  @focus="agentiaShow = true"
+                  @blur="timerOutagentia"
+                />
+                <div class="search_down scrollbar" v-show="agentiaShow">
                   <div class="search_down_cont">
-                    <!-- <div class="search_item">1</div>
-                    <div class="search_item">1</div>
-                    <div class="search_item">1</div> -->
+                    <div
+                      class="search_item"
+                      v-for="(item, index) in agentiaData"
+                      :key="index"
+                      @click="agentiaVal(item)"
+                    >
+                      {{ item.name }}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="prescription">
+            <!-- <div class="prescription">
               <p>常见方药</p>
               <div class="search">
                 <input type="text" class="text_box" />
                 <div class="search_down scrollbar">
                   <div class="search_down_cont">
-                    <!-- <div class="search_item">1</div>
                     <div class="search_item">1</div>
-                    <div class="search_item">1</div> -->
+                    <div class="search_item">1</div>
+                    <div class="search_item">1</div>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="treatment_main">
           <div class="main_left">
             <ul>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
+              <li>{{ agentiaList.name }}</li>
             </ul>
           </div>
           <div class="main_right">
             <ul>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
-              <li>1</li>
+              <li
+                v-for="(item, index) in agentiaList.druggeries"
+                :key="index"
+              >
+                {{ item.name }}
+              </li>
             </ul>
           </div>
         </div>
@@ -85,6 +103,97 @@
 <script>
 export default {
   name: "case-treatment",
+  data() {
+    return {
+      caseId: "",
+      treatData: {},
+      treatShow: false,
+      searchTreat: "",
+      agentiaData: {},
+      searchAgentia: "",
+      agentiaShow: false,
+      agentiaList: [],
+    };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.getTreatVal();
+  },
+  methods: {
+    //获取治则治法正确答案
+    getTreatVal() {
+      this.axios.get(`/case/manage/${this.caseId}/treat`).then((res) => {
+        this.searchTreat = res.data.treatName;
+        this.searchAgentia = res.data.agentias[0].name;
+        this.agentiaList = res.data.agentias[0];
+      });
+    },
+    timerOuttreat() {
+      setTimeout(() => {
+        this.treatShow = false;
+      }, 500);
+    },
+    timerOutagentia() {
+      setTimeout(() => {
+        this.agentiaShow = false;
+      }, 500);
+    },
+    //设置治则治法正确答案
+    treatVal(e) {
+      this.searchTreat = e.name;
+      this.axios
+        .post(`/case/manage/${this.caseId}/treat`, {
+          name: e.name,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("更改治则治法成功!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+    },
+
+    //设置方剂正确答案
+    agentiaVal(e) {
+      this.searchAgentia = e.name;
+      this.axios
+        .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("更改方剂成功!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+    },
+  },
+  watch: {
+    searchTreat: function () {
+      this.axios
+        .get("/meta/treat", {
+          params: {
+            name: this.searchTreat,
+          },
+        })
+        .then((res) => {
+          this.treatData = res.data;
+        });
+    },
+    searchAgentia: function () {
+      console.log(1111);
+      this.axios
+        .get("/meta/agentia", {
+          params: {
+            name: this.searchAgentia,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.agentiaData = res.data.rows;
+        });
+    },
+  },
 };
 </script>
 
@@ -204,7 +313,8 @@ export default {
         li {
           width: 100%;
           height: 300px;
-          background: url("../../../assets/public/contbg.png") no-repeat center;
+          background: url("../../../assets/public/diseaseBox.png") no-repeat
+            center;
           background-size: 100% 100%;
         }
       }

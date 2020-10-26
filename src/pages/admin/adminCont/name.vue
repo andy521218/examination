@@ -1,121 +1,99 @@
 <template>
   <div class="name diagnosis">
     <div class="cont_bg">
-      <!-- 弹窗 -->
-      <div class="mask" v-if="show"></div>
-      <div class="edit" v-if="show">
-        <div class="edit_title">
-          <span class="title">添加病名</span>
-          <span class="edit_switch" @click="editSwitch()"></span>
-        </div>
-        <ul class="edit_class">
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">病名:</span>
-            </div>
-            <input
-              type="text"
-              class="text_box"
-              v-if="true"
-              placeholder="请输入病名"
-              v-model="name"
-            />
-            <span class="edit_text_i" v-else>20200521</span>
-          </li>
-        </ul>
-        <div class="edit_btn_box">
-          <button class="edit_cancel" @click="editSwitch()">取消</button>
-          <button class="edit_submit" @click="submitName">确定</button>
+      <!-- 添加病名 -->
+      <div class="edit" v-if="nameShow">
+        <div class="edit_teacher">
+          <div class="edit_title">
+            <span class="title">添加病名</span>
+            <span class="edit_switch" @click="colseName"></span>
+          </div>
+          <ul>
+            <li>
+              <div class="edit_left">
+                <span class="edit_red">*</span>
+                <span class="edit_text">名称:</span>
+              </div>
+              <input
+                type="text"
+                class="text_box"
+                placeholder="请输入病名"
+                v-model="name"
+              />
+              <p class="edit_tips"></p>
+            </li>
+          </ul>
+          <div class="edit_btn_box">
+            <button class="edit_cancel" @click="colseName">取消</button>
+            <button class="edit_submit" @click="submitName">确定</button>
+          </div>
         </div>
       </div>
-      <!-- 左侧内容 -->
-      <div class="cont_header">病名</div>
+      <!-- 添加症型 -->
+      <div class="edit" v-if="diseaseShow">
+        <div class="edit_teacher">
+          <div class="edit_title">
+            <span class="title">{{ diseaseName ? "编辑" : "添加" }}症型</span>
+            <span class="edit_switch" @click="colseDisease"></span>
+          </div>
+          <ul>
+            <li>
+              <div class="edit_left">
+                <span class="edit_red">*</span>
+                <span class="edit_text">症型:</span>
+              </div>
+              <input
+                type="text"
+                class="text_box"
+                placeholder="请输入症型"
+                v-model="diseaseName"
+              />
+              <p class="edit_tips"></p>
+            </li>
+          </ul>
+          <div class="edit_btn_box">
+            <button class="edit_cancel" @click="colseDisease">取消</button>
+            <button class="edit_submit" @click="submitDisease">确定</button>
+          </div>
+        </div>
+      </div>
+      <div class="mask" v-if="mask"></div>
+      <div class="cont_header">病名症型</div>
       <ul>
         <li v-for="(item, index) in nameData" :key="index">
-          <div class="item_cont">
+          <div class="item_cont" @click="tabShow(item, index)">
             <div class="item_left">
               <i></i>
               <span>{{ item.name }}</span>
+            </div>
+            <div
+              class="item_right"
+              :class="{ transform: showIndex == index }"
+            ></div>
+          </div>
+          <div class="item_container" :class="{ active: showIndex == index }">
+            <div
+              class="item_container_between"
+              v-for="(i, index) in diseaseData"
+              :key="index"
+              v-show="diseaseData"
+            >
+              <p>{{ i.name }}</p>
+              <div>
+                <span @click="addDisease(item)">添加症型</span>
+                <span @click="editDisease(item, i)">编辑</span>
+              </div>
+            </div>
+            <div class="item_container_between">
+              <p></p>
+              <div v-show="!diseaseData">
+                <span @click="addDisease(item)">添加症型</span>
+              </div>
             </div>
           </div>
         </li>
       </ul>
       <button class="addResult" @click="addName()">+</button>
-    </div>
-
-    <div class="cont_bg">
-      <!-- 弹窗 -->
-      <div class="mask" v-if="symptomShow"></div>
-      <div class="edit" v-if="symptomShow">
-        <div class="edit_title">
-          <span class="title">添加症型</span>
-          <span class="edit_switch" @click="closeSymptom()"></span>
-        </div>
-        <ul class="edit_class">
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">病名:</span>
-            </div>
-            <select class="select" v-model="symptom.id">
-              <option value="">请选择</option>
-              <option
-                v-for="(item, index) in nameData"
-                :key="index"
-                :value="item.id"
-              >
-                {{ item.name }}
-              </option>
-            </select>
-          </li>
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">症型:</span>
-            </div>
-            <input
-              type="text"
-              class="text_box"
-              v-model="symptom.name"
-              placeholder="请输入症型,以逗号分隔"
-            />
-          </li>
-        </ul>
-        <div class="edit_btn_box">
-          <button class="edit_cancel" @click="closeSymptom()">取消</button>
-          <button class="edit_submit" @click="submitSymptom()">确定</button>
-        </div>
-      </div>
-      <!-- 右侧内容 -->
-      <div class="cont_header">症型</div>
-      <ul>
-        <li>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
-            </div>
-          </div>
-        </li>
-        <li>
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>迟sadasdasdas大撒大撒大撒脉</span>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <button class="addResult" @click="addSymptom()">+</button>
     </div>
   </div>
 </template>
@@ -125,68 +103,108 @@ export default {
   name: "name-diagnosis",
   data() {
     return {
-      show: false,
-      symptomShow: false,
+      nameData: {},
+      showIndex: "",
+      diseaseData: {},
+      nameShow: false,
+      mask: false,
+      diseaseShow: false,
       name: "",
-      nameData: "",
-      symptom: {},
-      symptomData: "",
+      diseaseName: "",
+      nameId: "",
+      diseaseId: "",
     };
   },
   mounted() {
-    this.getName();
+    this.getNamedata();
   },
   methods: {
-    editSwitch() {
-      this.show = false;
-    },
-    addName() {
-      this.show = true;
-    },
-    closeSymptom() {
-      this.symptomShow = false;
-    },
-    addSymptom() {
-      this.symptomShow = true;
-    },
-    getName() {
-      this.axios.get("/meta/disease/name").then((res) => {
-        if (res.code == "000000") {
-          this.nameData = res.data;
-        }
+    getNamedata() {
+      this.axios.get(`/meta/disease/name`).then((res) => {
+        this.nameData = res.data;
       });
     },
-    submitName() {
-      if (!this.name) return this.$Message.warning("请输入病名");
+    tabShow(e, index) {
+      this.showIndex = index;
+      this.axios.get(`/meta/disease/${e.id}`).then((res) => {
+        this.diseaseData = res.data.rows;
+      });
+    },
+    // 症型
+    colseDisease() {
+      this.diseaseName = "";
+      this.mask = false;
+      this.diseaseShow = false;
+    },
+    submitDisease() {
+      if (!this.diseaseName) {
+        this.axios
+          .post(`/meta/disease/${this.nameId}`, {
+            name: this.diseaseName,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.colseDisease();
+              let id = {
+                id: this.nameId,
+              };
+              this.tabShow(id);
+            }
+          });
+      }
       this.axios
-        .post("/meta/disease/name", {
+        .put(
+          `/meta/disease/${this.nameId}/${this.diseaseId}?${this.qs.stringify({
+            name: this.diseaseName,
+          })}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("更改症型成功!");
+            this.colseDisease();
+            let id = {
+              id: this.nameId,
+            };
+            this.tabShow(id);
+          }
+        });
+    },
+    addDisease(e) {
+      this.nameId = e.id;
+      this.mask = true;
+      this.diseaseShow = true;
+    },
+    editDisease(item, e) {
+      this.mask = true;
+      this.diseaseShow = true;
+      this.diseaseName = e.name;
+      this.nameId = item.id;
+      this.diseaseId = e.id;
+    },
+    // 病名
+    colseName() {
+      this.mask = false;
+      this.nameShow = false;
+      this.name = "";
+    },
+    submitName() {
+      if (!this.name) return this.$Message.error("请填写病名");
+      this.axios
+        .post(`/meta/disease/name`, {
           name: this.name,
         })
         .then((res) => {
           if (res.code == "000000") {
-            this.show = false;
-            this.getName();
-            this.$Message.warning("添加成功!");
+            this.colseName();
+            this.getNamedata();
+          } else {
+            this.$Message.error(res.msg);
           }
-        })
-        ;
+        });
     },
-
-    submitSymptom() {
-      if (!this.symptom.id) return this.$Message.warning("请选择病名");
-      if (!this.symptom.name) return this.$Message.warning("请选择症型");
-      this.axios
-        .post(`/meta/disease/${this.symptom.id}`, {
-          id: this.symptom.id,
-          name: this.symptom.name,
-        })
-        .then((res) => {
-          if (res.code == "000000") {
-            this.show = false;
-            this.$Message.warning("添加成功!");
-          }
-        })
-        ;
+    addName() {
+      this.mask = true;
+      this.nameShow = true;
     },
   },
 };
@@ -195,14 +213,24 @@ export default {
 <style lang="scss">
 .name {
   .cont_bg {
-    width: 40%;
-    .edit {
-      top: 45px;
-      left: 50%;
-      margin-left: -235px;
+    ul {
       li {
         border: none;
+        .editCurr {
+          cursor: pointer;
+          color: rgb(0, 235, 255);
+          height: 40px;
+          line-height: 41px;
+        }
       }
+    }
+    border: none;
+    .cont_header {
+      width: 600px;
+    }
+    .edit {
+      left: 50%;
+      margin-left: -235px;
     }
   }
 }

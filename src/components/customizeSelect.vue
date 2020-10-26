@@ -62,7 +62,7 @@ export default {
     },
     option(item, index) {
       this.rgb = item.color;
-      this.selectVal = item.title;
+      this.treatVal = item.title;
       this.$parent.editData.colorId = index;
       this.show = false;
     },

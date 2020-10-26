@@ -61,7 +61,7 @@
             placeholder="请输入问题..."
             maxlength="30"
           />
-          <p class="answer">{{ answerLength }}/30</p>
+          <p class="answer">{{ answer.length }}/30</p>
           <input
             type="text"
             class="text_box"
@@ -69,7 +69,7 @@
             placeholder="请输入答案.."
             maxlength="37"
           />
-          <p class="question">{{ questionLength }}/37</p>
+          <p class="question">{{ question.length }}/37</p>
           <button class="submit" @click="submit">添加</button>
         </div>
       </main>
@@ -198,9 +198,7 @@ export default {
       tips: false,
       allShow: false,
       answer: "",
-      answerLength: "0",
       question: "",
-      questionLength: "0",
       askData: {},
       editData: {},
       caseData: {},
@@ -286,14 +284,6 @@ export default {
             this.askData = res.data.rows;
           }
         });
-    },
-  },
-  watch: {
-    answer: function () {
-      this.answerLength = this.answer.length;
-    },
-    question: () => {
-      this.questionLength = this.question.length;
     },
   },
 };
