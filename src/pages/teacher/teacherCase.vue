@@ -244,6 +244,13 @@ export default {
     link(caseId) {
       this.$router.push("/case");
       localStorage.setItem("caseId", caseId);
+      this.axios.post(`/case/manage/draft/${caseId}`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("开始修改案例!");
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };

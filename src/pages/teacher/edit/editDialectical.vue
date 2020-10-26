@@ -51,9 +51,9 @@
             :key="index"
             style="display: flex"
           >
-            {{ item.answer }}
+            <span class="start">{{ item.answer }}</span>
             <p></p>
-            {{ item.question }}
+            <span class="end">{{ item.question }}</span>
           </li>
         </ul>
       </div>
@@ -107,37 +107,14 @@
         </li>
         <li>证型</li>
         <li class="layout">
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
-          </div>
-          <div>
-            <input type="checkbox" style="width: 22px; height: 22px" />
-            <label for="">肝郁气滞证</label>
+          <div v-for="(item, index) in diseaseCheckData" :key="index">
+            <input
+              type="checkbox"
+              style="width: 22px; height: 22px"
+              v-model="diseaseCheckArr"
+              :value="item"
+            />
+            <label for="">{{ item.name }}</label>
           </div>
         </li>
       </ul>
@@ -146,7 +123,7 @@
 
     <!-- 步骤2 -->
     <div class="dialectical_layout_left_two" v-show="!step">
-      <div class="title">病名:肝郁气滞证</div>
+      <div class="title">病名:{{ searchDisease }}</div>
       <ul class="main_tab">
         <li
           v-for="(item, index) in tab"
@@ -158,41 +135,159 @@
           <div :class="{ active: typeId == index }"></div>
         </li>
       </ul>
-      <div class="scrollbar">
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="typeId == 0">
         <ul class="main_cont">
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="typeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.answer }}
+            <p></p>
+            {{ item.question }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- 问诊 -->
+      <div class="scrollbar" v-show="typeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in askData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            <span class="start">{{ item.answer }}</span>
+            <p></p>
+            <span class="end">{{ item.question }}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- 切诊 -->
+      <div class="scrollbar" v-show="typeId == 3">
+        <ul class="main_cont">
+          <li style="display: flex">
+            <input type="checkbox" />
+            脉诊
+            <p></p>
+            {{ pulseData }}
+          </li>
+          <li
+            v-for="(item, index) in pressData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
         </ul>
       </div>
     </div>
+
     <div class="dialectical_layout_right_two" v-show="!step">
       <div class="title">
-        病名:
-        <div>
-          <input type="checkbox" />
-          <label for="">症型1</label>
-        </div>
-        <div>
-          <input type="checkbox" />
-          <label for="">症型1</label>
-        </div>
-        <div>
-          <input type="checkbox" />
-          <label for="">症型1</label>
+        症候:
+        <div v-for="(item, index) in diseaseCheckArr" :key="index">
+          <input type="radio" name="disease" @change="seeDisease(item)" />
+          <label for="">{{ item.name }}</label>
         </div>
       </div>
-      <div class="scrollbar">
+      <ul class="main_tab">
+        <li
+          v-for="(item, index) in tab"
+          :key="index"
+          class="item_title"
+          @click="changeDisease(index)"
+        >
+          {{ item }}
+          <div :class="{ active: diseaseChangeId == index }"></div>
+        </li>
+      </ul>
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 0">
         <ul class="main_cont">
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
-          <li><input type="checkbox" /> 您有什么地方不舒服?---- 自觉心慌</li>
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.answer }}
+            <p></p>
+            {{ item.question }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- 问诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in askData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            <span class="start">{{ item.answer }}</span>
+            <p></p>
+            <span class="end">{{ item.question }}</span>
+          </li>
+        </ul>
+      </div>
+      <!-- 切诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 3">
+        <ul class="main_cont">
+          <li style="display: flex">
+            <input type="checkbox" />
+            脉诊
+            <p></p>
+            {{ pulseData }}
+          </li>
+          <li
+            v-for="(item, index) in pressData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
         </ul>
       </div>
     </div>
@@ -219,6 +314,9 @@ export default {
       searchDisease: "",
       diseaseNameData: {},
       wachData: [],
+      diseaseCheckData: {},
+      diseaseCheckArr: [],
+      diseaseChangeId:''
     };
   },
   mounted() {
@@ -238,6 +336,9 @@ export default {
   methods: {
     container(i) {
       this.typeId = i;
+    },
+    changeDisease(i){
+      this.diseaseChangeId=i
     },
     changeView() {
       this.step = !this.step;
@@ -287,8 +388,12 @@ export default {
     diseaseVal(e) {
       this.searchDisease = e.name;
       this.axios.get(`/meta/disease/${e.id}`).then((res) => {
-        console.log(res);
+        this.diseaseCheckData = res.data.rows;
       });
+    },
+    // 查看症候
+    seeDisease(item) {
+      console.log(item);
     },
   },
   watch: {
@@ -362,6 +467,9 @@ export default {
 
   .dialectical_layout_left_two,
   .dialectical_layout_right_two {
+    .main_cont {
+      height: 500px;
+    }
     width: 49%;
     height: 90%;
     background: url("../../../assets/public/contbg.png") no-repeat center;
@@ -386,6 +494,17 @@ export default {
 
   .dialectical_layout_left_two {
     margin-right: 2%;
+    .main_cont {
+      li {
+        display: flex;
+        align-items: center;
+        p {
+          &::after {
+            bottom: -15px;
+          }
+        }
+      }
+    }
   }
 
   //   公共样式
@@ -441,6 +560,12 @@ export default {
         }
       }
     }
+  }
+  .end {
+    width: 275px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

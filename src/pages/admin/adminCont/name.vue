@@ -60,12 +60,17 @@
       <div class="mask" v-if="mask"></div>
       <div class="cont_header">病名症型</div>
       <ul>
-        <li v-for="(item, index) in nameData" :key="index">
+        <li
+          v-for="(item, index) in nameData"
+          :key="index"
+          style="border-bottom: 1px solid #086f94"
+        >
           <div class="item_cont" @click="tabShow(item, index)">
             <div class="item_left">
               <i></i>
               <span>{{ item.name }}</span>
             </div>
+            <p class="editCurr" @click="editName(item)">编辑病名</p>
             <div
               class="item_right"
               :class="{ transform: showIndex == index }"
@@ -79,9 +84,9 @@
               v-show="diseaseData"
             >
               <p>{{ i.name }}</p>
-              <div>
+              <div style="margin-right: 35px">
                 <span @click="addDisease(item)">添加症型</span>
-                <span @click="editDisease(item, i)">编辑</span>
+                <span @click="editDisease(item, i)">编辑症型</span>
               </div>
             </div>
             <div class="item_container_between">
@@ -134,23 +139,26 @@ export default {
     colseDisease() {
       this.diseaseName = "";
       this.mask = false;
+      this.nameId = "";
+      this.diseaseId = "";
       this.diseaseShow = false;
     },
     submitDisease() {
-      if (!this.diseaseName) {
+      if (!this.diseaseId) {
         this.axios
           .post(`/meta/disease/${this.nameId}`, {
             name: this.diseaseName,
           })
           .then((res) => {
             if (res.code == "000000") {
-              this.colseDisease();
               let id = {
                 id: this.nameId,
               };
               this.tabShow(id);
+              this.colseDisease();
             }
           });
+        return;
       }
       this.axios
         .put(
@@ -161,11 +169,11 @@ export default {
         .then((res) => {
           if (res.code == "000000") {
             this.$Message.warning("更改症型成功!");
-            this.colseDisease();
             let id = {
               id: this.nameId,
             };
             this.tabShow(id);
+            this.colseDisease();
           }
         });
     },
@@ -186,15 +194,41 @@ export default {
       this.mask = false;
       this.nameShow = false;
       this.name = "";
+      this.nameId = "";
+      this.diseaseId = "";
+    },
+    editName(e) {
+      this.mask = true;
+      this.nameShow = true;
+      this.name = e.name;
+      this.nameId = e.id;
     },
     submitName() {
       if (!this.name) return this.$Message.error("请填写病名");
+      if (!this.nameId) {
+        this.axios
+          .post(`/meta/disease/name`, {
+            name: this.name,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.colseName();
+              this.getNamedata();
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+        return;
+      }
       this.axios
-        .post(`/meta/disease/name`, {
-          name: this.name,
-        })
+        .put(
+          `/meta/disease/name/${this.nameId}?${this.qs.stringify({
+            name: this.name,
+          })}`
+        )
         .then((res) => {
           if (res.code == "000000") {
+            this.$Message.warning("更改病名成功!");
             this.colseName();
             this.getNamedata();
           } else {
@@ -216,11 +250,16 @@ export default {
     ul {
       li {
         border: none;
+        position: relative;
         .editCurr {
           cursor: pointer;
           color: rgb(0, 235, 255);
-          height: 40px;
-          line-height: 41px;
+          position: absolute;
+          right: 45px;
+          top: 10px;
+        }
+        .editCurr:hover {
+          border-bottom: 1px solid rgb(0, 235, 255);
         }
       }
     }
