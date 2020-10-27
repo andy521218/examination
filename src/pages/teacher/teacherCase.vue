@@ -80,7 +80,7 @@
           </div>
           <div class="case_bottom">
             <span>{{ item.name }}</span>
-            <span>性别: {{ item.gender ? "女" : "男" }}</span>
+            <span>性别: {{ item.gender ? "男" : "女" }}</span>
             <span>年龄: {{ item.age }}岁</span>
           </div>
         </li>

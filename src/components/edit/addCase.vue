@@ -137,7 +137,7 @@ export default {
             name: this.upData.name,
             age: this.upData.age,
             diseaseType: this.upData.diseaseType,
-            gender: this.gender,
+            gender: !this.gender,
           })
           .then((res) => {
             if (res.code == "000000") {

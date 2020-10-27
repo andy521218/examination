@@ -7,7 +7,7 @@
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
-          @click="container(index)"
+          @click="seeTabdata(item, index)"
         >
           {{ item }}
           <div :class="{ active: typeId == index }"></div>
@@ -63,7 +63,7 @@
           <li style="display: flex">
             脉诊
             <p></p>
-            {{ pulseData }}
+            {{ pulseData.answer }}
           </li>
           <li
             v-for="(item, index) in pressData"
@@ -105,7 +105,7 @@
             </div>
           </div>
         </li>
-        <li>证型</li>
+        <li>症型</li>
         <li class="layout">
           <div v-for="(item, index) in diseaseCheckData" :key="index">
             <input
@@ -123,13 +123,18 @@
 
     <!-- 步骤2 -->
     <div class="dialectical_layout_left_two" v-show="!step">
-      <div class="title">病名:{{ searchDisease }}</div>
+      <div class="title">
+        病名:{{ searchDisease }}
+        <p style="float: right; margin-right: 20px">
+          选中答案后,单击当前项设置
+        </p>
+      </div>
       <ul class="main_tab">
         <li
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
-          @click="container(index)"
+          @click="container(item, index)"
         >
           {{ item }}
           <div :class="{ active: typeId == index }"></div>
@@ -143,7 +148,7 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input type="checkbox" :value="item.id" v-model="nameWatchData" />
             {{ item.name }}
             <p></p>
             {{ item.answer }}
@@ -158,7 +163,7 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input type="checkbox" :value="item.id" v-model="namelistenData" />
             {{ item.answer }}
             <p></p>
             {{ item.question }}
@@ -174,7 +179,7 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input type="checkbox" :value="item.id" v-model="nameAskData" />
             <span class="start">{{ item.answer }}</span>
             <p></p>
             <span class="end">{{ item.question }}</span>
@@ -185,17 +190,21 @@
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
           <li style="display: flex">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :value="pulseData.id"
+              v-model="namePressData"
+            />
             脉诊
             <p></p>
-            {{ pulseData }}
+            {{ pulseData.answer }}
           </li>
           <li
             v-for="(item, index) in pressData"
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input type="checkbox" :value="item.id" v-model="namePressData" />
             {{ item.name }}
             <p></p>
             {{ item.answer }}
@@ -203,12 +212,18 @@
         </ul>
       </div>
     </div>
-
+    <!-- 右侧 -->
     <div class="dialectical_layout_right_two" v-show="!step">
-      <div class="title">
+      <div class="title" style="display: flex">
         症候:
         <div v-for="(item, index) in diseaseCheckArr" :key="index">
-          <input type="radio" name="disease" @change="seeDisease(item)" />
+          <input
+            type="radio"
+            name="disease"
+            :value="item.id"
+            @change="seeDisease(item)"
+            v-model="diseaseUpdata.id"
+          />
           <label for="">{{ item.name }}</label>
         </div>
       </div>
@@ -217,7 +232,7 @@
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
-          @click="changeDisease(index)"
+          @click="changeDisease(item, index)"
         >
           {{ item }}
           <div :class="{ active: diseaseChangeId == index }"></div>
@@ -231,7 +246,11 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :value="item.id"
+              v-model="diseaseWatchData"
+            />
             {{ item.name }}
             <p></p>
             {{ item.answer }}
@@ -246,7 +265,11 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :value="item.id"
+              v-model="diseaselistenData"
+            />
             {{ item.answer }}
             <p></p>
             {{ item.question }}
@@ -262,7 +285,7 @@
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input type="checkbox" :value="item.id" v-model="diseaseAskData" />
             <span class="start">{{ item.answer }}</span>
             <p></p>
             <span class="end">{{ item.question }}</span>
@@ -273,17 +296,25 @@
       <div class="scrollbar" v-show="diseaseChangeId == 3">
         <ul class="main_cont">
           <li style="display: flex">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :value="pulseData.id"
+              v-model="diseasePressData"
+            />
             脉诊
             <p></p>
-            {{ pulseData }}
+            {{ pulseData.answer }}
           </li>
           <li
             v-for="(item, index) in pressData"
             :key="index"
             style="display: flex"
           >
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              :value="item.id"
+              v-model="diseasePressData"
+            />
             {{ item.name }}
             <p></p>
             {{ item.answer }}
@@ -312,11 +343,22 @@ export default {
       pressData: {},
       pulseData: {},
       searchDisease: "",
+      diseaseNmaeId: "",
       diseaseNameData: {},
       wachData: [],
       diseaseCheckData: {},
+      diseaseUpdata: {},
       diseaseCheckArr: [],
-      diseaseChangeId:''
+      diseaseChangeId: "",
+      nameWatchData: [],
+      namelistenData: [],
+      nameAskData: [],
+      namePressData: [],
+      diseaseWatchData: [],
+      diseaselistenData: [],
+      diseaseAskData: [],
+      diseasePressData: [],
+      diseasecorrectData: {},
     };
   },
   mounted() {
@@ -325,6 +367,8 @@ export default {
     this.getAskdata();
     this.getPressData();
     this.getPulseData();
+    this.getAlldata();
+    this.setupRadio();
     // 获取望诊数据
     for (let i = 0; i < 3; i++) {
       this.axios.get(`/case/manage/${this.caseId}/watch/${i}`).then((res) => {
@@ -334,13 +378,15 @@ export default {
     }
   },
   methods: {
-    container(i) {
+    // 第一步查看tab选项
+    seeTabdata(item, i) {
       this.typeId = i;
     },
-    changeDisease(i){
-      this.diseaseChangeId=i
-    },
+    // 下一步
     changeView() {
+      if (!this.searchDisease) return this.$Message.error("请先选择病名");
+      if (this.diseaseCheckArr.length == "0")
+        return this.$Message.error("至少选择一项症型");
       this.step = !this.step;
     },
     timerDiseaseout() {
@@ -381,19 +427,180 @@ export default {
     //获取脉诊数据
     getPulseData() {
       this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
-        this.pulseData = res.data.answer;
+        this.pulseData = res.data;
       });
     },
-    // 设置正确病名
+    // search正确病名
     diseaseVal(e) {
       this.searchDisease = e.name;
+      this.diseaseNmaeId = e.id;
       this.axios.get(`/meta/disease/${e.id}`).then((res) => {
         this.diseaseCheckData = res.data.rows;
       });
     },
-    // 查看症候
-    seeDisease(item) {
-      console.log(item);
+    // 设置病名各项答案
+    container(item, i) {
+      this.typeId = i;
+      let issueIds = [];
+      let stageId = "";
+      if (item == "望") {
+        issueIds = this.nameWatchData;
+        stageId = "1";
+      }
+      if (item == "闻") {
+        issueIds = this.namelistenData;
+        stageId = "2";
+      }
+      if (item == "问") {
+        issueIds = this.nameAskData;
+        stageId = "3";
+      }
+      if (item == "切") {
+        issueIds = this.namePressData;
+        stageId = "4";
+      }
+      if (issueIds.length == "0") return;
+      this.http
+        .post(`/case/manage/${this.caseId}/disease/name`, {
+          id: this.diseaseNmaeId,
+          issues: [
+            {
+              issueIds: issueIds,
+              stageId: stageId,
+            },
+          ],
+          name: this.searchDisease,
+        })
+        .then((res) => {
+          if (res.data) {
+            this.$Message.warning(`设置${this.searchDisease + item}诊成功!`);
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+    },
+    // 症候单选项
+    seeDisease(e) {
+      this.diseaseUpdata = e;
+      this.diseasecorrectData.forEach((item) => {
+        if (e.id == item.id) {
+          item.issues.forEach((issueIds) => {
+            if (issueIds.stageId == "1") {
+              this.diseaseWatchData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "2") {
+              this.diseaselistenData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "3") {
+              this.diseaseAskData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "4") {
+              this.diseasePressData = issueIds.issueIds;
+            }
+          });
+        }
+      });
+    },
+    //设置症候答案
+    changeDisease(item, i) {
+      this.diseaseChangeId = i;
+      let issueIds = [];
+      let stageId = "";
+      if (item == "望") {
+        issueIds = this.diseaseWatchData;
+        stageId = "1";
+      }
+      if (item == "闻") {
+        issueIds = this.diseaselistenData;
+        stageId = "2";
+      }
+      if (item == "问") {
+        issueIds = this.diseaseAskData;
+        stageId = "3";
+      }
+      if (item == "切") {
+        issueIds = this.diseasePressData;
+        stageId = "4";
+      }
+      if (issueIds.length == "0") return;
+      if (!this.diseaseUpdata.name)
+        return this.$Message.error("请选择一项症候!");
+      this.http
+        .put(`/case/manage/${this.caseId}/disease`, {
+          id: this.diseaseUpdata.id,
+          issues: [
+            {
+              issueIds: issueIds,
+              stageId: stageId,
+            },
+          ],
+          name: this.diseaseUpdata.name,
+        })
+        .then((res) => {
+          if (res.data) {
+            this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
+            this.getAlldata();
+          } else {
+            this.error(res.msg);
+          }
+        });
+    },
+    //设置默认症候选项
+    setupRadio() {
+      this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
+        this.diseaseUpdata.id = res.data.diseases[0].id;
+        this.diseaseUpdata.name = res.data.diseases[0].name;
+        res.data.diseases[0].issues.forEach((issueIds) => {
+          if (issueIds.stageId == "1") {
+            this.diseaseWatchData = issueIds.issueIds;
+          }
+          if (issueIds.stageId == "2") {
+            this.diseaselistenData = issueIds.issueIds;
+          }
+          if (issueIds.stageId == "3") {
+            this.diseaseAskData = issueIds.issueIds;
+          }
+          if (issueIds.stageId == "4") {
+            this.diseasePressData = issueIds.issueIds;
+          }
+        });
+      });
+    },
+    //获取全部信息
+    getAlldata() {
+      this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
+        if (!res.data.diseaseName) return;
+        //获取正确病名 症型选项
+        this.searchDisease = res.data.diseaseName;
+        this.diseaseNmaeId = res.data.diseaseNameId;
+        let arr = JSON.parse(JSON.stringify(res.data.diseases));
+        arr.forEach((item) => {
+          delete item["issues"];
+        });
+        this.diseaseCheckArr = arr;
+        this.axios
+          .get(`/meta/disease/${res.data.diseaseNameId}`)
+          .then((res) => {
+            this.diseaseCheckData = res.data.rows;
+          });
+        //获取正确望闻问切选项(病名)
+        res.data.diseaseNameIssues.forEach((item) => {
+          if (item.stageId == "1") {
+            this.nameWatchData = item.issueIds;
+          }
+          if (item.stageId == "2") {
+            this.namelistenData = item.issueIds;
+          }
+          if (item.stageId == "3") {
+            this.nameAskData = item.issueIds;
+          }
+          if (item.stageId == "4") {
+            this.namePressData = item.issueIds;
+          }
+        });
+        //获取正确症候选项
+        this.diseasecorrectData = res.data.diseases;
+      });
     },
   },
   watch: {
@@ -469,6 +676,15 @@ export default {
   .dialectical_layout_right_two {
     .main_cont {
       height: 500px;
+      li {
+        display: flex;
+        align-items: center;
+        p {
+          &::after {
+            bottom: -15px;
+          }
+        }
+      }
     }
     width: 49%;
     height: 90%;
@@ -480,7 +696,6 @@ export default {
       line-height: 60px;
       font-size: 16px;
       padding-left: 45px;
-      display: flex;
       border-bottom: 1px solid rgb(9, 124, 168);
       div {
         width: 100px;
@@ -494,17 +709,6 @@ export default {
 
   .dialectical_layout_left_two {
     margin-right: 2%;
-    .main_cont {
-      li {
-        display: flex;
-        align-items: center;
-        p {
-          &::after {
-            bottom: -15px;
-          }
-        }
-      }
-    }
   }
 
   //   公共样式

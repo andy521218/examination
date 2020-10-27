@@ -80,10 +80,7 @@
           </div>
           <div class="main_right">
             <ul>
-              <li
-                v-for="(item, index) in agentiaList.druggeries"
-                :key="index"
-              >
+              <li v-for="(item, index) in agentiaList.druggeries" :key="index">
                 {{ item.name }}
               </li>
             </ul>
@@ -113,6 +110,7 @@ export default {
       searchAgentia: "",
       agentiaShow: false,
       agentiaList: [],
+      agentiaId: [],
     };
   },
   mounted() {
@@ -120,12 +118,13 @@ export default {
     this.getTreatVal();
   },
   methods: {
-    //获取治则治法正确答案
+    //获取方剂正确答案
     getTreatVal() {
       this.axios.get(`/case/manage/${this.caseId}/treat`).then((res) => {
         this.searchTreat = res.data.treatName;
         this.searchAgentia = res.data.agentias[0].name;
         this.agentiaList = res.data.agentias[0];
+        this.agentiaId = res.data.agentias[0].id;
       });
     },
     timerOuttreat() {
@@ -156,15 +155,34 @@ export default {
 
     //设置方剂正确答案
     agentiaVal(e) {
-      this.searchAgentia = e.name;
+      if (!this.agentiaList.name) {
+        this.searchAgentia = e.name;
+        this.axios
+          .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
+          .then((res) => {
+            if (res.code == "000000") {
+              this.$Message.warning("更改方剂成功!");
+              this.getTreatVal();
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+        return;
+      }
       this.axios
-        .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
-        .then((res) => {
-          if (res.code == "000000") {
-            this.$Message.warning("更改方剂成功!");
-          } else {
-            this.$Message.error(res.msg);
-          }
+        .delete(`/case/manage/${this.caseId}/treat/agentia/${this.agentiaId}`)
+        .then(() => {
+          this.searchAgentia = e.name;
+          this.axios
+            .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
+            .then((res) => {
+              if (res.code == "000000") {
+                this.$Message.warning("更改方剂成功!");
+                this.getTreatVal();
+              } else {
+                this.$Message.error(res.msg);
+              }
+            });
         });
     },
   },
@@ -181,7 +199,6 @@ export default {
         });
     },
     searchAgentia: function () {
-      console.log(1111);
       this.axios
         .get("/meta/agentia", {
           params: {
@@ -189,7 +206,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
           this.agentiaData = res.data.rows;
         });
     },

@@ -21,12 +21,12 @@
       <main>
         <ul class="main_tab">
           <li
-            v-for="(item, index) in tab"
+            v-for="(item, index) in tabData"
             :key="index"
             class="item_title"
             @click="container(index)"
           >
-            {{ item }}
+            {{ item.name }}
             <div :class="{ active: typeId == index }"></div>
           </li>
           <i class="tips" @click="opneTips"></i>
@@ -140,7 +140,6 @@ export default {
   },
   data() {
     return {
-      tab: ["主诉", "现病史", "疾病史", "个人史", "婚育史", "家族史"],
       list: [
         {
           id: 1,
@@ -202,12 +201,14 @@ export default {
       askData: {},
       editData: {},
       caseData: {},
+      tabData: {},
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.getaskData();
     this.getcaseData();
+    this.getTabdata();
   },
   methods: {
     container(i) {
@@ -227,6 +228,17 @@ export default {
     openDele(e) {
       this.allShow = true;
       this.itemid = e.id;
+    },
+    getTabdata() {
+      this.axios
+        .get(`/meta/ask/module`, {
+          params: {
+            caseId: this.caseId,
+          },
+        })
+        .then((res) => {
+          this.tabData = res.data;
+        });
     },
     deleSubmit() {
       this.axios
@@ -248,7 +260,7 @@ export default {
         .post(`/case/manage/${this.caseId}/ask`, {
           answer: this.answer,
           colorId: "4",
-          correct: this.upDatacorrect,
+          correct: !this.upDatacorrect,
           question: this.question,
           typeId: this.typeId,
         })
