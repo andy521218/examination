@@ -173,7 +173,7 @@ export default {
           `/case/manage/${this.caseId}/feel/press/${
             this.option.id
           }?${this.qs.stringify({
-            answer: this.$children[0].radioData,
+            answer: this.$children[1].radioData,
           })}`
         )
         .then((res) => {

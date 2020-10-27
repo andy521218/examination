@@ -48,7 +48,7 @@
           <span>添加图片</span>
         </div>
         <div class="case_right_cont">
-          <div class="main_mask">
+          <div class="main_mask" v-if="imgurl">
             <img :src="imgurl" accept="image/*" alt="" class="userlogo" />
           </div>
           <div class="case_right_cont_upload">
@@ -165,7 +165,7 @@ export default {
           `/case/manage/${this.caseId}/watch/${this.typeId}/${
             this.option.id
           }?${this.qs.stringify({
-            answer: this.$children[0].radioData,
+            answer: this.$children[1].radioData,
           })}`
         )
         .then((res) => {

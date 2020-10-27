@@ -113,6 +113,7 @@
               style="width: 22px; height: 22px"
               v-model="diseaseCheckArr"
               :value="item"
+              @change="changeDiseasechkeck($event, item)"
             />
             <label for="">{{ item.name }}</label>
           </div>
@@ -394,6 +395,31 @@ export default {
         this.diseaseNameShow = false;
       }, 500);
     },
+    // 症型checkbox
+    changeDiseasechkeck(e, item) {
+      if (e.target.checked) {
+        this.http
+          .put(`/case/manage/${this.caseId}/disease`, {
+            id: item.id,
+            issues: [
+              {
+                issueIds: [],
+                stageId: "",
+              },
+            ],
+            name: item.name,
+          })
+          .then((res) => {
+            console.log(res);
+          });
+        return;
+      }
+      this.axios
+        .delete(`/case/manage/${this.caseId}/disease/${item.id}`)
+        .then((res) => {
+          console.log(res);
+        });
+    },
     // 获取闻诊数据
     getListendata() {
       this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
@@ -436,6 +462,17 @@ export default {
       this.diseaseNmaeId = e.id;
       this.axios.get(`/meta/disease/${e.id}`).then((res) => {
         this.diseaseCheckData = res.data.rows;
+      });
+      //设置更改病名
+      this.http.post(`/case/manage/${this.caseId}/disease/name`, {
+        id: e.id,
+        issues: [
+          {
+            issueIds: [],
+            stageId: '',
+          },
+        ],
+        name: e.name,
       });
     },
     // 设置病名各项答案
@@ -569,6 +606,7 @@ export default {
     //获取全部信息
     getAlldata() {
       this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
+        console.log(res);
         if (!res.data.diseaseName) return;
         //获取正确病名 症型选项
         this.searchDisease = res.data.diseaseName;
