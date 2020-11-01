@@ -11,32 +11,17 @@
             <span class="edit_red">*</span>
             <span class="edit_text">问题:</span>
           </div>
-          <input
-            type="text"
-            class="text_box"
-            maxlength="30"
-            v-model="editData.answer"
-            @change="maxNumber"
-          />
-
-          <p class="answer">{{ answerLength }}/30</p>
+          <input type="text" class="text_box" v-model="editData.answer" />
         </li>
         <li>
           <div class="edit_left">
             <span class="edit_red">*</span>
             <span class="edit_text">答案:</span>
           </div>
-          <input
-            type="text"
-            class="text_box"
-            maxlength="37"
-            v-model="editData.question"
-            @change="maxNumber"
-          />
-          <p class="question">{{ questionLength }}/37</p>
+          <input type="text" class="text_box" v-model="editData.question" />
         </li>
         <li>
-          <input type="checkbox" class="checkbox" />
+          <input type="checkbox" class="checkbox" v-model="editData.correct" />
           <label for="">干扰项</label>
           <div class="edit_left big" v-if="typeId == 1">
             <span class="edit_red">*</span>
@@ -64,24 +49,21 @@ export default {
   data() {
     return {
       caseId: "",
-      questionLength: "0",
-      answerLength: "0",
+      flag: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
-    this.maxNumber();
+    this.flag = !this.editData.correct;
   },
   methods: {
     close() {
       this.$parent.edit_cont = false;
-    },
-    maxNumber() {
-      this.answerLength = this.editData.answer.length;
-      this.questionLength = this.editData.question.length;
+      this.$parent.editData.correct = this.flag;
     },
     submit() {
       this.editData.typeId = this.typeId;
+      this.editData.correct = !this.editData.correct;
       this.http
         .put(
           `/case/manage/${this.caseId}/ask/${this.editData.id}`,
@@ -90,7 +72,7 @@ export default {
         .then((res) => {
           if (res.code == "000000") {
             this.close();
-            this.$emit("getcaseData");
+            this.$emit("getaskData");
             this.$Message.warning("编辑成功!");
           } else {
             this.message.error(res.msg);

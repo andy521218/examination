@@ -53,7 +53,7 @@ export default {
       transformIndex: "-1",
       show: "",
       hearData: {},
-      showIndex: "",
+      showIndex: "1000",
       gender: "",
       data: "",
       songUrl: "",

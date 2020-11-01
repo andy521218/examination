@@ -2,10 +2,7 @@
   <div>
     <input type="file" ref="fileId" @change="getFile" />
     <button @click="importRow">11111111111</button>
-    <img
-      src="http://localhost:8080/api/download/43/1602896667540.png"
-      alt=""
-    />
+    <img src="http://localhost:8080/api/download/43/1602896667540.png" alt="" />
     <button @click="fn">getget</button>
   </div>
 </template>
@@ -37,11 +34,9 @@ export default {
         console.log(res);
       });
     },
-    fn() {
-      this.axios.get("/download/B9/1602896424212.png").then((res) => {
-        console.log(res);
-      });
-    },
   },
 };
 </script>
+
+<style lang="scss">
+</style>

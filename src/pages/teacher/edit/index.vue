@@ -8,11 +8,11 @@
             <img src="../../../assets/public/stop.png" alt="" />
             <span>暂停</span>
           </div>
-          <div class="close">
+          <!-- <div class="close">
             <img src="../../../assets/public/close.png" alt="" />
             <span>取消</span>
-          </div>
-          <div class="sonserve">
+          </div> -->
+          <div class="sonserve" @click="saveCase()">
             <img src="../../../assets/public/sonserve.png" alt="" />
             <span>保存</span>
           </div>
@@ -22,8 +22,13 @@
     <div class="case_container">
       <div class="case_menu">
         <ul>
-          <li v-for="(item, index) in item" :key="index" :class="{'active':bgIndex==index}" @click="routeLink(index)">
-            <span>{{item.name}}</span>
+          <li
+            v-for="(item, index) in item"
+            :key="index"
+            :class="{ active: bgIndex == index }"
+            @click="routeLink(index)"
+          >
+            <span>{{ item.name }}</span>
           </li>
         </ul>
       </div>
@@ -61,23 +66,26 @@ export default {
           name: "辩证",
           link: "editdialectical",
         },
-         {
+        {
           name: "治疗",
           link: "edittreatment",
         },
       ],
-      bgIndex:'-1'
+      bgIndex: "-1",
     };
   },
   components: {
     logo,
   },
-  methods:{
-    routeLink(i){
-      this.bgIndex=i;
-      this.$router.push(this.item[i].link)
+  methods: {
+    routeLink(i) {
+      this.bgIndex = i;
+      this.$router.push(this.item[i].link);
+    },
+    saveCase(){
+      this.$router.push('/teachercase')
     }
-  }
+  },
 };
 </script>
 
@@ -124,12 +132,12 @@ export default {
         text-decoration: none;
       }
     }
-    li:nth-child(1){
+    li:nth-child(1) {
       margin-top: 0;
     }
-    .active{
+    .active {
       background: url("../../../assets/public/menumove.png") no-repeat center;
-       background-size: 100% 100%;
+      background-size: 100% 100%;
     }
     li:hover {
       cursor: pointer;
@@ -141,7 +149,7 @@ export default {
     width: 1745px;
     height: 100%;
     margin-left: 40px;
-    background: url('../../../assets/public/box.png') no-repeat center;
+    background: url("../../../assets/public/box.png") no-repeat center;
     background-size: 100% 100%;
     padding: 30px;
   }

@@ -4,6 +4,7 @@
       <div class="title">病史合成</div>
       <ul class="main_tab">
         <li
+          style="height: auto"
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
@@ -22,7 +23,9 @@
             :key="index"
             style="display: flex"
           >
-            {{ item.name }}
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
             <p></p>
             {{ item.answer }}
           </li>
@@ -49,11 +52,16 @@
           <li
             v-for="(item, index) in askData"
             :key="index"
-            style="display: flex"
+            style="
+              display: flex;
+              flex-direction: column;
+              height: auto;
+              line-height: 30px;
+              border-bottom: 1px solid #097ca8;
+            "
           >
-            <span class="start">{{ item.answer }}</span>
-            <p></p>
-            <span class="end">{{ item.question }}</span>
+            <span class="start">问: {{ item.answer }}</span>
+            <span class="end">答: {{ item.question }}</span>
           </li>
         </ul>
       </div>
@@ -61,7 +69,7 @@
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
           <li style="display: flex">
-            脉诊
+            <span style="width: 50px"> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
           </li>
@@ -70,7 +78,9 @@
             :key="index"
             style="display: flex"
           >
-            {{ item.name }}
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
             <p></p>
             {{ item.answer }}
           </li>
@@ -150,7 +160,9 @@
             style="display: flex"
           >
             <input type="checkbox" :value="item.id" v-model="nameWatchData" />
-            {{ item.name }}
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
             <p></p>
             {{ item.answer }}
           </li>
@@ -165,9 +177,9 @@
             style="display: flex"
           >
             <input type="checkbox" :value="item.id" v-model="namelistenData" />
-            {{ item.answer }}
+            {{ item.name }}
             <p></p>
-            {{ item.question }}
+            {{ item.answer }}
           </li>
         </ul>
       </div>
@@ -178,12 +190,22 @@
           <li
             v-for="(item, index) in askData"
             :key="index"
-            style="display: flex"
+            style="
+              height: auto;
+              line-height: 30px;
+              display: flex;
+              border-bottom: 1px solid #097ca8;
+            "
           >
-            <input type="checkbox" :value="item.id" v-model="nameAskData" />
-            <span class="start">{{ item.answer }}</span>
-            <p></p>
-            <span class="end">{{ item.question }}</span>
+            <div>
+              <input type="checkbox" :value="item.id" v-model="nameAskData" />
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <span class="start" style="height: auto"
+                >问:{{ item.answer }}</span
+              >
+              <span class="end">答:{{ item.question }}</span>
+            </div>
           </li>
         </ul>
       </div>
@@ -196,7 +218,7 @@
               :value="pulseData.id"
               v-model="namePressData"
             />
-            脉诊
+            <span style="width: 50px"> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
           </li>
@@ -206,7 +228,9 @@
             style="display: flex"
           >
             <input type="checkbox" :value="item.id" v-model="namePressData" />
-            {{ item.name }}
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
             <p></p>
             {{ item.answer }}
           </li>
@@ -271,9 +295,9 @@
               :value="item.id"
               v-model="diseaselistenData"
             />
-            {{ item.answer }}
+            {{ item.name }}
             <p></p>
-            {{ item.question }}
+            {{ item.answer }}
           </li>
         </ul>
       </div>
@@ -284,12 +308,20 @@
           <li
             v-for="(item, index) in askData"
             :key="index"
-            style="display: flex"
+            style="
+              height: auto;
+              line-height: 30px;
+              display: flex;
+              border-bottom: 1px solid #097ca8;
+            "
           >
             <input type="checkbox" :value="item.id" v-model="diseaseAskData" />
-            <span class="start">{{ item.answer }}</span>
-            <p></p>
-            <span class="end">{{ item.question }}</span>
+            <div style="display: flex; flex-direction: column">
+              <span class="start" style="height: auto"
+                >问:{{ item.answer }}</span
+              >
+              <span class="end">答:{{ item.question }}</span>
+            </div>
           </li>
         </ul>
       </div>
@@ -339,10 +371,10 @@ export default {
       caseId: "",
       typeId: "",
       step: true,
-      listenData: {},
+      listenData: [],
       askData: [],
-      pressData: {},
-      pulseData: {},
+      pressData: [],
+      pulseData: [],
       searchDisease: "",
       diseaseNmaeId: "",
       diseaseNameData: {},
@@ -373,8 +405,11 @@ export default {
     // 获取望诊数据
     for (let i = 0; i < 3; i++) {
       this.axios.get(`/case/manage/${this.caseId}/watch/${i}`).then((res) => {
-        this.wachData.push(res.data.list);
-        this.wachData = this.wachData.flat();
+        for (let i = 0; i < res.data.list.length; i++) {
+          if (res.data.list[i].answer) {
+            this.wachData.push(res.data.list[i]);
+          }
+        }
       });
     }
   },
@@ -398,32 +433,29 @@ export default {
     // 症型checkbox
     changeDiseasechkeck(e, item) {
       if (e.target.checked) {
-        this.http
-          .put(`/case/manage/${this.caseId}/disease`, {
-            id: item.id,
-            issues: [
-              {
-                issueIds: [],
-                stageId: "",
-              },
-            ],
-            name: item.name,
-          })
-          .then((res) => {
-            console.log(res);
-          });
+        this.http.put(`/case/manage/${this.caseId}/disease`, {
+          id: item.id,
+          issues: [
+            {
+              issueIds: [],
+              stageId: "",
+            },
+          ],
+          name: item.name,
+        });
+
         return;
       }
-      this.axios
-        .delete(`/case/manage/${this.caseId}/disease/${item.id}`)
-        .then((res) => {
-          console.log(res);
-        });
+      this.axios.delete(`/case/manage/${this.caseId}/disease/${item.id}`);
     },
     // 获取闻诊数据
     getListendata() {
       this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
-        this.listenData = res.data;
+        for (let i = 0; i < res.data.length; i++) {
+          if (res.data[i].answer) {
+            this.listenData.push(res.data[i]);
+          }
+        }
       });
     },
     //获取问诊数据
@@ -438,7 +470,7 @@ export default {
         .then((res) => {
           let data = res.data.rows;
           data.forEach((item) => {
-            if (!item.correct) {
+            if (item.correct) {
               this.askData.push(item);
             }
           });
@@ -447,13 +479,19 @@ export default {
     //获取按诊数据
     getPressData() {
       this.axios.get(`/case/manage/${this.caseId}/feel/press`).then((res) => {
-        this.pressData = res.data.list;
+        for (let i = 0; i < res.data.list.length; i++) {
+          if (res.data.list[i].answer) {
+            this.pressData.push(res.data.list[i]);
+          }
+        }
       });
     },
     //获取脉诊数据
     getPulseData() {
       this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
-        this.pulseData = res.data;
+        if (res.data.answer) {
+          this.pulseData = res.data;
+        }
       });
     },
     // search正确病名
@@ -469,7 +507,7 @@ export default {
         issues: [
           {
             issueIds: [],
-            stageId: '',
+            stageId: "",
           },
         ],
         name: e.name,
@@ -494,6 +532,7 @@ export default {
       }
       if (item == "切") {
         issueIds = this.namePressData;
+        issueIds.push('8')
         stageId = "4";
       }
       if (issueIds.length == "0") return;
@@ -578,7 +617,7 @@ export default {
             this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
             this.getAlldata();
           } else {
-            this.error(res.msg);
+            this.$Message.error(res.msg);
           }
         });
     },
@@ -606,7 +645,6 @@ export default {
     //获取全部信息
     getAlldata() {
       this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
-        console.log(res);
         if (!res.data.diseaseName) return;
         //获取正确病名 症型选项
         this.searchDisease = res.data.diseaseName;
@@ -802,12 +840,6 @@ export default {
         }
       }
     }
-  }
-  .end {
-    width: 275px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 </style>

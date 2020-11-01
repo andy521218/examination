@@ -5,7 +5,7 @@
       <div class="mask" v-if="imgShow"></div>
       <div class="edit" v-if="imgShow">
         <div class="edit_title">
-          <span class="title">添加诊断结果</span>
+          <span class="title">{{ puleseTitle }}诊断结果</span>
           <span class="edit_switch" @click="editSwitch()"></span>
         </div>
         <ul class="edit_class">
@@ -43,12 +43,19 @@
               <span class="edit_text">脉诊图片:</span>
             </div>
             <div class="uploadImg">
-              <input type="file" ref="imgs" @change="uploadImg" />
+              <div class="mask" v-show="imgUrl"></div>
               <img :src="imgUrl" v-if="imgUrl" class="tipsImg" alt="" />
+              <input
+                type="file"
+                ref="imgs"
+                @change="uploadImg"
+                v-if="pulseShow"
+              />
               <img
+                :class="{ option: imgUrl != '' }"
                 src="../../../assets/public/uploadImg.png"
-                v-if="!imgUrl"
                 alt
+                v-if="pulseShow"
               />
             </div>
           </li>
@@ -64,22 +71,24 @@
       </div>
       <!-- 左侧内容 -->
       <div class="cont_header">脉诊</div>
-      <ul>
-        <li v-for="(item, index) in pulseData" :key="index">
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="item_container_between">
-              <div>
-                <span @click="seePulse(item)">查看</span>
-                <span @click="editPulse(item)">编辑</span>
+      <div class="scrollbar">
+        <ul>
+          <li v-for="(item, index) in pulseData" :key="index">
+            <div class="item_cont">
+              <div class="item_left">
+                <i></i>
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="item_container_between">
+                <div>
+                  <span @click="seePulse(item)">查看</span>
+                  <span @click="editPulse(item)">编辑</span>
+                </div>
               </div>
             </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
       <button class="addResult" @click="editImg()">+</button>
     </div>
 
@@ -128,21 +137,23 @@
       </div>
       <!-- 右侧内容 -->
       <div class="cont_header">按诊</div>
-      <ul>
-        <li v-for="(item, index) in diagnosisData" :key="index">
-          <div class="item_cont content">
-            <div class="item_left">
-              <i></i>
-              <span>{{ item.name }}</span>
+      <div class="scrollbar">
+        <ul>
+          <li v-for="(item, index) in diagnosisData" :key="index">
+            <div class="item_cont content">
+              <div class="item_left" style="width: 65px">
+                <i></i>
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="item_left right">
+                <span v-for="(i, index) in item.options" :key="index">{{
+                  i
+                }}</span>
+              </div>
             </div>
-            <div class="item_left right">
-              <span v-for="(i, index) in item.options" :key="index">{{
-                i
-              }}</span>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
       <button class="addResult" @click="addResult()">+</button>
     </div>
   </div>
@@ -160,7 +171,23 @@ export default {
       pulseData: "",
       diagnosis: {},
       diagnosisData: "",
-      itemDown: ["头部", "胸部", "虚里", "心下"],
+      puleseTitle: "",
+      itemDown: [
+        "右胸",
+        "胸膺",
+        "左胸",
+        "右胁肋",
+        "心下",
+        "左胁肋",
+        "虚里",
+        "胃脘",
+        "大腹",
+        "小腹",
+        "左腹",
+        "右腹",
+        "下肢",
+        "足背",
+      ],
       imgsData: "",
       imgUrl: "",
       selectdefault: undefined,
@@ -172,6 +199,7 @@ export default {
   },
   methods: {
     editImg() {
+      this.puleseTitle = "添加";
       this.imgShow = true;
     },
     editSwitch() {
@@ -243,7 +271,6 @@ export default {
     },
     uploadImg() {
       this.imgsData = this.$refs.imgs.files[0];
-
       let fileExample = new FileReader();
       fileExample.readAsDataURL(this.imgsData);
       fileExample.onload = (ev) => {
@@ -253,7 +280,7 @@ export default {
 
     submitPulse() {
       if (this.pulse.id) {
-        return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`, "修改");
+        return this.postPulse("put", `/meta/feel/0/${this.pulse.id}`, "编辑");
       }
       this.postPulse("post", "/meta/feel/0", "添加");
     },
@@ -263,12 +290,14 @@ export default {
       this.pulse = item;
       this.imgShow = true;
       this.imgUrl = item.picUrl;
+      this.puleseTitle = "查看";
     },
     editPulse(item) {
       this.pulseShow = true;
       this.pulse = item;
       this.imgShow = true;
       this.imgUrl = item.picUrl;
+      this.puleseTitle = "编辑";
     },
   },
 };
@@ -311,6 +340,7 @@ export default {
             margin-left: -50px;
             margin-top: -50px;
             opacity: 0;
+            z-index: 100;
           }
           img {
             width: 100px;
@@ -322,10 +352,18 @@ export default {
             margin-top: -50px;
             pointer-events: none;
           }
+          .option {
+            opacity: 0.7;
+            z-index: 99;
+          }
+          .mask {
+            pointer-events: none;
+          }
         }
       }
       li {
         .content {
+          display: flex;
           justify-content: flex-start;
         }
         .right {
@@ -355,6 +393,13 @@ export default {
       width: 470px;
       left: 50%;
       margin-left: -235px;
+    }
+  }
+  .scrollbar {
+    ul {
+      padding-right: 10px;
+      overflow-y: auto;
+      height: 520px;
     }
   }
 }

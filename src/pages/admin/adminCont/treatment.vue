@@ -30,16 +30,18 @@
 
       <!-- 内容 -->
       <div class="cont_header">治则治法</div>
-      <ul>
-        <li v-for="(item,index) in data" :key="index">
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>{{item.name}}</span>
+      <div class="scrollbar">
+        <ul>
+          <li v-for="(item, index) in data" :key="index">
+            <div class="item_cont">
+              <div class="item_left">
+                <i></i>
+                <span>{{ item.name }}</span>
+              </div>
             </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
       <button class="addResult" @click="addTreatment()">+</button>
     </div>
   </div>
@@ -51,12 +53,12 @@ export default {
   data() {
     return {
       treatment: false,
-      data:'',
-      name:''
+      data: "",
+      name: "",
     };
   },
-  mounted(){
-    this.getData()
+  mounted() {
+    this.getData();
   },
   methods: {
     editSwitch() {
@@ -65,29 +67,39 @@ export default {
     addTreatment() {
       this.treatment = true;
     },
-    getData(){
-      this.axios.get('/meta/treat').then(res=>{
-        this.data=res.data
-      })
+    getData() {
+      this.axios.get("/meta/treat").then((res) => {
+        this.data = res.data;
+      });
     },
-    submit(){
-      if(!this.name) return this.$Message.error('内容不能为空!')
-      this.axios.post('/meta/treat',{
-        name:this.name
-      }).then(res=>{
-        if(res.code=='000000'){
-          this.treatment=false;
-          this.getData()
-          this.$Message.warning('添加成功!')
-        }
-      })
-    }
+    submit() {
+      if (!this.name) return this.$Message.error("内容不能为空!");
+      this.axios
+        .post("/meta/treat", {
+          name: this.name,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.treatment = false;
+            this.getData();
+            this.$Message.warning("添加成功!");
+          }
+        });
+    },
   },
 };
 </script>
 
 <style lang="scss">
 .treatment {
+  .scrollbar {
+    ul {
+      margin-top: 5px;
+      padding-right: 10px;
+      height: 550px;
+      overflow-y: auto;
+    }
+  }
   .cont_bg {
     width: 40%;
     .edit {

@@ -34,14 +34,18 @@
         <div class="content scrollbar">
           <div class="content_scrollbar">
             <ul>
-              <li v-for="(item, index) in askData" :key="index">
-                <div class="item_cont">
-                  <i
-                    v-if="typeId == 1"
-                    :style="{ background: select[item.colorId].color }"
-                  ></i>
-                  <span>{{ item.answer }}</span>
-                  <span>{{ item.question }}</span>
+              <li
+                v-for="(item, index) in askData"
+                :key="index"
+                style="height: 55px"
+              >
+                <i
+                  v-if="typeId == 1"
+                  :style="{ background: select[item.colorId].color }"
+                ></i>
+                <div class="item_cont" style="flex-direction: column">
+                  <span>问: {{ item.answer }}</span>
+                  <span>答: {{ item.question }}</span>
                 </div>
                 <div class="item_edit">
                   <i class="icon_edit" @click="openCont(item)"></i>
@@ -59,17 +63,13 @@
             class="text_box"
             v-model="answer"
             placeholder="请输入问题..."
-            maxlength="30"
           />
-          <p class="answer">{{ answer.length }}/30</p>
           <input
             type="text"
             class="text_box"
             v-model="question"
             placeholder="请输入答案.."
-            maxlength="37"
           />
-          <p class="question">{{ question.length }}/37</p>
           <button class="submit" @click="submit">添加</button>
         </div>
       </main>
@@ -220,7 +220,9 @@ export default {
     },
     openCont(e) {
       this.editData = e;
+      this.editData.correct = !e.correct;
       this.edit_cont = true;
+      console.log(e.correct);
     },
     opneTips() {
       this.tips = true;
@@ -259,7 +261,7 @@ export default {
       this.http
         .post(`/case/manage/${this.caseId}/ask`, {
           answer: this.answer,
-          colorId: "4",
+          colorId: "5",
           correct: !this.upDatacorrect,
           question: this.question,
           typeId: this.typeId,
@@ -284,7 +286,7 @@ export default {
     },
     getaskData() {
       this.axios
-        .get(`/case/${this.caseId}/ask`, {
+        .get(`/case/manage/${this.caseId}/ask`, {
           params: {
             page: "1",
             size: "500",

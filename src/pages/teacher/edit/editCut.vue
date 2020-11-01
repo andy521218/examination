@@ -28,21 +28,27 @@
                   <p>点击右侧空白处选择一个设置为正确选项:</p>
                 </li>
                 <li
-                  class="item_cont_border"
                   v-for="(item, index) in pulseData.optinos"
                   :key="index"
-                  @click="seeImg(item)"
+                  style="display: flex"
                 >
-                  <div class="item_cont">
+                  <div
+                    class="item_cont"
+                    style="width: 94px"
+                    v-for="(i, index) in item"
+                    :key="index"
+                  >
                     <input
                       type="radio"
                       name="option"
                       style="margin-right: 20px"
                       v-model="answer"
-                      :value="item.name"
+                      :value="i.name"
                       @change="putPulse"
                     />
-                    <p class="item_cont_title">{{ item.name }}</p>
+                    <p class="item_cont_title" @click="seeImg(i)">
+                      {{ i.name }}
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -61,6 +67,7 @@
                       style="
                         width: 200px;
                         border-right: 1px solid rgb(9, 124, 168);
+                        line-height: 30px;
                       "
                       >{{ item.name }}</span
                     >
@@ -75,7 +82,7 @@
           </div>
         </main>
       </div>
-      <div class="case_right" style="width: 620px">
+      <div class="case_right" style="width: 620px" v-show="typeId == 0">
         <div class="case_right_title">
           <span>脉诊图片</span>
         </div>
@@ -94,7 +101,7 @@ export default {
   name: "edit-look",
   components: {
     caseOption,
-    caseHeader
+    caseHeader,
   },
   data() {
     return {
@@ -195,13 +202,23 @@ export default {
         this.pressData = res.data;
       });
     },
-    async getpulseData() {
+    getpulseData() {
       this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
-        this.pulseData = res.data;
+        this.pulseData.optinos = [];
+        let arr = [];
+        for (let i = 0; i < res.data.optinos.length; i++) {
+          arr.push(res.data.optinos[i]);
+          if (i % 10 == "1") {
+            this.pulseData.optinos.push(arr);
+            arr = [];
+          }
+        }
+        this.pulseData.optinos.reverse();
         this.answer = res.data.answer;
         res.data.optinos.forEach((item) => {
           if (res.data.answer == item.name) {
             this.imgsUrl = item.picUrl;
+            this.imgDesc = item.description;
           }
         });
       });

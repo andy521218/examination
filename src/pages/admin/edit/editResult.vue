@@ -10,7 +10,7 @@
           <span class="edit_red">*</span>
           <span class="edit_text">诊断项:</span>
         </div>
-        <input type="text" class="text_box" v-model="name" />
+        <input type="text" class="text_box" v-model="name" placeholder="请输入诊断项"/>
         <p class="edit_tips" style="top: 42px; right: 40px">{{ tipsName }}</p>
       </li>
       <li>

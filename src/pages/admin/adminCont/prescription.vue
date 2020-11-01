@@ -4,47 +4,50 @@
     <div class="cont_bg">
       <!-- 左侧弹窗 -->
       <div class="mask" v-if="drug"></div>
-      <div class="edit" v-if="drug">
+      <div class="edit" v-show="drug">
         <div class="edit_title">
           <span class="title">添加常见方剂</span>
           <span class="edit_switch" @click="closeDrug()"></span>
         </div>
-        <ul class="edit_class" ref="list">
-          <li>
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂名称:</span>
-            </div>
-            <input
-              type="text"
-              class="text_box"
-              v-if="true"
-              placeholder="请输入方剂名称"
-              v-model="prescription.description"
-            />
-            <span class="edit_text_i" v-else>20200521</span>
-          </li>
-          <li v-for="(item, index) in addArr" :key="index">
-            <div class="edit_left">
-              <span class="edit_red">*</span>
-              <span class="edit_text">方剂组成:</span>
-            </div>
-            <input
-              type="text"
-              class="text_box"
-              style="width: 240px"
-              v-model="prescription[`value${item}`]"
-            />
-            <p class="edit_tips">
-              <img
-                src="../../../assets/public/dele.png"
-                alt=""
-                :index="item"
-                @click="dele($event)"
+        <div class="scrollbar">
+          <ul class="edit_class" ref="list">
+            <li>
+              <div class="edit_left">
+                <span class="edit_red">*</span>
+                <span class="edit_text">方剂名称:</span>
+              </div>
+              <input
+                type="text"
+                class="text_box"
+                v-if="true"
+                placeholder="请输入方剂名称"
+                v-model="prescription.description"
               />
-            </p>
-          </li>
-        </ul>
+              <!-- <p class="edit_tips">1111111111</p> -->
+            </li>
+            <li v-for="(item, index) in addArr" :key="index">
+              <div class="edit_left">
+                <span class="edit_red">*</span>
+                <span class="edit_text">方剂组成:</span>
+              </div>
+              <input
+                type="text"
+                class="text_box"
+                style="width: 240px"
+                placeholder="请输入方剂组成"
+                v-model="prescription[`value${item}`]"
+              />
+              <p class="edit__tips">
+                <img
+                  src="../../../assets/public/dele.png"
+                  alt=""
+                  :index="item"
+                  @click="dele($event)"
+                />
+              </p>
+            </li>
+          </ul>
+        </div>
         <i class="addList" @click="add()">+</i>
         <div class="edit_btn_box">
           <button class="edit_cancel" @click="closeDrug()">取消</button>
@@ -59,6 +62,7 @@
           <span class="title">添加常见方剂</span>
           <span class="edit_switch" @click="closeDrug()"></span>
         </div>
+
         <ul class="edit_class" ref="list">
           <li>
             <div class="edit_left">
@@ -88,27 +92,39 @@
             type="text"
             class="text_box"
             v-model="prescriptionSearch"
-            @blur="prescriptionSearchShow = false"
             @focus="prescriptionSearchShow = true"
+            @blur="blurprescription"
           />
           <button class="submit">检索</button>
-          <!-- <div class="search_box" v-show="prescriptionSearchShow">
-            <div v-for="(item, index) in prescriptionSearchData" :key="index">
-              {{ item.name }}
-            </div>
-          </div> -->
-        </li>
-        <li v-for="(item, index) in prescriptionData" :key="index">
-          <div class="item_cont">
-            <div class="item_left">
-              <i></i>
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="item_container_between">
-              <div>
-                <span @click="seePrescription(item)">查看</span>
+          <div class="search_box scrollbar" v-show="prescriptionSearchShow">
+            <div class="search_scrollbar">
+              <div
+                v-for="(item, index) in prescriptionData"
+                :key="index"
+                @click="changPrescription(item)"
+              >
+                {{ item.name }}
               </div>
             </div>
+          </div>
+        </li>
+        <li style="border: none">
+          <div class="scrollbar">
+            <ul>
+              <li v-for="(item, index) in prescriptionData" :key="index">
+                <div class="item_cont">
+                  <div class="item_left">
+                    <i></i>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="item_container_between">
+                    <div>
+                      <span @click="seePrescription(item)">查看</span>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </li>
       </ul>
@@ -149,34 +165,42 @@
             type="text"
             class="text_box"
             v-model="nameSearch"
-            @blur="searchShow = false"
-            @focus="
-              searchShow = true;
-              nameSearchData = '';
-            "
+            @focus="searchShow = true"
+            @blur="blurName"
           />
           <button class="submit">检索</button>
-          <!-- <div class="search_box" v-show="searchShow">
-            <div v-for="(item, index) in nameData" :key="index">
-              {{ item.name }}
-            </div>
-          </div> -->
-        </li>
-        <li>
-          <div class="item_cont">
-            <div class="item_left" style="display: flex; flex-wrap: wrap">
+          <div class="search_box scrollbar" v-show="searchShow">
+            <div class="search_scrollbar">
               <div
-                style="margin-left: 5px"
-                v-for="(item, index) in nameData"
+                v-for="(item, index) in seacrhNamedata"
                 :key="index"
+                @click="changeName(item)"
               >
-                <i></i>
-                <span>{{ item.name }}</span>
+                {{ item.name }}
               </div>
             </div>
           </div>
         </li>
       </ul>
+      <div class="scrollbar">
+        <ul>
+          <li v-for="(item, index) in nameData" :key="index">
+            <div class="item_cont">
+              <div class="item_left" style="display: flex; flex-direction: row">
+                <div
+                  style="margin-left: 5px; width: 90px"
+                  v-for="(i, index) in item"
+                  :key="index"
+                >
+                  <i></i>
+                  <span>{{ i.name }}</span>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <button class="addResult" @click="addPrescription()">+</button>
     </div>
   </div>
@@ -196,12 +220,14 @@ export default {
       prescriptionSearch: "",
       prescriptionSearchShow: false,
       name: "",
-      nameData: "",
+      nameData: [],
       nameSearch: "",
       nameSearchData: "",
+      seacrhNamedata: "",
       searchShow: false,
       drugSee: false,
       addArr: ["1"],
+      druggeryData: {},
     };
   },
   mounted() {
@@ -211,11 +237,35 @@ export default {
   methods: {
     closePrescription() {
       this.prescriptionShow = false;
+      this.name = "";
     },
     addPrescription() {
       this.prescriptionShow = true;
     },
+    blurName() {
+      setTimeout(() => {
+        this.searchShow = false;
+      }, 200);
+    },
+    changeName(e) {
+      this.nameSearch = e.name;
+      this.bulurNmae();
+    },
+    blurprescription() {
+      setTimeout(() => {
+        this.prescriptionSearchShow = false;
+      }, 200);
+    },
+    changPrescription(e) {
+      this.prescriptionSearch = e.name;
+      this.blurprescription();
+    },
     closeDrug() {
+      let list = this.$refs.list;
+      for (let i = list.children.length; i > 2; i--) {
+        list.removeChild(list.children[i - 1]);
+      }
+      this.prescription = {};
       this.drugSee = false;
       this.drug = false;
     },
@@ -227,37 +277,68 @@ export default {
     },
     seePrescription(e) {
       this.drugSee = true;
+      this.drug = true;
       this.prescriptionItemData = e;
     },
     getPrescriptionData() {
-      this.axios.get("/meta/agentia").then((res) => {
-        this.prescriptionData = res.data.rows;
-        this.nameSearchData = res.data.rows;
-      });
+      this.axios
+        .get("/meta/agentia", {
+          params: {
+            name: this.prescriptionSearch,
+            page: "1",
+            size: "1000",
+          },
+        })
+        .then((res) => {
+          this.prescriptionData = res.data.rows;
+        });
     },
     submitPrescription() {
       if (!this.prescription.description)
         return this.$Message.error("方剂名称不能为空");
-      this.prescription.druggeryIds = [];
       for (const key in this.prescription) {
-        for (const i in this.nameData) {
-          if (this.prescription[key] == this.nameData[i].name) {
-            this.prescription.druggeryIds.push(this.nameData[i].id);
+        if (/value/.test(key)) {
+          if (!this.prescription[key]) {
+            return this.$Message.error("方剂组成不能有空项!");
           }
         }
       }
-      this.http
-        .post("/meta/agentia", {
-          druggeryIds: this.prescription.druggeryIds,
-          name: this.prescription.description,
-        })
-        .then((res) => {
-          if (res.code == "000000") {
-            this.$Message.warning("添加成功!");
-            this.drug = false;
-            this.getPrescriptionData();
+      this.prescription.druggeryIds = [];
+      let flag = false;
+      let flag1 = true;
+      for (const key in this.prescription) {
+        if (key == "description" || key == "druggeryIds") continue;
+        for (const i in this.druggeryData) {
+          if (this.prescription[key] == this.druggeryData[i].name) {
+            this.prescription.druggeryIds.push(this.druggeryData[i].id);
+            flag = true;
           }
-        });
+        }
+        if (!flag) {
+          this.$Message.error(this.prescription[key]);
+          flag = false;
+          flag1 = false;
+          return;
+        } else {
+          flag = false;
+        }
+      }
+      if (flag1) {
+        this.http
+          .post("/meta/agentia", {
+            druggeryIds: this.prescription.druggeryIds,
+            name: this.prescription.description,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.$Message.warning("添加成功!");
+              this.closeDrug();
+              this.getPrescriptionData();
+            } else {
+              this.$Message.error(`${this.prescription.description}重复添加!`);
+            }
+          });
+      }
     },
     dele(e) {
       let li = e.target.parentNode.parentNode;
@@ -273,11 +354,23 @@ export default {
       this.axios
         .get("/meta/druggery", {
           params: {
-            size: "500",
+            name: this.nameSearch,
+            page: "1",
+            size: "1000",
           },
         })
         .then((res) => {
-          this.nameData = res.data.rows;
+          this.druggeryData = res.data.rows;
+          let rows = res.data.rows;
+          let arr = [];
+          for (let i = 0; i < rows.length; i++) {
+            arr.push(rows[i]);
+            if (i % 7 == "1") {
+              this.nameData.push(arr);
+              arr = [];
+            }
+          }
+          this.nameData.reverse();
         });
     },
     submitName() {
@@ -292,6 +385,8 @@ export default {
             this.prescriptionShow = false;
             this.name = "";
             this.getName();
+          } else {
+            this.$Message.warning(`${this.name} 已添加!`);
           }
         });
     },
@@ -302,23 +397,16 @@ export default {
         .get("/meta/druggery", {
           params: {
             name: this.nameSearch,
-            size: "500",
+            page: "1",
+            size: "1000",
           },
         })
         .then((res) => {
-          this.nameData = res.data.rows;
+          this.seacrhNamedata = res.data.rows;
         });
     },
     prescriptionSearch: function () {
-      this.axios
-        .get("/meta/agentia", {
-          params: {
-            name: this.prescriptionSearch,
-          },
-        })
-        .then((res) => {
-          this.prescriptionData = res.data.rows;
-        });
+      this.getPrescriptionData();
     },
   },
 };
@@ -330,10 +418,23 @@ export default {
   }
   .cont_bg {
     width: 47%;
+    .scrollbar {
+      ul {
+        padding-right: 10px;
+        height: 480px;
+        overflow-y: auto;
+      }
+    }
     .edit {
       top: 45px;
       left: 50%;
       margin-left: -235px;
+      .scrollbar {
+        ul {
+          overflow-y: auto;
+          height: 400px;
+        }
+      }
       .select {
         width: 235px;
       }
@@ -351,9 +452,17 @@ export default {
       .search_box {
         position: absolute;
         top: 39px;
-        width: 100%;
+        width: 500px;
         background-color: rgb(5, 61, 118);
         border: rgb(9, 124, 168) 1px solid;
+        .search_scrollbar {
+          width: 495px;
+          max-height: 300px;
+          overflow-y: auto;
+        }
+        .search_scrollbar div:hover {
+          background: rgb(9, 124, 168);
+        }
       }
       button {
         width: 115px;
@@ -397,10 +506,11 @@ export default {
     }
     li {
       // height: 40px;
-      .edit_tips {
+      .edit__tips {
+        position: absolute;
         width: 20px;
         height: 30px;
-        right: 62px;
+        left: 370px;
         top: 8px;
         display: inline-block;
         img {
@@ -408,7 +518,7 @@ export default {
           height: 24px;
         }
       }
-      .edit_tips:hover {
+      .edit__tips:hover {
         border-bottom: 2px solid rgb(255, 0, 0);
       }
     }

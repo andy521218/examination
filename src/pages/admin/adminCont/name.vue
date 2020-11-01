@@ -59,45 +59,47 @@
       </div>
       <div class="mask" v-if="mask"></div>
       <div class="cont_header">病名症型</div>
-      <ul>
-        <li
-          v-for="(item, index) in nameData"
-          :key="index"
-          style="border-bottom: 1px solid #086f94"
-        >
-          <div class="item_cont" @click="tabShow(item, index)">
-            <div class="item_left">
-              <i></i>
-              <span>{{ item.name }}</span>
+      <div class="scrollbar">
+        <ul>
+          <li
+            v-for="(item, index) in nameData"
+            :key="index"
+            style="border-bottom: 1px solid #086f94"
+          >
+            <div class="item_cont" @click="tabShow(item, index)">
+              <div class="item_left">
+                <i></i>
+                <span>{{ item.name }}</span>
+              </div>
+              <p class="editCurr" @click="editName(item)">编辑病名</p>
+              <div
+                class="item_right"
+                :class="{ transform: showIndex == index }"
+              ></div>
             </div>
-            <p class="editCurr" @click="editName(item)">编辑病名</p>
-            <div
-              class="item_right"
-              :class="{ transform: showIndex == index }"
-            ></div>
-          </div>
-          <div class="item_container" :class="{ active: showIndex == index }">
-            <div
-              class="item_container_between"
-              v-for="(i, index) in diseaseData"
-              :key="index"
-              v-show="diseaseData"
-            >
-              <p>{{ i.name }}</p>
-              <div style="margin-right: 35px">
-                <span @click="addDisease(item)">添加症型</span>
-                <span @click="editDisease(item, i)">编辑症型</span>
+            <div class="item_container" :class="{ active: showIndex == index }">
+              <div
+                class="item_container_between"
+                v-for="(i, index) in diseaseData"
+                :key="index"
+                v-show="diseaseData"
+              >
+                <p>{{ i.name }}</p>
+                <div style="margin-right: 35px">
+                  <span @click="addDisease(item)">添加症型</span>
+                  <span @click="editDisease(item, i)">编辑症型</span>
+                </div>
+              </div>
+              <div class="item_container_between">
+                <p></p>
+                <div v-show="!diseaseData">
+                  <span @click="addDisease(item)">添加症型</span>
+                </div>
               </div>
             </div>
-            <div class="item_container_between">
-              <p></p>
-              <div v-show="!diseaseData">
-                <span @click="addDisease(item)">添加症型</span>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
       <button class="addResult" @click="addName()">+</button>
     </div>
   </div>
@@ -109,7 +111,7 @@ export default {
   data() {
     return {
       nameData: {},
-      showIndex: "",
+      showIndex: "2000",
       diseaseData: {},
       nameShow: false,
       mask: false,
@@ -247,6 +249,14 @@ export default {
 <style lang="scss">
 .name {
   .cont_bg {
+    .scrollbar {
+      ul {
+        margin-top: 5px;
+        padding-right: 10px;
+        overflow-y: auto;
+        height: 530px;
+      }
+    }
     ul {
       li {
         border: none;

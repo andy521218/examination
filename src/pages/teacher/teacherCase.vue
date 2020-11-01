@@ -59,16 +59,18 @@
                 type="radio"
                 v-model="check"
                 name="caseId"
+                @change="getRadiodata(item)"
                 :value="item.caseId"
               />
               <div class="state_item">
                 <div class="item_one" v-if="!item.complete">未完成</div>
+                <div class="item_draft" v-if="item.draft">草稿</div>
                 <div class="item_two" v-if="item.train">训</div>
                 <div class="item_three" v-if="item.exam">考</div>
               </div>
             </div>
             <div class="bottom">
-              <span class="bottom_edit" @click="link(item.caseId)">
+              <span class="bottom_edit" @click="link(item)">
                 <i></i>
                 编 辑
               </span>
@@ -162,6 +164,7 @@ export default {
       check: "",
       trainshow: false,
       searchOptions: "",
+      radioData: {},
     };
   },
   mounted() {
@@ -178,7 +181,7 @@ export default {
         if (res.code == "000000") {
           this.$Message.warning("删除案例成功!");
           this.deleshow = false;
-          this.mask = true;
+          this.mask = false;
           this.getManage();
         } else {
           this.$Message.error(res.msg);
@@ -189,25 +192,34 @@ export default {
       this.mask = true;
       this.addCase = true;
     },
+    getRadiodata(item) {
+      this.radioData = item;
+    },
     addAssessTrain() {
       if (!this.check) return this.$Message.error("请选择一项案例!");
       this.trainshow = true;
     },
     addExam() {
+      if (!this.radioData.complete)
+        return this.$Message.error("当前案例未完成,不可以设置为考核案例!");
       this.axios.put(`/case/manage/${this.check}/exam`).then((res) => {
         if (res.code == "000000") {
           this.$Message.warning("设为考核案例成功!");
           this.allShow = false;
+          this.getManage();
         } else {
           this.$Message.error("案例未完成,不可以设置为考核案例!");
         }
       });
     },
     addTrain() {
+      if (!this.radioData.complete)
+        return this.$Message.error("当前案例未完成,不可以设置为训练案例!");
       this.axios.put(`/case/manage/${this.check}/train`).then((res) => {
         if (res.code == "000000") {
           this.$Message.warning("设为训练案例成功!");
           this.trainshow = false;
+          this.getManage();
         } else {
           this.$Message.error("案例未完成,不可以设置为训练案例!");
         }
@@ -241,16 +253,21 @@ export default {
       if (!this.check) return this.$Message.error("请选择一项案例!");
       this.allShow = true;
     },
-    link(caseId) {
+    link(item) {
+      if (!item.draft) {
+        this.axios.post(`/case/manage/draft/${item.caseId}`).then((res) => {
+          if (res.code == "000000") {
+            localStorage.setItem("caseId", res.data);
+            this.$router.push("/case");
+            this.$Message.warning("开始修改案例!");
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+        return;
+      }
+      localStorage.setItem("caseId", item.caseId);
       this.$router.push("/case");
-      localStorage.setItem("caseId", caseId);
-      this.axios.post(`/case/manage/draft/${caseId}`).then((res) => {
-        if (res.code == "000000") {
-          this.$Message.warning("开始修改案例!");
-        } else {
-          this.$Message.error(res.msg);
-        }
-      });
     },
   },
 };

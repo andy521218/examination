@@ -1,25 +1,32 @@
 <template>
   <div class="cont_bg look_box">
-    <edit-result v-if="result" :title="title" :type="type" @getItemData='getItemData'></edit-result>
+    <edit-result
+      v-if="result"
+      :title="title"
+      :type="type"
+      @getItemData="getItemData"
+    ></edit-result>
     <div class="mask" v-if="result"></div>
     <div class="cont_header">{{ title }}诊断</div>
-    <ul>
-      <li v-for="(item, index) in data" :key="index" @click="tabShow(index)">
-        <div class="item_cont">
-          <div class="item_left">
-            <i></i>
-            <span>{{ item.name }}</span>
+    <div class="scrollbar">
+      <ul>
+        <li v-for="(item, index) in data" :key="index" @click="tabShow(index)">
+          <div class="item_cont">
+            <div class="item_left">
+              <i></i>
+              <span>{{ item.name }}</span>
+            </div>
+            <div
+              class="item_right"
+              :class="{ transform: indexShow == index }"
+            ></div>
           </div>
-          <div
-            class="item_right"
-            :class="{ transform: indexShow == index }"
-          ></div>
-        </div>
-        <div class="item_container" :class="{ active: indexShow == index }">
-          <p v-for="(i, index) in item.options" :key="index">{{ i }}</p>
-        </div>
-      </li>
-    </ul>
+          <div class="item_container" :class="{ active: indexShow == index }">
+            <p v-for="(i, index) in item.options" :key="index">{{ i }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
     <button class="addResult" @click="editResult()">+</button>
   </div>
 </template>
@@ -30,7 +37,7 @@ export default {
   name: "look-box",
   data() {
     return {
-      indexShow: "1",
+      indexShow: "1000",
       transformIndex: "-1",
       result: false,
       type: "",
@@ -62,7 +69,7 @@ export default {
     } else if (this.title == "望舌") {
       this.type = 2;
     }
-    this.getItemData()
+    this.getItemData();
   },
 };
 </script>
@@ -81,6 +88,13 @@ export default {
     }
     li {
       border: none;
+    }
+  }
+  .scrollbar {
+    ul {
+      height: 550px;
+      padding-right: 10px;
+      overflow-y: auto;
     }
   }
 }

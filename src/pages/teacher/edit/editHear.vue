@@ -142,6 +142,8 @@ export default {
       .item_cont_border {
         border: 1px solid rgb(9, 124, 168);
         border-top: none;
+        height: 30px;
+        line-height: 30px;
         .item_cont {
           .item_cont_title {
             width: 400px;
