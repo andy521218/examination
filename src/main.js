@@ -64,7 +64,7 @@ router.beforeEach((to, from, next) => {
         if(authority=='TEACHER'){
           router.addRoutes(teacher)
         }
-        if(authority=='STUEDNT'){
+        if(authority=='STUDENT'){
           router.addRoutes(user)
         }
         router.push(to.path)

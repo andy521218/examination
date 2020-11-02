@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" style="min-width: 1920px">
     <header class="home_header">
       <logo></logo>
       <div class="home_user">
@@ -82,9 +82,9 @@ export default {
       this.bgIndex = i;
       this.$router.push(this.item[i].link);
     },
-    saveCase(){
-      this.$router.push('/teachercase')
-    }
+    saveCase() {
+      this.$router.push("/teachercase");
+    },
   },
 };
 </script>

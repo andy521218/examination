@@ -3,7 +3,9 @@
     <router-link to="casehome">
       <div class="tab train"></div>
     </router-link>
-    <div class="tab assessment"></div>
+    <router-link to="teachercase">
+      <div class="tab assessment"></div>
+    </router-link>
     <router-link to="/messagemy">
       <div class="tab problem"></div>
     </router-link>
@@ -22,7 +24,7 @@ export default {
 .container {
   display: flex;
   height: 393px;
-  width: 1480px;
+  width: 1540px;
   position: absolute;
   top: 50%;
   left: 50%;

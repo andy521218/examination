@@ -184,7 +184,11 @@
       </ul>
       <div class="scrollbar">
         <ul>
-          <li v-for="(item, index) in nameData" :key="index">
+          <li
+            v-for="(item, index) in nameData"
+            :key="index"
+            style="min-width: 672px"
+          >
             <div class="item_cont">
               <div class="item_left" style="display: flex; flex-direction: row">
                 <div

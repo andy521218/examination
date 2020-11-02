@@ -77,11 +77,10 @@ export const teacher=[
       components:{
         main:() => import('../pages/message/messagePrivate'),
       },
-    },
-   
+    },  
     ]
   },
- 
+
 //案例管理
 {
   path:'/case',

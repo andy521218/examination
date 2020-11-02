@@ -1,5 +1,5 @@
 <template>
-  <div class="teacher case" style="min-width: 1670px">
+  <div class="teacher case">
     <div class="main_mask" v-if="mask"></div>
     <!-- 删除案例 -->
     <edit-dele v-if="deleshow" :title="`删除案例`" @deleSubmit="deleSubmit">
@@ -94,6 +94,7 @@
       :size="Number(size)"
       @getData="getManage"
     ></turn-page>
+    <input type="text" :value="screenWidth" />
   </div>
 </template>
 
@@ -165,10 +166,26 @@ export default {
       trainshow: false,
       searchOptions: "",
       radioData: {},
+      screenWidth: "",
     };
   },
   mounted() {
     this.getManage();
+    let timeout;
+    window.onresize = () => {
+      this.screenWidth = document.body.clientWidth;
+      console.log(this.screenWidth);
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        if (this.screenWidth >= "1900") {
+          this.size = "10";
+          this.getManage();
+        } else {
+          this.size = "8";
+          this.getManage();
+        }
+      }, 500);
+    };
   },
   methods: {
     dele(e) {
@@ -270,5 +287,8 @@ export default {
       this.$router.push("/case");
     },
   },
+
+  watch: {},
 };
 </script>
+

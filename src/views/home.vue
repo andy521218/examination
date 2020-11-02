@@ -43,7 +43,7 @@ export default {
   }
   .user_main {
     width: 90%;
-    min-width: 1670px;
+    min-width: 1375px;
     background: url("../assets/public/box.png") no-repeat center;
     background-size: 100% 100%;
     margin-right: 40px;
