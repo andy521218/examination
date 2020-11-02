@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       tab: ["望神色形态", "望局部", "望舌"],
-      list: [
+      list: [ 
         {
           id: 1,
           name: "心系病",

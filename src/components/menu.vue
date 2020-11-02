@@ -159,7 +159,7 @@ export default {
           this.menuData = this.teacherMenu;
           return;
         }
-        if (res.data.authority == "STUEDNT") {
+        if (res.data.authority == "STUDENT") {
           this.menuData = this.stuedntMenu;
           return;
         }

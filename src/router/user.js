@@ -79,6 +79,11 @@ export const user=[
     },
   ]
 },
+{
+  path: '/casehome',
+  name: 'casehome',
+  component:() => import('../pages/usercore/case/caseHome'),
+},
 ]
 
 export default user

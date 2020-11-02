@@ -1,6 +1,8 @@
 <template>
   <div class="container">
-    <div class="tab train"></div>
+    <router-link to="casehome">
+      <div class="tab train"></div>
+    </router-link>
     <div class="tab assessment"></div>
     <router-link to="/messagemy">
       <div class="tab problem"></div>

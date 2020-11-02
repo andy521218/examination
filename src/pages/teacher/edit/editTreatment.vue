@@ -82,7 +82,7 @@
             <ul>
               <li v-for="(item, index) in agentiaList" :key="index">
                 <span v-for="(i, index) in item" :key="index">
-                  {{ i.name }}
+                  {{ i }}
                 </span>
               </li>
             </ul>
@@ -291,21 +291,23 @@ export default {
     },
     //获取方剂正确答案
     getTreatVal() {
+      this.agentiaList = [];
       this.axios.get(`/case/manage/${this.caseId}/treat`).then((res) => {
         this.searchTreat = res.data.treatName;
         this.searchAgentia = res.data.agentias[0].name;
         this.agentiaId = res.data.agentias[0].id;
         let druggeries = res.data.agentias[0].druggeries;
-
         let arr = [];
         for (let i = 0; i < druggeries.length; i++) {
-          arr.push(druggeries[i]);
-          if (i % 6 == "1") {
+          arr.push(druggeries[i].name);
+          if (arr.length % 6 == "0") {
             this.agentiaList.push(arr);
             arr = [];
           }
         }
-        this.agentiaList.reverse();
+        if (arr.length > 0) {
+          this.agentiaList.push(arr);
+        }
       });
     },
     timerOuttreat() {
@@ -337,34 +339,35 @@ export default {
     //设置方剂正确答案
     agentiaVal(e) {
       if (!this.agentiaList.name) {
-        this.searchAgentia = e.name;
         this.axios
-          .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
-          .then((res) => {
-            if (res.code == "000000") {
-              this.$Message.warning("更改方剂成功!");
-              this.getTreatVal();
-            } else {
-              this.$Message.error(res.msg);
-            }
+          .delete(`/case/manage/${this.caseId}/treat/agentia/${this.agentiaId}`)
+          .then(() => {
+            this.searchAgentia = e.name;
+            this.axios
+              .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
+              .then((res) => {
+                if (res.code == "000000") {
+                  this.$Message.warning("更改方剂成功!");
+                  this.getTreatVal();
+                } else {
+                  this.$Message.error(res.msg);
+                }
+              });
           });
         return;
       }
+      this.searchAgentia = e.name;
       this.axios
-        .delete(`/case/manage/${this.caseId}/treat/agentia/${this.agentiaId}`)
-        .then(() => {
-          this.searchAgentia = e.name;
-          this.axios
-            .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
-            .then((res) => {
-              if (res.code == "000000") {
-                this.$Message.warning("更改方剂成功!");
-                this.getTreatVal();
-              } else {
-                this.$Message.error(res.msg);
-              }
-            });
+        .put(`/case/manage/${this.caseId}/treat/agentia/${e.id}`)
+        .then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("更改方剂成功!");
+            this.getTreatVal();
+          } else {
+            this.$Message.error(res.msg);
+          }
         });
+      return;
     },
 
     // 辩证数据
@@ -379,7 +382,7 @@ export default {
           let press = res.data.diseaseNameIssues[3].issueIds;
           this.diseasesRadio = res.data.diseases;
           this.defaultOptions = res.data.diseases[0];
-          console.log(this.defaultOptions);
+
           let arr = [];
           // 获取望诊数据
           for (let i = 0; i <= 2; i++) {
@@ -424,7 +427,6 @@ export default {
             })
             .then((res) => {
               this.diseasesAskData = res.data.rows;
-              console.log(res);
               for (let i = 0; i < ask.length; i++) {
                 for (let y = 0; y < res.data.rows.length; y++) {
                   if (ask[i] == res.data.rows[y].id) {
@@ -461,6 +463,10 @@ export default {
     },
     // 切诊查看数据
     seeDisease(e) {
+     this.diseasesWatch=[]
+     this.diseasesListenth=[]
+     this.diseasesAsk=[]
+     this.diseasesPress=[]
       for (let i = 0; i < e.issues.length; i++) {
         if (e.issues[i].stageId == "1") {
           this.diseasesWatch = e.issues[i].issueIds;
