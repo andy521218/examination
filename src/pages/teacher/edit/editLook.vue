@@ -2,7 +2,6 @@
   <div class="case_look">
     <case-option
       :option="option"
-      :radioName="radioName"
       v-if="optionShow"
       @editcaseData="editcaseData"
     ></case-option>
@@ -77,7 +76,7 @@ export default {
   data() {
     return {
       tab: ["望神色形态", "望局部", "望舌"],
-      list: [ 
+      list: [
         {
           id: 1,
           name: "心系病",
@@ -108,7 +107,6 @@ export default {
       watchData: "",
       imgurl: "",
       caseData: {},
-      radioName: "",
     };
   },
   mounted() {

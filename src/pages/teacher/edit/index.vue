@@ -4,15 +4,27 @@
       <logo></logo>
       <div class="home_user">
         <div class="home_case_left">
-          <div class="stop">
+          <div class="stop" v-if="authority == 'STUDENT'">
             <img src="../../../assets/public/stop.png" alt="" />
             <span>暂停</span>
+          </div>
+          <div
+            class="sonserve"
+            @click="saveCase()"
+            v-if="authority == 'STUDENT'"
+          >
+            <img src="../../../assets/public/sonserve.png" alt="" />
+            <span>完成</span>
           </div>
           <!-- <div class="close">
             <img src="../../../assets/public/close.png" alt="" />
             <span>取消</span>
           </div> -->
-          <div class="sonserve" @click="saveCase()">
+          <div
+            class="sonserve"
+            @click="saveCase()"
+            v-if="authority == 'TEACHER'"
+          >
             <img src="../../../assets/public/sonserve.png" alt="" />
             <span>保存</span>
           </div>
@@ -47,16 +59,16 @@ export default {
     return {
       item: [
         {
+          name: "问",
+          link: "editask",
+        },
+        {
           name: "望",
           link: "editlook",
         },
         {
           name: "闻",
           link: "edithear",
-        },
-        {
-          name: "问",
-          link: "editask",
         },
         {
           name: "切",
@@ -72,10 +84,42 @@ export default {
         },
       ],
       bgIndex: "-1",
+      authority: "",
     };
   },
   components: {
     logo,
+  },
+  mounted() {
+    this.authority = localStorage.getItem("authority");
+    if (this.authority == "STUDENT") {
+      this.item = [
+        {
+          name: "问",
+          link: "userask",
+        },
+        {
+          name: "望",
+          link: "userlook",
+        },
+        {
+          name: "闻",
+          link: "userHear",
+        },
+        {
+          name: "切",
+          link: "usercut",
+        },
+        {
+          name: "辩证",
+          link: "userdialectical",
+        },
+        {
+          name: "治疗",
+          link: "usertreatment",
+        },
+      ];
+    }
   },
   methods: {
     routeLink(i) {

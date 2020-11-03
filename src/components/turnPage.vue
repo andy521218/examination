@@ -44,7 +44,6 @@ export default {
     margin-right: 32px;
   }
   .pagination {
-    width: 430px;
     margin: 0 auto;
     .ivu-page {
       text-align: center;

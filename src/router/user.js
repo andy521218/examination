@@ -84,6 +84,44 @@ export const user=[
   name: 'casehome',
   component:() => import('../pages/usercore/case/caseHome'),
 },
+{
+  path:'index',
+  name:'index',
+  redirect: "userask",
+  component:()=>import('../pages/teacher/edit/index'),
+  children:[
+    {
+      path: '/userlook',
+      name: 'userlook',
+      component:() => import('../pages/usercore/case/userLook'),
+    },
+    {
+      path: '/userask',
+      name: 'userlookuserlookuserlookuserlook',
+      component:() => import('../pages/usercore/case/userAsk'),
+    },
+    {
+      path: '/userHear',
+      name: 'userHear',
+      component:() => import('../pages/usercore/case/userHear'),
+    },
+    {
+      path: '/usercut',
+      name: 'usercut',
+      component:() => import('../pages/usercore/case/userCut'),
+    },
+    {
+      path: '/userdialectical',
+      name: 'userdialectical',
+      component:() => import('../pages/usercore/case/userDialectical'),
+    },
+    {
+      path: '/usertreatment',
+      name: 'usertreatment',
+      component:() => import('../pages/usercore/case/userTreatment'),
+    },
+  ]
+},
 ]
 
 export default user

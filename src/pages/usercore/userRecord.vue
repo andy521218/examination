@@ -14,7 +14,10 @@
       <button class="submit">检索</button>
     </div>
     <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th class="table_5">序号</th>
@@ -158,7 +161,12 @@
         </tbody>
       </table>
     </div>
-    <turn-page></turn-page>
+    <turn-page
+      v-show="total > size"
+      :totaltotal="Number(total)"
+      :size="Number(size)"
+      @getData="getManage"
+    ></turn-page>
   </div>
 </template>
 
@@ -166,6 +174,12 @@
 import turnPage from "../../components/turnPage";
 export default {
   name: "user-record",
+  data() {
+    return {
+      size: "10",
+      total: "11",
+    };
+  },
   components: {
     turnPage,
   },
@@ -204,7 +218,7 @@ export default {
       margin-right: 10px;
       color: rgb(0, 235, 255);
     }
-    td span:hover{
+    td span:hover {
       border-bottom: 1px solid rgb(0, 235, 255);
     }
   }

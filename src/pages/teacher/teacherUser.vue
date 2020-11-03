@@ -125,7 +125,7 @@
       </table>
     </div>
     <turn-page
-      class="admin_page"
+      v-show="total > size"
       :totaltotal="Number(total)"
       :size="Number(size)"
       @getData="getData"

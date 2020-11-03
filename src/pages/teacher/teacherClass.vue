@@ -82,7 +82,7 @@
         </tbody>
       </table>
       <turn-page
-        class="admin_page"
+        v-show="total > size"
         :totaltotal="Number(total)"
         :size="10"
         @getData="getData"

@@ -32,7 +32,7 @@
             name="sex"
             v-model="gender"
           />
-          <label for class="edit_off">男</label>
+          <label for class="edit_off">女</label>
           <input
             class="edit_radio"
             type="radio"
@@ -40,7 +40,7 @@
             name="sex"
             v-model="gender"
           />
-          <label for class="edit_off">女</label>
+          <label for class="edit_off">男</label>
         </li>
         <li>
           <div class="edit_left">
@@ -137,12 +137,12 @@ export default {
             name: this.upData.name,
             age: this.upData.age,
             diseaseType: this.upData.diseaseType,
-            gender: !this.gender,
+            gender: this.gender,
           })
           .then((res) => {
             if (res.code == "000000") {
               this.$Message.warning("添加案例成功!");
-              this.$emit('getManage')
+              this.$emit("getManage");
               this.close();
             } else {
               this.$Message.error(res.msg);

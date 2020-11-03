@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="case_bottom">
-            <span>{{ item.name }}</span>
+            <span>姓名: {{ item.name }}</span>
             <span>性别: {{ item.gender ? "男" : "女" }}</span>
             <span>年龄: {{ item.age }}岁</span>
           </div>
@@ -89,12 +89,11 @@
       </ul>
     </div>
     <turn-page
-      class="admin_page"
+      v-show="total > size"
       :totaltotal="Number(total)"
       :size="Number(size)"
       @getData="getManage"
     ></turn-page>
-    <input type="text" :value="screenWidth" />
   </div>
 </template>
 
