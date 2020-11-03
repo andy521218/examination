@@ -39,7 +39,7 @@
           </div>
         </main>
       </div>
-      <div class="case_right">
+      <!-- <div class="case_right">
         <div class="case_right_title">
           <span>添加图片</span>
         </div>
@@ -55,7 +55,7 @@
             <input type="file" ref="imgs" @change="importimg" />
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

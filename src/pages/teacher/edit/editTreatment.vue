@@ -128,8 +128,8 @@
             <!-- 问诊 -->
             <ul v-show="typeId == 2" class="ask">
               <li v-for="(item, index) in askData" :key="index">
-                <span>问: {{ item.answer }}</span>
-                <span> 答: {{ item.question }}</span>
+                <span>问: {{ item.question }}</span>
+                <span> 答: {{ item.answer }}</span>
               </li>
             </ul>
             <!-- 切诊 -->
@@ -210,8 +210,8 @@
                   :key="index"
                   v-show="i.id == item"
                 >
-                  <span>问: {{ i.answer }}</span>
-                  <span> 答: {{ i.question }}</span>
+                  <span>问: {{ i.question }}</span>
+                  <span> 答: {{ i.answer }}</span>
                 </div>
               </li>
             </ul>
@@ -463,10 +463,10 @@ export default {
     },
     // 切诊查看数据
     seeDisease(e) {
-     this.diseasesWatch=[]
-     this.diseasesListenth=[]
-     this.diseasesAsk=[]
-     this.diseasesPress=[]
+      this.diseasesWatch = [];
+      this.diseasesListenth = [];
+      this.diseasesAsk = [];
+      this.diseasesPress = [];
       for (let i = 0; i < e.issues.length; i++) {
         if (e.issues[i].stageId == "1") {
           this.diseasesWatch = e.issues[i].issueIds;

@@ -30,7 +30,7 @@
                 <li
                   v-for="(item, index) in pulseData.optinos"
                   :key="index"
-                  style="display: flex"
+                  style="display: flex; justify-content: flex-start"
                 >
                   <div
                     class="item_cont"

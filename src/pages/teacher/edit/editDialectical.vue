@@ -60,8 +60,8 @@
               border-bottom: 1px solid #097ca8;
             "
           >
-            <span class="start">问: {{ item.answer }}</span>
-            <span class="end">答: {{ item.question }}</span>
+            <span class="start">问: {{ item.question }}</span>
+            <span class="end">答: {{ item.answer }}</span>
           </li>
         </ul>
       </div>
@@ -202,9 +202,9 @@
             </div>
             <div style="display: flex; flex-direction: column">
               <span class="start" style="height: auto"
-                >问:{{ item.answer }}</span
+                >问:{{ item.question }}</span
               >
-              <span class="end">答:{{ item.question }}</span>
+              <span class="end">答:{{ item.answer }}</span>
             </div>
           </li>
         </ul>
@@ -318,9 +318,9 @@
             <input type="checkbox" :value="item.id" v-model="diseaseAskData" />
             <div style="display: flex; flex-direction: column">
               <span class="start" style="height: auto"
-                >问:{{ item.answer }}</span
+                >问:{{ item.question }}</span
               >
-              <span class="end">答:{{ item.question }}</span>
+              <span class="end">答:{{ item.answer }}</span>
             </div>
           </li>
         </ul>
@@ -532,7 +532,7 @@ export default {
       }
       if (item == "切") {
         issueIds = this.namePressData;
-        issueIds.push('8')
+        issueIds.push("8");
         stageId = "4";
       }
       if (issueIds.length == "0") return;

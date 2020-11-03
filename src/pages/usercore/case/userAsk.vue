@@ -26,7 +26,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -48,7 +48,7 @@
                     :style="{ background: select[item.colorId].color }"
                   ></i>
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -66,7 +66,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -84,7 +84,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -102,7 +102,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -120,7 +120,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -138,7 +138,7 @@
                   style="height: 35px"
                 >
                   <div class="item_cont" style="flex-direction: column">
-                    <span>{{ item.answer }}</span>
+                    <span>{{ item.question }}</span>
                   </div>
                   <div class="item_edit" @click="asked(item)">
                     <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
@@ -169,7 +169,7 @@
               <img src="../../../assets/public/timg1.jpg" alt="" />
               <div class="asked_right_box">
                 <i></i>
-                <span>{{ item.answer }}</span>
+                <span>{{ item.question }}</span>
               </div>
             </div>
             <div class="asked_left">

@@ -44,8 +44,8 @@
                   :style="{ background: select[item.colorId].color }"
                 ></i>
                 <div class="item_cont" style="flex-direction: column">
-                  <span>问: {{ item.answer }}</span>
-                  <span>答: {{ item.question }}</span>
+                  <span>问: {{ item.question }}</span>
+                  <span>答: {{ item.answer }}</span>
                 </div>
                 <div class="item_edit">
                   <i class="icon_edit" @click="openCont(item)"></i>
@@ -61,13 +61,13 @@
           <input
             type="text"
             class="text_box"
-            v-model="answer"
+            v-model="question"
             placeholder="请输入问题..."
           />
           <input
             type="text"
             class="text_box"
-            v-model="question"
+            v-model="answer"
             placeholder="请输入答案.."
           />
           <button class="submit" @click="submit">添加</button>
