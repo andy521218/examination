@@ -8,7 +8,7 @@
     ></case-option>
     <div class="case_layout">
       <div class="case_left">
-        <case-header :caseData="caseData"></case-header>
+        <case-header></case-header>
         <main>
           <ul class="main_tab">
             <li
@@ -55,32 +55,9 @@ export default {
   data() {
     return {
       tab: ["闻诊"],
-      list: [
-        {
-          id: 1,
-          name: "心系病",
-        },
-        {
-          id: 2,
-          name: "肝系病",
-        },
-        {
-          id: 3,
-          name: "脾胃病",
-        },
-        {
-          id: 4,
-          name: "肺系病",
-        },
-        {
-          id: 5,
-          name: "肾系病",
-        },
-      ],
       typeId: "",
       optionShow: false,
       radioName: "",
-      caseData: {},
       caseId: "",
       listenData: {},
     };
@@ -91,19 +68,12 @@ export default {
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
-    this.getcasedata();
     this.getListenData();
   },
   methods: {
     openOption(e) {
       this.option = e;
       this.optionShow = true;
-    },
-    getcasedata() {
-      this.axios.get(`/case/${this.caseId}`).then((res) => {
-        this.caseData = res.data;
-        this.caseData.diseaseTypeName = this.list[res.data.diseaseType].name;
-      });
     },
     getListenData() {
       this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {

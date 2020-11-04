@@ -110,6 +110,8 @@ export default {
       this.axios.post(`/train/${e.caseId}`).then((res) => {
         if (res.code == "000000") {
           localStorage.setItem("examNo", res.data.examNo);
+          localStorage.setItem("name", e.name);
+          localStorage.setItem("sex", e.gender);
           this.$router.push("userask");
         }
       });

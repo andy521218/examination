@@ -2,8 +2,23 @@
   <div>
     <input type="file" ref="fileId" @change="getFile" />
     <button @click="importRow">11111111111</button>
-    <img src="http://localhost:8080/api/download/43/1602896667540.png" alt="" />
-    <button @click="fn">getget</button>
+    <div class="imgs">
+      <img
+        src="http://localhost:8080/api/download/43/1602896667540.png"
+        alt=""
+        usemap="#catmap"
+      />
+      <map name="catmap">
+        <area
+          shape="rect"
+          coords="0,0,148,139"
+          @click="fn"
+          target="_blank"
+          alt="Venus"
+          style="cursor: pointer"
+        />
+      </map>
+    </div>
   </div>
 </template>
 
@@ -19,6 +34,9 @@ export default {
       //获取file内容
       let files = this.$refs.fileId.files[0];
       this.xlsxFile = files;
+    },
+    fn() {
+      console.log(11);
     },
     //上传文件
     importRow() {
@@ -39,4 +57,6 @@ export default {
 </script>
 
 <style lang="scss">
+.imgs {
+}
 </style>

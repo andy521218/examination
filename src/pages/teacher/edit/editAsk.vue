@@ -16,8 +16,30 @@
         <p class="edit_dele_p">(删除后无法找回)</p>
       </template>
     </edit-dele>
+    <!-- 现病史颜色分类 -->
+    <div class="ask_add_color" v-if="askColorshow">
+      <div class="edit">
+        <div class="edit_title">
+          <span class="title">提示</span>
+          <span class="edit_switch" @click="askColorshow = false"></span>
+        </div>
+        <div class="edit_left big">
+          <span class="edit_red">*</span>
+          <span class="edit_text">请选择现病史问题分类</span>
+          <customize-select></customize-select>
+        </div>
+        <div class="edit_btn_box">
+          <button class="edit_cancel" @click="askColorshow = false">
+            取消
+          </button>
+          <button class="edit_submit" @click="uploadAskData(editData.colorId)">
+            确定
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="case_left">
-      <case-header :caseData="caseData"></case-header>
+      <case-header></case-header>
       <main>
         <ul class="main_tab">
           <li
@@ -32,7 +54,7 @@
           <i class="tips" @click="opneTips"></i>
         </ul>
         <div class="content scrollbar">
-          <div class="content_scrollbar">
+          <div class="content_scrollbar" ref="scroll">
             <ul>
               <li
                 v-for="(item, index) in askData"
@@ -130,6 +152,7 @@ import caseProblem from "../edit/caseProblem";
 import caseHeader from "../edit/caseHeader";
 import tips from "../edit/tips";
 import editDele from "../../../components/edit/editDele";
+import customizeSelect from "../../../components/customizeSelect";
 export default {
   name: "edit-look",
   components: {
@@ -137,31 +160,10 @@ export default {
     tips,
     editDele,
     caseHeader,
+    customizeSelect,
   },
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          name: "心系病",
-        },
-        {
-          id: 2,
-          name: "肝系病",
-        },
-        {
-          id: 3,
-          name: "脾胃病",
-        },
-        {
-          id: 4,
-          name: "肺系病",
-        },
-        {
-          id: 5,
-          name: "肾系病",
-        },
-      ],
       select: [
         {
           title: "发病情况",
@@ -196,24 +198,24 @@ export default {
       edit_cont: false,
       tips: false,
       allShow: false,
+      askColorshow: false,
       answer: "",
       question: "",
       askData: {},
       editData: {},
-      caseData: {},
       tabData: {},
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.getaskData();
-    this.getcaseData();
     this.getTabdata();
   },
   methods: {
     container(i) {
       this.typeId = i;
       this.getaskData();
+  
     },
     upload() {
       this.route = this.$refs.file.value;
@@ -222,7 +224,6 @@ export default {
       this.editData = e;
       this.editData.correct = !e.correct;
       this.edit_cont = true;
-      console.log(e.correct);
     },
     opneTips() {
       this.tips = true;
@@ -258,10 +259,16 @@ export default {
     submit() {
       if (!this.answer) return this.$Message.error("请输入问题!");
       if (!this.question) return this.$Message.error("请输入答案!");
+      if (this.typeId == "1") {
+        return (this.askColorshow = true);
+      }
+      this.uploadAskData();
+    },
+    uploadAskData(colorId = "1") {
       this.http
         .post(`/case/manage/${this.caseId}/ask`, {
           answer: this.answer,
-          colorId: "5",
+          colorId: colorId,
           correct: !this.upDatacorrect,
           question: this.question,
           typeId: this.typeId,
@@ -272,17 +279,16 @@ export default {
             this.question = "";
             this.upDatacorrect = false;
             this.getaskData();
+            this.askColorshow = false;
+            setTimeout(() => {
+              this.$refs.scroll.scrollTop =
+                this.$refs.scroll.scrollHeight;
+            }, 300);
             this.$Message.warning("添加成功!");
           } else {
             this.$Message.error(res.msg);
           }
         });
-    },
-    getcaseData() {
-      this.axios.get(`/case/${this.caseId}`).then((res) => {
-        this.caseData = res.data;
-        this.caseData.diseaseTypeName = this.list[res.data.diseaseType].name;
-      });
     },
     getaskData() {
       this.axios
@@ -302,3 +308,18 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.ask_add_color {
+  .edit_left {
+    margin-top: 20px;
+    margin-left: 80px;
+    .edit_red {
+      color: red;
+    }
+  }
+  .select_layout {
+    margin-top: 20px;
+  }
+}
+</style>

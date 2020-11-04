@@ -12,7 +12,7 @@
       </li>
       <li>
         <span>性别:</span>
-        <span>{{ caseData.gender ? "女" : "男" }}</span>
+        <span>{{ caseData.gender ? "男" : "女" }}</span>
       </li>
       <li>
         <span>年龄:</span>
@@ -29,6 +29,46 @@
 <script>
 export default {
   name: "case-header",
-  props: ["caseData"],
+  data() {
+    return {
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
+      caseData: {},
+    };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.getcaseData();
+  },
+  methods: {
+    getcaseData() {
+      this.axios.get(`/case/${this.caseId}`).then((res) => {
+        this.caseData = res.data;
+        this.caseData.diseaseTypeName = this.list[
+          res.data.diseaseType - 1
+        ].name;
+      });
+    },
+  },
 };
 </script>

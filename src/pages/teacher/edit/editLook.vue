@@ -7,7 +7,7 @@
     ></case-option>
     <div class="case_layout">
       <div class="case_left">
-        <case-header :caseData="caseData"></case-header>
+        <case-header></case-header>
         <main>
           <ul class="main_tab">
             <li
@@ -76,28 +76,6 @@ export default {
   data() {
     return {
       tab: ["望神色形态", "望局部", "望舌"],
-      list: [
-        {
-          id: 1,
-          name: "心系病",
-        },
-        {
-          id: 2,
-          name: "肝系病",
-        },
-        {
-          id: 3,
-          name: "脾胃病",
-        },
-        {
-          id: 4,
-          name: "肺系病",
-        },
-        {
-          id: 5,
-          name: "肾系病",
-        },
-      ],
       caseId: "",
       imgs: "",
       typeId: "0",
@@ -106,13 +84,11 @@ export default {
       option: "",
       watchData: "",
       imgurl: "",
-      caseData: {},
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.getwatchdata();
-    this.getcasedata();
     this.radioData = this.option.answer;
   },
   methods: {
@@ -173,12 +149,6 @@ export default {
             this.getwatchdata();
           }
         });
-    },
-    getcasedata() {
-      this.axios.get(`/case/${this.caseId}`).then((res) => {
-        this.caseData = res.data;
-        this.caseData.diseaseTypeName = this.list[res.data.diseaseType].name;
-      });
     },
     getwatchdata() {
       this.axios

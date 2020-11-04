@@ -138,7 +138,7 @@
       <!-- 右侧内容 -->
       <div class="cont_header">按诊</div>
       <div class="scrollbar">
-        <ul>
+        <ul ref="scroll">
           <li v-for="(item, index) in diagnosisData" :key="index">
             <div class="item_cont content">
               <div class="item_left" style="width: 65px">
@@ -234,6 +234,9 @@ export default {
       this.http.post(`/meta/feel/1`, this.diagnosis).then((res) => {
         if (res.code == "000000") {
           this.$Message.warning("添加成功!");
+          setTimeout(() => {
+            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight + 155;
+          }, 300);
           this.getData1();
           this.addSwitch();
         } else {

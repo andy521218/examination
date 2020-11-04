@@ -60,7 +60,7 @@
       <div class="mask" v-if="mask"></div>
       <div class="cont_header">病名症型</div>
       <div class="scrollbar">
-        <ul>
+        <ul ref="scroll">
           <li
             v-for="(item, index) in nameData"
             :key="index"
@@ -156,6 +156,9 @@ export default {
               let id = {
                 id: this.nameId,
               };
+              setTimeout(() => {
+                this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
+              }, 300);
               this.tabShow(id);
               this.colseDisease();
             }

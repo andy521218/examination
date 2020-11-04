@@ -7,7 +7,7 @@
     ></case-option>
     <div class="case_layout">
       <div class="case_left">
-        <case-header :caseData="caseData"></case-header>
+        <case-header></case-header>
         <main>
           <ul class="main_tab">
             <li
@@ -39,23 +39,14 @@
           </div>
         </main>
       </div>
-      <!-- <div class="case_right">
-        <div class="case_right_title">
-          <span>添加图片</span>
-        </div>
+      <div class="case_right">
+        <span class="case_title_name">患者{{ name }}正在接望诊:</span>
         <div class="case_right_cont">
-          <div class="main_mask" v-if="imgurl">
+          <div class="main_mask">
             <img :src="imgurl" accept="image/*" alt="" class="userlogo" />
           </div>
-          <div class="case_right_cont_upload">
-            <div class="case_right_cont_upload_img">
-              <img src="../../../assets/public/uploadImg.png" alt="" />
-              <span>请选择图片</span>
-            </div>
-            <input type="file" ref="imgs" @change="importimg" />
-          </div>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -76,15 +67,17 @@ export default {
       caseId: "",
       examNo: "",
       typeId: "0",
-      caseData: {},
       watchData: {},
       option: {},
       id: "",
+      imgurl: "",
+      name: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.name = localStorage.getItem("name");
     this.getwatchdata();
   },
   methods: {
@@ -97,22 +90,26 @@ export default {
         .get(`/answer/${this.examNo}/${this.caseId}/watch/${this.typeId}`)
         .then((res) => {
           this.watchData = res.data.list;
+          this.imgurl = res.data.url;
         });
     },
     openOption(e) {
-      console.log(e);
       this.id = e.id;
       this.option = e;
       this.optionShow = true;
     },
     editcaseData() {
-      console.log(this.$children[1].radioData);
       this.axios
         .post(`/answer/${this.examNo}/${this.caseId}/watch/${this.id}`, {
           answer: this.$children[1].radioData,
         })
         .then((res) => {
-          console.log(res);
+          if (res.code == "000000") {
+            this.optionShow = false;
+            this.getwatchdata();
+          } else {
+            this.$Message.error(res.msg);
+          }
         });
     },
   },

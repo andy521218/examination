@@ -110,7 +110,7 @@
         </li>
         <li style="border: none">
           <div class="scrollbar">
-            <ul>
+            <ul ref="scroll">
               <li v-for="(item, index) in prescriptionData" :key="index">
                 <div class="item_cont">
                   <div class="item_left">
@@ -336,6 +336,10 @@ export default {
           .then((res) => {
             if (res.code == "000000") {
               this.$Message.warning("添加成功!");
+              setTimeout(() => {
+                this.$refs.scroll.scrollTop =
+                  this.$refs.scroll.scrollHeight + 155;
+              }, 300);
               this.closeDrug();
               this.getPrescriptionData();
             } else {

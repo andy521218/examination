@@ -2,9 +2,19 @@
   <div class="select_layout">
     <div class="select_title" @click="down">
       <i
-        :style="{ background: select[this.$parent.editData.colorId].color }"
+        v-if="this.$parent.editData.colorId"
+        :style="{
+          background: select[this.$parent.editData.colorId].color,
+        }"
       ></i>
-      <p>{{ select[this.$parent.editData.colorId].title }}</p>
+      <p v-if="this.$parent.editData.colorId">
+        {{ select[this.$parent.editData.colorId].title }}
+      </p>
+      <i
+        style="background: rgb(255, 167, 39)"
+        v-if="!this.$parent.editData.colorId"
+      ></i>
+      <p v-if="!this.$parent.editData.colorId">发病情况</p>
       <a href="javascript:;"></a>
     </div>
     <div class="select_down" v-if="show" style="border-top: none">

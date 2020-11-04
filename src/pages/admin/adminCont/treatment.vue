@@ -31,7 +31,7 @@
       <!-- 内容 -->
       <div class="cont_header">治则治法</div>
       <div class="scrollbar">
-        <ul>
+        <ul ref="scroll">
           <li v-for="(item, index) in data" :key="index">
             <div class="item_cont">
               <div class="item_left">
@@ -82,6 +82,9 @@ export default {
           if (res.code == "000000") {
             this.treatment = false;
             this.getData();
+            setTimeout(() => {
+              this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
+            }, 300);
             this.$Message.warning("添加成功!");
           }
         });

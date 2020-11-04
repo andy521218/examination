@@ -173,7 +173,7 @@ export default {
     let timeout;
     window.onresize = () => {
       this.screenWidth = document.body.clientWidth;
-      console.log(this.screenWidth);
+
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
         if (this.screenWidth >= "1900") {
@@ -230,7 +230,7 @@ export default {
     },
     addTrain() {
       if (!this.radioData.complete)
-        return this.$Message.error("当前案例未完成,不可以设置为训练案例!");
+        // return this.$Message.error("当前案例未完成,不可以设置为训练案例!");
       this.axios.put(`/case/manage/${this.check}/train`).then((res) => {
         if (res.code == "000000") {
           this.$Message.warning("设为训练案例成功!");

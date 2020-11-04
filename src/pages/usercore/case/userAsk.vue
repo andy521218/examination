@@ -2,7 +2,7 @@
   <div class="user_ask">
     <div class="case_layout">
       <div class="case_left">
-        <case-header :caseData="caseData"></case-header>
+        <case-header></case-header>
         <main>
           <ul class="main_tab">
             <li
@@ -163,7 +163,7 @@
         </main>
       </div>
       <div class="case_right scrollbar">
-        <ul>
+        <ul ref="scroll">
           <li v-for="(item, index) in askedArr" :key="index">
             <div class="asked_right">
               <img src="../../../assets/public/timg1.jpg" alt="" />
@@ -176,7 +176,7 @@
               <img src="../../../assets/public/timg1.jpg" alt="" />
               <div class="asked_left_box">
                 <i></i>
-                <span>{{ item.question }}</span>
+                <span>{{ item.answer }}</span>
               </div>
             </div>
           </li>
@@ -243,7 +243,6 @@ export default {
           color: "rgb(0,230,255)",
         },
       ],
-      caseData: {},
       tabData: {},
       askData0: {},
       askData1: {},
@@ -263,15 +262,9 @@ export default {
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
-    this.getcaseData();
     this.getTabdata();
   },
   methods: {
-    getcaseData() {
-      this.axios.get(`/case/${this.caseId}`).then((res) => {
-        this.caseData = res.data;
-      });
-    },
     getTabdata() {
       this.axios
         .get(`/meta/ask/module`, {
@@ -290,7 +283,7 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
           params: {
-            keyword: this.keyword,
+            // keyword: '',
             typeId: typeId,
             page: "1",
             size: "1000",
@@ -323,10 +316,12 @@ export default {
         });
     },
     asked(item) {
-      console.log(item);
       this.axios
         .post(`/answer/${this.examNo}/${this.caseId}/ask/${item.id}`)
         .then(() => {
+          setTimeout(() => {
+            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
+          }, 300);
           this.askedArr.push(item);
         });
     },
@@ -336,7 +331,6 @@ export default {
   },
   watch: {
     keyword: function () {
-      console.log(this.typeId);
       this.getAskData(this.typeId);
     },
   },
