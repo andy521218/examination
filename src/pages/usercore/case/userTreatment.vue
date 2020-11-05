@@ -2,7 +2,7 @@
   <div class="case_treatment">
     <div class="treatment_layout">
       <div class="layout_left">
-        <div class="title">
+        <div class="title" @click="searchDurhshow = false">
           <p>治则治法</p>
           <div class="search scrollbar">
             <input
@@ -28,12 +28,12 @@
           </div>
         </div>
         <div class="layout_search">
-          <div class="search_top">
+          <div class="search_top"  @click="searchDurhshow = false">
             <p>遣方用药</p>
             <a href="javascript:;">药材库</a>
           </div>
           <div class="search_bottom">
-            <div class="prescription">
+            <div class="prescription" @click="searchDurhshow = false">
               <p>常见方剂</p>
               <div class="search scrollbar">
                 <input
@@ -59,17 +59,23 @@
             </div>
             <div class="prescription">
               <p>药物组成</p>
+              <input
+                type="text"
+                class="text_box drug_input"
+                v-model="searchDrug"
+                @focus="searchDurhshow = true"
+              />
+              <button class="submit" @click="submitDrug">确定</button>
               <div class="search scrollbar">
-                <input type="text" class="text_box" v-model="searchDrug" />
-                <div class="search_down scrollbar" v-show="searchDurhshow">
+                <div class="search_down druglayout" v-show="searchDurhshow">
                   <div class="search_down_cont">
                     <div
                       class="search_item"
                       v-for="(item, index) in searchDrugdata"
                       :key="index"
-                      @click="drugVal(item)"
                     >
                       <input
+                        style="width: 22px"
                         type="checkbox"
                         v-model="upDrugitem"
                         :value="item.id"
@@ -82,8 +88,8 @@
             </div>
           </div>
         </div>
-        <div class="treatment_main">
-          <div class="main_left">
+        <div class="treatment_main"  @click="searchDurhshow = false">
+          <div class="main_left" >
             <ul>
               <li>{{ agentiaListName }}</li>
             </ul>
@@ -99,7 +105,7 @@
           </div>
         </div>
       </div>
-      <div class="layout_right">
+      <div class="layout_right"  @click="searchDurhshow = false">
         <div class="title">辩证依据</div>
         <div class="disease">
           <div class="disease_title">
@@ -318,6 +324,12 @@ export default {
               res.data.agentias[0].name;
             this.agentiaId = res.data.agentias[0].id;
             let druggeries = res.data.agentias[0].druggeries;
+            let item = res.data.agentias[0].druggeries;
+            for (let i = 0; i < item.length; i++) {
+              if (this.upDrugitem.indexOf(item[i].id) == "-1") {
+                this.upDrugitem.push(item[i].id);
+              }
+            }
             let arr = [];
             for (let i = 0; i < druggeries.length; i++) {
               arr.push(druggeries[i].name);
@@ -372,8 +384,29 @@ export default {
         });
     },
     // 设置药物组成
-    drugVal() {
-      console.log(this.upDrugitem);
+    submitDrug() {
+      if (!this.agentiaListName) return this.$Message.error("请先选择方剂!");
+      if (this.upDrugitem.length == "0")
+        return this.$Message.error("至少选择一项方药!");
+      this.axios
+        .delete(
+          `/answer/${this.examNo}/${this.caseId}/treat/agentia/${this.agentiaId}`
+        )
+        .then(() => {
+          this.http
+            .put(`/answer/${this.examNo}/${this.caseId}/treat/agentia`, {
+              agentiaId: this.agentiaId,
+              druggeryIds: this.upDrugitem,
+            })
+            .then((res) => {
+              if (res.code == "000000") {
+                this.searchDurhshow = false;
+                this.getTreatVal();
+              } else {
+                this.$Message.error(res.msg);
+              }
+            });
+        });
     },
     //设置方剂正确答案
     agentiaVal(e) {
@@ -386,7 +419,6 @@ export default {
           })
           .then((res) => {
             if (res.code == "000000") {
-              this.$Message.warning("更改方剂成功!");
               this.getTreatVal();
             } else {
               this.$Message.error(res.msg);
@@ -407,7 +439,6 @@ export default {
             })
             .then((res) => {
               if (res.code == "000000") {
-                this.$Message.warning("更改方剂成功!");
                 this.getTreatVal();
               } else {
                 this.$Message.error(res.msg);
@@ -622,12 +653,28 @@ export default {
           align-items: center;
           .search {
             margin-left: 20px;
+            .druglayout {
+              left: -375px;
+              top: 19px;
+              width: 235px !important;
+            }
             input {
               width: 375px;
             }
             .search_down {
               width: 375px;
             }
+          }
+          .drug_input {
+            width: 235px;
+            margin: 0 20px;
+            padding-right: 45px;
+            background-image: url("../../../assets/public/search.png");
+            background-repeat: no-repeat;
+            background-position: 98% 50%;
+          }
+          .submit {
+            width: 100px;
           }
         }
       }
