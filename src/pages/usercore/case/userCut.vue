@@ -8,7 +8,7 @@
       ></case-option>
       <div class="case_layout">
         <div class="case_left" style="width: 1000px">
-          <case-header></case-header>
+          <case-header ref="header"></case-header>
           <main>
             <ul class="main_tab">
               <li
@@ -88,125 +88,240 @@
           <img :src="imgsUrl" alt="" class="seeimg" />
           <p class="seedesc">{{ imgDesc }}</p>
         </div>
-        <div class="case_right" style="width: 620px" v-show="typeId == 1">
+        <div
+          class="case_right"
+          style="width: 620px"
+          v-if="typeId == 1 && sex == 'false'"
+        >
+          <span class="case_title_name"
+            >患者{{ name }}正在接受按诊:</span
+          >
+          <div>
+            <img
+              src="../../../assets/public/girl1.png"
+              alt=""
+              class="seeimg"
+              usemap="#mapgirl"
+              style="height: 600px; width: 500px; margin-top: 20px"
+            />
+            <map name="mapgirl">
+              <area
+                shape="rect"
+                coords="216,149,244,182"
+                alt="右胸"
+                style="cursor: pointer"
+                @click="pressAnswer('右胸')"
+              />
+              <area
+                shape="rect"
+                coords="245,149,263,183"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('胸膺')"
+              />
+              <area
+                shape="rect"
+                coords="263,148,297,182"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左胸')"
+              />
+              <area
+                shape="rect"
+                coords="216,185,247,213"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('右胁肋')"
+              />
+              <area
+                shape="rect"
+                coords="247,190,278,200"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('心下')"
+              />
+               <area
+                shape="rect"
+                coords="272,186,292,198"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('虚里')"
+              />
+              <area
+                shape="rect"
+                coords="276,198,290,213"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左胁肋')"
+              />
+              <area
+                shape="rect"
+                coords="234,212,290,232"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('胃脘')"
+              />
+              <area
+                shape="rect"
+                coords="234,235,290,232"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('大腹')"
+              />
+              <area
+                shape="rect"
+                coords="214,252,246,282"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('右腹')"
+              />
+              <area
+                shape="rect"
+                coords="245,252,273,281"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('小腹')"
+              />
+              <area
+                shape="rect"
+                coords="273,252,305,281"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左腹')"
+              />
+              <area
+                shape="rect"
+                coords="202,478,227,552"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('下肢')"
+              />
+              <area
+                shape="rect"
+                coords="202,573,226,593"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('足背')"
+              />
+            </map>
+          </div>
+        </div>
+
+        <div
+          class="case_right"
+          style="width: 620px"
+          v-if="typeId == 1 && sex == 'true'"
+        >
           <span class="case_title_name">患者{{ name }}正在接受按诊:</span>
-          <img
-            src="../../../assets/public/boy.jpg"
-            alt=""
-            v-if="!sex"
-            class="seeimg"
-            usemap="#mapboy"
-            style="height: 600px; width: 500px; margin-top: 20px"
-          />
-          <map name="mapboy">
-            <area
-              shape="rect"
-              coords="0,0,148,139"
+          <div>
+            <img
+              src="../../../assets/public/boy1.png"
               alt=""
-              style="cursor: pointer"
+              class="seeimg"
+              usemap="#mapboy"
+              style="height: 600px; width: 500px; margin-top: 20px"
             />
-          </map>
-          <img
-            src="../../../assets/public/girl.jpg"
-            alt=""
-            v-if="sex"
-            class="seeimg"
-            usemap="#mapgirl"
-            style="height: 600px; width: 500px; margin-top: 20px"
-          />
-          <map name="mapgirl">
-            <area
-              shape="rect"
-              coords="175,142,218,176"
-              alt="右胸"
-              style="cursor: pointer"
-              @click="pressAnswer('右胸')"
-            />
-            <area
-              shape="rect"
-              coords="220,143,248,176"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('胸膺')"
-            />
-            <area
-              shape="rect"
-              coords="252,143,302,176"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('左胸')"
-            />
-            <area
-              shape="rect"
-              coords="178,182,222,202"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('右胁肋')"
-            />
-            <area
-              shape="rect"
-              coords="222,182,264,198"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('心下')"
-            />
-            <area
-              shape="rect"
-              coords="264,182,294,198"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('左胁肋')"
-            />
-            <area
-              shape="rect"
-              coords="210,202,294,224"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('胃脘')"
-            />
-            <area
-              shape="rect"
-              coords="176,225,314,242"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('大腹')"
-            />
-            <area
-              shape="rect"
-              coords="176,246,224,272"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('右腹')"
-            />
-            <area
-              shape="rect"
-              coords="225,245,265,272"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('小腹')"
-            />
-            <area
-              shape="rect"
-              coords="268,246,315,272"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('左腹')"
-            />
-            <area
-              shape="rect"
-              coords="155,464,192,535"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('下肢')"
-            />
-            <area
-              shape="rect"
-              coords="146,558,194,578"
-              alt=""
-              style="cursor: pointer"
-              @click="pressAnswer('下肢')"
-            />
-          </map>
+            <map name="mapboy">
+              <area
+                shape="rect"
+                coords="202,121,242,165"
+                alt="右胸"
+                style="cursor: pointer"
+                @click="pressAnswer('右胸')"
+              />
+              <area
+                shape="rect"
+                coords="246,124,270,168"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('胸膺')"
+              />
+              <area
+                shape="rect"
+                coords="270,123,303,169"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左胸')"
+              />
+              <area
+                shape="rect"
+                coords="207,175,242,210"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('右胁肋')"
+              />
+              <area
+                shape="rect"
+                coords="242,182,283,205"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('心下')"
+              />
+              <area
+                shape="rect"
+                coords="283,175,309,192"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('虚里')"
+              />
+              <area
+                shape="rect"
+                coords="293,198,323,214"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左胁肋')"
+              />
+              <area
+                shape="rect"
+                coords="223,211,293,239"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('胃脘')"
+              />
+              <area
+                shape="rect"
+                coords="200,245,310,271"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('大腹')"
+              />
+              <area
+                shape="rect"
+                coords="200,273,238,313"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('右腹')"
+              />
+              <area
+                shape="rect"
+                coords="238,273,275,313"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('小腹')"
+              />
+              <area
+                shape="rect"
+                coords="277,273,302,313"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('左腹')"
+              />
+              <area
+                shape="rect"
+                coords="215,488,236,553"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('下肢')"
+              />
+              <area
+                shape="rect"
+                coords="209,571,236,588"
+                alt=""
+                style="cursor: pointer"
+                @click="pressAnswer('足背')"
+              />
+            </map>
+          </div>
         </div>
       </div>
     </div>
@@ -241,7 +356,7 @@ export default {
       pulseData: {},
       option: {},
       name: "",
-      sex: "",
+      sex: false,
     };
   },
   mounted() {
@@ -319,17 +434,37 @@ export default {
         });
     },
     pressAnswer(name) {
+      console.log(this.sex);
+      let length = this.pressItemData.length;
+      let flag = false;
+      if (length == 0) {
+        this.check(name);
+      } else {
+        for (let i = 0; i < length; i++) {
+          if (this.pressItemData[i].name == name) {
+            flag = true;
+            return this.$Message.error("重复查看");
+          }
+        }
+        if (!flag) {
+          this.check(name);
+        }
+      }
+    },
+    check(name) {
       let flag = false;
       this.pressData.forEach((item) => {
         if (item.name == name) {
-          flag = false;
-          return this.pressItemData.push(item);
-        } else {
           flag = true;
+          return this.pressItemData.push(item);
         }
       });
-      if (flag) {
-        console.log(111);
+      if (!flag) {
+        let arr = {
+          name: name,
+          answer: "正常",
+        };
+        return this.pressItemData.push(arr);
       }
     },
     putPulse() {
@@ -353,7 +488,6 @@ export default {
   .case_right {
     text-align: center;
     img {
-      border: 1px solid rgb(9, 124, 168);
       margin: 50px 19px;
     }
   }

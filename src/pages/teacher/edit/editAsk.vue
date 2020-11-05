@@ -282,8 +282,8 @@ export default {
             this.askColorshow = false;
             setTimeout(() => {
               this.$refs.scroll.scrollTop =
-                this.$refs.scroll.scrollHeight;
-            }, 300);
+                this.$refs.scroll.scrollHeight+55;
+            }, 1000);
             this.$Message.warning("添加成功!");
           } else {
             this.$Message.error(res.msg);

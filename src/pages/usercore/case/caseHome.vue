@@ -80,7 +80,6 @@ export default {
           name: "肾系病",
         },
       ],
-
       total: "10",
       size: "10",
       page: "1",
@@ -89,6 +88,7 @@ export default {
   },
   mounted() {
     this.getCaseData();
+    localStorage.clear('askedArr')
   },
   methods: {
     getCaseData(page = "1", id = "") {

@@ -64,6 +64,7 @@ export default {
     getcaseData() {
       this.axios.get(`/case/${this.caseId}`).then((res) => {
         this.caseData = res.data;
+        this.$store.state.sex = res.data.gender;
         this.caseData.diseaseTypeName = this.list[
           res.data.diseaseType - 1
         ].name;

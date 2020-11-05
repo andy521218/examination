@@ -188,6 +188,7 @@
 
 <script>
 import caseHeader from "../../teacher/edit/caseHeader";
+
 export default {
   name: "user-ask",
   components: {
@@ -263,6 +264,16 @@ export default {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
     this.getTabdata();
+    let arr = JSON.parse(localStorage.getItem("askedArr"));
+    if (arr == null || arr.length == "0") {
+      return;
+    }
+    this.askedArr = arr;
+  },
+  created() {
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("askedArr", JSON.stringify(this.askedArr));
+    });
   },
   methods: {
     getTabdata() {
@@ -283,7 +294,7 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
           params: {
-            // keyword: '',
+            keyword: "",
             typeId: typeId,
             page: "1",
             size: "1000",
@@ -333,6 +344,10 @@ export default {
     keyword: function () {
       this.getAskData(this.typeId);
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    localStorage.setItem("askedArr", JSON.stringify(this.askedArr));
+    next();
   },
 };
 </script>

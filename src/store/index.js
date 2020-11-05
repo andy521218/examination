@@ -5,11 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    menuData:[],
-    messageData:[],
+    sex:'',
     flag:false,
-    authority:'',
-    caseId:''
+
   },
   mutations: {
   },

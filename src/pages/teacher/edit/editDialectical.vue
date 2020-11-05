@@ -68,7 +68,7 @@
       <!-- 切诊 -->
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
-          <li style="display: flex">
+          <li style="display: flex" v-if=" pulseData.answer">
             <span style="width: 50px"> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
@@ -328,7 +328,7 @@
       <!-- 切诊 -->
       <div class="scrollbar" v-show="diseaseChangeId == 3">
         <ul class="main_cont">
-          <li style="display: flex">
+          <li style="display: flex" v-if=" pulseData.answer">
             <input
               type="checkbox"
               :value="pulseData.id"
@@ -615,7 +615,6 @@ export default {
         .then((res) => {
           if (res.data) {
             this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
-            this.getAlldata();
           } else {
             this.$Message.error(res.msg);
           }

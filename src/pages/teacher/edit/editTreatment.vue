@@ -75,7 +75,7 @@
         <div class="treatment_main">
           <div class="main_left">
             <ul>
-              <li>{{ agentiaList.name }}</li>
+              <li>{{ agentiaListName }}</li>
             </ul>
           </div>
           <div class="main_right">
@@ -258,6 +258,7 @@ export default {
       agentiaShow: false,
       agentiaList: [],
       agentiaId: [],
+      agentiaListName: "",
       diseasesWatchData: [],
       diseasesWatch: [],
       diseasesListenthData: [],
@@ -289,12 +290,12 @@ export default {
     changeDisease(index) {
       this.diseaseId = index;
     },
-    //获取方剂正确答案
+    //获取方剂 治则治法正确答案
     getTreatVal() {
       this.agentiaList = [];
       this.axios.get(`/case/manage/${this.caseId}/treat`).then((res) => {
         this.searchTreat = res.data.treatName;
-        this.searchAgentia = res.data.agentias[0].name;
+        this.searchAgentia = this.agentiaListName = res.data.agentias[0].name;
         this.agentiaId = res.data.agentias[0].id;
         let druggeries = res.data.agentias[0].druggeries;
         let arr = [];

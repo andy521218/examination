@@ -215,7 +215,6 @@ export default {
 .case_cut {
   .case_right {
     img {
-      border: 1px solid rgb(9, 124, 168);
       margin: 50px 19px;
     }
   }
