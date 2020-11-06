@@ -210,10 +210,11 @@
                 v-for="(item, index) in list"
                 :key="index"
                 :class="{ select_item: itemIndex == index }"
-                @click="isbg(index)"
+                @click="routeLink(item.router, index)"
               >
-                {{ item }}
+                {{ item.title }}
               </li>
+              <li @click="routeLink('退出登入')">退出登入</li>
             </ul>
           </div>
         </div>
@@ -224,33 +225,45 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "user-header",
   data() {
     return {
       url:
         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600668765311&di=942d4b57df1934ca5fa4ef29310f1acd&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F12%2F20200612180401_mvgks.thumb.400_0.jpeg",
-      list: ["个人信息", "密码修改", "学习记录", "数据统计", "退出登入"],
       itemIndex: "-1",
       name: "",
+      list: [],
     };
+  },
+  computed: {
+    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu"]),
   },
   mounted() {
     this.axios.get("/users/current").then((res) => {
       this.name = res.data.name;
+      if (res.data.authority == "ADMIN") {
+        this.list = this.adminMenu;
+      }
+      if (res.data.authority == "TEACHER") {
+        this.list = this.teacherMenu;
+      }
+      if (res.data.authority == "STUDENT") {
+        this.list = this.stuedntMenu;
+      }
     });
   },
   methods: {
-    isbg(i) {
-      this.itemIndex = i;
-      if (this.list.length - 1 == i) {
-        this.axios.get("logout");
-        localStorage.clear();
-        this.$router.push("/");
+    routeLink(router, index) {
+      this.itemIndex = index;
+      if (router == "退出登入") {
+        this.axios.get("logout").then(() => {
+          this.$router.push("/");
+          localStorage.clear();
+        });
       }
-      if (i == 0) {
-        this.$router.push("/home");
-      }
+      this.$router.push(router);
     },
   },
 };

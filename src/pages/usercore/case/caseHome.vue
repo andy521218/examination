@@ -26,7 +26,7 @@
                 <img src="../../../assets/public/caseTips.png" alt="" />
                 <span>进入训练</span>
               </div>
-              <span>累计学习:103次</span>
+              <span>累计学习:{{item.count}}次</span>
             </div>
           </div>
           <div class="case_current">

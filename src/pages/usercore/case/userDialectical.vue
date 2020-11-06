@@ -68,7 +68,7 @@
       <!-- 切诊 -->
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
-          <li style="display: flex" v-if=" pulseData.answer">
+          <li style="display: flex" v-if="pulseData.answer">
             <span style="width: 50px"> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
@@ -399,7 +399,7 @@ export default {
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
-    // this.getListendata();
+    this.getListendata();
     this.getAskdata();
     this.getPressData();
     this.getPulseData();
@@ -455,13 +455,15 @@ export default {
     },
     // 获取闻诊数据
     getListendata() {
-      this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
-        for (let i = 0; i < res.data.length; i++) {
-          if (res.data[i].answer) {
-            this.listenData.push(res.data[i]);
+      this.axios
+        .get(`/answer/${this.examNo}/${this.caseId}/listen`)
+        .then((res) => {
+          for (let i = 0; i < res.data.length; i++) {
+            if (res.data[i].answer) {
+              this.listenData.push(res.data[i]);
+            }
           }
-        }
-      });
+        });
     },
     //获取问诊数据
     getAskdata() {
@@ -508,10 +510,24 @@ export default {
       //设置更改病名
       this.http.post(
         `/answer/${this.examNo}/${this.caseId}/diseasename/${e.id}`,
-        {
-          issueIds: [],
-          stageId: "",
-        }
+        [
+          {
+            issueIds: [2425, 2426, 2427, 2428, 2429, 2430, 2431, 2432, 2433],
+            stageId: 1,
+          },
+          {
+            issueIds: [831, 832, 839, 840],
+            stageId: 2,
+          },
+          {
+            issueIds: [159, 160, 161, 162],
+            stageId: 3,
+          },
+          {
+            issueIds: [0],
+            stageId: 4,
+          },
+        ]
       );
     },
     // 设置病名各项答案

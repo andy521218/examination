@@ -241,7 +241,9 @@ export default {
     border: none;
   }
   .admin_page {
+    width: 91%;
     margin-top: 15px;
+    margin-left: 150px;
   }
 }
 </style>

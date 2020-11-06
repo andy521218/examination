@@ -3,8 +3,8 @@
     <div class="case_hear">
       <case-option
         :option="option"
+        :videoUrl="videoUrl"
         v-if="optionShow"
-        :radioName="radioName"
         @editcaseData="editcaseData"
       ></case-option>
       <div class="case_layout">
@@ -59,10 +59,11 @@ export default {
       tab: ["闻诊"],
       typeId: "",
       optionShow: false,
-      radioName: "",
       caseId: "",
       listenData: {},
       examNo: "",
+      listenId: "",
+      videoUrl: "",
     };
   },
   components: {
@@ -77,6 +78,8 @@ export default {
   methods: {
     openOption(e) {
       this.option = e;
+      this.videoUrl = e.videoUrl;
+      this.listenId = e.id;
       this.optionShow = true;
     },
     getListenData() {
@@ -87,14 +90,11 @@ export default {
         });
     },
     editcaseData() {
+      let answer = this.$children[1].radioData;
       this.axios
-        .put(
-          `/case/manage/${this.caseId}/listen/${
-            this.option.id
-          }?${this.qs.stringify({
-            answer: this.$children[1].radioData,
-          })}`
-        )
+        .post(`/answer/${this.examNo}/${this.caseId}/Listen/${this.listenId}`, {
+          answer: answer,
+        })
         .then((res) => {
           if (res.code == "000000") {
             this.$Message.warning("编辑成功!");

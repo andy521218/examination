@@ -8,13 +8,17 @@
             <img src="../../../assets/public/stop.png" alt="" />
             <span>暂停</span>
           </div>
+          <div class="sonserve" @click="submit" v-if="authority == 'STUDENT'">
+            <img src="../../../assets/public/sonserve.png" alt="" />
+            <span>完成</span>
+          </div>
           <div
             class="sonserve"
             @click="saveCase()"
-            v-if="authority == 'STUDENT'"
+            v-if="authority == 'TEACHER'"
           >
             <img src="../../../assets/public/sonserve.png" alt="" />
-            <span>完成</span>
+            <span @click="submit">完成</span>
           </div>
           <!-- <div class="close">
             <img src="../../../assets/public/close.png" alt="" />
@@ -85,12 +89,14 @@ export default {
       ],
       bgIndex: "-1",
       authority: "",
+      examNo: "",
     };
   },
   components: {
     logo,
   },
   mounted() {
+    this.examNo = localStorage.getItem("examNo");
     this.authority = localStorage.getItem("authority");
     if (this.authority == "STUDENT") {
       this.item = [
@@ -128,6 +134,9 @@ export default {
     },
     saveCase() {
       this.$router.push("/teachercase");
+    },
+    submit() {
+      this.axios.post(`/train/${this.examNo}/finished`);
     },
   },
 };

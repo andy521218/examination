@@ -90,7 +90,7 @@
             <td>{{ item.passwd }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.departmentName }}</td>
-            <td>2020-07-01 15:30</td>
+            <td>{{ item.lastLoginTime | lastTime(item.lastLoginTime) }}</td>
             <td>
               <i-switch
                 true-color="rgb(0,235,255)"

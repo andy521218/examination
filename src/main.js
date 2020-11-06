@@ -16,13 +16,13 @@ import admin from "./router/admin"
 import teacher from "./router/teacher"
 import user from "./router/user"
 import qs from "qs";
-
+import filters from './filters'
 
 
 Vue.component('i-switch', Switch);
 Vue.use(VueAxios,axios);
 
-
+Vue.use(filters)
 Vue.prototype.http = http
 Vue.prototype.qs = qs
 Vue.prototype.upload = upload

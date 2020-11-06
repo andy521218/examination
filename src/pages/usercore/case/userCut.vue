@@ -93,9 +93,7 @@
           style="width: 620px"
           v-if="typeId == 1 && sex == 'false'"
         >
-          <span class="case_title_name"
-            >患者{{ name }}正在接受按诊:</span
-          >
+          <span class="case_title_name">患者{{ name }}正在接受按诊:</span>
           <div>
             <img
               src="../../../assets/public/girl1.png"
@@ -140,7 +138,7 @@
                 style="cursor: pointer"
                 @click="pressAnswer('心下')"
               />
-               <area
+              <area
                 shape="rect"
                 coords="272,186,292,198"
                 alt=""
@@ -156,7 +154,7 @@
               />
               <area
                 shape="rect"
-                coords="234,212,290,232"
+                coords="219,235,305,252"
                 alt=""
                 style="cursor: pointer"
                 @click="pressAnswer('胃脘')"
@@ -359,6 +357,11 @@ export default {
       sex: false,
     };
   },
+  created() {
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("pressItemData", JSON.stringify(this.pressItemData));
+    });
+  },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
@@ -366,6 +369,11 @@ export default {
     this.sex = localStorage.getItem("sex");
     this.getpressData();
     this.getpulseData();
+    let arr = JSON.parse(localStorage.getItem("pressItemData"));
+    if (arr == null || arr.length == "0") {
+      return;
+    }
+    this.pressItemData = arr;
   },
   methods: {
     container(i) {
@@ -434,7 +442,6 @@ export default {
         });
     },
     pressAnswer(name) {
-      console.log(this.sex);
       let length = this.pressItemData.length;
       let flag = false;
       if (length == 0) {
@@ -480,6 +487,10 @@ export default {
           }
         });
     },
+  },
+  beforeRouteLeave(to, from, next) {
+    localStorage.setItem("pressItemData", JSON.stringify(this.pressItemData));
+    next();
   },
 };
 </script>

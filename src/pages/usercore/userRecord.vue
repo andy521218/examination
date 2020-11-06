@@ -183,6 +183,9 @@ export default {
   components: {
     turnPage,
   },
+  methods: {
+    getManage() {},
+  },
 };
 </script>
 

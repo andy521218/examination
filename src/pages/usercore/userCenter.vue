@@ -13,19 +13,19 @@
       <ul>
         <li>
           <span>姓名:</span>
-          <p>李杰</p>
+          <p>{{ current.userName }}</p>
         </li>
         <li>
           <span>班级:</span>
-          <p>123456</p>
+          <p>{{ current.classRoomName }}</p>
         </li>
         <li>
           <span>手机号:</span>
-          <input class="text_box" type="text" v-model="phone" />
+          <input class="text_box" type="text" />
         </li>
         <li>
           <span>邮箱:</span>
-          <input class="text_box" type="text" v-model="email" />
+          <input class="text_box" type="text" />
         </li>
       </ul>
       <button class="submit">保存</button>
@@ -37,9 +37,18 @@ export default {
   name: "user-center",
   data() {
     return {
-      phone: "123456789012",
-      email: "123455678@qq.com",
+      current: {},
     };
+  },
+  mounted() {
+    this.getCurrent();
+  },
+  methods: {
+    getCurrent() {
+      this.axios.get("/users/current").then((res) => {
+        this.current = res.data;
+      });
+    },
   },
 };
 </script>
@@ -60,18 +69,16 @@ export default {
       margin-left: -108px;
       border: 1px solid rgb(9, 124, 168);
       border-radius: 50%;
+      padding: 5px;
       .user_small {
-        margin: 5px auto;
-        width: 200px;
-        height: 200px;
+        width: 100%;
+        height: 100%;
         border: 3px solid rgb(32, 85, 127);
         border-radius: 50%;
         .edit {
           position: relative;
           width: 100px;
-          text-align: center;
           bottom: -225px;
-          left: 55px;
         }
       }
       .user_number {

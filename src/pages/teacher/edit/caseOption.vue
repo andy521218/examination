@@ -6,6 +6,11 @@
           <span class="title">{{ option.name }}</span>
           <span class="edit_switch" @click="close"></span>
         </div>
+        <div class="song" v-if="videoUrl">
+          <audio hidden="true" style="display: none" id="song"></audio>
+          <img src="../../../assets/public/play.png" alt="" @click="play" />
+          <span>请根据音频选出正确答案</span>
+        </div>
         <ul>
           <li v-for="(item, index) in option.options" :key="index">
             <input
@@ -30,7 +35,7 @@
 <script>
 export default {
   name: "case-option",
-  props: ["option"],
+  props: ["option", "videoUrl"],
   data() {
     return {
       radioData: "",
@@ -48,6 +53,11 @@ export default {
       if (!this.radioData) return this.$Message.error("请选择一项正确答案");
       this.$emit("editcaseData");
     },
+    play() {
+      let song = document.getElementById("song");
+      song.src = this.videoUrl;
+      song.play();
+    },
   },
 };
 </script>
@@ -62,6 +72,16 @@ export default {
       li {
         margin-left: 70px;
         width: 150px;
+      }
+    }
+    .song {
+      display: flex;
+      margin-top: 20px;
+      align-content: center;
+      justify-content: center;
+      span {
+        line-height: 42px;
+        margin-left: 20px;
       }
     }
   }

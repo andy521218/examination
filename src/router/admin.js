@@ -5,6 +5,7 @@ export const admin =[//管理员
     path: '/home',
     name: 'home',
     component:home,
+    redirect: "adminmaster",
     children: [
       {
         path: '/admincontent',

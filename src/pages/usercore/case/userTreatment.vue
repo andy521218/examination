@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="layout_search">
-          <div class="search_top"  @click="searchDurhshow = false">
+          <div class="search_top" @click="searchDurhshow = false">
             <p>遣方用药</p>
             <a href="javascript:;">药材库</a>
           </div>
@@ -59,15 +59,19 @@
             </div>
             <div class="prescription">
               <p>药物组成</p>
-              <input
-                type="text"
-                class="text_box drug_input"
-                v-model="searchDrug"
-                @focus="searchDurhshow = true"
-              />
-              <button class="submit" @click="submitDrug">确定</button>
               <div class="search scrollbar">
-                <div class="search_down druglayout" v-show="searchDurhshow">
+                <input
+                  type="text"
+                  class="text_box drug_input"
+                  v-model="searchDrug"
+                  @focus="searchDurhshow = true"
+                />
+                <button class="submit" @click="submitDrug">确定</button>
+                <div
+                  class="search_down"
+                  style="width: 275px"
+                  v-show="searchDurhshow"
+                >
                   <div class="search_down_cont">
                     <div
                       class="search_item"
@@ -88,24 +92,31 @@
             </div>
           </div>
         </div>
-        <div class="treatment_main"  @click="searchDurhshow = false">
-          <div class="main_left" >
+        <div class="treatment_main" @click="searchDurhshow = false">
+          <div class="main_left">
             <ul>
               <li>{{ agentiaListName }}</li>
             </ul>
           </div>
           <div class="main_right">
             <ul>
-              <li v-for="(item, index) in agentiaList" :key="index">
-                <span v-for="(i, index) in item" :key="index">
-                  {{ i }}
-                </span>
+              <li
+                v-for="(item, index) in agentiaList"
+                :key="index"
+                style="padding: 0px 0px"
+              >
+                <div v-for="(i, index) in item" :key="index" class="drug_item">
+                  <span class="drug_dele">
+                    {{ i.name }}
+                    <i class="drug_dele_icon" @click="deleDrug(i)"></i>
+                  </span>
+                </div>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="layout_right"  @click="searchDurhshow = false">
+      <div class="layout_right" @click="searchDurhshow = false">
         <div class="title">辩证依据</div>
         <div class="disease">
           <div class="disease_title">
@@ -315,6 +326,7 @@ export default {
     //获取治则治法 方剂正确答案
     getTreatVal() {
       this.agentiaList = [];
+      this.upDrugitem = [];
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/treat`)
         .then((res) => {
@@ -332,8 +344,8 @@ export default {
             }
             let arr = [];
             for (let i = 0; i < druggeries.length; i++) {
-              arr.push(druggeries[i].name);
-              if (arr.length % 6 == "0") {
+              arr.push(druggeries[i]);
+              if (arr.length % 4 == "0") {
                 this.agentiaList.push(arr);
                 arr = [];
               }
@@ -406,6 +418,20 @@ export default {
                 this.$Message.error(res.msg);
               }
             });
+        });
+    },
+    // 删除单项药物组成
+    deleDrug(e) {
+      this.axios
+        .delete(
+          `/answer/${this.examNo}/${this.caseId}/treat/agentia/${this.agentiaId}/${e.id}`
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.getTreatVal();
+          } else {
+            this.$Message.error(res.msg);
+          }
         });
     },
     //设置方剂正确答案
@@ -653,28 +679,12 @@ export default {
           align-items: center;
           .search {
             margin-left: 20px;
-            .druglayout {
-              left: -375px;
-              top: 19px;
-              width: 235px !important;
-            }
             input {
               width: 375px;
             }
             .search_down {
               width: 375px;
             }
-          }
-          .drug_input {
-            width: 235px;
-            margin: 0 20px;
-            padding-right: 45px;
-            background-image: url("../../../assets/public/search.png");
-            background-repeat: no-repeat;
-            background-position: 98% 50%;
-          }
-          .submit {
-            width: 100px;
           }
         }
       }
@@ -812,6 +822,43 @@ export default {
         }
       }
     }
+  }
+  .drug_item {
+    width: 100px;
+    margin-right: 40px;
+    display: flex;
+    .drug_dele {
+      position: relative;
+      text-align: right;
+      padding-right: 2px;
+      .drug_dele_icon {
+        display: inline-block;
+        width: 17px;
+        height: 20px;
+        background: url("../../../assets/public/dele.png") no-repeat center;
+        background-size: 100% 90%;
+        position: absolute;
+        right: -5px;
+        top: 11px;
+      }
+      .drug_dele_icon:hover {
+        cursor: pointer;
+        border-bottom: 1px solid red;
+      }
+    }
+  }
+  .drug_item:last-child {
+    margin: 0 0;
+  }
+  .submit {
+    position: absolute;
+    width: 100px;
+    top: 0;
+    right: 0;
+  }
+  .drug_input {
+    width: 275px !important;
+    margin-right: 115px;
   }
 }
 </style>
