@@ -512,20 +512,8 @@ export default {
         `/answer/${this.examNo}/${this.caseId}/diseasename/${e.id}`,
         [
           {
-            issueIds: [2425, 2426, 2427, 2428, 2429, 2430, 2431, 2432, 2433],
-            stageId: 1,
-          },
-          {
-            issueIds: [831, 832, 839, 840],
-            stageId: 2,
-          },
-          {
-            issueIds: [159, 160, 161, 162],
-            stageId: 3,
-          },
-          {
-            issueIds: [0],
-            stageId: 4,
+            issueIds: [],
+            stageId: "",
           },
         ]
       );

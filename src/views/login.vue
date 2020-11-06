@@ -89,7 +89,7 @@ export default {
             if (res.data.authority == "ADMIN") {
               this.$Message.warning(`${this.user},登入成功!`);
               this.$router.addRoutes(admin);
-              this.$router.push("/home");
+              this.$router.push("/adminmaster");
               return;
             }
             if (res.data.authority == "TEACHER") {

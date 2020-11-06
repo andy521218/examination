@@ -12,12 +12,7 @@
           <case-header></case-header>
           <main>
             <ul class="main_tab">
-              <li
-                v-for="(item, index) in tab"
-                :key="index"
-                class="item_title"
-                @click="container(index)"
-              >
+              <li v-for="(item, index) in tab" :key="index" class="item_title">
                 {{ item }}
                 <div :class="{ active: typeId == index }"></div>
               </li>

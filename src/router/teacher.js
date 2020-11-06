@@ -86,7 +86,7 @@ export const teacher=[
   path:'/case',
   name:'case',
   component:()=>import('../pages/teacher/edit/index'),
-  redirect: "editlook",
+  redirect: "editask",
   children:[
     {
       path:'/editlook',

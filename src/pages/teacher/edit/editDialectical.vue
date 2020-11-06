@@ -68,7 +68,7 @@
       <!-- 切诊 -->
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
-          <li style="display: flex" v-if=" pulseData.answer">
+          <li style="display: flex" v-if="pulseData.answer">
             <span style="width: 50px"> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
@@ -328,7 +328,7 @@
       <!-- 切诊 -->
       <div class="scrollbar" v-show="diseaseChangeId == 3">
         <ul class="main_cont">
-          <li style="display: flex" v-if=" pulseData.answer">
+          <li style="display: flex" v-if="pulseData.answer">
             <input
               type="checkbox"
               :value="pulseData.id"
@@ -468,6 +468,7 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) return;
           let data = res.data.rows;
           data.forEach((item) => {
             if (item.correct) {
@@ -623,22 +624,24 @@ export default {
     //设置默认症候选项
     setupRadio() {
       this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
-        this.diseaseUpdata.id = res.data.diseases[0].id;
-        this.diseaseUpdata.name = res.data.diseases[0].name;
-        res.data.diseases[0].issues.forEach((issueIds) => {
-          if (issueIds.stageId == "1") {
-            this.diseaseWatchData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "2") {
-            this.diseaselistenData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "3") {
-            this.diseaseAskData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "4") {
-            this.diseasePressData = issueIds.issueIds;
-          }
-        });
+        if (res.data.diseases.length != "0") {
+          this.diseaseUpdata.id = res.data.diseases[0].id;
+          this.diseaseUpdata.name = res.data.diseases[0].name;
+          res.data.diseases[0].issues.forEach((issueIds) => {
+            if (issueIds.stageId == "1") {
+              this.diseaseWatchData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "2") {
+              this.diseaselistenData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "3") {
+              this.diseaseAskData = issueIds.issueIds;
+            }
+            if (issueIds.stageId == "4") {
+              this.diseasePressData = issueIds.issueIds;
+            }
+          });
+        }
       });
     },
     //获取全部信息
