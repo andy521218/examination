@@ -378,7 +378,7 @@ export default {
       pressData: [],
       pulseData: [],
       searchDisease: "",
-      diseaseNmaeId: "",
+      diseaseNameId: "",
       diseaseNameData: {},
       wachData: [],
       diseaseCheckData: {},
@@ -394,6 +394,12 @@ export default {
       diseaseAskData: [],
       diseasePressData: [],
       diseasecorrectData: {},
+      updata: [
+        { issueIds: [], stageId: "1" },
+        { issueIds: [], stageId: "2" },
+        { issueIds: [], stageId: "3" },
+        { issueIds: [], stageId: "4" },
+      ],
     };
   },
   mounted() {
@@ -438,20 +444,21 @@ export default {
     // 症型checkbox
     changeDiseasechkeck(e, item) {
       if (e.target.checked) {
-        this.http.put(`/case/manage/${this.caseId}/disease`, {
-          id: item.id,
-          issues: [
-            {
-              issueIds: [],
-              stageId: "",
-            },
-          ],
-          name: item.name,
-        });
-
+        // this.http.post(`/answer/${this.examNo}/${this.caseId}/disease`, {
+        //   id: item.id,
+        //   issues: [
+        //     {
+        //       issueIds: ["1"],
+        //       stageId: "1",
+        //     },
+        //   ],
+        //   name: item.name,
+        // });
         return;
       }
-      this.axios.delete(`/case/manage/${this.caseId}/disease/${item.id}`);
+      this.axios.delete(
+        `/answer/${this.examNo}/${this.caseId}/disease/${item.id}`
+      );
     },
     // 获取闻诊数据
     getListendata() {
@@ -503,7 +510,7 @@ export default {
     // search正确病名
     diseaseVal(e) {
       this.searchDisease = e.name;
-      this.diseaseNmaeId = e.id;
+      this.diseaseNameId = e.id;
       this.axios.get(`/meta/disease/${e.id}`).then((res) => {
         this.diseaseCheckData = res.data.rows;
       });
@@ -521,37 +528,37 @@ export default {
     // 设置病名各项答案
     container(item, i) {
       this.typeId = i;
-      let issueIds = [];
-      let stageId = "";
       if (item == "望") {
-        issueIds = this.nameWatchData;
-        stageId = "1";
+        this.checkUpdata(this.nameWatchData, item, i);
       }
       if (item == "闻") {
-        issueIds = this.namelistenData;
-        stageId = "2";
+        this.checkUpdata(this.namelistenData, item, i);
       }
       if (item == "问") {
-        issueIds = this.nameAskData;
-        stageId = "3";
+        this.checkUpdata(this.nameAskData, item, i);
       }
       if (item == "切") {
-        issueIds = this.namePressData;
-        issueIds.push("8");
-        stageId = "4";
+        this.checkUpdata(this.namePressData, item, i);
       }
-      if (issueIds.length == "0") return;
+    },
+    // 比对病名依据上传数据
+    checkUpdata(nameData, item, stageId) {
+      if (nameData.length == "0") return;
+      for (let i = 0; i < this.updata.length; i++) {
+        if (this.updata[i].stageId == stageId) {
+          if (nameData.toString() == this.updata[i].issueIds.toString()) return;
+          this.updata[i].issueIds = nameData;
+          return this.upName(item);
+        }
+      }
+    },
+    // 病名依据上传函数
+    upName(item) {
       this.http
-        .post(`/case/manage/${this.caseId}/disease/name`, {
-          id: this.diseaseNmaeId,
-          issues: [
-            {
-              issueIds: issueIds,
-              stageId: stageId,
-            },
-          ],
-          name: this.searchDisease,
-        })
+        .post(
+          `/answer/${this.examNo}/${this.caseId}/diseasename/${this.diseaseNameId}`,
+          this.updata
+        )
         .then((res) => {
           if (res.data) {
             this.$Message.warning(`设置${this.searchDisease + item}诊成功!`);
@@ -607,7 +614,7 @@ export default {
       if (!this.diseaseUpdata.name)
         return this.$Message.error("请选择一项症候!");
       this.http
-        .put(`/case/manage/${this.caseId}/disease`, {
+        .post(`/answer/${this.examNo}/${this.caseId}/disease`, {
           id: this.diseaseUpdata.id,
           issues: [
             {
@@ -620,7 +627,6 @@ export default {
         .then((res) => {
           if (res.data) {
             this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
-            this.getAlldata();
           } else {
             this.$Message.error(res.msg);
           }
@@ -652,10 +658,11 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/disease`)
         .then((res) => {
+          console.log(res);
           if (!res.data.diseaseName) return;
           //获取正确病名 症型选项
           this.searchDisease = res.data.diseaseName;
-          this.diseaseNmaeId = res.data.diseaseNameId;
+          this.diseaseNameId = res.data.diseaseNameId;
           let arr = JSON.parse(JSON.stringify(res.data.diseases));
           arr.forEach((item) => {
             delete item["issues"];
@@ -669,15 +676,19 @@ export default {
           //获取正确望闻问切选项(病名)
           res.data.diseaseNameIssues.forEach((item) => {
             if (item.stageId == "1") {
+              this.updata.push({ issueIds: item.issueIds, stageId: "1" });
               this.nameWatchData = item.issueIds;
             }
             if (item.stageId == "2") {
+              this.updata.push({ issueIds: item.issueIds, stageId: "2" });
               this.namelistenData = item.issueIds;
             }
             if (item.stageId == "3") {
+              this.updata.push({ issueIds: item.issueIds, stageId: "3" });
               this.nameAskData = item.issueIds;
             }
             if (item.stageId == "4") {
+              this.updata.push({ issueIds: item.issueIds, stageId: "4" });
               this.namePressData = item.issueIds;
             }
           });

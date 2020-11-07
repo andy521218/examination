@@ -35,9 +35,6 @@ export default {
       let files = this.$refs.fileId.files[0];
       this.xlsxFile = files;
     },
-    fn() {
-      console.log(11);
-    },
     //上传文件
     importRow() {
       let that = this;
@@ -51,6 +48,11 @@ export default {
       this.upload.post("/upload", formData).then((res) => {
         console.log(res);
       });
+    },
+    fn() {
+      let obj1 = toString([1]);
+      let obj2 = toString([1]);
+      console.log(obj1 == obj2);
     },
   },
 };

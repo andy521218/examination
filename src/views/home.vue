@@ -28,6 +28,11 @@ export default {
     menuTab,
     logo,
   },
+  mounted() {
+    this.axios.get("/users/current").then((res) => {
+     localStorage.setItem('authority',res.data.authority)
+    });
+  },
 };
 </script>
 
