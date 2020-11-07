@@ -394,12 +394,22 @@ export default {
       diseaseAskData: [],
       diseasePressData: [],
       diseasecorrectData: {},
-      updata: [
+      upDiseaseName: [
         { issueIds: [], stageId: "1" },
         { issueIds: [], stageId: "2" },
         { issueIds: [], stageId: "3" },
         { issueIds: [], stageId: "4" },
       ],
+      upDiseaseData: {
+        id: "",
+        issues: [
+          { issueIds: [], stageId: "1" },
+          { issueIds: [], stageId: "2" },
+          { issueIds: [], stageId: "3" },
+          { issueIds: [], stageId: "4" },
+        ],
+        name: "",
+      },
     };
   },
   mounted() {
@@ -444,16 +454,6 @@ export default {
     // 症型checkbox
     changeDiseasechkeck(e, item) {
       if (e.target.checked) {
-        // this.http.post(`/answer/${this.examNo}/${this.caseId}/disease`, {
-        //   id: item.id,
-        //   issues: [
-        //     {
-        //       issueIds: ["1"],
-        //       stageId: "1",
-        //     },
-        //   ],
-        //   name: item.name,
-        // });
         return;
       }
       this.axios.delete(
@@ -544,10 +544,11 @@ export default {
     // 比对病名依据上传数据
     checkUpdata(nameData, item, stageId) {
       if (nameData.length == "0") return;
-      for (let i = 0; i < this.updata.length; i++) {
-        if (this.updata[i].stageId == stageId) {
-          if (nameData.toString() == this.updata[i].issueIds.toString()) return;
-          this.updata[i].issueIds = nameData;
+      for (let i = 0; i < this.upDiseaseName.length; i++) {
+        if (this.upDiseaseName[i].stageId == stageId + 1) {
+          if (nameData.toString() == this.upDiseaseName[i].issueIds.toString())
+            return;
+          this.upDiseaseName[i].issueIds = nameData;
           return this.upName(item);
         }
       }
@@ -557,7 +558,7 @@ export default {
       this.http
         .post(
           `/answer/${this.examNo}/${this.caseId}/diseasename/${this.diseaseNameId}`,
-          this.updata
+          this.upDiseaseName
         )
         .then((res) => {
           if (res.data) {
@@ -592,40 +593,73 @@ export default {
     //设置症候答案
     changeDisease(item, i) {
       this.diseaseChangeId = i;
-      let issueIds = [];
-      let stageId = "";
       if (item == "望") {
-        issueIds = this.diseaseWatchData;
-        stageId = "1";
+        this.checkDisease(
+          this.diseaseWatchData,
+          item,
+          i,
+          this.diseaseUpdata.id,
+          this.diseaseUpdata.name
+        );
       }
       if (item == "闻") {
-        issueIds = this.diseaselistenData;
-        stageId = "2";
+        this.checkDisease(
+          this.diseaselistenData,
+          item,
+          i,
+          this.diseaseUpdata.id,
+          this.diseaseUpdata.name
+        );
       }
       if (item == "问") {
-        issueIds = this.diseaseAskData;
-        stageId = "3";
+        this.checkDisease(
+          this.diseaseAskData,
+          item,
+          i,
+          this.diseaseUpdata.id,
+          this.diseaseUpdata.name
+        );
       }
       if (item == "切") {
-        issueIds = this.diseasePressData;
-        stageId = "4";
+        this.checkDisease(
+          this.diseaseWatchData,
+          item,
+          i,
+          this.diseaseUpdata.id,
+          this.diseaseUpdata.name
+        );
       }
-      if (issueIds.length == "0") return;
       if (!this.diseaseUpdata.name)
         return this.$Message.error("请选择一项症候!");
+    },
+    // 病症依据数据对比
+    checkDisease(itemName, item, stageId) {
+      this.upDiseaseData.id = this.diseaseUpdata.id;
+      this.upDiseaseData.name = this.diseaseUpdata.name;
+
+      for (let i = 0; i < this.upDiseaseData.issues.length; i++) {
+        if (this.upDiseaseData.issues[i].stageId == stageId + 1) {
+          if (
+            itemName.toString() ==
+            this.upDiseaseData.issues[i].issueIds.toString()
+          ) {
+            return;
+          }
+          this.upDiseaseData.issues[i].issueIds = itemName;
+          return this.upDisease(item);
+        }
+      }
+    },
+    // 病症依据上传函数
+    upDisease(item) {
       this.http
-        .post(`/answer/${this.examNo}/${this.caseId}/disease`, {
-          id: this.diseaseUpdata.id,
-          issues: [
-            {
-              issueIds: issueIds,
-              stageId: stageId,
-            },
-          ],
-          name: this.diseaseUpdata.name,
-        })
+        .post(
+          `/answer/${this.examNo}/${this.caseId}/disease`,
+          this.upDiseaseData
+        )
         .then((res) => {
           if (res.data) {
+            this.getAlldata();
             this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
           } else {
             this.$Message.error(res.msg);
@@ -676,19 +710,31 @@ export default {
           //获取正确望闻问切选项(病名)
           res.data.diseaseNameIssues.forEach((item) => {
             if (item.stageId == "1") {
-              this.updata.push({ issueIds: item.issueIds, stageId: "1" });
+              this.upDiseaseName.push({
+                issueIds: item.issueIds,
+                stageId: "1",
+              });
               this.nameWatchData = item.issueIds;
             }
             if (item.stageId == "2") {
-              this.updata.push({ issueIds: item.issueIds, stageId: "2" });
+              this.upDiseaseName.push({
+                issueIds: item.issueIds,
+                stageId: "2",
+              });
               this.namelistenData = item.issueIds;
             }
             if (item.stageId == "3") {
-              this.updata.push({ issueIds: item.issueIds, stageId: "3" });
+              this.upDiseaseName.push({
+                issueIds: item.issueIds,
+                stageId: "3",
+              });
               this.nameAskData = item.issueIds;
             }
             if (item.stageId == "4") {
-              this.updata.push({ issueIds: item.issueIds, stageId: "4" });
+              this.upDiseaseName.push({
+                issueIds: item.issueIds,
+                stageId: "4",
+              });
               this.namePressData = item.issueIds;
             }
           });
