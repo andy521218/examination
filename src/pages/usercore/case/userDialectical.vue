@@ -241,13 +241,12 @@
     <div class="dialectical_layout_right_two" v-show="!step">
       <div class="title" style="display: flex">
         症候:
-        <div v-for="(item, index) in diseaseCheckArr" :key="index">
+        <div v-for="(item, index) in diseaseCheckArr1" :key="index">
           <input
             type="radio"
             name="disease"
             :value="item.id"
             @change="seeDisease(item)"
-            v-model="diseaseUpdata.id"
           />
           <label for="">{{ item.name }}</label>
         </div>
@@ -384,6 +383,7 @@ export default {
       diseaseCheckData: {},
       diseaseUpdata: {},
       diseaseCheckArr: [],
+      diseaseCheckArr1: [],
       diseaseChangeId: "",
       nameWatchData: [],
       namelistenData: [],
@@ -445,6 +445,7 @@ export default {
       if (this.diseaseCheckArr.length == "0")
         return this.$Message.error("至少选择一项症型");
       this.step = !this.step;
+      this.diseaseCheckArr1 = this.diseaseCheckArr;
     },
     timerDiseaseout() {
       setTimeout(() => {
@@ -568,27 +569,40 @@ export default {
           }
         });
     },
-    // 症候单选项
+    // 查看症候单选项
     seeDisease(e) {
       this.diseaseUpdata = e;
-      this.diseasecorrectData.forEach((item) => {
-        if (e.id == item.id) {
-          item.issues.forEach((issueIds) => {
-            if (issueIds.stageId == "1") {
-              this.diseaseWatchData = issueIds.issueIds;
-            }
-            if (issueIds.stageId == "2") {
-              this.diseaselistenData = issueIds.issueIds;
-            }
-            if (issueIds.stageId == "3") {
-              this.diseaseAskData = issueIds.issueIds;
-            }
-            if (issueIds.stageId == "4") {
-              this.diseasePressData = issueIds.issueIds;
-            }
-          });
+      this.getAlldata();
+      let flag = false;
+      try {
+        this.diseasecorrectData.forEach((item) => {
+          if (e.id == item.id) {
+            flag = true;
+            item.issues.forEach((issueIds) => {
+              if (issueIds.stageId == "1") {
+                this.diseaseWatchData = issueIds.issueIds;
+              }
+              if (issueIds.stageId == "2") {
+                this.diseaselistenData = issueIds.issueIds;
+              }
+              if (issueIds.stageId == "3") {
+                this.diseaseAskData = issueIds.issueIds;
+              }
+              if (issueIds.stageId == "4") {
+                this.diseasePressData = issueIds.issueIds;
+              }
+            });
+          }
+        });
+        if (!flag) {
+          this.diseaseWatchData = [];
+          this.diseaselistenData = [];
+          this.diseaseAskData = [];
+          this.diseasePressData = [];
         }
-      });
+      } catch (error) {
+        return error;
+      }
     },
     //设置症候答案
     changeDisease(item, i) {
@@ -629,8 +643,6 @@ export default {
           this.diseaseUpdata.name
         );
       }
-      if (!this.diseaseUpdata.name)
-        return this.$Message.error("请选择一项症候!");
     },
     // 病症依据数据对比
     checkDisease(itemName, item, stageId) {
@@ -650,25 +662,33 @@ export default {
       }
     },
     // 病症依据上传函数
-    upDisease() {
+    upDisease(item) {
       let arr = JSON.parse(JSON.stringify(this.upDiseaseData));
       for (let i = 0; i < arr.issues.length; i++) {
-        if (this.upDiseaseData.issues[i].issueIds.length == "0") {
+        if (arr.issues[i].issueIds.length == "0") {
           arr.issues.splice(i, 1);
-          console.log(arr);
+          i--;
         }
       }
-      console.log(arr);
-      // this.http
-      //   .post(`/answer/${this.examNo}/${this.caseId}/disease`, arr)
-      //   .then((res) => {
-      //     if (res.data) {
-      //       this.getAlldata();
-      //       this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
-      //     } else {
-      //       this.$Message.error(res.msg);
-      //     }
-      //   });
+      if (!this.diseaseUpdata.name)
+        return this.$Message.error("请选择一项症候!");
+      this.axios
+        .delete(
+          `/answer/${this.examNo}/${this.caseId}/disease/${this.diseaseUpdata.id}`
+        )
+        .then(() => {
+          this.http
+            .post(`/answer/${this.examNo}/${this.caseId}/disease`, arr)
+            .then((res) => {
+              if (res.data) {
+                this.$Message.warning(
+                  `设置${this.diseaseUpdata.name + item}成功!`
+                );
+              } else {
+                this.$Message.error(res.msg);
+              }
+            });
+        });
     },
     //设置默认症候选项
     setupRadio() {
@@ -696,7 +716,6 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/disease`)
         .then((res) => {
-          console.log(res);
           if (!res.data.diseaseName) return;
           //获取正确病名 症型选项
           this.searchDisease = res.data.diseaseName;
@@ -705,7 +724,9 @@ export default {
           arr.forEach((item) => {
             delete item["issues"];
           });
-          this.diseaseCheckArr = arr;
+          this.diseaseCheckArr = arr.sort((a, b) => {
+            return a.id - b.id;
+          });
           this.axios
             .get(`/meta/disease/${res.data.diseaseNameId}`)
             .then((res) => {

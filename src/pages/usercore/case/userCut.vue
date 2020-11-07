@@ -29,7 +29,7 @@
                     <p>点击右侧空白处选择一个设置为正确选项:</p>
                   </li>
                   <li
-                    v-for="(item, index) in pulseData.optinos"
+                    v-for="(item, index) in pulseData"
                     :key="index"
                     style="display: flex; justify-content: flex-start"
                   >
@@ -351,7 +351,7 @@ export default {
       caseId: "",
       pressItemData: [],
       pressData: [],
-      pulseData: {},
+      pulseData: [],
       option: {},
       name: "",
       sex: false,
@@ -427,16 +427,16 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/feel/pulse`)
         .then((res) => {
-          this.pulseData.optinos = [];
+          this.pulseData = [];
           let arr = [];
           for (let i = 0; i < res.data.options.length; i++) {
             arr.push(res.data.options[i]);
             if (i % 10 == "1") {
-              this.pulseData.optinos.push(arr);
+              this.pulseData.push(arr);
               arr = [];
             }
           }
-          this.pulseData.optinos.reverse();
+          this.pulseData.reverse();
           this.imgsUrl = res.data.picUrl;
           this.answer = res.data.answer;
         });
@@ -481,7 +481,7 @@ export default {
         })
         .then((res) => {
           if (res.code == "000000") {
-            this.pulseData = res.data.list;
+            return
           } else {
             this.$Message.error(res.msg);
           }
