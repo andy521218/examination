@@ -622,7 +622,7 @@ export default {
       }
       if (item == "切") {
         this.checkDisease(
-          this.diseaseWatchData,
+          this.diseasePressData,
           item,
           i,
           this.diseaseUpdata.id,
@@ -636,7 +636,6 @@ export default {
     checkDisease(itemName, item, stageId) {
       this.upDiseaseData.id = this.diseaseUpdata.id;
       this.upDiseaseData.name = this.diseaseUpdata.name;
-
       for (let i = 0; i < this.upDiseaseData.issues.length; i++) {
         if (this.upDiseaseData.issues[i].stageId == stageId + 1) {
           if (
@@ -651,20 +650,25 @@ export default {
       }
     },
     // 病症依据上传函数
-    upDisease(item) {
-      this.http
-        .post(
-          `/answer/${this.examNo}/${this.caseId}/disease`,
-          this.upDiseaseData
-        )
-        .then((res) => {
-          if (res.data) {
-            this.getAlldata();
-            this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
+    upDisease() {
+      let arr = JSON.parse(JSON.stringify(this.upDiseaseData));
+      for (let i = 0; i < arr.issues.length; i++) {
+        if (this.upDiseaseData.issues[i].issueIds.length == "0") {
+          arr.issues.splice(i, 1);
+          console.log(arr);
+        }
+      }
+      console.log(arr);
+      // this.http
+      //   .post(`/answer/${this.examNo}/${this.caseId}/disease`, arr)
+      //   .then((res) => {
+      //     if (res.data) {
+      //       this.getAlldata();
+      //       this.$Message.warning(`设置${this.diseaseUpdata.name + item}成功!`);
+      //     } else {
+      //       this.$Message.error(res.msg);
+      //     }
+      //   });
     },
     //设置默认症候选项
     setupRadio() {
