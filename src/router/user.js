@@ -85,8 +85,8 @@ export const user=[
   component:() => import('../pages/usercore/case/caseHome'),
 },
 {
-  path:'index',
-  name:'index',
+  path:'case',
+  name:'case',
   redirect: "userask",
   component:()=>import('../pages/teacher/edit/index'),
   children:[

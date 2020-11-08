@@ -106,7 +106,7 @@ export default {
   data() {
     return {
       tab: ["脉诊", "按诊"],
-      typeId: "",
+      typeId: "0",
       route: "",
       edit_cont: false,
       tips: false,

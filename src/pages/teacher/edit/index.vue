@@ -87,7 +87,7 @@ export default {
           link: "edittreatment",
         },
       ],
-      bgIndex: "-1",
+      bgIndex: "0",
       authority: "",
       examNo: "",
     };
@@ -96,6 +96,11 @@ export default {
     logo,
   },
   mounted() {
+    if (this.bgIndex == "0") {
+      localStorage.getItem("caseMenuId")
+        ? (this.bgIndex = localStorage.getItem("caseMenuId"))
+        : "0";
+    }
     this.examNo = localStorage.getItem("examNo");
     this.authority = localStorage.getItem("authority");
     if (this.authority == "STUDENT") {
@@ -130,6 +135,7 @@ export default {
   methods: {
     routeLink(i) {
       this.bgIndex = i;
+      localStorage.setItem("caseMenuId", i);
       this.$router.push(this.item[i].link);
     },
     saveCase() {

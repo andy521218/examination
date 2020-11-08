@@ -88,7 +88,8 @@ export default {
   },
   mounted() {
     this.getCaseData();
-    localStorage.clear('askedArr')
+    localStorage.removeItem('caseMenuId')
+    localStorage.removeItem('askedArr')
   },
   methods: {
     getCaseData(page = "1", id = "") {

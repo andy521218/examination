@@ -550,6 +550,7 @@ export default {
         })
         .then((res) => {
           if (res.data) {
+            this.getAlldata()
             this.$Message.warning(`设置${this.searchDisease + item}诊成功!`);
           } else {
             this.$Message.error(res.msg);

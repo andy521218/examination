@@ -314,7 +314,7 @@ export default {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
     this.getTreatVal();
-    // this.getdiseaseData();
+    this.getdiseaseData();
   },
   methods: {
     seeItem(index) {
@@ -476,21 +476,26 @@ export default {
     // 辩证数据
     getdiseaseData() {
       this.axios
-        .get(`/case/manage/${this.caseId}/disease`)
+        .get(`/answer/${this.examNo}/${this.caseId}/disease`)
         .then((res) => {
-          this.diseaseName = res.data.diseaseName;
-          let watch = res.data.diseaseNameIssues[0].issueIds;
-          let listen = res.data.diseaseNameIssues[1].issueIds;
-          let ask = res.data.diseaseNameIssues[2].issueIds;
-          let press = res.data.diseaseNameIssues[3].issueIds;
-          this.diseasesRadio = res.data.diseases;
-          this.defaultOptions = res.data.diseases[0];
+          let watch, listen, ask, press;
+          try {
+            this.diseaseName = res.data.diseaseName;
+            watch = res.data.diseaseNameIssues[0].issueIds;
+            listen = res.data.diseaseNameIssues[1].issueIds;
+            ask = res.data.diseaseNameIssues[2].issueIds;
+            press = res.data.diseaseNameIssues[3].issueIds;
+            this.diseasesRadio = res.data.diseases;
+            this.defaultOptions = res.data.diseases[0];
+          } catch (error) {
+            error
+          }
 
           let arr = [];
           // 获取望诊数据
           for (let i = 0; i <= 2; i++) {
             this.axios
-              .get(`/case/manage/${this.caseId}/watch/${i}`)
+              .get(`/answer/${this.examNo}/${this.caseId}/watch/${i}`)
               .then((res) => {
                 for (let i = 0; i < res.data.list.length; i++) {
                   arr.push(res.data.list[i]);
@@ -510,19 +515,21 @@ export default {
               });
           }
           // 获取闻诊
-          this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
-            this.diseasesListenthData = res.data;
-            for (let i = 0; i < listen.length; i++) {
-              for (let y = 0; y < res.data.length; y++) {
-                if (listen[i] == res.data[y].id) {
-                  this.listenData.push(res.data[y]);
+          this.axios
+            .get(`/answer/${this.examNo}/${this.caseId}/listen`)
+            .then((res) => {
+              this.diseasesListenthData = res.data;
+              for (let i = 0; i < listen.length; i++) {
+                for (let y = 0; y < res.data.length; y++) {
+                  if (listen[i] == res.data[y].id) {
+                    this.listenData.push(res.data[y]);
+                  }
                 }
               }
-            }
-          });
+            });
           // 获取问诊
           this.axios
-            .get(`/case/manage/${this.caseId}/ask`, {
+            .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
               params: {
                 page: "1",
                 size: "500",
@@ -540,7 +547,7 @@ export default {
             });
           // 获取切诊=>按珍数据
           this.axios
-            .get(`/case/manage/${this.caseId}/feel/press`)
+            .get(`/answer/${this.examNo}/${this.caseId}/feel/press`)
             .then((res) => {
               this.diseasesPressData = res.data.list;
               for (let i = 0; i < press.length; i++) {
@@ -553,7 +560,7 @@ export default {
             });
           // 获取切诊=>脉诊
           this.axios
-            .get(`/case/manage/${this.caseId}/feel/pulse`)
+            .get(`/answer/${this.examNo}/${this.caseId}/feel/pulse`)
             .then((res) => {
               if (res.data.answer) {
                 this.pulseData = res.data;
@@ -570,19 +577,23 @@ export default {
       this.diseasesListenth = [];
       this.diseasesAsk = [];
       this.diseasesPress = [];
-      for (let i = 0; i < e.issues.length; i++) {
-        if (e.issues[i].stageId == "1") {
-          this.diseasesWatch = e.issues[i].issueIds;
+      try {
+        for (let i = 0; i < e.issues.length; i++) {
+          if (e.issues[i].stageId == "1") {
+            this.diseasesWatch = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "2") {
+            this.diseasesListenth = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "3") {
+            this.diseasesAsk = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "4") {
+            this.diseasesPress = e.issues[i].issueIds;
+          }
         }
-        if (e.issues[i].stageId == "2") {
-          this.diseasesListenth = e.issues[i].issueIds;
-        }
-        if (e.issues[i].stageId == "3") {
-          this.diseasesAsk = e.issues[i].issueIds;
-        }
-        if (e.issues[i].stageId == "4") {
-          this.diseasesPress = e.issues[i].issueIds;
-        }
+      } catch (error) {
+        return error;
       }
     },
   },

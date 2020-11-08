@@ -1,10 +1,10 @@
 <template>
   <div class="user_menu">
     <div class="admin_menu_item" v-for="(item, index) in menuData" :key="index">
-      <p :class="{ active: bgIndex == index }" @click="oneRouting(index)">
+      <p :class="{ active: menuId == index }" @click="oneRouting(index)">
         {{ item.title }}
       </p>
-      <ul :class="{ show: bgIndex == index }">
+      <ul :class="{ show: menuId == index }">
         <li
           v-for="(item, i) in item.item"
           :key="i"
@@ -24,15 +24,17 @@ export default {
   name: "user-home",
   data() {
     return {
-      bgIndex: "-1",
       colorIndex: "-1",
       menuData: "",
     };
   },
-  computed:{
-    ...mapState(['adminMenu','teacherMenu','stuedntMenu'])
+  computed: {
+    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu", "menuId"]),
   },
   mounted() {
+    if (this.$store.state.menuId == "-1") {
+      this.$store.state.menuId = localStorage.getItem("bgindex");
+    }
     this.axios.get("/users/current").then((res) => {
       if (res.code == "000000") {
         localStorage.setItem("authority", res.data.authority);
@@ -54,7 +56,8 @@ export default {
 
   methods: {
     oneRouting(index) {
-      this.bgIndex = index;
+      this.$store.state.menuId = index;
+      localStorage.setItem("bgindex", index);
       this.menuData[index].show = !this.menuData[index].show;
       this.$router.push(this.menuData[index].router);
     },

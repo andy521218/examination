@@ -263,7 +263,9 @@ export default {
           localStorage.clear();
         });
       }
-      this.$router.push(router);
+      this.$router.push(router)
+      this.$store.state.menuId=index
+      localStorage.setItem('bgindex',index)
     },
   },
 };

@@ -7,6 +7,7 @@ export default new Vuex.Store({
   state: {
     sex:'',
     flag:false,
+    menuId:'-1',
     adminMenu: [
       {
         title: "教师管理",

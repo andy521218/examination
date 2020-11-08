@@ -169,6 +169,7 @@ export default {
     };
   },
   mounted() {
+    localStorage.removeItem('caseMenuId')
     this.getManage();
     let timeout;
     window.onresize = () => {

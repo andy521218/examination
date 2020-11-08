@@ -295,19 +295,23 @@ export default {
       this.agentiaList = [];
       this.axios.get(`/case/manage/${this.caseId}/treat`).then((res) => {
         this.searchTreat = res.data.treatName;
-        this.searchAgentia = this.agentiaListName = res.data.agentias[0].name;
-        this.agentiaId = res.data.agentias[0].id;
-        let druggeries = res.data.agentias[0].druggeries;
-        let arr = [];
-        for (let i = 0; i < druggeries.length; i++) {
-          arr.push(druggeries[i].name);
-          if (arr.length % 6 == "0") {
-            this.agentiaList.push(arr);
-            arr = [];
+        try {
+          this.searchAgentia = this.agentiaListName = res.data.agentias[0].name;
+          this.agentiaId = res.data.agentias[0].id;
+          let druggeries = res.data.agentias[0].druggeries;
+          let arr = [];
+          for (let i = 0; i < druggeries.length; i++) {
+            arr.push(druggeries[i].name);
+            if (arr.length % 6 == "0") {
+              this.agentiaList.push(arr);
+              arr = [];
+            }
           }
-        }
-        if (arr.length > 0) {
-          this.agentiaList.push(arr);
+          if (arr.length > 0) {
+            this.agentiaList.push(arr);
+          }
+        } catch (error) {
+          return error;
         }
       });
     },
@@ -377,12 +381,17 @@ export default {
         .get(`/case/manage/${this.caseId}/disease`)
         .then((res) => {
           this.diseaseName = res.data.diseaseName;
-          let watch = res.data.diseaseNameIssues[0].issueIds;
-          let listen = res.data.diseaseNameIssues[1].issueIds;
-          let ask = res.data.diseaseNameIssues[2].issueIds;
-          let press = res.data.diseaseNameIssues[3].issueIds;
-          this.diseasesRadio = res.data.diseases;
-          this.defaultOptions = res.data.diseases[0];
+          let watch, listen, ask, press;
+          try {
+            watch = res.data.diseaseNameIssues[0].issueIds;
+            listen = res.data.diseaseNameIssues[1].issueIds;
+            ask = res.data.diseaseNameIssues[2].issueIds;
+            press = res.data.diseaseNameIssues[3].issueIds;
+            this.diseasesRadio = res.data.diseases;
+            this.defaultOptions = res.data.diseases[0];
+          } catch (error) {
+            error;
+          }
 
           let arr = [];
           // 获取望诊数据
@@ -441,12 +450,16 @@ export default {
             .get(`/case/manage/${this.caseId}/feel/press`)
             .then((res) => {
               this.diseasesPressData = res.data.list;
-              for (let i = 0; i < press.length; i++) {
-                for (let y = 0; y < res.data.list.length; y++) {
-                  if (press[i] == res.data.list[y].id) {
-                    this.pressData.push(res.data.list[y]);
+              try {
+                for (let i = 0; i < press.length; i++) {
+                  for (let y = 0; y < res.data.list.length; y++) {
+                    if (press[i] == res.data.list[y].id) {
+                      this.pressData.push(res.data.list[y]);
+                    }
                   }
                 }
+              } catch (error) {
+                error;
               }
             });
           // 获取切诊=>脉诊
@@ -468,19 +481,23 @@ export default {
       this.diseasesListenth = [];
       this.diseasesAsk = [];
       this.diseasesPress = [];
-      for (let i = 0; i < e.issues.length; i++) {
-        if (e.issues[i].stageId == "1") {
-          this.diseasesWatch = e.issues[i].issueIds;
+      try {
+        for (let i = 0; i < e.issues.length; i++) {
+          if (e.issues[i].stageId == "1") {
+            this.diseasesWatch = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "2") {
+            this.diseasesListenth = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "3") {
+            this.diseasesAsk = e.issues[i].issueIds;
+          }
+          if (e.issues[i].stageId == "4") {
+            this.diseasesPress = e.issues[i].issueIds;
+          }
         }
-        if (e.issues[i].stageId == "2") {
-          this.diseasesListenth = e.issues[i].issueIds;
-        }
-        if (e.issues[i].stageId == "3") {
-          this.diseasesAsk = e.issues[i].issueIds;
-        }
-        if (e.issues[i].stageId == "4") {
-          this.diseasesPress = e.issues[i].issueIds;
-        }
+      } catch (error) {
+        return error;
       }
     },
   },

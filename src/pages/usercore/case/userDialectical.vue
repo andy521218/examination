@@ -581,14 +581,18 @@ export default {
             item.issues.forEach((issueIds) => {
               if (issueIds.stageId == "1") {
                 this.diseaseWatchData = issueIds.issueIds;
+                this.upDiseaseData.issues[0].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "2") {
                 this.diseaselistenData = issueIds.issueIds;
+                this.upDiseaseData.issues[1].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "3") {
                 this.diseaseAskData = issueIds.issueIds;
+                this.upDiseaseData.issues[2].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "4") {
+                this.upDiseaseData.issues[3].issueIds = issueIds.issueIds;
                 this.diseasePressData = issueIds.issueIds;
               }
             });
@@ -599,6 +603,16 @@ export default {
           this.diseaselistenData = [];
           this.diseaseAskData = [];
           this.diseasePressData = [];
+          this.upDiseaseData = {
+            id: "",
+            issues: [
+              { issueIds: [], stageId: "1" },
+              { issueIds: [], stageId: "2" },
+              { issueIds: [], stageId: "3" },
+              { issueIds: [], stageId: "4" },
+            ],
+            name: "",
+          };
         }
       } catch (error) {
         return error;
@@ -660,6 +674,7 @@ export default {
           return this.upDisease(item);
         }
       }
+      console.log(this.upDiseaseData);
     },
     // 病症依据上传函数
     upDisease(item) {
