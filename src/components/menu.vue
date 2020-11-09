@@ -29,12 +29,19 @@ export default {
     };
   },
   computed: {
-    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu", "menuId"]),
+    ...mapState([
+      "adminMenu",
+      "teacherMenu",
+      "stuedntMenu",
+      "menuId",
+      "messageMenu",
+    ]),
   },
   mounted() {
     if (this.$store.state.menuId == "-1") {
       this.$store.state.menuId = localStorage.getItem("bgindex");
     }
+
     this.axios.get("/users/current").then((res) => {
       if (res.code == "000000") {
         localStorage.setItem("authority", res.data.authority);
@@ -43,10 +50,17 @@ export default {
           return;
         }
         if (res.data.authority == "TEACHER") {
+          if (/message/.test(window.location)) {
+            this.messageMenu.splice(1, 2);
+            return (this.menuData = this.messageMenu);
+          }
           this.menuData = this.teacherMenu;
           return;
         }
         if (res.data.authority == "STUDENT") {
+          if (/message/.test(window.location)) {
+            return (this.menuData = this.messageMenu);
+          }
           this.menuData = this.stuedntMenu;
           return;
         }

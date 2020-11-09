@@ -69,31 +69,6 @@ router.beforeEach((to, from, next) => {
         }
         router.push(to.path)
  }
-  if (/message/.test(to.name)) {
-    store.state.menuData =  [
-      {
-      title:'问题讨论',
-      router:'messageforum',
-      item:''
-    },
-    {
-      title:'问题提问',
-      router:'messagepublish',
-      item:''
-    },
-    {
-      title:'我的问题',
-      router:'messagemy',
-      item:''
-    },
-    {
-      title:'我的私信',
-      router:'messageprivate',
-      item:''
-    },
-  ]
-
-  }
   NProgress.start()
   next()
 })

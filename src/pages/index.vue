@@ -1,14 +1,8 @@
 <template>
   <div class="container">
-    <router-link to="casehome">
-      <div class="tab train"></div>
-    </router-link>
-    <router-link to="teachercase">
-      <div class="tab assessment"></div>
-    </router-link>
-    <router-link to="/messagemy">
-      <div class="tab problem"></div>
-    </router-link>
+    <div class="tab train" @click="routerCasehome"></div>
+    <div class="tab assessment"></div>
+    <div class="tab problem" @click="routerMessagemy"></div>
     <div class="tab care"></div>
   </div>
 </template>
@@ -16,6 +10,16 @@
 <script>
 export default {
   name: "index",
+  methods: {
+    routerCasehome() {
+      if (localStorage.getItem("authority") != "STUDENT")
+        return this.$Message.error("无权访问");
+      this.$router.push("casehome");
+    },
+    routerMessagemy() {
+      this.$router.push("messagemy");
+    },
+  },
 };
 </script>
 

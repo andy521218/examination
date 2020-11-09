@@ -199,7 +199,12 @@
     </div>
     <div class="home_user_right">
       <div class="user_img_big">
-        <img :src="url" alt />
+        <img
+          :src="avatar ? avatar : current.avatar"
+          alt=""
+          v-if="current.avatar"
+        />
+        <img src="../assets/public/timg.png" alt v-else />
         <div class="headr_select">
           <p></p>
           <div class="pseudo"></div>
@@ -219,7 +224,7 @@
           </div>
         </div>
       </div>
-      <span>{{ name }}</span>
+      <span>{{ current.name }}</span>
     </div>
   </div>
 </template>
@@ -233,16 +238,16 @@ export default {
       url:
         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600668765311&di=942d4b57df1934ca5fa4ef29310f1acd&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F12%2F20200612180401_mvgks.thumb.400_0.jpeg",
       itemIndex: "-1",
-      name: "",
+      current: "",
       list: [],
     };
   },
   computed: {
-    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu"]),
+    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu", "avatar"]),
   },
   mounted() {
     this.axios.get("/users/current").then((res) => {
-      this.name = res.data.name;
+      this.current = res.data;
       if (res.data.authority == "ADMIN") {
         this.list = this.adminMenu;
       }
@@ -263,9 +268,9 @@ export default {
           localStorage.clear();
         });
       }
-      this.$router.push(router)
-      this.$store.state.menuId=index
-      localStorage.setItem('bgindex',index)
+      this.$router.push(router);
+      this.$store.state.menuId = index;
+      localStorage.setItem("bgindex", index);
     },
   },
 };

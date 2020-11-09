@@ -8,6 +8,29 @@ export default new Vuex.Store({
     sex:'',
     flag:false,
     menuId:'-1',
+    avatar:'',
+    messageMenu: [
+      {
+      title:'问题讨论',
+      router:'messageforum',
+      item:''
+    },
+    {
+      title:'问题提问',
+      router:'messagepublish',
+      item:''
+    },
+    {
+      title:'我的问题',
+      router:'messagemy',
+      item:''
+    },
+    {
+      title:'我的私信',
+      router:'messageprivate',
+      item:''
+    },
+  ],
     adminMenu: [
       {
         title: "教师管理",

@@ -3,7 +3,14 @@
     <div class="user_top">
       <div class="user_big">
         <div class="user_small">
-          <img src alt />
+          <input
+            type="file"
+            class="uploadlogo"
+            @change="uploadlogo"
+            ref="logo"
+          />
+          <img :src="current.avatar" alt="" v-if="current.avatar" />
+          <img src="../../assets/public/timg.png" alt v-else />
           <span class="edit">点击修改头像</span>
         </div>
         <span class="user_number">20200912</span>
@@ -21,14 +28,14 @@
         </li>
         <li>
           <span>手机号:</span>
-          <input class="text_box" type="text" />
+          <input class="text_box" type="text" v-model="current.mobile" />
         </li>
         <li>
           <span>邮箱:</span>
-          <input class="text_box" type="text" />
+          <input class="text_box" type="text" v-model="current.email" />
         </li>
       </ul>
-      <button class="submit">保存</button>
+      <button class="submit" @click="submit">保存</button>
     </div>
   </div>
 </template>
@@ -47,6 +54,67 @@ export default {
     getCurrent() {
       this.axios.get("/users/current").then((res) => {
         this.current = res.data;
+      });
+    },
+    uploadlogo() {
+      let logo = this.$refs.logo.files[0];
+      if (!logo) return;
+
+      let fileExample = new FileReader();
+      fileExample.readAsDataURL(logo);
+      fileExample.onload = (ev) => {
+        this.current.avatar = ev.target.result;
+        this.$store.state.avatar = ev.target.result;
+      };
+      let formData = new window.FormData();
+      formData.append("file", logo);
+      this.upload.post("/upload", formData).then((res) => {
+        let url = this.qs.stringify({
+          avatar: `http://localhost:8080/api/download/${res.data}`,
+        });
+        this.http.put(`/users/avatar?${url}`);
+      });
+    },
+    checkPhone() {
+      if (!this.current.mobile) {
+        this.$Message.error("手机号码不能为空!");
+        return false;
+      }
+      if (
+        !/^1(?:70\d|(?:9[89]|8[0-24-9]|7[135-8]|66|5[0-35-9])\d|3(?:4[0-8]|[0-35-9]\d))\d{7}$/.test(
+          this.current.mobile
+        )
+      ) {
+        this.$Message.error("请填写正确的手机号!");
+        return false;
+      }
+      return true;
+    },
+    checkEmail() {
+      if (!this.current.email) {
+        /*eslint-disable*/
+        this.$Message.error("请填写邮箱!");
+        return false;
+      }
+      var reg = /^[A-Za-z0-9]+([_\.][A-Za-z0-9]+)*@([A-Za-z0-9\-]+\.)+[A-Za-z]{2,6}$/;
+      if (!reg.test(this.current.email)) {
+        this.$Message.error("请输入正确的邮箱!");
+        return false;
+      }
+      return true;
+    },
+    submit() {
+      if (!this.checkPhone() && !this.checkEmail()) return;
+      let updata = this.qs.stringify({
+        mobile: this.current.mobile,
+        email: this.current.email,
+      });
+      this.axios.put(`/my/profile?${updata}`).then((res) => {
+        if (res.code == "000000") {
+          return this.$Message.warning("修改成功!");
+        } else {
+          this.$Message.error(res.msg);
+        }
       });
     },
   },
@@ -75,10 +143,21 @@ export default {
         height: 100%;
         border: 3px solid rgb(32, 85, 127);
         border-radius: 50%;
+        .uploadlogo {
+          position: absolute;
+          opacity: 0;
+          width: 100%;
+          height: 100%;
+        }
         .edit {
           position: relative;
           width: 100px;
-          bottom: -225px;
+          bottom: -20px;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
         }
       }
       .user_number {
