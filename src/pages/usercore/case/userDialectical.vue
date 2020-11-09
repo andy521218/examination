@@ -246,6 +246,7 @@
             type="radio"
             name="disease"
             :value="item.id"
+            v-model="diseaseDeafault"
             @change="seeDisease(item)"
           />
           <label for="">{{ item.name }}</label>
@@ -384,6 +385,7 @@ export default {
       diseaseUpdata: {},
       diseaseCheckArr: [],
       diseaseCheckArr1: [],
+      diseaseDeafault: "",
       diseaseChangeId: "",
       nameWatchData: [],
       namelistenData: [],
@@ -420,7 +422,8 @@ export default {
     this.getPressData();
     this.getPulseData();
     this.getAlldata();
-    // this.setupRadio();
+    let obj = { id: 7 };
+    this.seeDisease(obj);
     // 获取望诊数据
     for (let i = 0; i < 3; i++) {
       this.axios
@@ -674,7 +677,6 @@ export default {
           return this.upDisease(item);
         }
       }
-      console.log(this.upDiseaseData);
     },
     // 病症依据上传函数
     upDisease(item) {
@@ -705,29 +707,8 @@ export default {
             });
         });
     },
-    //设置默认症候选项
-    setupRadio() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/disease`).then((res) => {
-        this.diseaseUpdata.id = res.data.diseases[0].id;
-        this.diseaseUpdata.name = res.data.diseases[0].name;
-        res.data.diseases[0].issues.forEach((issueIds) => {
-          if (issueIds.stageId == "1") {
-            this.diseaseWatchData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "2") {
-            this.diseaselistenData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "3") {
-            this.diseaseAskData = issueIds.issueIds;
-          }
-          if (issueIds.stageId == "4") {
-            this.diseasePressData = issueIds.issueIds;
-          }
-        });
-      });
-    },
     //获取全部信息
-    getAlldata() {
+    async getAlldata() {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/disease`)
         .then((res) => {

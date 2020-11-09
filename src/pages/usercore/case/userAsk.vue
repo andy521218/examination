@@ -9,17 +9,17 @@
               v-for="(item, index) in tabData"
               :key="index"
               class="item_title"
-              @click="container(index)"
+              @click="container(item)"
             >
               {{ item.name }}
-              <div :class="{ active: typeId == index }"></div>
+              <div :class="{ active: typeId == item.moduleId }"></div>
             </li>
             <i class="tips"></i>
           </ul>
           <div class="content scrollbar">
             <div class="content_scrollbar">
               <!-- 主诉 -->
-              <ul v-show="typeId == '0'">
+              <ul v-show="'主诉' == typeName">
                 <li
                   v-for="(item, index) in askData0"
                   :key="index"
@@ -37,7 +37,7 @@
                 </li>
               </ul>
               <!-- 现病史 -->
-              <ul v-show="typeId == '1'">
+              <ul v-show="'现病史' == typeName">
                 <li
                   v-for="(item, index) in askData1"
                   :key="index"
@@ -59,7 +59,7 @@
                 </li>
               </ul>
               <!-- 既往史 -->
-              <ul v-show="typeId == '2'">
+              <ul v-show="'既往史' == typeName">
                 <li
                   v-for="(item, index) in askData2"
                   :key="index"
@@ -77,7 +77,7 @@
                 </li>
               </ul>
               <!-- 个人史 -->
-              <ul v-show="typeId == '3'">
+              <ul v-show="'个人史' == typeName">
                 <li
                   v-for="(item, index) in askData3"
                   :key="index"
@@ -95,7 +95,7 @@
                 </li>
               </ul>
               <!-- 婚育史 -->
-              <ul v-show="typeId == '4'">
+              <ul v-show="'婚育史' == typeName">
                 <li
                   v-for="(item, index) in askData4"
                   :key="index"
@@ -112,8 +112,8 @@
                   </div>
                 </li>
               </ul>
-              <!-- 家族史 -->
-              <ul v-show="typeId == '5'">
+              <!-- 月经史 -->
+              <ul v-show="'月经史' == typeName">
                 <li
                   v-for="(item, index) in askData5"
                   :key="index"
@@ -130,8 +130,8 @@
                   </div>
                 </li>
               </ul>
-              <!-- 月经史 -->
-              <ul v-show="typeId == '6'">
+              <!-- 家族史 -->
+              <ul v-show="'家族史' == typeName">
                 <li
                   v-for="(item, index) in askData6"
                   :key="index"
@@ -255,6 +255,7 @@ export default {
       askedArr: [],
       caseId: "",
       typeId: "0",
+      typeName: "主诉",
       examNo: "",
       currentIndex: "",
       keyword: "",
@@ -286,7 +287,7 @@ export default {
         .then((res) => {
           this.tabData = res.data;
           for (let i = 0; i < res.data.length; i++) {
-            this.getAskData(i);
+            this.getAskData(res.data[i].moduleId);
           }
         });
     },
@@ -294,7 +295,7 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
           params: {
-            keyword: "",
+            keyword: this.keyword,
             typeId: typeId,
             page: "1",
             size: "1000",
@@ -337,7 +338,8 @@ export default {
         });
     },
     container(i) {
-      this.typeId = i;
+      this.typeId = i.moduleId;
+      this.typeName = i.name;
     },
   },
   watch: {

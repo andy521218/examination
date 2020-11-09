@@ -46,10 +46,10 @@
             v-for="(item, index) in tabData"
             :key="index"
             class="item_title"
-            @click="container(index)"
+            @click="container(item.moduleId)"
           >
             {{ item.name }}
-            <div :class="{ active: typeId == index }"></div>
+            <div :class="{ active: item.moduleId == typeId }"></div>
           </li>
           <i class="tips" @click="opneTips"></i>
         </ul>
@@ -215,7 +215,6 @@ export default {
     container(i) {
       this.typeId = i;
       this.getaskData();
-  
     },
     upload() {
       this.route = this.$refs.file.value;
@@ -281,8 +280,7 @@ export default {
             this.getaskData();
             this.askColorshow = false;
             setTimeout(() => {
-              this.$refs.scroll.scrollTop =
-                this.$refs.scroll.scrollHeight+55;
+              this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight + 55;
             }, 1000);
             this.$Message.warning("添加成功!");
           } else {
