@@ -1,5 +1,6 @@
 <template>
   <div class="home" style="min-width: 1920px">
+    <div class="main_mask" v-if="fractionshow"></div>
     <header class="home_header">
       <logo></logo>
       <div class="home_user">
@@ -49,6 +50,33 @@
         </ul>
       </div>
       <div class="case_main">
+        <div class="edit_dele" v-if="fractionshow">
+          <div class="edit">
+            <div class="edit_title">
+              <span class="title">本次训练得分</span>
+            </div>
+            <ul>
+              <li style="text-align: center">
+                <span style="font-size: 50px; font-weight: bold">{{
+                  fraction
+                }}</span
+                >分
+              </li>
+            </ul>
+            <div class="edit_btn_box">
+              <button
+                class="edit_submit"
+                style="margin-right: 40px"
+                @click="$router.push('casehome')"
+              >
+                返回首页
+              </button>
+              <button class="edit_submit" @click="$router.push('userrecord')">
+                查看详情
+              </button>
+            </div>
+          </div>
+        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -87,6 +115,8 @@ export default {
           link: "edittreatment",
         },
       ],
+      fractionshow: false,
+      fraction: "",
       bgIndex: "0",
       authority: "",
       examNo: "",
@@ -142,7 +172,14 @@ export default {
       this.$router.push("/teachercase");
     },
     submit() {
-      this.axios.post(`/train/${this.examNo}/finished`);
+      this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
+        if (res.code == "000000") {
+          this.fractionshow = true;
+          this.fraction = res.data;
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };
@@ -158,7 +195,6 @@ export default {
     display: flex;
     flex-direction: column;
     margin-left: 20px;
-
     img {
       margin-bottom: 5px;
     }

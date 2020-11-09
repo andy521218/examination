@@ -1311,3 +1311,26 @@ input[type="checkbox"]:checked:before {
     }
   }
 }
+
+//闻诊 按诊  全部正常样式
+.normal_edit {
+  margin: 50px auto;
+  width: 590px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  font-size: 18px;
+  border: #097ca8 1px solid;
+  position: relative;
+  background: rgba(26, 127, 195, 0.2);
+
+  p {
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    height: 5px;
+    background: rgb(0, 235, 255);
+    border-radius: 5px;
+    bottom: 0px;
+  }
+}

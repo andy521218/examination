@@ -90,6 +90,7 @@ export default {
     this.getCaseData();
     localStorage.removeItem('caseMenuId')
     localStorage.removeItem('askedArr')
+    localStorage.removeItem('pressItemData')
   },
   methods: {
     getCaseData(page = "1", id = "") {

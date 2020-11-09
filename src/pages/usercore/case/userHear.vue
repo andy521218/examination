@@ -18,8 +18,12 @@
               </li>
               <i class="tips"></i>
             </ul>
+            <div class="normal_edit" v-if="normal_edit_show">
+              按诊的结果均为正常
+              <p></p>
+            </div>
             <div class="content scrollbar">
-              <div class="content_scrollbar">
+              <div class="content_scrollbar" v-if="!normal_edit_show">
                 <ul>
                   <li><p>点击右侧空白处选择一个设置为正确选项:</p></li>
                   <li
@@ -53,6 +57,7 @@ export default {
     return {
       tab: ["闻诊"],
       typeId: "",
+      normal_edit_show: false,
       optionShow: false,
       caseId: "",
       listenData: {},
@@ -81,6 +86,7 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/listen`)
         .then((res) => {
+          if (res.data.length == "0") return (this.normal_edit_show = true);
           this.listenData = res.data;
         });
     },

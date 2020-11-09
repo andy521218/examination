@@ -53,9 +53,13 @@
                     </div>
                   </li>
                 </ul>
-                <ul v-show="typeId == 1">
+                <div class="normal_edit" v-if="normal_edit_show && typeId == 1">
+                  按诊的结果均为正常
+                  <p></p>
+                </div>
+                <ul v-show="typeId == 1 && normal_edit_show == false">
                   <li>
-                    <p>点击右侧空白处选择一个设置为正确选项:</p>
+                    <p>请先在右图中进行按诊并选出正确选项:</p>
                   </li>
                   <li
                     style="border: 1px solid rgb(9, 124, 168); border-top: none"
@@ -154,14 +158,14 @@
               />
               <area
                 shape="rect"
-                coords="219,235,305,252"
+                coords="231,211,298,233"
                 alt=""
                 style="cursor: pointer"
                 @click="pressAnswer('胃脘')"
               />
               <area
                 shape="rect"
-                coords="234,235,290,232"
+                coords="234,235,298,254"
                 alt=""
                 style="cursor: pointer"
                 @click="pressAnswer('大腹')"
@@ -345,6 +349,7 @@ export default {
       tips: false,
       allShow: false,
       optionShow: false,
+      normal_edit_show: false,
       answer: "",
       imgsUrl: "",
       imgDesc: "",
@@ -420,6 +425,9 @@ export default {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/feel/press`)
         .then((res) => {
+          if (res.data.list.length == 0) {
+            return (this.normal_edit_show = true);
+          }
           this.pressData = res.data.list;
         });
     },
@@ -442,6 +450,7 @@ export default {
         });
     },
     pressAnswer(name) {
+      if (this.normal_edit_show) return;
       let length = this.pressItemData.length;
       let flag = false;
       if (length == 0) {
@@ -481,7 +490,7 @@ export default {
         })
         .then((res) => {
           if (res.code == "000000") {
-            return
+            return;
           } else {
             this.$Message.error(res.msg);
           }
@@ -502,5 +511,6 @@ export default {
       margin: 50px 19px;
     }
   }
+
 }
 </style>
