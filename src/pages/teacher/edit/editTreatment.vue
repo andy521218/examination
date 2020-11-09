@@ -403,28 +403,36 @@ export default {
                   arr.push(res.data.list[i]);
                 }
                 this.diseasesWatchData = arr;
-                for (let i = 0; i < watch.length; i++) {
-                  for (let y = 0; y < arr.length; y++) {
-                    if (watch[i] == arr[y].id) {
-                      if (this.watchData.indexOf(arr[y]) > "-1") {
-                        continue;
-                      } else {
-                        this.watchData.push(arr[y]);
+                try {
+                  for (let i = 0; i < watch.length; i++) {
+                    for (let y = 0; y < arr.length; y++) {
+                      if (watch[i] == arr[y].id) {
+                        if (this.watchData.indexOf(arr[y]) > "-1") {
+                          continue;
+                        } else {
+                          this.watchData.push(arr[y]);
+                        }
                       }
                     }
                   }
+                } catch (error) {
+                  error;
                 }
               });
           }
           // 获取闻诊
           this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
             this.diseasesListenthData = res.data;
-            for (let i = 0; i < listen.length; i++) {
-              for (let y = 0; y < res.data.length; y++) {
-                if (listen[i] == res.data[y].id) {
-                  this.listenData.push(res.data[y]);
+            try {
+              for (let i = 0; i < listen.length; i++) {
+                for (let y = 0; y < res.data.length; y++) {
+                  if (listen[i] == res.data[y].id) {
+                    this.listenData.push(res.data[y]);
+                  }
                 }
               }
+            } catch (error) {
+              error;
             }
           });
           // 获取问诊
@@ -437,12 +445,16 @@ export default {
             })
             .then((res) => {
               this.diseasesAskData = res.data.rows;
-              for (let i = 0; i < ask.length; i++) {
-                for (let y = 0; y < res.data.rows.length; y++) {
-                  if (ask[i] == res.data.rows[y].id) {
-                    this.askData.push(res.data.rows[y]);
+              try {
+                for (let i = 0; i < ask.length; i++) {
+                  for (let y = 0; y < res.data.rows.length; y++) {
+                    if (ask[i] == res.data.rows[y].id) {
+                      this.askData.push(res.data.rows[y]);
+                    }
                   }
                 }
+              } catch (error) {
+                error;
               }
             });
           // 获取切诊=>按珍数据

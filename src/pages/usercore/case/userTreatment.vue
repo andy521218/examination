@@ -488,7 +488,7 @@ export default {
             this.diseasesRadio = res.data.diseases;
             this.defaultOptions = res.data.diseases[0];
           } catch (error) {
-            error
+            error;
           }
 
           let arr = [];
@@ -501,16 +501,20 @@ export default {
                   arr.push(res.data.list[i]);
                 }
                 this.diseasesWatchData = arr;
-                for (let i = 0; i < watch.length; i++) {
-                  for (let y = 0; y < arr.length; y++) {
-                    if (watch[i] == arr[y].id) {
-                      if (this.watchData.indexOf(arr[y]) > "-1") {
-                        continue;
-                      } else {
-                        this.watchData.push(arr[y]);
+                try {
+                  for (let i = 0; i < watch.length; i++) {
+                    for (let y = 0; y < arr.length; y++) {
+                      if (watch[i] == arr[y].id) {
+                        if (this.watchData.indexOf(arr[y]) > "-1") {
+                          continue;
+                        } else {
+                          this.watchData.push(arr[y]);
+                        }
                       }
                     }
                   }
+                } catch (error) {
+                  error;
                 }
               });
           }
@@ -519,12 +523,16 @@ export default {
             .get(`/answer/${this.examNo}/${this.caseId}/listen`)
             .then((res) => {
               this.diseasesListenthData = res.data;
-              for (let i = 0; i < listen.length; i++) {
-                for (let y = 0; y < res.data.length; y++) {
-                  if (listen[i] == res.data[y].id) {
-                    this.listenData.push(res.data[y]);
+              try {
+                for (let i = 0; i < listen.length; i++) {
+                  for (let y = 0; y < res.data.length; y++) {
+                    if (listen[i] == res.data[y].id) {
+                      this.listenData.push(res.data[y]);
+                    }
                   }
                 }
+              } catch (error) {
+                error;
               }
             });
           // 获取问诊
@@ -537,12 +545,16 @@ export default {
             })
             .then((res) => {
               this.diseasesAskData = res.data.rows;
-              for (let i = 0; i < ask.length; i++) {
-                for (let y = 0; y < res.data.rows.length; y++) {
-                  if (ask[i] == res.data.rows[y].id) {
-                    this.askData.push(res.data.rows[y]);
+              try {
+                for (let i = 0; i < ask.length; i++) {
+                  for (let y = 0; y < res.data.rows.length; y++) {
+                    if (ask[i] == res.data.rows[y].id) {
+                      this.askData.push(res.data.rows[y]);
+                    }
                   }
                 }
+              } catch (error) {
+                error;
               }
             });
           // 获取切诊=>按珍数据
@@ -550,12 +562,16 @@ export default {
             .get(`/answer/${this.examNo}/${this.caseId}/feel/press`)
             .then((res) => {
               this.diseasesPressData = res.data.list;
-              for (let i = 0; i < press.length; i++) {
-                for (let y = 0; y < res.data.list.length; y++) {
-                  if (press[i] == res.data.list[y].id) {
-                    this.pressData.push(res.data.list[y]);
+              try {
+                for (let i = 0; i < press.length; i++) {
+                  for (let y = 0; y < res.data.list.length; y++) {
+                    if (press[i] == res.data.list[y].id) {
+                      this.pressData.push(res.data.list[y]);
+                    }
                   }
                 }
+              } catch (error) {
+                error;
               }
             });
           // 获取切诊=>脉诊

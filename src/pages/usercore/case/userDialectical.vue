@@ -422,8 +422,7 @@ export default {
     this.getPressData();
     this.getPulseData();
     this.getAlldata();
-    let obj = { id: 7 };
-    this.seeDisease(obj);
+    this.getDiseaseDefault();
     // 获取望诊数据
     for (let i = 0; i < 3; i++) {
       this.axios
@@ -569,6 +568,39 @@ export default {
             this.$Message.warning(`设置${this.searchDisease + item}诊成功!`);
           } else {
             this.$Message.error(res.msg);
+          }
+        });
+    },
+    getDiseaseDefault() {
+      this.axios
+        .get(`/answer/${this.examNo}/${this.caseId}/disease`)
+        .then((res) => {
+          try {
+            this.diseaseDeafault = res.data.diseases[0].id;
+            this.diseasecorrectData.forEach((item) => {
+              if (this.diseaseDeafault == item.id) {
+                item.issues.forEach((issueIds) => {
+                  if (issueIds.stageId == "1") {
+                    this.diseaseWatchData = issueIds.issueIds;
+                    this.upDiseaseData.issues[0].issueIds = issueIds.issueIds;
+                  }
+                  if (issueIds.stageId == "2") {
+                    this.diseaselistenData = issueIds.issueIds;
+                    this.upDiseaseData.issues[1].issueIds = issueIds.issueIds;
+                  }
+                  if (issueIds.stageId == "3") {
+                    this.diseaseAskData = issueIds.issueIds;
+                    this.upDiseaseData.issues[2].issueIds = issueIds.issueIds;
+                  }
+                  if (issueIds.stageId == "4") {
+                    this.upDiseaseData.issues[3].issueIds = issueIds.issueIds;
+                    this.diseasePressData = issueIds.issueIds;
+                  }
+                });
+              }
+            });
+          } catch (error) {
+            return error;
           }
         });
     },
