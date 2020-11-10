@@ -2,16 +2,19 @@
   <div class="user_record">
     <div class="main_header">
       <label for>分类</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select name id class="select" v-model="diseaseType">
+        <option value="">请选择</option>
+        <option :value="item.id" v-for="(item, index) in list" :key="index">
+          {{ item.name }}
+        </option>
       </select>
-      <input type="text" class="text_box" placeholder="请输入患者名字" />
-      <button class="submit">检索</button>
+      <input
+        type="text"
+        class="text_box"
+        placeholder="请输入患者名字"
+        v-model="searchName"
+      />
+      <button class="submit" @click="getTrain(page)">检索</button>
     </div>
     <div class="main_table">
       <table
@@ -31,130 +34,23 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>继续学习</span>
+          <tr
+            v-for="(item, index) in trainData"
+            :key="index"
+            v-show="item.status == 2"
+          >
+            <td>{{ index | sortNumber(page) }}</td>
+            <td>{{ checkDisease(item.diseaseType) }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.beginTime | lastTime(item.beginTime) }}</td>
+            <td>{{ item.endTime | lastTime(item.endTime, "未完成") }}</td>
+            <td>{{ item.endTime | duringTime(item.beginTime) }}</td>
+            <td>{{ Math.round(item.score) }}</td>
+            <td v-show="item.status == 1">
+              <span @click="toKeep(item)">继续学习</span>
             </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>继续学习</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>继续学习</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
-              <span>思维导图</span>
-            </td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>肺病系</td>
-            <td>张三</td>
-            <td>2020-07-09</td>
-            <td>2020-07-09</td>
-            <td>10min</td>
-            <td>99</td>
-            <td>
-              <span>辩证过程</span>
+            <td v-show="item.status == 2">
+              <span @click="toStudy(item)">辩证过程</span>
               <span>思维导图</span>
             </td>
           </tr>
@@ -165,7 +61,7 @@
       v-show="total > size"
       :totaltotal="Number(total)"
       :size="Number(size)"
-      @getData="getManage"
+      @getData="getTrain"
     ></turn-page>
   </div>
 </template>
@@ -176,15 +72,90 @@ export default {
   name: "user-record",
   data() {
     return {
-      size: "10",
-      total: "11",
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
+      diseaseType: "",
+      searchName: "",
+      total: "",
+      size: "1000",
+      trainData: {},
+      page: "",
     };
   },
   components: {
     turnPage,
   },
+  mounted() {
+    this.getTrain(1);
+  },
   methods: {
-    getManage() {},
+    toKeep(e) {
+      this.axios.get(`/answer/${e.examNo}/${e.caseId}/asked`).then((res) => {
+        localStorage.setItem("askedArr", JSON.stringify(res.data));
+        localStorage.setItem("examNo", e.examNo);
+        localStorage.setItem("caseId", e.caseId);
+        this.$router.push("userask");
+      });
+    },
+    toStudy(e) {
+      localStorage.setItem("examNo", e.examNo);
+      localStorage.setItem("caseId", e.caseId);
+      this.$router.push("userstudy");
+    },
+    getTrain(page) {
+      this.page = page;
+      this.axios
+        .get("/my/train", {
+          params: {
+            diseaseType: this.diseaseType,
+            fuzzyName: this.searchName,
+            page: page,
+            size: this.size,
+          },
+        })
+        .then((res) => {
+          this.trainData = res.data.rows;
+          this.total = res.data.total;
+        });
+    },
+    checkDisease(type) {
+      switch (type) {
+        case 1:
+          return "心系病";
+
+        case 2:
+          return "肝系病";
+
+        case 3:
+          return "脾胃病";
+
+        case 4:
+          return "肺系病";
+
+        case 5:
+          return "肾系病";
+      }
+    },
   },
 };
 </script>

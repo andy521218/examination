@@ -7,7 +7,7 @@ import 'nprogress/nprogress.css'
 import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
-import { Switch ,Message} from 'view-design';
+import { Switch ,Message,Circle,Icon } from 'view-design';
 import axios from "axios"
 import http from "../src/http/http"
 import upload from "../src/http/upload"
@@ -20,6 +20,8 @@ import filters from './filters'
 
 
 Vue.component('i-switch', Switch);
+Vue.component('i-circle', Circle);
+Vue.component('i-con', Icon);
 Vue.use(VueAxios,axios);
 
 Vue.use(filters)

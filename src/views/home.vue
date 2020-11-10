@@ -29,8 +29,15 @@ export default {
     logo,
   },
   mounted() {
+    localStorage.removeItem("bgindex");
+    localStorage.removeItem("examNo");
+    localStorage.removeItem("caseId");
+    localStorage.removeItem("caseMenuId");
+    localStorage.removeItem("askedArr");
+    localStorage.removeItem("pressItemData");
+    localStorage.removeItem("sex");
     this.axios.get("/users/current").then((res) => {
-     localStorage.setItem('authority',res.data.authority)
+      localStorage.setItem("authority", res.data.authority);
     });
   },
 };

@@ -107,7 +107,9 @@
             <td>{{ item.name }}</td>
             <td>{{ item.classRoomName }}</td>
             <td>
-              {{ item.lastLoginTime | lastTime(item.lastLoginTime) }}
+              {{
+                item.lastLoginTime | lastTime(item.lastLoginTime, "从未登入")
+              }}
             </td>
             <td>
               <i-switch
@@ -228,9 +230,11 @@ export default {
       var methods = "post",
         url = "",
         msg = "添加";
+      this.status = true;
       if (!this.tips) {
         methods = "put";
         url = this.upData.id;
+        this.status = true;
         msg = "编辑";
       }
       {

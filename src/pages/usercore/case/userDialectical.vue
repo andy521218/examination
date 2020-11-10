@@ -443,10 +443,14 @@ export default {
     },
     // 下一步
     changeView() {
-      if (!this.searchDisease) return this.$Message.error("请先选择病名");
-      if (this.diseaseCheckArr.length == "0")
-        return this.$Message.error("至少选择一项症型");
-      this.step = !this.step;
+      if (this.step) {
+        if (!this.searchDisease) return this.$Message.error("请先选择病名");
+        if (this.diseaseCheckArr.length == "0")
+          return this.$Message.error("至少选择一项症型");
+        this.step = false;
+      } else {
+        this.step = true;
+      }
       this.diseaseCheckArr1 = this.diseaseCheckArr;
     },
     timerDiseaseout() {
@@ -478,14 +482,14 @@ export default {
     //获取问诊数据
     getAskdata() {
       this.axios
-        .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
+        .get(`/answer/${this.examNo}/${this.caseId}/asked`, {
           params: {
             page: "1",
             size: "500",
           },
         })
         .then((res) => {
-          this.askData = res.data.rows;
+          this.askData = res.data;
         });
     },
     //获取按诊数据
@@ -763,31 +767,19 @@ export default {
           //获取正确望闻问切选项(病名)
           res.data.diseaseNameIssues.forEach((item) => {
             if (item.stageId == "1") {
-              this.upDiseaseName.push({
-                issueIds: item.issueIds,
-                stageId: "1",
-              });
+              this.upDiseaseName[0].issueIds = item.issueIds;
               this.nameWatchData = item.issueIds;
             }
             if (item.stageId == "2") {
-              this.upDiseaseName.push({
-                issueIds: item.issueIds,
-                stageId: "2",
-              });
+              this.upDiseaseName[1].issueIds = item.issueIds;
               this.namelistenData = item.issueIds;
             }
             if (item.stageId == "3") {
-              this.upDiseaseName.push({
-                issueIds: item.issueIds,
-                stageId: "3",
-              });
+              this.upDiseaseName[2].issueIds = item.issueIds;
               this.nameAskData = item.issueIds;
             }
             if (item.stageId == "4") {
-              this.upDiseaseName.push({
-                issueIds: item.issueIds,
-                stageId: "4",
-              });
+              this.upDiseaseName[3].issueIds = item.issueIds;
               this.namePressData = item.issueIds;
             }
           });

@@ -26,7 +26,7 @@
                 <img src="../../../assets/public/caseTips.png" alt="" />
                 <span>进入训练</span>
               </div>
-              <span>累计学习:{{item.count}}次</span>
+              <span>累计学习:{{ item.count }}次</span>
             </div>
           </div>
           <div class="case_current">
@@ -88,9 +88,9 @@ export default {
   },
   mounted() {
     this.getCaseData();
-    localStorage.removeItem('caseMenuId')
-    localStorage.removeItem('askedArr')
-    localStorage.removeItem('pressItemData')
+    localStorage.removeItem("caseMenuId");
+    localStorage.removeItem("askedArr");
+    localStorage.removeItem("pressItemData");
   },
   methods: {
     getCaseData(page = "1", id = "") {
@@ -113,7 +113,6 @@ export default {
         if (res.code == "000000") {
           localStorage.setItem("examNo", res.data.examNo);
           localStorage.setItem("name", e.name);
-          localStorage.setItem("sex", e.gender);
           this.$router.push("userask");
         }
       });

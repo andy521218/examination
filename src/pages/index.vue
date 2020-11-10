@@ -10,6 +10,15 @@
 <script>
 export default {
   name: "index",
+  mounted() {
+    localStorage.removeItem("bgindex");
+    localStorage.removeItem("examNo");
+    localStorage.removeItem("caseId");
+    localStorage.removeItem("caseMenuId");
+    localStorage.removeItem("askedArr");
+    localStorage.removeItem("pressItemData");
+    localStorage.removeItem("sex");
+  },
   methods: {
     routerCasehome() {
       if (localStorage.getItem("authority") != "STUDENT")

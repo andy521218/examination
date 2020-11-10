@@ -1,6 +1,11 @@
 import home from '../views/home'
 
 export const user=[
+  {
+    path: '/userstudy',
+    name: 'userstudy',
+    component:() => import('../pages/usercore/case/userStudy'),   
+  },
 {
   path: '/home',
   name: 'home',
@@ -49,6 +54,7 @@ export const user=[
         main:() => import('../pages/usercore/userStatistics'),
       } 
     },
+  
     {
       path: '/messageforum',
       name: 'messageforum',
