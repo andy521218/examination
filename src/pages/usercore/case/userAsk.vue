@@ -364,7 +364,6 @@ export default {
             cursor: pointer;
           }
         }
-
         .ask_tips {
           width: 28px;
           height: 20px;

@@ -137,7 +137,12 @@
             </div>
           </header>
           <div class="user_main_item">
-            <study-ask></study-ask>
+            <study-ask v-show="titleIndex == 1"></study-ask>
+            <study-watch v-show="titleIndex == 2"></study-watch>
+            <study-listen v-show="titleIndex == 3"></study-listen>
+            <study-feel v-show="titleIndex == 4"></study-feel>
+            <study-disease v-show="titleIndex == 5"></study-disease>
+            <study-treat v-show="titleIndex == 6"></study-treat>
           </div>
         </div>
       </div>
@@ -150,6 +155,11 @@ import user from "../../../components/user";
 import menuTab from "../../../components/menu";
 import logo from "../../../components/logo";
 import studyAsk from "../study/studyAsk";
+import studyWatch from "../study/studyWatch";
+import studyListen from "../study/studyListen";
+import studyFeel from "../study/studyFeel";
+import studyDisease from "../study/studyDisease";
+import studyTreat from "../study/studyTreat";
 export default {
   name: "user-study",
   components: {
@@ -157,6 +167,11 @@ export default {
     menuTab,
     logo,
     studyAsk,
+    studyWatch,
+    studyListen,
+    studyFeel,
+    studyDisease,
+    studyTreat,
   },
   data() {
     return {

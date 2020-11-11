@@ -34,18 +34,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="(item, index) in trainData"
-            :key="index"
-            v-show="item.status == 2"
-          >
+          <tr v-for="(item, index) in trainData" :key="index">
             <td>{{ index | sortNumber(page) }}</td>
             <td>{{ checkDisease(item.diseaseType) }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.beginTime | lastTime(item.beginTime) }}</td>
             <td>{{ item.endTime | lastTime(item.endTime, "未完成") }}</td>
             <td>{{ item.endTime | duringTime(item.beginTime) }}</td>
-            <td>{{ Math.round(item.score) }}</td>
+            <td>{{ Math.round(item.score) }}分</td>
             <td v-show="item.status == 1">
               <span @click="toKeep(item)">继续学习</span>
             </td>
@@ -97,7 +93,7 @@ export default {
       diseaseType: "",
       searchName: "",
       total: "",
-      size: "1000",
+      size: "10",
       trainData: {},
       page: "",
     };

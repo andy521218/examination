@@ -20,7 +20,7 @@ export function lastTime(e) {
 export function duringTime(end,begin){
   if(end=='0')  return 0 
   let time=Math.round((end-begin)/6000)
-  return time+'分'
+  return time+'min'
 }
 
   export default {

@@ -481,10 +481,20 @@ export default {
           let watch, listen, ask, press;
           try {
             this.diseaseName = res.data.diseaseName;
-            watch = res.data.diseaseNameIssues[0].issueIds;
-            listen = res.data.diseaseNameIssues[1].issueIds;
-            ask = res.data.diseaseNameIssues[2].issueIds;
-            press = res.data.diseaseNameIssues[3].issueIds;
+            res.data.diseaseNameIssues.forEach((element) => {
+              if (element.stageId == "1") {
+                watch = element.issueIds;
+              }
+              if (element.stageId == "2") {
+                listen = element.issueIds;
+              }
+              if (element.stageId == "3") {
+                ask = element.issueIds;
+              }
+              if (element.stageId == "4") {
+                press = element.issueIds;
+              }
+            });
             this.diseasesRadio = res.data.diseases;
             this.defaultOptions = res.data.diseases[0];
           } catch (error) {
@@ -537,19 +547,19 @@ export default {
             });
           // 获取问诊
           this.axios
-            .get(`/answer/${this.examNo}/${this.caseId}/asks`, {
+            .get(`/answer/${this.examNo}/${this.caseId}/asked`, {
               params: {
                 page: "1",
                 size: "500",
               },
             })
             .then((res) => {
-              this.diseasesAskData = res.data.rows;
+              this.diseasesAskData = res.data;
               try {
                 for (let i = 0; i < ask.length; i++) {
-                  for (let y = 0; y < res.data.rows.length; y++) {
-                    if (ask[i] == res.data.rows[y].id) {
-                      this.askData.push(res.data.rows[y]);
+                  for (let y = 0; y < res.data.length; y++) {
+                    if (ask[i] == res.data[y].id) {
+                      this.askData.push(res.data[y]);
                     }
                   }
                 }
@@ -589,6 +599,7 @@ export default {
     },
     // 切诊查看数据
     seeDisease(e) {
+      console.log(e);
       this.diseasesWatch = [];
       this.diseasesListenth = [];
       this.diseasesAsk = [];
