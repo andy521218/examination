@@ -137,7 +137,7 @@
             </div>
           </header>
           <div class="user_main_item">
-            <study-ask v-show="titleIndex == 1"></study-ask>
+            <study-ask v-show="titleIndex == 1" :scoreData='scoreData'></study-ask>
             <study-watch v-show="titleIndex == 2"></study-watch>
             <study-listen v-show="titleIndex == 3"></study-listen>
             <study-feel v-show="titleIndex == 4"></study-feel>

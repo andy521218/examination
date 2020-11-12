@@ -8,7 +8,7 @@
           name="listen"
           :value="item.id"
           v-model="typeId"
-          @click="seefeel(item)"
+          @click="seeFeel(item)"
         />
         <label for="">{{ item.name }}</label>
       </div>
@@ -74,17 +74,20 @@ export default {
   methods: {
     seeFeel(item) {
       this.title = item.name;
-      if (item.id == "0") return (this.feel_item_data = this.pressData);
+
+      if (item.id == "0") {
+        return (this.feel_item_data = this.pressData);
+      }
       if (item.id == "1") return (this.feel_item_data = this.pulseData);
     },
     getPress() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/press/0`).then((res) => {
+      this.axios.get(`/${this.examNo}/${this.caseId}/press`).then((res) => {
         this.pressData = res.data;
         this.feel_item_data = res.data;
       });
     },
     getpulse() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/pulse/0`).then((res) => {
+      this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
         this.pulseData.push(res.data);
       });
     },

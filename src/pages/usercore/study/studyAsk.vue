@@ -3,6 +3,10 @@
     <div class="study_title" style="justify-content: space-between">
       <div class="study_title_left">
         <span>问诊</span>
+        <p v-show="scoreData.askSortScore == '0'">包含顺序分5分</p>
+        <p v-show="scoreData.askSortScore == '5'">
+          因未按照正确顺序进行问诊,扣除顺序分5分
+        </p>
       </div>
       <div class="study_title_right">
         <i-switch></i-switch>
@@ -70,6 +74,7 @@
 <script>
 export default {
   name: "study-ask",
+  props: ["scoreData"],
   data() {
     return {
       select: [
@@ -112,9 +117,7 @@ export default {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
     this.getTabdata();
-    this.getAskdata().then(() => {
-      this.switchIteM("总问题");
-    });
+    this.getAskdata();
   },
   methods: {
     getTabdata() {
@@ -139,6 +142,7 @@ export default {
       this.downMenu_show = false;
       if (item == "总问题") {
         this.title = "总问题";
+        this.downMenu_active='总问题'
         return (this.askItemData = this.askedData);
       }
       this.title = item.name;

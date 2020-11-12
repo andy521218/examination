@@ -136,8 +136,15 @@
             </li>
           </ul>
           <div class="scrollbar">
+            <!-- 问诊 -->
+            <ul v-show="typeId == 0" class="ask">
+              <li v-for="(item, index) in askData" :key="index">
+                <span>问: {{ item.question }}</span>
+                <span> 答: {{ item.answer }}</span>
+              </li>
+            </ul>
             <!-- 望诊 -->
-            <ul v-show="typeId == 0">
+            <ul v-show="typeId == 1">
               <li v-for="(item, index) in watchData" :key="index">
                 <span>{{ item.name }}</span>
                 <p></p>
@@ -145,18 +152,11 @@
               </li>
             </ul>
             <!-- 闻诊 -->
-            <ul v-show="typeId == 1">
+            <ul v-show="typeId == 2">
               <li v-for="(item, index) in listenData" :key="index">
                 <span>{{ item.name }}</span>
                 <p></p>
                 {{ item.answer }}
-              </li>
-            </ul>
-            <!-- 问诊 -->
-            <ul v-show="typeId == 2" class="ask">
-              <li v-for="(item, index) in askData" :key="index">
-                <span>问: {{ item.question }}</span>
-                <span> 答: {{ item.answer }}</span>
               </li>
             </ul>
             <!-- 切诊 -->
@@ -201,8 +201,21 @@
             </li>
           </ul>
           <div class="scrollbar">
+            <!-- 问诊 -->
+            <ul v-show="diseaseId == 0" class="ask">
+              <li v-for="(item, index) in diseasesAsk" :key="index">
+                <div
+                  v-for="(i, index) in diseasesAskData"
+                  :key="index"
+                  v-show="i.id == item"
+                >
+                  <span>问: {{ i.question }}</span>
+                  <span> 答: {{ i.answer }}</span>
+                </div>
+              </li>
+            </ul>
             <!-- 望诊 -->
-            <ul v-show="diseaseId == 0">
+            <ul v-show="diseaseId == 1">
               <li v-for="(item, index) in diseasesWatch" :key="index">
                 <div
                   v-for="(i, index) in diseasesWatchData"
@@ -216,7 +229,7 @@
               </li>
             </ul>
             <!-- 闻诊 -->
-            <ul v-show="diseaseId == 1">
+            <ul v-show="diseaseId == 2">
               <li v-for="(item, index) in diseasesListenth" :key="index">
                 <div
                   v-for="(i, index) in diseasesListenthData"
@@ -229,19 +242,6 @@
                 </div>
               </li>
             </ul>
-            <!-- 问诊 -->
-            <ul v-show="diseaseId == 2" class="ask">
-              <li v-for="(item, index) in diseasesAsk" :key="index">
-                <div
-                  v-for="(i, index) in diseasesAskData"
-                  :key="index"
-                  v-show="i.id == item"
-                >
-                  <span>问: {{ i.question }}</span>
-                  <span> 答: {{ i.answer }}</span>
-                </div>
-              </li>
-            </ul>
             <!-- 切诊 -->
             <ul v-show="diseaseId == 3">
               <li v-if="pulseData.answer">
@@ -249,7 +249,11 @@
                 <p></p>
                 {{ pulseData.answer }}
               </li>
-              <li v-for="(item, index) in diseasesPress" :key="index">
+              <li
+                v-for="(item, index) in diseasesPress"
+                :key="index"
+                style="height: auto"
+              >
                 <div
                   v-for="(i, index) in diseasesPressData"
                   :key="index"
@@ -273,7 +277,7 @@ export default {
   name: "user-treatment",
   data() {
     return {
-      tab: ["望", "闻", "问", "切"],
+      tab: ["问", "望", "闻", "切"],
       examNo: "",
       typeId: "",
       diseaseId: "",
@@ -483,13 +487,13 @@ export default {
             this.diseaseName = res.data.diseaseName;
             res.data.diseaseNameIssues.forEach((element) => {
               if (element.stageId == "1") {
-                watch = element.issueIds;
+                ask = element.issueIds;
               }
               if (element.stageId == "2") {
-                listen = element.issueIds;
+                watch = element.issueIds;
               }
               if (element.stageId == "3") {
-                ask = element.issueIds;
+                listen = element.issueIds;
               }
               if (element.stageId == "4") {
                 press = element.issueIds;
@@ -597,9 +601,8 @@ export default {
           this.seeDisease(this.defaultOptions);
         });
     },
-    // 切诊查看数据
+    // 病症查看数据
     seeDisease(e) {
-      console.log(e);
       this.diseasesWatch = [];
       this.diseasesListenth = [];
       this.diseasesAsk = [];
@@ -607,18 +610,19 @@ export default {
       try {
         for (let i = 0; i < e.issues.length; i++) {
           if (e.issues[i].stageId == "1") {
-            this.diseasesWatch = e.issues[i].issueIds;
+            this.diseasesAsk = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "2") {
-            this.diseasesListenth = e.issues[i].issueIds;
+            this.diseasesWatch = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "3") {
-            this.diseasesAsk = e.issues[i].issueIds;
+            this.diseasesListenth = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "4") {
             this.diseasesPress = e.issues[i].issueIds;
           }
         }
+        console.log(this.diseasesPress);
       } catch (error) {
         return error;
       }

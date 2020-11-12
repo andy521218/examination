@@ -60,11 +60,9 @@ export default {
   },
   methods: {
     getListen() {
-      this.axios
-        .get(`/answer/${this.examNo}/${this.caseId}/listen`)
-        .then((res) => {
-          console.log(res);
-        });
+      this.axios.get(`/${this.examNo}/${this.caseId}/listened`).then((res) => {
+        this.listen_item_data = res.data;
+      });
     },
   },
 };
