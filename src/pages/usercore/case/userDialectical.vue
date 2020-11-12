@@ -15,39 +15,8 @@
         </li>
       </ul>
 
-      <!-- 望诊 -->
-      <div class="scrollbar" v-show="typeId == 0">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in wachData"
-            :key="index"
-            style="display: flex"
-          >
-            <span style="width: 50px">
-              {{ item.name }}
-            </span>
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
-      <!-- 闻诊 -->
-      <div class="scrollbar" v-show="typeId == 1">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in listenData"
-            :key="index"
-            style="display: flex"
-          >
-            {{ item.name }}
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
-
       <!-- 问诊 -->
-      <div class="scrollbar" v-show="typeId == 2">
+      <div class="scrollbar" v-show="typeId == 0">
         <ul class="main_cont">
           <li
             v-for="(item, index) in askData"
@@ -65,6 +34,38 @@
           </li>
         </ul>
       </div>
+
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="typeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="typeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+
       <!-- 切诊 -->
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
@@ -151,41 +152,9 @@
           <div :class="{ active: typeId == index }"></div>
         </li>
       </ul>
-      <!-- 望诊 -->
-      <div class="scrollbar" v-show="typeId == 0">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in wachData"
-            :key="index"
-            style="display: flex"
-          >
-            <input type="checkbox" :value="item.id" v-model="nameWatchData" />
-            <span style="width: 50px">
-              {{ item.name }}
-            </span>
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
-      <!-- 闻诊 -->
-      <div class="scrollbar" v-show="typeId == 1">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in listenData"
-            :key="index"
-            style="display: flex"
-          >
-            <input type="checkbox" :value="item.id" v-model="namelistenData" />
-            {{ item.name }}
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
 
       <!-- 问诊 -->
-      <div class="scrollbar" v-show="typeId == 2">
+      <div class="scrollbar" v-show="typeId == 0">
         <ul class="main_cont">
           <li
             v-for="(item, index) in askData"
@@ -209,6 +178,39 @@
           </li>
         </ul>
       </div>
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="typeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" :value="item.id" v-model="nameWatchData" />
+            <span style="width: 50px">
+              {{ item.name }}
+            </span>
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="typeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            <input type="checkbox" :value="item.id" v-model="namelistenData" />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+
       <!-- 切诊 -->
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
@@ -263,47 +265,8 @@
           <div :class="{ active: diseaseChangeId == index }"></div>
         </li>
       </ul>
-      <!-- 望诊 -->
-      <div class="scrollbar" v-show="diseaseChangeId == 0">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in wachData"
-            :key="index"
-            style="display: flex"
-          >
-            <input
-              type="checkbox"
-              :value="item.id"
-              v-model="diseaseWatchData"
-            />
-            {{ item.name }}
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
-      <!-- 闻诊 -->
-      <div class="scrollbar" v-show="diseaseChangeId == 1">
-        <ul class="main_cont">
-          <li
-            v-for="(item, index) in listenData"
-            :key="index"
-            style="display: flex"
-          >
-            <input
-              type="checkbox"
-              :value="item.id"
-              v-model="diseaselistenData"
-            />
-            {{ item.name }}
-            <p></p>
-            {{ item.answer }}
-          </li>
-        </ul>
-      </div>
-
       <!-- 问诊 -->
-      <div class="scrollbar" v-show="diseaseChangeId == 2">
+      <div class="scrollbar" v-show="diseaseChangeId == 0">
         <ul class="main_cont">
           <li
             v-for="(item, index) in askData"
@@ -325,6 +288,46 @@
           </li>
         </ul>
       </div>
+
+      <!-- 望诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 1">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in wachData"
+            :key="index"
+            style="display: flex"
+          >
+            <input
+              type="checkbox"
+              :value="item.id"
+              v-model="diseaseWatchData"
+            />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+      <!-- 闻诊 -->
+      <div class="scrollbar" v-show="diseaseChangeId == 2">
+        <ul class="main_cont">
+          <li
+            v-for="(item, index) in listenData"
+            :key="index"
+            style="display: flex"
+          >
+            <input
+              type="checkbox"
+              :value="item.id"
+              v-model="diseaselistenData"
+            />
+            {{ item.name }}
+            <p></p>
+            {{ item.answer }}
+          </li>
+        </ul>
+      </div>
+
       <!-- 切诊 -->
       <div class="scrollbar" v-show="diseaseChangeId == 3">
         <ul class="main_cont">
@@ -367,7 +370,7 @@ export default {
   name: "user-dialectical",
   data() {
     return {
-      tab: ["望", "闻", "问", "切"],
+      tab: ["问", "望", "闻", "切"],
       diseaseNameShow: false,
       caseId: "",
       typeId: "",
@@ -448,7 +451,13 @@ export default {
         if (this.diseaseCheckArr.length == "0")
           return this.$Message.error("至少选择一项症型");
         this.step = false;
+        this.getDiseaseDefault();
       } else {
+        this.diseaseWatchData = [];
+        this.diseaselistenData = [];
+        this.diseaseAskData = [];
+        this.diseasePressData = [];
+        this.getAlldata();
         this.step = true;
       }
       this.diseaseCheckArr1 = this.diseaseCheckArr;
@@ -575,6 +584,7 @@ export default {
           }
         });
     },
+    //获取病症默认选项
     getDiseaseDefault() {
       this.axios
         .get(`/answer/${this.examNo}/${this.caseId}/disease`)
@@ -585,15 +595,15 @@ export default {
               if (this.diseaseDeafault == item.id) {
                 item.issues.forEach((issueIds) => {
                   if (issueIds.stageId == "1") {
-                    this.diseaseWatchData = issueIds.issueIds;
+                    this.diseaseAskData = issueIds.issueIds;
                     this.upDiseaseData.issues[0].issueIds = issueIds.issueIds;
                   }
                   if (issueIds.stageId == "2") {
-                    this.diseaselistenData = issueIds.issueIds;
+                    this.diseaseWatchData = issueIds.issueIds;
                     this.upDiseaseData.issues[1].issueIds = issueIds.issueIds;
                   }
                   if (issueIds.stageId == "3") {
-                    this.diseaseAskData = issueIds.issueIds;
+                    this.diseaselistenData = issueIds.issueIds;
                     this.upDiseaseData.issues[2].issueIds = issueIds.issueIds;
                   }
                   if (issueIds.stageId == "4") {
@@ -619,15 +629,15 @@ export default {
             flag = true;
             item.issues.forEach((issueIds) => {
               if (issueIds.stageId == "1") {
-                this.diseaseWatchData = issueIds.issueIds;
+                this.diseaseAskData = issueIds.issueIds;
                 this.upDiseaseData.issues[0].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "2") {
-                this.diseaselistenData = issueIds.issueIds;
+                this.diseaseWatchData = issueIds.issueIds;
                 this.upDiseaseData.issues[1].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "3") {
-                this.diseaseAskData = issueIds.issueIds;
+                this.diseaselistenData = issueIds.issueIds;
                 this.upDiseaseData.issues[2].issueIds = issueIds.issueIds;
               }
               if (issueIds.stageId == "4") {
@@ -661,46 +671,21 @@ export default {
     changeDisease(item, i) {
       this.diseaseChangeId = i;
       if (item == "望") {
-        this.checkDisease(
-          this.diseaseWatchData,
-          item,
-          i,
-          this.diseaseUpdata.id,
-          this.diseaseUpdata.name
-        );
+        this.checkDisease(this.diseaseWatchData, item, i);
       }
       if (item == "闻") {
-        this.checkDisease(
-          this.diseaselistenData,
-          item,
-          i,
-          this.diseaseUpdata.id,
-          this.diseaseUpdata.name
-        );
+        this.checkDisease(this.diseaselistenData, item, i);
       }
       if (item == "问") {
-        this.checkDisease(
-          this.diseaseAskData,
-          item,
-          i,
-          this.diseaseUpdata.id,
-          this.diseaseUpdata.name
-        );
+        this.checkDisease(this.diseaseAskData, item, i);
       }
       if (item == "切") {
-        this.checkDisease(
-          this.diseasePressData,
-          item,
-          i,
-          this.diseaseUpdata.id,
-          this.diseaseUpdata.name
-        );
+        this.checkDisease(this.diseasePressData, item, i);
       }
     },
     // 病症依据数据对比
     checkDisease(itemName, item, stageId) {
-      this.upDiseaseData.id = this.diseaseUpdata.id;
-      this.upDiseaseData.name = this.diseaseUpdata.name;
+      if (!this.diseaseUpdata.name) return;
       for (let i = 0; i < this.upDiseaseData.issues.length; i++) {
         if (this.upDiseaseData.issues[i].stageId == stageId + 1) {
           if (
@@ -716,6 +701,8 @@ export default {
     },
     // 病症依据上传函数
     upDisease(item) {
+      this.upDiseaseData.id = this.diseaseUpdata.id;
+      this.upDiseaseData.name = this.diseaseUpdata.name;
       let arr = JSON.parse(JSON.stringify(this.upDiseaseData));
       for (let i = 0; i < arr.issues.length; i++) {
         if (arr.issues[i].issueIds.length == "0") {
@@ -723,8 +710,7 @@ export default {
           i--;
         }
       }
-      if (!this.diseaseUpdata.name)
-        return this.$Message.error("请选择一项症候!");
+
       this.axios
         .delete(
           `/answer/${this.examNo}/${this.caseId}/disease/${this.diseaseUpdata.id}`
@@ -768,15 +754,15 @@ export default {
           res.data.diseaseNameIssues.forEach((item) => {
             if (item.stageId == "1") {
               this.upDiseaseName[0].issueIds = item.issueIds;
-              this.nameWatchData = item.issueIds;
+              this.nameAskData = item.issueIds;
             }
             if (item.stageId == "2") {
               this.upDiseaseName[1].issueIds = item.issueIds;
-              this.namelistenData = item.issueIds;
+              this.nameWatchData = item.issueIds;
             }
             if (item.stageId == "3") {
               this.upDiseaseName[2].issueIds = item.issueIds;
-              this.nameAskData = item.issueIds;
+              this.namelistenData = item.issueIds;
             }
             if (item.stageId == "4") {
               this.upDiseaseName[3].issueIds = item.issueIds;
