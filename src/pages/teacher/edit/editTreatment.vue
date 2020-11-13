@@ -57,19 +57,6 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="prescription">
-              <p>常见方药</p>
-              <div class="search">
-                <input type="text" class="text_box" />
-                <div class="search_down scrollbar">
-                  <div class="search_down_cont">
-                    <div class="search_item">1</div>
-                    <div class="search_item">1</div>
-                    <div class="search_item">1</div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
         <div class="treatment_main">
@@ -109,8 +96,15 @@
             </li>
           </ul>
           <div class="scrollbar">
+            <!-- 问诊 -->
+            <ul v-show="typeId == 0" class="ask">
+              <li v-for="(item, index) in askData" :key="index">
+                <span>问: {{ item.question }}</span>
+                <span> 答: {{ item.answer }}</span>
+              </li>
+            </ul>
             <!-- 望诊 -->
-            <ul v-show="typeId == 0">
+            <ul v-show="typeId == 1">
               <li v-for="(item, index) in watchData" :key="index">
                 <span>{{ item.name }}</span>
                 <p></p>
@@ -118,18 +112,11 @@
               </li>
             </ul>
             <!-- 闻诊 -->
-            <ul v-show="typeId == 1">
+            <ul v-show="typeId == 2">
               <li v-for="(item, index) in listenData" :key="index">
                 <span>{{ item.name }}</span>
                 <p></p>
                 {{ item.answer }}
-              </li>
-            </ul>
-            <!-- 问诊 -->
-            <ul v-show="typeId == 2" class="ask">
-              <li v-for="(item, index) in askData" :key="index">
-                <span>问: {{ item.question }}</span>
-                <span> 答: {{ item.answer }}</span>
               </li>
             </ul>
             <!-- 切诊 -->
@@ -174,8 +161,21 @@
             </li>
           </ul>
           <div class="scrollbar">
+            <!-- 问诊 -->
+            <ul v-show="diseaseId == 0" class="ask">
+              <li v-for="(item, index) in diseasesAsk" :key="index">
+                <div
+                  v-for="(i, index) in diseasesAskData"
+                  :key="index"
+                  v-show="i.id == item"
+                >
+                  <span>问: {{ i.question }}</span>
+                  <span> 答: {{ i.answer }}</span>
+                </div>
+              </li>
+            </ul>
             <!-- 望诊 -->
-            <ul v-show="diseaseId == 0">
+            <ul v-show="diseaseId == 1">
               <li v-for="(item, index) in diseasesWatch" :key="index">
                 <div
                   v-for="(i, index) in diseasesWatchData"
@@ -189,7 +189,7 @@
               </li>
             </ul>
             <!-- 闻诊 -->
-            <ul v-show="diseaseId == 1">
+            <ul v-show="diseaseId == 2">
               <li v-for="(item, index) in diseasesListenth" :key="index">
                 <div
                   v-for="(i, index) in diseasesListenthData"
@@ -202,19 +202,6 @@
                 </div>
               </li>
             </ul>
-            <!-- 问诊 -->
-            <ul v-show="diseaseId == 2" class="ask">
-              <li v-for="(item, index) in diseasesAsk" :key="index">
-                <div
-                  v-for="(i, index) in diseasesAskData"
-                  :key="index"
-                  v-show="i.id == item"
-                >
-                  <span>问: {{ i.question }}</span>
-                  <span> 答: {{ i.answer }}</span>
-                </div>
-              </li>
-            </ul>
             <!-- 切诊 -->
             <ul v-show="diseaseId == 3">
               <li v-if="pulseData.answer">
@@ -222,7 +209,11 @@
                 <p></p>
                 {{ pulseData.answer }}
               </li>
-              <li v-for="(item, index) in diseasesPress" :key="index">
+              <li
+                v-for="(item, index) in diseasesPress"
+                :key="index"
+                style="height: auto"
+              >
                 <div
                   v-for="(i, index) in diseasesPressData"
                   :key="index"
@@ -246,7 +237,7 @@ export default {
   name: "case-treatment",
   data() {
     return {
-      tab: ["望", "闻", "问", "切"],
+      tab: ["问", "望", "闻", "切"],
       typeId: "",
       diseaseId: "",
       caseId: "",
@@ -383,9 +374,9 @@ export default {
           this.diseaseName = res.data.diseaseName;
           let watch, listen, ask, press;
           try {
-            watch = res.data.diseaseNameIssues[0].issueIds;
-            listen = res.data.diseaseNameIssues[1].issueIds;
-            ask = res.data.diseaseNameIssues[2].issueIds;
+            ask = res.data.diseaseNameIssues[0].issueIds;
+            watch = res.data.diseaseNameIssues[1].issueIds;
+            listen = res.data.diseaseNameIssues[2].issueIds;
             press = res.data.diseaseNameIssues[3].issueIds;
             this.diseasesRadio = res.data.diseases;
             this.defaultOptions = res.data.diseases[0];
@@ -496,13 +487,13 @@ export default {
       try {
         for (let i = 0; i < e.issues.length; i++) {
           if (e.issues[i].stageId == "1") {
-            this.diseasesWatch = e.issues[i].issueIds;
+            this.diseasesAsk = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "2") {
-            this.diseasesListenth = e.issues[i].issueIds;
+            this.diseasesWatch = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "3") {
-            this.diseasesAsk = e.issues[i].issueIds;
+            this.diseasesListenth = e.issues[i].issueIds;
           }
           if (e.issues[i].stageId == "4") {
             this.diseasesPress = e.issues[i].issueIds;

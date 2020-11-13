@@ -19,7 +19,7 @@ export function lastTime(e) {
   }
 export function duringTime(end,begin){
   if(end=='0')  return 0 
-  let time=Math.round((end-begin)/6000)
+  let time=Math.round((end-begin)/60000 )
   return time+'min'
 }
 

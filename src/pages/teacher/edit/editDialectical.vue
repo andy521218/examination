@@ -664,8 +664,6 @@ export default {
     },
     //设置症候各项答案
     changeDisease(item, i) {
-      if (!this.diseaseUpdata.name)
-        return this.$Message.error("请选择一项症候!");
       this.diseaseChangeId = i;
       if (item == "望") {
         this.checkDisease(this.diseaseWatchData, item, i);

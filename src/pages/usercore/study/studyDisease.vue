@@ -128,13 +128,40 @@ export default {
       title: "问",
       downMenu_active: "1",
       downMenu_show: false,
+      diseaseData: [],
+      diseaseNameData: [],
+      correctData: [],
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.getDiseasename();
+    this.getDisease();
+    this.getCorrect();
   },
   methods: {
+    getDiseasename() {
+      this.axios
+        .get(`${this.examNo}/${this.caseId}/diseasename`)
+        .then((res) => {
+          this.diseaseNameData = res.data;
+          console.log(res);
+        });
+    },
+    getDisease() {
+      this.axios.get(`${this.examNo}/${this.caseId}/disease`).then((res) => {
+        this.diseaseData = res.data;
+        console.log(res);
+      });
+    },
+    getCorrect() {
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/disease/correct`)
+        .then((res) => {
+          console.log(res);
+        });
+    },
     switchIteM(item) {
       console.log(item);
       this.downMenu_active = item.id;
@@ -173,6 +200,14 @@ export default {
   .layout_flex {
     display: flex;
     width: 100%;
+    li {
+      width: 100%;
+      padding-left: 10px;
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+      border-bottom: rgb(9, 124, 168) 1px solid;
+    }
     .study_main_left {
       width: 360px;
       height: 400px;
