@@ -15,11 +15,7 @@
         </div>
         <div class="user_study">
           <header>
-            <div
-              class="chart_item"
-              :class="{ active: titleIndex == 0 }"
-              @click="titleIndex = 0"
-            >
+            <div class="chart_item">
               <span class="chart_item_title">总分(100分)</span>
               <i-circle
                 :percent="(scoreData.total / 100) * 100"
@@ -137,7 +133,10 @@
             </div>
           </header>
           <div class="user_main_item">
-            <study-ask v-show="titleIndex == 1" :scoreData='scoreData'></study-ask>
+            <study-ask
+              v-show="titleIndex == 1"
+              :scoreData="scoreData"
+            ></study-ask>
             <study-watch v-show="titleIndex == 2"></study-watch>
             <study-listen v-show="titleIndex == 3"></study-listen>
             <study-feel v-show="titleIndex == 4"></study-feel>

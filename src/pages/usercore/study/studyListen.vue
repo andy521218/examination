@@ -12,11 +12,11 @@
       </li>
     </ul>
     <div class="scrollbar">
-      <div class="normal_edit" v-show="!listen_item_data">
+      <div class="normal_edit" v-show="listen_item_data.length == '0'">
         {{ title }}的结果均为正常
         <p></p>
       </div>
-      <ul class="study_main_item" v-show="listen_item_data">
+      <ul class="study_main_item" v-show="listen_item_data.length != '0'">
         <li
           v-for="(item, index) in listen_item_data"
           :key="index"
@@ -25,8 +25,8 @@
           <span style="width: 30%; padding-left: 10px">{{
             item.name ? item.name : "按诊"
           }}</span>
-          <span style="width: 30%">{{ item.answer }}</span>
-          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 30%">{{ item.correctAnswer }}</span>
+          <span style="width: 35%">{{ item.answer }}</span>
           <span style="width: 5%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i

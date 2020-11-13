@@ -681,7 +681,6 @@ export default {
 
     // 病症依据数据对比
     checkDisease(itemName, item, stageId) {
-      if (!this.diseaseUpdata.name) return;
       for (let i = 0; i < this.upDiseaseData.issues.length; i++) {
         if (this.upDiseaseData.issues[i].stageId == stageId + 1) {
           if (
@@ -696,13 +695,21 @@ export default {
       }
     },
     upDisease(e) {
-      this.upDiseaseData.id = this.diseaseUpdata.id;
-      this.upDiseaseData.name = this.diseaseUpdata.name;
+      this.upDiseaseData.id = this.diseaseUpdata.id
+        ? this.diseaseUpdata.id
+        : this.diseaseCheckArr1[0].id;
+      this.upDiseaseData.name = this.diseaseUpdata.name
+        ? this.diseaseUpdata.name
+        : this.diseaseCheckArr1[0].name;
       this.http
         .put(`/case/manage/${this.caseId}/disease`, this.upDiseaseData)
         .then((res) => {
           if (res.code == "000000") {
-            this.$Message.warning(`设置${this.diseaseUpdata.name}-${e}成功!`);
+            this.$Message.warning(
+              `设置${(this.upDiseaseData.name = this.diseaseUpdata.name
+                ? this.diseaseUpdata.name
+                : this.diseaseCheckArr1[0].name)}-${e}成功!`
+            );
           }
         });
     },

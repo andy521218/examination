@@ -22,11 +22,11 @@
       </li>
     </ul>
     <div class="scrollbar">
-      <div class="normal_edit" v-show="!watch_item_data.data">
+      <!-- <div class="normal_edit">
         {{ title }}的结果均为正常
         <p></p>
-      </div>
-      <ul class="study_main_item" v-show="watch_item_data.data">
+      </div> -->
+      <ul class="study_main_item">
         <li
           v-for="(item, index) in watch_item_data.data"
           :key="index"
@@ -71,7 +71,9 @@ export default {
         .get(`${this.examNo}/${this.caseId}/watched/${i}`)
         .then((res) => {
           this.watchData.push(res);
-          if (i == 0) this.watch_item_data = res;
+          if (i == 0) {
+            this.watch_item_data = res;
+          }
         });
     }
   },

@@ -9,7 +9,7 @@
             name="listen"
             :value="item.id"
             v-model="typeId"
-            @click="seefeel(item)"
+            @click="seeDisease(item)"
           />
           <label for="">{{ item.name }}</label>
         </div>
@@ -26,7 +26,7 @@
         <span style="width: 2%"></span>
         <div
           class="downMenu"
-          style="width: 18%; text-align: center; padding-left: 0"
+          style="width: 35%; text-align: center; padding-left: 0"
         >
           <span @click="downMenu_show = true" style="cursor: default">{{
             title
@@ -36,7 +36,7 @@
             size="30"
             @click="downMenu_show = true"
           />
-          <div class="downMenu_item" v-show="downMenu_show" style="left: 103px">
+          <div class="downMenu_item" v-show="downMenu_show" style="left: 238px">
             <ul>
               <li
                 v-for="(item, index) in tabData"
@@ -49,31 +49,111 @@
             </ul>
           </div>
         </div>
-        <span style="width: 15%; text-align: center">我的答案</span>
-        <span style="width: 15%; text-align: center">我的答案</span>
-        <span style="width: 15%; text-align: center">正确答案</span>
+        <span style="width: 15%; text-align: center" v-show="title != '问'"
+          >我的答案</span
+        >
+        <span style="width: 15%; text-align: center" v-show="title != '问'"
+          >正确答案</span
+        >
+        <span
+          style="width: 15%; text-align: center"
+          v-show="title == '问'"
+        ></span>
+        <span
+          style="width: 15%; text-align: center"
+          v-show="title == '问'"
+        ></span>
         <span style="width: 15%; text-align: center">是否为依据</span>
       </li>
     </ul>
-    <div class="layout_flex">
+    <!-- 病名 -->
+    <div class="layout_flex scrollbar" v-show="mainId == '1'">
       <ul class="study_main_left">
         <li>
-          <span style="width: 163px; padding-left: 10px">正确答案</span>
-          <span style="width: 163px">正确答案</span>
+          <span style="width: 163px; padding-left: 10px">{{
+            showData.correctAnswer
+          }}</span>
+          <span style="width: 163px">{{ showData.answer }}</span>
           <span style="width: 10%" class="options">
-            <i class="right" v-show="0"></i>
-            <i class="error" v-show="1"></i>
+            <i class="right" v-show="showData.correct"></i>
+            <i class="error" v-show="!showData.correct"></i>
           </span>
         </li>
       </ul>
-      <ul class="study_main_right">
-        <li>
-          <span style="width: 294px; text-align: center">正确答案</span>
-          <span style="width: 245px; text-align: center">正确答案</span>
-          <span style="width: 245px; text-align: center">正确答案</span>
-          <span style="width: 245px; text-align: center">正确答案</span>
-          <span style="width: 245px; text-align: center" class="options">
-            <i class="right" v-show="0"></i> <i class="error" v-show="1"></i
+      <!-- 问诊 -->
+      <ul class="study_main_right" v-show="title == '问'">
+        <li v-for="(item, index) in askData" :key="index">
+          <div class="disease_ask_item" style="padding: 5px 10px">
+            <span>问: {{ item.question }}</span>
+            <span>答: {{ item.answer }}</span>
+          </div>
+          <span style="width: 240px; text-align: center" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+      <!-- 望诊 -->
+      <ul class="study_main_right" v-show="title == '望'">
+        <li v-for="(item, index) in watchData" :key="index">
+          <span style="width: 561px; text-align: center">{{ item.name }}</span>
+          <span style="width: 240px; text-align: center">
+            {{ item.answer }}</span
+          >
+          <span style="width: 240px; text-align: center">{{
+            item.correctAnswer
+          }}</span>
+          <span style="width: 240px; text-align: center" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+    </div>
+    <!-- 病症 -->
+    <div class="layout_flex scrollbar" v-show="mainId == '2'">
+      <ul class="study_main_left">
+        <li
+          v-for="(item, index) in showData"
+          :key="index"
+          @click="seeDiseaseItem(item)"
+        >
+          <span style="width: 163px; padding-left: 10px">{{
+            item.correctAnswer
+          }}</span>
+          <span style="width: 163px">{{ item.answer }}</span>
+          <span style="width: 10%" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i>
+          </span>
+        </li>
+      </ul>
+      <!-- 问诊 -->
+      <ul class="study_main_right" v-show="title == '问'">
+        <li v-for="(item, index) in diseaseAsk" :key="index">
+          <div class="disease_ask_item" style="padding: 5px 10px">
+            <span>问: {{ item.question }}</span>
+            <span>答: {{ item.answer }}</span>
+          </div>
+          <span style="width: 240px; text-align: center" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+      <!-- 望诊 -->
+      <ul class="study_main_right" v-show="title == '望'">
+        <li v-for="(item, index) in diseaseWatch" :key="index">
+          <span style="width: 561px; text-align: center">{{ item.name }}</span>
+          <span style="width: 240px; text-align: center">
+            {{ item.answer }}</span
+          >
+          <span style="width: 240px; text-align: center">{{
+            item.correctAnswer
+          }}</span>
+          <span style="width: 240px; text-align: center" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
           ></span>
         </li>
       </ul>
@@ -124,50 +204,181 @@ export default {
         { id: 3, name: "闻" },
         { id: 4, name: "切" },
       ],
-      typeId: "",
+      typeId: "1",
       title: "问",
       downMenu_active: "1",
+      mainId: "1",
       downMenu_show: false,
       diseaseData: [],
       diseaseNameData: [],
       correctData: [],
+      showData: {},
+      askData: [],
+      watchData: [],
+      listenData: [],
+      ask: [],
+      diseaseAsk: [],
+      watch: [],
+      diseaseWatch: [],
+      listen: [],
+      diseaseListen: [],
+      feel: [],
+      diseaseFeel: [],
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
     this.getDiseasename();
-    this.getDisease();
     this.getCorrect();
+    this.getDefault();
   },
   methods: {
+    //获取病名数据
     getDiseasename() {
       this.axios
         .get(`${this.examNo}/${this.caseId}/diseasename`)
         .then((res) => {
           this.diseaseNameData = res.data;
-          console.log(res);
+          this.showData = res.data;
+          /*eslint-disable*/
+          let ask, watch, listen, feel;
+          try {
+            res.data.issueResults.forEach((item) => {
+              if (item.stageId == "1") {
+                ask = item.issues;
+              }
+              if (item.stageId == "2") {
+                watch = item.issues;
+              }
+              if (item.stageId == "3") {
+                listen = item.issues;
+              }
+              if (item.stageId == "4") {
+                feel = item.issues;
+              }
+            });
+          } catch (error) {
+            error;
+          }
+
+          //获取问诊
+          this.axios.get(`${this.examNo}/${this.caseId}/asked`).then((res) => {
+            this.ask = res.data;
+            res.data.forEach((item) => {
+              ask.forEach((ele) => {
+                if (ele.issueId == item.id) {
+                  item.correct = ele.correct;
+                  this.askData.push(item);
+                }
+              });
+            });
+          });
+          //获取望诊
+
+          for (let i = 0; i < 3; i++) {
+            this.axios
+              .get(`/${this.examNo}/${this.caseId}/watched/${i}`)
+              .then((res) => {
+                try {
+                  res.data.forEach((item) => {
+                    this.watch.push(item);
+                    watch.forEach((ele) => {
+                      if (item.id == ele.issueId) {
+                        this.watchData.push(item);
+                      }
+                    });
+                  });
+                } catch (error) {
+                  error;
+                }
+              });
+          }
+          //获取闻诊
+          this.axios.get(`/${this.examNo}/${this.caseId}/listened`);
+          //获取切诊
+          this.axios.get(`/${this.examNo}/${this.caseId}/press`);
+          this.axios.get(`/${this.examNo}/${this.caseId}/pulse`);
         });
     },
+    //获取症型数据
     getDisease() {
       this.axios.get(`${this.examNo}/${this.caseId}/disease`).then((res) => {
         this.diseaseData = res.data;
-        console.log(res);
       });
     },
+    //获取全部数据 正确答案
     getCorrect() {
-      this.axios
-        .get(`/${this.examNo}/${this.caseId}/disease/correct`)
-        .then((res) => {
-          console.log(res);
-        });
+      this.axios.get(`/${this.examNo}/${this.caseId}/disease/correct`);
     },
+    //下拉框四诊
     switchIteM(item) {
-      console.log(item);
       this.downMenu_active = item.id;
       this.downMenu_show = false;
       this.title = item.name;
       this.askItemData = [];
+    },
+    // 切换右侧症型
+    seeDiseaseItem(item) {
+      this.diseaseAsk = [];
+      this.diseaseWatch = [];
+      this.diseaseListen = [];
+      this.diseaseFeel = [];
+      let issueResults = item.issueResults;
+      let ask, watch, listen, feel;
+      try {
+        issueResults.forEach((item) => {
+          if (item.stageId == "1") {
+            ask = item.issues;
+          }
+          if (item.stageId == "2") {
+            watch = item.issues;
+          }
+          if (item.stageId == "3") {
+            listen = item.issues;
+          }
+          if (item.stageId == "4") {
+            feel = item.issues;
+          }
+        });
+        this.ask.forEach((ele) => {
+          ask.forEach((item) => {
+            if (ele.id == item.issueId) {
+              ele.correct = item.correct;
+              this.diseaseAsk.push(ele);
+            }
+          });
+        });
+
+        this.watch.forEach((ele) => {
+          watch.forEach((item) => {
+            if (ele.id == item.issueId) {
+              this.diseaseWatch.push(ele);
+            }
+          });
+        });
+      } catch (error) {
+        return error;
+      }
+    },
+    //切换病名 症型
+    seeDisease(item) {
+      if (item.id == "1") {
+        this.mainId = item.id;
+        this.showData = this.diseaseNameData;
+      }
+      if (item.id == "2") {
+        this.mainId = item.id;
+        this.showData = this.diseaseData;
+        this.seeDiseaseItem(this.diseaseData[0]);
+      }
+    },
+    // 设置默认数据
+    getDefault() {},
+  },
+  watch: {
+    ask: function () {
+      this.getDisease();
     },
   },
 };
@@ -202,11 +413,14 @@ export default {
     width: 100%;
     li {
       width: 100%;
-      padding-left: 10px;
+      height: 52px;
       display: flex;
       align-items: center;
       min-height: 40px;
       border-bottom: rgb(9, 124, 168) 1px solid;
+    }
+    li:hover {
+      background: rgb(26, 127, 195, 0.2);
     }
     .study_main_left {
       width: 360px;
@@ -217,6 +431,13 @@ export default {
       }
     }
     .study_main_right {
+      height: 400px;
+      overflow-y: auto;
+      .disease_ask_item {
+        display: flex;
+        flex-direction: column;
+        width: 1041px;
+      }
       li {
         display: flex;
       }
