@@ -47,7 +47,7 @@
                         :value="i"
                         @change="putPulse"
                       />
-                      <p class="item_cont_title" @click="seeImg(i)">
+                      <p class="item_cont_title">
                         {{ i }}
                       </p>
                     </div>
@@ -396,10 +396,6 @@ export default {
     openDele() {
       this.allShow = true;
     },
-    seeImg(e) {
-      this.imgsUrl = e.picUrl;
-      this.imgDesc = e.description;
-    },
     editPress(e) {
       this.optionShow = true;
       this.option = e;
@@ -511,6 +507,5 @@ export default {
       margin: 50px 19px;
     }
   }
-
 }
 </style>

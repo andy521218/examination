@@ -472,12 +472,35 @@ export default {
         this.step = false;
         this.getDiseaseDefault();
       } else {
+        // 上一步
         this.getAlldata();
         this.diseaseWatchData = [];
         this.diseaselistenData = [];
         this.diseaseAskData = [];
         this.diseasePressData = [];
-        this.step = true;
+        (this.upDiseaseData = {
+          id: "",
+          issues: [
+            {
+              issueIds: [],
+              stageId: 1,
+            },
+            {
+              issueIds: [],
+              stageId: 2,
+            },
+            {
+              issueIds: [],
+              stageId: 3,
+            },
+            {
+              issueIds: [],
+              stageId: 4,
+            },
+          ],
+          name: "",
+        }),
+          (this.step = true);
       }
       this.diseaseCheckArr1 = this.diseaseCheckArr;
     },
@@ -499,7 +522,6 @@ export default {
           ],
           name: item.name,
         });
-
         return;
       }
       this.axios.delete(`/case/manage/${this.caseId}/disease/${item.id}`);
@@ -553,21 +575,23 @@ export default {
     },
     // search正确病名
     diseaseVal(e) {
-      this.searchDisease = e.name;
-      this.diseaseNameId = e.id;
-      this.axios.get(`/meta/disease/${e.id}`).then((res) => {
-        this.diseaseCheckData = res.data.rows;
-      });
-      //设置更改病名
-      this.http.post(`/case/manage/${this.caseId}/disease/name`, {
-        id: e.id,
-        issues: [
-          {
-            issueIds: [],
-            stageId: "",
-          },
-        ],
-        name: e.name,
+      this.axios.delete(`/case/manage/${this.caseId}/disease/name`).then(() => {
+        this.searchDisease = e.name;
+        this.diseaseNameId = e.id;
+        this.axios.get(`/meta/disease/${e.id}`).then((res) => {
+          this.diseaseCheckData = res.data.rows;
+        });
+        // 设置更改病名
+        this.http.post(`/case/manage/${this.caseId}/disease/name`, {
+          id: e.id,
+          issues: [
+            {
+              issueIds: [],
+              stageId: "",
+            },
+          ],
+          name: e.name,
+        });
       });
     },
     // 设置病名各项答案
@@ -718,7 +742,7 @@ export default {
       this.axios.get(`/case/manage/${this.caseId}/disease`).then((res) => {
         try {
           this.diseaseDeafault = res.data.diseases[0].id;
-          this.diseasecorrectData.forEach((item) => {
+          res.data.diseases.forEach((item) => {
             if (this.diseaseDeafault == item.id) {
               item.issues.forEach((issueIds) => {
                 if (issueIds.stageId == "1") {

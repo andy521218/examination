@@ -73,9 +73,9 @@
                     >
                     <span>{{ item.answer }}</span>
                   </div>
-                  <div class="item_edit">
+                  <!-- <div class="item_edit">
                     <input type="checkbox" />
-                  </div>
+                  </div> -->
                 </li>
               </ul>
             </div>

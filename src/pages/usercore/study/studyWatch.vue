@@ -26,9 +26,34 @@
         {{ title }}的结果均为正常
         <p></p>
       </div> -->
-      <ul class="study_main_item">
+      <!-- 望神色 -->
+      <ul class="study_main_item" v-show="showId == '0'">
+        <li v-for="(item, index) in watchone" :key="index" style="height: 40px">
+          <span style="width: 30%; padding-left: 10px">{{ item.name }}</span>
+          <span style="width: 30%">{{ item.answer }}</span>
+          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 5%; height: 20px" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+      <!-- 望局部 -->
+      <ul class="study_main_item" v-show="showId == '1'">
+        <li v-for="(item, index) in watchtwo" :key="index" style="height: 40px">
+          <span style="width: 30%; padding-left: 10px">{{ item.name }}</span>
+          <span style="width: 30%">{{ item.answer }}</span>
+          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 5%; height: 20px" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+      <!-- 望舌 -->
+      <ul class="study_main_item" v-show="showId == '2'">
         <li
-          v-for="(item, index) in watch_item_data.data"
+          v-for="(item, index) in watchthree"
           :key="index"
           style="height: 40px"
         >
@@ -57,10 +82,12 @@ export default {
       ],
       caseId: "",
       examNo: "",
-      watchData: [],
-      watch_item_data: "",
       typeId: "0",
       title: "望神色形态",
+      watchone: [],
+      watchtwo: [],
+      watchthree: [],
+      showId: "0",
     };
   },
   mounted() {
@@ -70,18 +97,22 @@ export default {
       this.axios
         .get(`${this.examNo}/${this.caseId}/watched/${i}`)
         .then((res) => {
-          this.watchData.push(res);
           if (i == 0) {
-            this.watch_item_data = res;
+            this.watchone = res.data;
+          }
+          if (i == 1) {
+            this.watchtwo = res.data;
+          }
+          if (i == 2) {
+            this.watchthree = res.data;
           }
         });
     }
   },
   methods: {
     seeWatch(item) {
-      this.title = item.name;
-      this.watch_item_data = [];
-      this.watch_item_data = this.watchData[item.id];
+      this.showId = item.id;
+      console.log(item.id);
     },
   },
 };

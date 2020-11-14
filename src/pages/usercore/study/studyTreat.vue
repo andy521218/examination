@@ -15,21 +15,50 @@
     </div>
     <ul class="study_main">
       <li class="study_item_title">
-        <span style="width: 48%; padding-left: 10px">问题</span>
-        <span style="width: 48%">正确答案</span>
+        <span style="width: 48%; padding-left: 20px">正确答案</span>
+        <span style="width: 48%; padding-left: 5px">我的答案</span>
         <span style="width: 4%"></span>
       </li>
     </ul>
-    <ul class="study_main_item">
-      <li style="height: 40px">
-        <span style="width: 48%; padding-left: 10px">华脉</span>
-        <span style="width: 48%">正确</span>
-        <span style="width: 4%; height: 20px" class="options">
-          <i class="right" v-show="0"></i>
-          <i class="error" v-show="1"></i
-        ></span>
-      </li>
-    </ul>
+    <!-- 治则治法 -->
+    <div class="scrollbar">
+      <ul class="study_main_item" v-show="showId == '1'">
+        <li style="height: 40px" v-for="(item, index) in showData" :key="index">
+          <span style="width: 48%">{{ item.correctAnswer }}</span>
+          <span style="width: 48%">{{ item.answer }}</span>
+          <span style="width: 4%; height: 20px" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+    </div>
+    <!-- 遣方用药 -->
+    <div class="scrollbar">
+      <ul class="study_main_item" v-show="showId == '2'">
+        <li style="height: 40px" v-for="(item, index) in showData" :key="index">
+          <span style="width: 48%">{{ item.agentiaCorrectAnswer }}</span>
+          <span style="width: 48%">{{ item.agentiaAnswer }}</span>
+          <span style="width: 4%; height: 20px" class="options">
+            <i class="right" v-show="item.agentiaCorrectAnswer"></i>
+            <i class="error" v-show="!item.agentiaCorrectAnswer"></i
+          ></span>
+        </li>
+      </ul>
+    </div>
+    <!-- 药物组成 -->
+    <div class="scrollbar">
+      <ul class="study_main_item" v-show="showId == '3'">
+        <li style="height: 40px" v-for="(item, index) in showData" :key="index">
+          <span style="width: 48%">{{ item.correctDruggeryName }}</span>
+          <span style="width: 48%">{{ item.druggeryName }}</span>
+          <span style="width: 4%; height: 20px" class="options">
+            <i class="right" v-show="item.correct"></i>
+            <i class="error" v-show="!item.correct"></i
+          ></span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -44,11 +73,59 @@ export default {
         { id: 3, name: "药物组成" },
       ],
       typeId: "1",
+      caseId: "",
+      examNo: "",
+      showData: [],
+      showId: "1",
+      trearData: [],
+      agentiaData: {},
+      trearCorrectData: [],
+      druggeriesData: [],
     };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.examNo = localStorage.getItem("examNo");
+    this.getTreat();
+    this.getAgentia();
   },
   methods: {
     seeFeel(item) {
-      console.log(item);
+      this.showId = item.id;
+      if (item.id == "1") {
+        this.showData = this.trearData;
+      }
+      if (item.id == "2") {
+        this.showData = this.agentiaData;
+        this.showData[0].agentiaCorrectAnswer = this.trearCorrectData[0].name;
+      }
+      if (item.id == "3") {
+        this.showData = this.agentiaData[0].druggeries;
+      }
+    },
+    getTreat() {
+      this.axios.get(`${this.examNo}/${this.caseId}/treat`).then((res) => {
+        this.trearData.push(res.data);
+      });
+    },
+    getAgentia() {
+      this.axios.get(`${this.examNo}/${this.caseId}/agentia`).then((res) => {
+        this.agentiaData = res.data;
+      });
+    },
+    getTreatCorrect() {
+      this.axios
+        .get(`${this.examNo}/${this.caseId}/treat/correct`)
+        .then((res) => {
+          this.trearCorrectData = res.data.agentias;
+          // let obj = this.agentiaData[0].druggeries;
+          // let obj2 = res.data.agentias[0].druggeries;
+        });
+    },
+  },
+  watch: {
+    agentiaData: function () {
+      this.getTreatCorrect();
     },
   },
 };
