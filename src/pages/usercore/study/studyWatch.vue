@@ -112,7 +112,6 @@ export default {
   methods: {
     seeWatch(item) {
       this.showId = item.id;
-      console.log(item.id);
     },
   },
 };

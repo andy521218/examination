@@ -5,7 +5,7 @@
       <div v-for="(item, index) in list" :key="index">
         <input
           type="radio"
-          name="Feel"
+          name="treat"
           :value="item.id"
           v-model="typeId"
           @click="seeFeel(item)"
@@ -40,8 +40,8 @@
           <span style="width: 48%">{{ item.agentiaCorrectAnswer }}</span>
           <span style="width: 48%">{{ item.agentiaAnswer }}</span>
           <span style="width: 4%; height: 20px" class="options">
-            <i class="right" v-show="item.agentiaCorrectAnswer"></i>
-            <i class="error" v-show="!item.agentiaCorrectAnswer"></i
+            <i class="right" v-show="item.agentiaCorrect"></i>
+            <i class="error" v-show="!item.agentiaCorrect"></i
           ></span>
         </li>
       </ul>
@@ -106,6 +106,7 @@ export default {
     getTreat() {
       this.axios.get(`${this.examNo}/${this.caseId}/treat`).then((res) => {
         this.trearData.push(res.data);
+        this.showData.push(res.data);
       });
     },
     getAgentia() {

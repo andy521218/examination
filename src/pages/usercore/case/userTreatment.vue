@@ -622,7 +622,6 @@ export default {
             this.diseasesPress = e.issues[i].issueIds;
           }
         }
-        console.log(this.diseasesPress);
       } catch (error) {
         return error;
       }

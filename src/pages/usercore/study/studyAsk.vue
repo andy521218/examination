@@ -9,7 +9,7 @@
         </p>
       </div>
       <div class="study_title_right">
-        <i-switch></i-switch>
+        <i-switch v-model="correct"></i-switch>
         <span>显示正确答案</span>
       </div>
     </div>
@@ -48,7 +48,8 @@
       </li>
     </ul>
     <div class="scrollbar">
-      <ul class="study_main_item">
+      <!-- 我的答案 -->
+      <ul class="study_main_item" v-show="!correct">
         <li v-for="(item, index) in askItemData" :key="index">
           <div class="ask_item">
             <i
@@ -65,6 +66,43 @@
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i
           ></span>
+        </li>
+      </ul>
+      <!-- 正确答案 -->
+      <ul class="study_main_item" v-show="correct && title == '总问题'">
+        <li v-for="(item, index) in correctaskked" :key="index">
+          <div class="ask_item">
+            <i
+              v-show="item.typeId == 1"
+              :style="{ background: select[item.colorId].color }"
+            ></i>
+            <div class="ask_column">
+              <span>问: {{ item.question }}</span>
+              <span>答: {{ item.answer }}</span>
+            </div>
+          </div>
+          <span style="width: 10%" class="options"><i class="right"></i> </span>
+          <span style="width: 10%; text-align: center"></span>
+        </li>
+      </ul>
+      <ul class="study_main_item" v-show="correct && title != '总问题'">
+        <li
+          v-for="(item, index) in correctaskked"
+          :key="index"
+          v-show="item.typeId == askId"
+        >
+          <div class="ask_item">
+            <i
+              v-show="item.typeId == 1"
+              :style="{ background: select[item.colorId].color }"
+            ></i>
+            <div class="ask_column">
+              <span>问: {{ item.question }}</span>
+              <span>答: {{ item.answer }}</span>
+            </div>
+          </div>
+          <span style="width: 10%" class="options"><i class="right"></i> </span>
+          <span style="width: 10%; text-align: center"></span>
         </li>
       </ul>
     </div>
@@ -111,6 +149,9 @@ export default {
       examNo: "",
       askedData: {},
       askItemData: {},
+      correctaskked: [],
+      correct: false,
+      askId: "",
     };
   },
   mounted() {
@@ -131,10 +172,31 @@ export default {
           this.tabData = res.data;
         });
     },
-    async getAskdata() {
+    getAskdata() {
       this.axios.get(`/${this.examNo}/${this.caseId}/asked`).then((res) => {
         this.askedData = res.data;
         this.askItemData = res.data;
+      });
+    },
+    getcoreectasked() {
+      let asklist = [];
+      for (let i = 0; i < this.tabData.length; i++) {
+        asklist.push(
+          new Promise((resolve) => {
+            this.axios
+              .get(`/${this.examNo}/${this.caseId}/correctasked`, {
+                params: {
+                  typeId: this.tabData[i].moduleId,
+                },
+              })
+              .then((res) => {
+                return resolve(res.data);
+              });
+          })
+        );
+      }
+      Promise.all(asklist).then((res) => {
+        this.correctaskked = [].concat(...res);
       });
     },
     switchIteM(item) {
@@ -142,16 +204,23 @@ export default {
       this.downMenu_show = false;
       if (item == "总问题") {
         this.title = "总问题";
-        this.downMenu_active='总问题'
-        return (this.askItemData = this.askedData);
+        this.downMenu_active = "总问题";
+        this.askItemData = this.askedData;
+        return;
       }
       this.title = item.name;
       this.askItemData = [];
+      this.askId = item.moduleId;
       this.askedData.forEach((ele) => {
         if (ele.typeId == item.moduleId) {
           this.askItemData.push(ele);
         }
       });
+    },
+  },
+  watch: {
+    tabData: function () {
+      this.getcoreectasked();
     },
   },
 };

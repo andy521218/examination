@@ -15,11 +15,11 @@
         </div>
       </div>
       <div class="study_title_right">
-        <i-switch></i-switch>
+        <i-switch v-model="correctshow"></i-switch>
         <p>显示正确答案</p>
       </div>
     </div>
-    <ul class="study_main">
+    <ul class="study_main" v-show="!correctshow">
       <li class="study_item_title">
         <span style="width: 10%; padding-left: 10px">正确答案</span>
         <span style="width: 10%">我的答案</span>
@@ -66,8 +66,13 @@
         <span style="width: 15%; text-align: center">是否为依据</span>
       </li>
     </ul>
+    <!-- 正确选项 -->
+    <study-correct :tabData="tabData" :mainId='mainId' v-show="correctshow"> </study-correct>
     <!-- 病名 -->
-    <div class="layout_flex scrollbar" v-show="mainId == '1'">
+    <div
+      class="layout_flex scrollbar"
+      v-show="mainId == '1' && correctshow == false"
+    >
       <ul class="study_main_left">
         <li>
           <span style="width: 163px; padding-left: 10px">{{
@@ -127,7 +132,7 @@
       </ul>
       <!-- 切诊 -->
       <ul class="study_main_right" v-show="title == '切'">
-        <li v-show="pulseData">
+        <li v-show="pulseData.id">
           <span style="width: 561px; text-align: center">脉诊</span>
           <span style="width: 240px; text-align: center"
             >{{ pulseData.answer }}
@@ -157,7 +162,10 @@
     </div>
 
     <!-- 病症 -->
-    <div class="layout_flex scrollbar" v-show="mainId == '2'">
+    <div
+      class="layout_flex scrollbar"
+      v-show="mainId == '2' && correctshow == false"
+    >
       <ul class="study_main_left">
         <li
           v-for="(item, index) in showData"
@@ -222,7 +230,7 @@
 
       <!-- 切诊 -->
       <ul class="study_main_right" v-show="title == '切'">
-        <li v-show="diseasePulse">
+        <li v-show="diseasePulse.id">
           <span style="width: 561px; text-align: center">脉诊</span>
           <span style="width: 240px; text-align: center"
             >{{ diseasePulse.answer }}
@@ -254,8 +262,12 @@
 </template>
 
 <script>
+import studyCorrect from "./studyCorrect";
 export default {
   name: "study-disease",
+  components: {
+    studyCorrect,
+  },
   data() {
     return {
       list: [
@@ -320,14 +332,13 @@ export default {
       diseasePulse: {},
       feelData: [],
       diseaseFeel: [],
+      correctshow: false,
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
     this.getDiseasename();
-    this.getCorrect();
-    this.getDefault();
   },
   methods: {
     //获取病名数据
@@ -337,7 +348,6 @@ export default {
         .then((res) => {
           this.diseaseNameData = res.data;
           this.showData = res.data;
-          /*eslint-disable*/
           let ask, watch, listen, feel;
           try {
             res.data.issueResults.forEach((item) => {
@@ -357,18 +367,21 @@ export default {
           } catch (error) {
             error;
           }
-
           //获取问诊
           this.axios.get(`${this.examNo}/${this.caseId}/asked`).then((res) => {
             this.ask = res.data;
-            res.data.forEach((item) => {
-              ask.forEach((ele) => {
-                if (ele.issueId == item.id) {
-                  item.correct = ele.correct;
-                  this.askData.push(item);
-                }
+            try {
+              res.data.forEach((item) => {
+                ask.forEach((ele) => {
+                  if (ele.issueId == item.id) {
+                    item.correct = ele.correct;
+                    this.askData.push(item);
+                  }
+                });
               });
-            });
+            } catch (error) {
+              error;
+            }
           });
           //获取望诊
 
@@ -381,6 +394,7 @@ export default {
                     this.watch.push(item);
                     watch.forEach((ele) => {
                       if (item.id == ele.issueId) {
+                        item.correct = ele.correct;
                         this.watchData.push(item);
                       }
                     });
@@ -395,33 +409,47 @@ export default {
             .get(`/${this.examNo}/${this.caseId}/listened`)
             .then((res) => {
               this.listen = res.data;
-              res.data.forEach((ele) => {
-                listen.forEach((item) => {
-                  if (item.issueId == ele.id) {
-                    this.listenData.push(ele);
-                  }
+              try {
+                res.data.forEach((ele) => {
+                  listen.forEach((item) => {
+                    if (item.issueId == ele.id) {
+                      ele.correct = item.correct;
+                      this.listenData.push(ele);
+                    }
+                  });
                 });
-              });
+              } catch (error) {
+                error;
+              }
             });
           //获取切诊
           this.axios.get(`/${this.examNo}/${this.caseId}/press`).then((res) => {
             this.press = res.data;
-            feel.forEach((ele) => {
-              res.data.forEach((item) => {
-                if (ele.issueId == item.id) {
-                  this.feelData.push(item);
-                }
+            try {
+              feel.forEach((ele) => {
+                res.data.forEach((item) => {
+                  if (ele.issueId == item.id) {
+                    ele.correct = item.correct;
+                    this.feelData.push(item);
+                  }
+                });
               });
-            });
+            } catch (error) {
+              error;
+            }
           });
           // 脉诊
           this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
             this.pulse = res.data;
-            feel.forEach((item) => {
-              if (res.data.id == item.issueId) {
-                this.pulseData = res.data;
-              }
-            });
+            try {
+              feel.forEach((item) => {
+                if (res.data.id == item.issueId) {
+                  this.pulseData = res.data;
+                }
+              });
+            } catch (error) {
+              error;
+            }
           });
         });
     },
@@ -431,16 +459,11 @@ export default {
         this.diseaseData = res.data;
       });
     },
-    //获取全部数据 正确答案
-    getCorrect() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/disease/correct`);
-    },
     //下拉框四诊
     switchIteM(item) {
       this.downMenu_active = item.id;
       this.downMenu_show = false;
       this.title = item.name;
-      this.askItemData = [];
     },
     // 切换右侧症型
     seeDiseaseItem(item) {
@@ -465,32 +488,50 @@ export default {
             feel = item.issues;
           }
         });
-        this.ask.forEach((ele) => {
+      } catch (error) {
+        error;
+      }
+
+      this.ask.forEach((ele) => {
+        try {
           ask.forEach((item) => {
             if (ele.id == item.issueId) {
               ele.correct = item.correct;
               this.diseaseAsk.push(ele);
             }
           });
-        });
+        } catch (error) {
+          error;
+        }
+      });
 
-        this.watch.forEach((ele) => {
+      this.watch.forEach((ele) => {
+        try {
           watch.forEach((item) => {
             if (ele.id == item.issueId) {
+              ele.correct = item.correct;
               this.diseaseWatch.push(ele);
             }
           });
-        });
-        this.listen.forEach((ele) => {
+        } catch (error) {
+          error;
+        }
+      });
+      this.listen.forEach((ele) => {
+        try {
           listen.forEach((item) => {
             if (ele.id == item.issueId) {
               this.diseaseListen.push(ele);
             }
           });
-        });
+        } catch (error) {
+          error;
+        }
+      });
+      try {
         feel.forEach((ele) => {
           if (this.pulse.id == ele.issueId) {
-            this.pulseData.push(ele);
+            this.diseasePulse = this.pulse;
           }
         });
         this.press.forEach((ele) => {
@@ -501,7 +542,7 @@ export default {
           });
         });
       } catch (error) {
-        return error;
+        error;
       }
     },
     //切换病名 症型
@@ -516,8 +557,6 @@ export default {
         this.seeDiseaseItem(this.diseaseData[0]);
       }
     },
-    // 设置默认数据
-    getDefault() {},
   },
   watch: {
     press: function () {

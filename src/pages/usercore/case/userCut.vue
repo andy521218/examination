@@ -468,6 +468,9 @@ export default {
       this.pressData.forEach((item) => {
         if (item.name == name) {
           flag = true;
+          this.axios.post(
+            `/answer/${this.examNo}/${this.caseId}/feel/press/${item.id}`
+          );
           return this.pressItemData.push(item);
         }
       });

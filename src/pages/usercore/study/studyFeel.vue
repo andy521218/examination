@@ -5,7 +5,7 @@
       <div v-for="(item, index) in list" :key="index">
         <input
           type="radio"
-          name="listen"
+          name="feel"
           :value="item.id"
           v-model="typeId"
           @click="seeFeel(item)"
@@ -54,7 +54,7 @@ export default {
     return {
       list: [
         { id: 0, name: "切诊" },
-        { id: 1, name: "按诊" },
+        { id: 1, name: "脉诊" },
       ],
       title: "切诊",
       feel_item_data: [],
