@@ -3,7 +3,7 @@
     <ul class="study_main">
       <li class="study_item_title">
         <span style="width: 10%; padding-left: 10px">正确答案</span>
-        <span style="width: 10%">我的答案</span>
+        <span style="width: 10%"></span>
         <span style="width: 2%"></span>
         <div
           class="downMenu"
@@ -31,10 +31,10 @@
           </div>
         </div>
         <span style="width: 15%; text-align: center" v-show="title != '问'"
-          >我的答案</span
+          >正确答案</span
         >
         <span style="width: 15%; text-align: center" v-show="title != '问'"
-          >正确答案</span
+          >我的答案</span
         >
         <span
           style="width: 15%; text-align: center"
@@ -52,13 +52,13 @@
       <ul class="study_main_left">
         <li>
           <span style="width: 163px; padding-left: 10px">{{
-            showData.correctAnswer
+            showData.diseaseName
           }}</span>
           <span style="width: 163px">{{ showData.answer }}</span>
-          <span style="width: 10%" class="options">
+          <!-- <span style="width: 10%" class="options">
             <i class="right" v-show="showData.correct"></i>
             <i class="error" v-show="!showData.correct"></i>
-          </span>
+          </span> -->
         </li>
       </ul>
       <!-- 问诊 -->
@@ -69,9 +69,8 @@
             <span>答: {{ item.answer }}</span>
           </div>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
       <!-- 望诊 -->
@@ -79,15 +78,14 @@
         <li v-for="(item, index) in watchData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
       <!-- 闻诊 -->
@@ -95,15 +93,14 @@
         <li v-for="(item, index) in listenData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
       <!-- 切诊 -->
@@ -111,28 +108,26 @@
         <li v-show="pulseData.id">
           <span style="width: 561px; text-align: center">脉诊</span>
           <span style="width: 240px; text-align: center"
-            >{{ pulseData.answer }}
+            >{{ pulseData.correctAnswer }}
           </span>
           <span style="width: 240px; text-align: center">{{
-            pulseData.correctAnswer
+            pulseData.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="pulseData.correct"></i>
-            <i class="error" v-show="!pulseData.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
         <li v-for="(item, index) in feelData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
     </div>
@@ -141,18 +136,13 @@
     <div class="layout_flex scrollbar" v-show="mainId == '2'">
       <ul class="study_main_left">
         <li
-          v-for="(item, index) in showData"
+          v-for="(item, index) in showData.diseases"
           :key="index"
           @click="seeDiseaseItem(item)"
         >
-          <span style="width: 163px; padding-left: 10px">{{
-            item.correctAnswer
-          }}</span>
-          <span style="width: 163px">{{ item.answer }}</span>
-          <span style="width: 10%" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i>
-          </span>
+          <span style="width: 163px; padding-left: 10px">{{ item.name }}</span>
+          <!-- <span style="width: 163px">{{ item.answer }}</span> -->
+          <span style="width: 10%" class="options"> </span>
         </li>
       </ul>
       <!-- 问诊 -->
@@ -163,9 +153,8 @@
             <span>答: {{ item.answer }}</span>
           </div>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
       <!-- 望诊 -->
@@ -173,15 +162,14 @@
         <li v-for="(item, index) in diseaseWatch" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
       <!-- 闻诊 -->
@@ -189,15 +177,14 @@
         <li v-for="(item, index) in diseaseListen" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
 
@@ -206,10 +193,10 @@
         <li v-show="diseasePulse.id">
           <span style="width: 561px; text-align: center">脉诊</span>
           <span style="width: 240px; text-align: center"
-            >{{ diseasePulse.answer }}
+            >{{ diseasePulse.correctAnswer }}
           </span>
           <span style="width: 240px; text-align: center">{{
-            diseasePulse.correctAnswer
+            diseasePulse.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
             <i class="right" v-show="diseasePulse.correct"></i>
@@ -219,15 +206,14 @@
         <li v-for="(item, index) in diseaseFeel" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="item.correct"></i>
-            <i class="error" v-show="!item.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
       </ul>
     </div>
@@ -240,6 +226,8 @@ export default {
   props: ["tabData", "mainId"],
   data() {
     return {
+      caseId: "",
+      examNo: "",
       showData: {},
       title: "问",
       downMenu_show: false,
@@ -254,13 +242,217 @@ export default {
       diseaseListen: [],
       diseasePulse: {},
       diseaseFeel: [],
+      correctData: {},
+      listen: [],
+      press: [],
+      pulse: [],
     };
+  },
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.examNo = localStorage.getItem("examNo");
+    this.getcorrect();
   },
   methods: {
     switchIteM(item) {
       this.downMenu_active = item.id;
       this.downMenu_show = false;
       this.title = item.name;
+    },
+    getcorrect() {
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/disease/correct`)
+        .then((res) => {
+          this.correctData = res.data;
+          this.showData = res.data;
+          /*eslint-disable*/
+          let ask,
+            watch,
+            listen,
+            feel,
+            diseaseask,
+            diseasewatch,
+            diseaselisten,
+            diseasefeel;
+          // 病名
+          try {
+            res.data.diseaseNameIssues.forEach((item) => {
+              if (item.stageId == "1") {
+                ask = item.issueIds;
+              }
+              if (item.stageId == "2") {
+                watch = item.issueIds;
+              }
+              if (item.stageId == "3") {
+                listen = item.issueIds;
+              }
+              if (item.stageId == "4") {
+                feel = item.issueIds;
+              }
+            });
+          } catch (error) {
+            error;
+          }
+          // 问诊
+          try {
+            let correctask = JSON.parse(localStorage.getItem("correctaskked"));
+            correctask.forEach((item) => {
+              ask.forEach((ele) => {
+                if (ele == item.id) {
+                  this.askData.push(item);
+                }
+              });
+            });
+          } catch (error) {
+            error;
+          }
+
+          // 望诊
+          try {
+            let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
+            correctwatch.forEach((item) => {
+              watch.forEach((ele) => {
+                if (item.id == ele) {
+                  this.watchData.push(item);
+                }
+              });
+            });
+          } catch (error) {
+            error;
+          }
+
+          // 闻诊
+          this.axios
+            .get(`/${this.examNo}/${this.caseId}/listened`)
+            .then((res) => {
+              this.listen = res.data;
+              try {
+                res.data.forEach((item) => {
+                  listen.forEach((ele) => {
+                    if (item.id == ele) {
+                      this.listenData.push(ele);
+                    }
+                  });
+                });
+              } catch (error) {
+                error;
+              }
+            });
+          //获取切诊
+          this.axios.get(`/${this.examNo}/${this.caseId}/press`).then((res) => {
+            this.press = res.data;
+            try {
+              feel.forEach((ele) => {
+                res.data.forEach((item) => {
+                  if (ele == item.id) {
+                    this.feelData.push(item);
+                  }
+                });
+              });
+            } catch (error) {
+              error;
+            }
+          });
+          // 脉诊
+          this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
+            this.pulse = res.data;
+            try {
+              feel.forEach((item) => {
+                if (res.data.id == item) {
+                  this.pulseData = res.data;
+                }
+              });
+            } catch (error) {
+              error;
+            }
+          });
+        });
+    },
+    seeDiseaseItem(item) {
+      this.diseaseAsk = [];
+      this.diseaseWatch = [];
+      this.diseaseListen = [];
+      this.diseaseFeel = [];
+      let issues = item.issues;
+      let ask, watch, listen, feel;
+      try {
+        issues.forEach((item) => {
+          if (item.stageId == "1") {
+            ask = item.issueIds;
+          }
+          if (item.stageId == "2") {
+            watch = item.issueIds;
+          }
+          if (item.stageId == "3") {
+            listen = item.issueIds;
+          }
+          if (item.stageId == "4") {
+            feel = item.issueIds;
+          }
+        });
+      } catch (error) {
+        error;
+      }
+
+      let correctask = JSON.parse(localStorage.getItem("correctaskked"));
+      try {
+        correctask.forEach((ele) => {
+          ask.forEach((item) => {
+            if (ele.id == item) {
+              this.diseaseAsk.push(ele);
+            }
+          });
+        });
+      } catch (error) {
+        error;
+      }
+
+      let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
+      correctwatch.forEach((ele) => {
+        try {
+          watch.forEach((item) => {
+            if (ele.id == item) {
+              this.diseaseWatch.push(ele);
+            }
+          });
+        } catch (error) {
+          error;
+        }
+      });
+
+      try {
+        this.listen.forEach((ele) => {
+          listen.forEach((item) => {
+            if (ele.id == item) {
+              this.diseaseListen.push(ele);
+            }
+          });
+        });
+      } catch (error) {
+        error;
+      }
+
+      try {
+        feel.forEach((ele) => {
+          if (this.pulse.id == ele) {
+            this.diseasePulse = this.pulse;
+          }
+        });
+        feel.forEach((ele) => {
+          this.press.forEach((item) => {
+            if (item.id == ele) {
+              this.diseaseFeel.push(item);
+            }
+          });
+        });
+      } catch (error) {
+        error;
+      }
+    },
+  },
+  watch: {
+    showData: function () {
+      this.seeDiseaseItem(this.showData.diseases[0]);
     },
   },
 };

@@ -18,17 +18,16 @@
             <div class="chart_item">
               <span class="chart_item_title">总分(100分)</span>
               <i-circle
-                :percent="(scoreData.total / 100) * 100"
+                :percent="(Math.floor(scoreData.total) / 100) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.total) }}分</span
+                  {{ Math.floor(scoreData.total) }}分</span
                 >
               </i-circle>
             </div>
-
             <div
               class="chart_item"
               :class="{ active: titleIndex == 1 }"
@@ -36,13 +35,13 @@
             >
               <span class="chart_item_title">问(30分)</span>
               <i-circle
-                :percent="(scoreData.ask / 30) * 100"
+                :percent="(Math.floor(scoreData.ask) / 30) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.ask) }}分
+                  {{ Math.floor(scoreData.ask) }}分
                 </span>
               </i-circle>
             </div>
@@ -51,15 +50,15 @@
               :class="{ active: titleIndex == 2 }"
               @click="titleIndex = 2"
             >
-              <span class="chart_item_title">望(20分)</span>
+              <span class="chart_item_title">望(12分)</span>
               <i-circle
-                :percent="(scoreData.watch / 20) * 100"
+                :percent="(Math.floor(scoreData.watch) / 12) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.watch) }}分
+                  {{ Math.floor(scoreData.watch) }}分
                 </span>
               </i-circle>
             </div>
@@ -68,15 +67,15 @@
               :class="{ active: titleIndex == 3 }"
               @click="titleIndex = 3"
             >
-              <span class="chart_item_title">闻(20分)</span>
+              <span class="chart_item_title">闻(3分)</span>
               <i-circle
-                :percent="(scoreData.listen / 20) * 100"
+                :percent="(Math.floor(scoreData.listen) / 3) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.listen) }}分
+                  {{ Math.floor(scoreData.listen) }}分
                 </span>
               </i-circle>
             </div>
@@ -85,15 +84,15 @@
               :class="{ active: titleIndex == 4 }"
               @click="titleIndex = 4"
             >
-              <span class="chart_item_title">切(20分)</span>
+              <span class="chart_item_title">切(5分)</span>
               <i-circle
-                :percent="(scoreData.feel / 20) * 100"
+                :percent="(Math.floor(scoreData.feel) / 5) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.feel) }}分
+                  {{ Math.floor(scoreData.feel) }}分
                 </span>
               </i-circle>
             </div>
@@ -102,15 +101,15 @@
               :class="{ active: titleIndex == 5 }"
               @click="titleIndex = 5"
             >
-              <span class="chart_item_title">辩证(10分)</span>
+              <span class="chart_item_title">辩证(32分)</span>
               <i-circle
-                :percent="(scoreData.disease / 10) * 100"
+                :percent="(Math.floor(scoreData.disease) / 32) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.disease) }}分
+                  {{ Math.floor(scoreData.disease) }}分
                 </span>
               </i-circle>
             </div>
@@ -119,15 +118,15 @@
               :class="{ active: titleIndex == 6 }"
               @click="titleIndex = 6"
             >
-              <span class="chart_item_title">治疗(10分)</span>
+              <span class="chart_item_title">治疗(18分)</span>
               <i-circle
-                :percent="(scoreData.treat / 10) * 100"
+                :percent="(Math.floor(scoreData.treat) / 18) * 100"
                 class="item"
                 stroke-color="rgb(50,168,255)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 24px">
-                  {{ Math.round(scoreData.treat) }}分</span
+                  {{ Math.floor(scoreData.treat) }}分</span
                 >
               </i-circle>
             </div>

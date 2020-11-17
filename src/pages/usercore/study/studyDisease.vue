@@ -50,10 +50,10 @@
           </div>
         </div>
         <span style="width: 15%; text-align: center" v-show="title != '问'"
-          >我的答案</span
+          >正确答案</span
         >
         <span style="width: 15%; text-align: center" v-show="title != '问'"
-          >正确答案</span
+          >我的答案</span
         >
         <span
           style="width: 15%; text-align: center"
@@ -67,7 +67,8 @@
       </li>
     </ul>
     <!-- 正确选项 -->
-    <study-correct :tabData="tabData" :mainId='mainId' v-show="correctshow"> </study-correct>
+    <study-correct :tabData="tabData" :mainId="mainId" v-show="correctshow">
+    </study-correct>
     <!-- 病名 -->
     <div
       class="layout_flex scrollbar"
@@ -103,10 +104,10 @@
         <li v-for="(item, index) in watchData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
             <i class="right" v-show="item.correct"></i>
@@ -119,10 +120,10 @@
         <li v-for="(item, index) in listenData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
             <i class="right" v-show="item.correct"></i>
@@ -135,10 +136,10 @@
         <li v-show="pulseData.id">
           <span style="width: 561px; text-align: center">脉诊</span>
           <span style="width: 240px; text-align: center"
-            >{{ pulseData.answer }}
+            >{{ pulseData.correctAnswer }}
           </span>
           <span style="width: 240px; text-align: center">{{
-            pulseData.correctAnswer
+            pulseData.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
             <i class="right" v-show="pulseData.correct"></i>
@@ -148,10 +149,10 @@
         <li v-for="(item, index) in feelData" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
           <span style="width: 240px; text-align: center">
-            {{ item.answer }}</span
+            {{ item.correctAnswer }}</span
           >
           <span style="width: 240px; text-align: center">{{
-            item.correctAnswer
+            item.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
             <i class="right" v-show="item.correct"></i>
@@ -315,7 +316,6 @@ export default {
       downMenu_show: false,
       diseaseData: [],
       diseaseNameData: [],
-      correctData: [],
       showData: {},
       askData: [],
       watchData: [],
@@ -402,6 +402,10 @@ export default {
                 } catch (error) {
                   error;
                 }
+                localStorage.setItem(
+                  "correctwatch",
+                  JSON.stringify(this.watch)
+                );
               });
           }
           //获取闻诊

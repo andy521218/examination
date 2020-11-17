@@ -30,8 +30,8 @@
       <ul class="study_main_item" v-show="showId == '0'">
         <li v-for="(item, index) in watchone" :key="index" style="height: 40px">
           <span style="width: 30%; padding-left: 10px">{{ item.name }}</span>
-          <span style="width: 30%">{{ item.answer }}</span>
-          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 30%">{{ item.correctAnswer }}</span>
+          <span style="width: 35%">{{ item.answer }}</span>
           <span style="width: 5%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i
@@ -42,8 +42,8 @@
       <ul class="study_main_item" v-show="showId == '1'">
         <li v-for="(item, index) in watchtwo" :key="index" style="height: 40px">
           <span style="width: 30%; padding-left: 10px">{{ item.name }}</span>
-          <span style="width: 30%">{{ item.answer }}</span>
-          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 30%">{{ item.correctAnswer }}</span>
+          <span style="width: 35%">{{ item.answer }}</span>
           <span style="width: 5%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i
@@ -58,8 +58,8 @@
           style="height: 40px"
         >
           <span style="width: 30%; padding-left: 10px">{{ item.name }}</span>
-          <span style="width: 30%">{{ item.answer }}</span>
-          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 30%">{{ item.correctAnswer }}</span>
+          <span style="width: 35%">{{ item.answer }}</span>
           <span style="width: 5%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i

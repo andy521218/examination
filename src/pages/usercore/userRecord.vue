@@ -103,6 +103,7 @@ export default {
   },
   mounted() {
     this.getTrain(1);
+    localStorage.removeItem("correctaskked");
   },
   methods: {
     toKeep(e) {

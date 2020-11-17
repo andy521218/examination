@@ -35,8 +35,8 @@
           <span style="width: 30%; padding-left: 10px">{{
             item.name ? item.name : "按诊"
           }}</span>
-          <span style="width: 30%">{{ item.answer }}</span>
-          <span style="width: 35%">{{ item.correctAnswer }}</span>
+          <span style="width: 30%">{{ item.correctAnswer }}</span>
+          <span style="width: 35%">{{ item.answer }}</span>
           <span style="width: 5%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
             <i class="error" v-show="!item.correct"></i
