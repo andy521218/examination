@@ -50,7 +50,9 @@
     <div class="scrollbar">
       <ul class="study_main_item" v-show="showId == '3'">
         <li style="height: 40px" v-for="(item, index) in showData" :key="index">
-          <span style="width: 48%">{{ item.correctDruggeryName }}</span>
+          <span style="width: 48%">{{
+            item.correctDruggeryName ? item.correctDruggeryName : item.name
+          }}</span>
           <span style="width: 48%">{{ item.druggeryName }}</span>
           <span style="width: 4%; height: 20px" class="options">
             <i class="right" v-show="item.correct"></i>
@@ -90,6 +92,13 @@ export default {
     this.getAgentia();
   },
   methods: {
+    sortName(property) {
+      return function (a, b) {
+        const val1 = a[property];
+        const val2 = b[property];
+        return val2.localeCompare(val1);
+      };
+    },
     seeFeel(item) {
       this.showId = item.id;
       if (item.id == "1") {
@@ -97,10 +106,38 @@ export default {
       }
       if (item.id == "2") {
         this.showData = this.agentiaData;
-        this.showData[0].agentiaCorrectAnswer = this.trearCorrectData[0].name;
+        if (!this.agentiaData[0].agentiaCorrectAnswer) {
+          this.showData[0].agentiaCorrectAnswer = this.trearCorrectData[0].name;
+        }
       }
       if (item.id == "3") {
-        this.showData = this.agentiaData[0].druggeries;
+        let showData = this.agentiaData[0].druggeries.sort(
+          this.sortName("druggeryName")
+        );
+        let showlen = showData.length;
+        let correctData = this.trearCorrectData[0].druggeries.sort(
+          this.sortName("name")
+        );
+
+        let correctlen = correctData.length;
+        if (showlen == correctlen) {
+          this.showData = showData;
+          return;
+        }
+        if (showlen > correctlen) {
+          // correctData.forEach((item, index) => {
+          //   showData[index].correctDruggeryName = item.name;
+          // });
+          this.showData = showData;
+        } else {
+          correctData.forEach((item) => {
+            console.log(item.name);
+            showData.forEach(ele=>{
+              console.log(ele.correctDruggeryName);
+            })
+          });
+          this.showData = showData;
+        }
       }
     },
     getTreat() {
@@ -109,18 +146,18 @@ export default {
         this.showData.push(res.data);
       });
     },
+    //我的答案
     getAgentia() {
       this.axios.get(`${this.examNo}/${this.caseId}/agentia`).then((res) => {
         this.agentiaData = res.data;
       });
     },
+    //正确答案
     getTreatCorrect() {
       this.axios
         .get(`${this.examNo}/${this.caseId}/treat/correct`)
         .then((res) => {
           this.trearCorrectData = res.data.agentias;
-          // let obj = this.agentiaData[0].druggeries;
-          // let obj2 = res.data.agentias[0].druggeries;
         });
     },
   },

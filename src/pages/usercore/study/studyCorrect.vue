@@ -407,18 +407,18 @@ export default {
         error;
       }
 
-      let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
-      correctwatch.forEach((ele) => {
-        try {
+      try {
+        let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
+        correctwatch.forEach((ele) => {
           watch.forEach((item) => {
             if (ele.id == item) {
               this.diseaseWatch.push(ele);
             }
           });
-        } catch (error) {
-          error;
-        }
-      });
+        });
+      } catch (error) {
+        error;
+      }
 
       try {
         this.listen.forEach((ele) => {
