@@ -111,32 +111,42 @@ export default {
         }
       }
       if (item.id == "3") {
-        let showData = this.agentiaData[0].druggeries.sort(
-          this.sortName("druggeryName")
-        );
+        let showData = this.agentiaData[0].druggeries;
         let showlen = showData.length;
-        let correctData = this.trearCorrectData[0].druggeries.sort(
-          this.sortName("name")
-        );
-
+        let correctData = this.trearCorrectData[0].druggeries;
         let correctlen = correctData.length;
         if (showlen == correctlen) {
           this.showData = showData;
           return;
         }
         if (showlen > correctlen) {
-          // correctData.forEach((item, index) => {
-          //   showData[index].correctDruggeryName = item.name;
-          // });
-          this.showData = showData;
+          if (!this.agentiaData[0].agentiaCorrect) {
+            correctData.forEach((item, index) => {
+              showData[index].correctDruggeryName = item.name;
+            });
+            this.showData = showData;
+          } else {
+            this.showData = showData;
+          }
         } else {
-          correctData.forEach((item) => {
-            console.log(item.name);
-            showData.forEach(ele=>{
-              console.log(ele.correctDruggeryName);
-            })
-          });
-          this.showData = showData;
+          if (!this.agentiaData[0].agentiaCorrect) {
+            showData.forEach((item, index) => {
+              correctData[index].druggeryName=item.druggeryName
+            });
+            this.showData = correctData;
+          } else {
+            let showarr = [];
+            showData.forEach((item) => {
+              showarr.push(item.correctDruggeryName);
+            });
+            correctData.forEach((item) => {
+              if (showarr.indexOf(item.name) == -1) {
+                var obj = { name: item.name };
+                showData.push(obj);
+              }
+            });
+            this.showData = showData;
+          }
         }
       }
     },
