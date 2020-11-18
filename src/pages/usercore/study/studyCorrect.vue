@@ -243,6 +243,8 @@ export default {
       diseasePulse: {},
       diseaseFeel: [],
       correctData: {},
+      ask: [],
+      watch: [],
       listen: [],
       press: [],
       pulse: [],
@@ -265,15 +267,7 @@ export default {
         .then((res) => {
           this.correctData = res.data;
           this.showData = res.data;
-          /*eslint-disable*/
-          let ask,
-            watch,
-            listen,
-            feel,
-            diseaseask,
-            diseasewatch,
-            diseaselisten,
-            diseasefeel;
+          let ask, watch, listen, feel;
           // 病名
           try {
             res.data.diseaseNameIssues.forEach((item) => {
@@ -294,31 +288,64 @@ export default {
             error;
           }
           // 问诊
-          try {
-            let correctask = JSON.parse(localStorage.getItem("correctaskked"));
-            correctask.forEach((item) => {
-              ask.forEach((ele) => {
-                if (ele == item.id) {
-                  this.askData.push(item);
+
+          this.axios
+            .get(`/meta/ask/module`, {
+              params: {
+                caseId: this.caseId,
+              },
+            })
+            .then((res) => {
+              let asklist = [];
+              for (let i = 0; i < res.data.length; i++) {
+                asklist.push(
+                  new Promise((resolve) => {
+                    this.axios
+                      .get(`/${this.examNo}/${this.caseId}/correctasked`, {
+                        params: {
+                          typeId: res.data[i].moduleId,
+                        },
+                      })
+                      .then((res) => {
+                        return resolve(res.data);
+                      });
+                  })
+                );
+              }
+              Promise.all(asklist).then((res) => {
+                this.ask = [].concat(...res);
+                try {
+                  this.ask.forEach((item) => {
+                    ask.forEach((ele) => {
+                      if (ele == item.id) {
+                        this.askData.push(item);
+                      }
+                    });
+                  });
+                } catch (error) {
+                  error;
                 }
               });
             });
-          } catch (error) {
-            error;
-          }
 
           // 望诊
-          try {
-            let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
-            correctwatch.forEach((item) => {
-              watch.forEach((ele) => {
-                if (item.id == ele) {
-                  this.watchData.push(item);
+          for (let i = 0; i < 3; i++) {
+            this.axios
+              .get(`/${this.examNo}/${this.caseId}/watched/${i}`)
+              .then((res) => {
+                try {
+                  res.data.forEach((item) => {
+                    this.watch.push(item);
+                    watch.forEach((ele) => {
+                      if (item.id == ele) {
+                        this.watchData.push(item);
+                      }
+                    });
+                  });
+                } catch (error) {
+                  error;
                 }
               });
-            });
-          } catch (error) {
-            error;
           }
 
           // 闻诊
@@ -369,6 +396,7 @@ export default {
         });
     },
     seeDiseaseItem(item) {
+      console.log(2222222222);
       this.diseaseAsk = [];
       this.diseaseWatch = [];
       this.diseaseListen = [];
@@ -394,9 +422,8 @@ export default {
         error;
       }
 
-      let correctask = JSON.parse(localStorage.getItem("correctaskked"));
       try {
-        correctask.forEach((ele) => {
+        this.ask.forEach((ele) => {
           ask.forEach((item) => {
             if (ele.id == item) {
               this.diseaseAsk.push(ele);
@@ -408,8 +435,7 @@ export default {
       }
 
       try {
-        let correctwatch = JSON.parse(localStorage.getItem("correctwatch"));
-        correctwatch.forEach((ele) => {
+        this.watch.forEach((ele) => {
           watch.forEach((item) => {
             if (ele.id == item) {
               this.diseaseWatch.push(ele);
@@ -431,7 +457,6 @@ export default {
       } catch (error) {
         error;
       }
-
       try {
         feel.forEach((ele) => {
           if (this.pulse.id == ele) {
@@ -451,7 +476,7 @@ export default {
     },
   },
   watch: {
-    showData: function () {
+    mainId: function () {
       this.seeDiseaseItem(this.showData.diseases[0]);
     },
   },

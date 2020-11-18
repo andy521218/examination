@@ -197,10 +197,6 @@ export default {
       }
       Promise.all(asklist).then((res) => {
         this.correctaskked = [].concat(...res);
-        localStorage.setItem(
-          "correctaskked",
-          JSON.stringify(this.correctaskked)
-        );
       });
     },
     switchIteM(item) {

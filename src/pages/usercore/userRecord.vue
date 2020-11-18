@@ -104,6 +104,7 @@ export default {
   mounted() {
     this.getTrain(1);
     localStorage.removeItem("correctaskked");
+    localStorage.removeItem("correctwatch");
   },
   methods: {
     toKeep(e) {

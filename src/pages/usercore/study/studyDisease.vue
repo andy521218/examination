@@ -67,7 +67,12 @@
       </li>
     </ul>
     <!-- 正确选项 -->
-    <study-correct :tabData="tabData" :mainId="mainId" v-show="correctshow">
+    <study-correct
+      :tabData="tabData"
+      :mainId="mainId"
+      :watch="watch"
+      v-show="correctshow"
+    >
     </study-correct>
     <!-- 病名 -->
     <div
@@ -402,10 +407,6 @@ export default {
                 } catch (error) {
                   error;
                 }
-                localStorage.setItem(
-                  "correctwatch",
-                  JSON.stringify(this.watch)
-                );
               });
           }
           //获取闻诊
@@ -475,9 +476,9 @@ export default {
       this.diseaseWatch = [];
       this.diseaseListen = [];
       this.diseaseFeel = [];
-      let issueResults = item.issueResults;
-      let ask, watch, listen, feel;
       try {
+        let issueResults = item.issueResults;
+        let ask, watch, listen, feel;
         issueResults.forEach((item) => {
           if (item.stageId == "1") {
             ask = item.issues;
@@ -492,59 +493,59 @@ export default {
             feel = item.issues;
           }
         });
-      } catch (error) {
-        error;
-      }
 
-      this.ask.forEach((ele) => {
-        try {
-          ask.forEach((item) => {
-            if (ele.id == item.issueId) {
-              ele.correct = item.correct;
-              this.diseaseAsk.push(ele);
-            }
-          });
-        } catch (error) {
-          error;
-        }
-      });
-
-      this.watch.forEach((ele) => {
-        try {
-          watch.forEach((item) => {
-            if (ele.id == item.issueId) {
-              ele.correct = item.correct;
-              this.diseaseWatch.push(ele);
-            }
-          });
-        } catch (error) {
-          error;
-        }
-      });
-      this.listen.forEach((ele) => {
-        try {
-          listen.forEach((item) => {
-            if (ele.id == item.issueId) {
-              this.diseaseListen.push(ele);
-            }
-          });
-        } catch (error) {
-          error;
-        }
-      });
-      try {
-        feel.forEach((ele) => {
-          if (this.pulse.id == ele.issueId) {
-            this.diseasePulse = this.pulse;
+        this.ask.forEach((ele) => {
+          try {
+            ask.forEach((item) => {
+              if (ele.id == item.issueId) {
+                ele.correct = item.correct;
+                this.diseaseAsk.push(ele);
+              }
+            });
+          } catch (error) {
+            error;
           }
         });
-        this.press.forEach((ele) => {
-          this.press((item) => {
-            if (ele.id == item.issueId) {
-              this.diseaseFeel.push(ele);
+
+        this.watch.forEach((ele) => {
+          try {
+            watch.forEach((item) => {
+              if (ele.id == item.issueId) {
+                ele.correct = item.correct;
+                this.diseaseWatch.push(ele);
+              }
+            });
+          } catch (error) {
+            error;
+          }
+        });
+        this.listen.forEach((ele) => {
+          try {
+            listen.forEach((item) => {
+              if (ele.id == item.issueId) {
+                this.diseaseListen.push(ele);
+              }
+            });
+          } catch (error) {
+            error;
+          }
+        });
+        try {
+          feel.forEach((ele) => {
+            if (this.pulse.id == ele.issueId) {
+              this.diseasePulse = this.pulse;
             }
           });
-        });
+          this.press.forEach((ele) => {
+            this.press((item) => {
+              if (ele.id == item.issueId) {
+                this.diseaseFeel.push(ele);
+              }
+            });
+          });
+        } catch (error) {
+          error;
+        }
       } catch (error) {
         error;
       }
