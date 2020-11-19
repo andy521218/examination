@@ -47,7 +47,7 @@
             </td>
             <td v-show="item.status == 2">
               <span @click="toStudy(item)">辩证过程</span>
-              <span>思维导图</span>
+              <span @click="toMapping(item)">思维导图</span>
             </td>
           </tr>
         </tbody>
@@ -114,6 +114,11 @@ export default {
         localStorage.setItem("caseId", e.caseId);
         this.$router.push("userask");
       });
+    },
+    toMapping(e) {
+      localStorage.setItem("examNo", e.examNo);
+      localStorage.setItem("caseId", e.caseId);
+      this.$router.push("usermap");
     },
     toStudy(e) {
       localStorage.setItem("examNo", e.examNo);

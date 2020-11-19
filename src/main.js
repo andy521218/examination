@@ -24,6 +24,7 @@ Vue.component('i-circle', Circle);
 Vue.component('i-con', Icon);
 Vue.use(VueAxios,axios);
 
+
 Vue.use(filters)
 Vue.prototype.http = http
 Vue.prototype.qs = qs

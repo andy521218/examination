@@ -39,7 +39,7 @@
           </div>
         </main>
       </div>
-      <div class="case_right">
+      <div class="case_right" v-if="imgurl">
         <span class="case_title_name">患者{{ name }}正在接望诊:</span>
         <div class="case_right_cont">
           <div class="main_mask">

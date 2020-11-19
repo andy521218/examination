@@ -30,8 +30,8 @@ export default {
   },
   mounted() {
     localStorage.removeItem("bgindex");
-    localStorage.removeItem("examNo");
-    localStorage.removeItem("caseId");
+    // localStorage.removeItem("examNo");
+    // localStorage.removeItem("caseId");
     localStorage.removeItem("caseMenuId");
     localStorage.removeItem("askedArr");
     localStorage.removeItem("pressItemData");

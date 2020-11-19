@@ -396,7 +396,6 @@ export default {
         });
     },
     seeDiseaseItem(item) {
-      console.log(2222222222);
       this.diseaseAsk = [];
       this.diseaseWatch = [];
       this.diseaseListen = [];
