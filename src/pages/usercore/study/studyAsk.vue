@@ -97,7 +97,7 @@
               :style="{ background: select[item.colorId].color }"
             ></i>
             <div class="ask_column">
-              <span>问: {{ item.question }}</span>
+              <span>问: {{ item.question }}11111111</span>
               <span>答: {{ item.answer }}</span>
             </div>
           </div>
@@ -176,6 +176,9 @@ export default {
       this.axios.get(`/${this.examNo}/${this.caseId}/asked`).then((res) => {
         this.askedData = res.data;
         this.askItemData = res.data;
+        res.data.forEach((item) => {
+          console.log(item.typeId);
+        });
       });
     },
     getcoreectasked() {

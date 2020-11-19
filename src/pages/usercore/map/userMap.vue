@@ -3,7 +3,7 @@
     <header>
       <ul>
         <li>
-          <input type="radio" name="map" />
+          <input type="radio" name="map" @click="show = 'myanswer'" />
           <label>我的答案</label>
         </li>
         <li>
@@ -11,7 +11,7 @@
           <label>答案对比</label>
         </li>
         <li>
-          <input type="radio" name="map" />
+          <input type="radio" name="map" @click="show = 'correct'" />
           <label>正确答案</label>
         </li>
       </ul>
@@ -31,23 +31,112 @@
       </ul>
     </header>
     <main>
-      <correct-map></correct-map>
+      <my-map v-show="show == 'myanswer'" :ask="ask"></my-map>
+      <correct-map
+        v-show="show == 'correct'"
+        :ask="ask"
+        :watch="watch"
+        :listen="listen"
+        :press="press"
+        :pulse="pulse"
+      ></correct-map>
     </main>
   </div>
 </template>
 
 <script>
 import correctMap from "./correctMap";
+import myMap from "./myMap";
 export default {
   name: "user-map",
   components: {
     correctMap,
+    myMap,
   },
   data() {
-    return {};
+    return {
+      caseId: "",
+      examNo: "",
+      show: "correct",
+      ask: [],
+      watch: [],
+      listen: [],
+      press: [],
+      pulse: [],
+    };
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.caseId = localStorage.getItem("caseId");
+    this.examNo = localStorage.getItem("examNo");
+    this.getAsk();
+    this.getWatch();
+    this.getListen();
+    this.getPress();
+    this.getPulse();
+  },
+  methods: {
+    getAsk() {
+      this.axios
+        .get(`/meta/ask/module`, {
+          params: {
+            caseId: this.caseId,
+          },
+        })
+        .then((res) => {
+          let asklist = [];
+          for (let i = 0; i < res.data.length; i++) {
+            asklist.push(
+              new Promise((resolve) => {
+                this.axios
+                  .get(`/${this.examNo}/${this.caseId}/correctasked`, {
+                    params: {
+                      typeId: res.data[i].moduleId,
+                    },
+                  })
+                  .then((res) => {
+                    return resolve(res.data);
+                  });
+              })
+            );
+          }
+          Promise.all(asklist).then((res) => {
+            this.ask = [].concat(...res);
+          });
+        });
+    },
+    getWatch() {
+      let watch = [];
+      for (let i = 0; i < 3; i++) {
+        this.axios
+          .get(`/${this.examNo}/${this.caseId}/watched/${i}`)
+          .then((res) => {
+            try {
+              res.data.forEach((item) => {
+                watch.push(item);
+              });
+            } catch (error) {
+              error;
+            }
+          });
+      }
+      this.watch = watch;
+    },
+    getListen() {
+      this.axios.get(`/${this.examNo}/${this.caseId}/listened`).then((res) => {
+        this.listen = res.data;
+      });
+    },
+    getPress() {
+      this.axios.get(`/${this.examNo}/${this.caseId}/press`).then((res) => {
+        this.press = res.data;
+      });
+    },
+    getPulse() {
+      this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
+        this.pulse = res.data;
+      });
+    },
+  },
 };
 </script>
 

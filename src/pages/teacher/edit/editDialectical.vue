@@ -68,7 +68,7 @@
       <div class="scrollbar" v-show="typeId == 3">
         <ul class="main_cont">
           <li style="display: flex" v-if="pulseData.answer">
-            <span style="width: 50px"> 脉诊 </span>
+            <span> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
           </li>
@@ -77,7 +77,7 @@
             :key="index"
             style="display: flex"
           >
-            <span style="width: 50px">
+            <span>
               {{ item.name }}
             </span>
             <p></p>
@@ -216,7 +216,7 @@
               :value="pulseData.id"
               v-model="namePressData"
             />
-            <span style="width: 50px"> 脉诊 </span>
+            <span> 脉诊 </span>
             <p></p>
             {{ pulseData.answer }}
           </li>
@@ -226,7 +226,7 @@
             style="display: flex"
           >
             <input type="checkbox" :value="item.id" v-model="namePressData" />
-            <span style="width: 50px">
+            <span>
               {{ item.name }}
             </span>
             <p></p>
@@ -297,7 +297,7 @@
               :value="item.id"
               v-model="diseaseWatchData"
             />
-            {{ item.name }}
+            <span style="width: 50px"> {{ item.name }}</span>
             <p></p>
             {{ item.answer }}
           </li>
@@ -451,7 +451,7 @@ export default {
     for (let i = 0; i < 3; i++) {
       this.axios.get(`/case/manage/${this.caseId}/watch/${i}`).then((res) => {
         for (let i = 0; i < res.data.list.length; i++) {
-          if (res.data.list[i].answer) {
+          if (res.data.list[i].answer && res.data.list[i].answer != "正常") {
             this.wachData.push(res.data.list[i]);
           }
         }
@@ -530,7 +530,7 @@ export default {
     getListendata() {
       this.axios.get(`/case/manage/${this.caseId}/listen`).then((res) => {
         for (let i = 0; i < res.data.length; i++) {
-          if (res.data[i].answer) {
+          if (res.data[i].answer && res.data[i].answer != "正常") {
             this.listenData.push(res.data[i]);
           }
         }
@@ -559,7 +559,7 @@ export default {
     getPressData() {
       this.axios.get(`/case/manage/${this.caseId}/feel/press`).then((res) => {
         for (let i = 0; i < res.data.list.length; i++) {
-          if (res.data.list[i].answer) {
+          if (res.data.list[i].answer && res.data.list[i].answer != "正常") {
             this.pressData.push(res.data.list[i]);
           }
         }

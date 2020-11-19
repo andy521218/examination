@@ -357,7 +357,7 @@ export default {
                 res.data.forEach((item) => {
                   listen.forEach((ele) => {
                     if (item.id == ele) {
-                      this.listenData.push(ele);
+                      this.listenData.push(item);
                     }
                   });
                 });
