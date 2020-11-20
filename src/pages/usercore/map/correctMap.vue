@@ -16,66 +16,48 @@ export default {
             label: "范再娟",
           },
           {
-            id: "1",
+            id: "1.0",
             label: "问",
           },
           {
-            id: "2",
+            id: "2.0",
             label: "望",
           },
           {
-            id: "3",
+            id: "3.0",
             label: "闻",
           },
           {
-            id: "4",
+            id: "4.0",
             label: "切",
           },
         ],
         edges: [
           {
             source: "0",
-            target: "1",
+            target: "1.0",
           },
           {
             source: "0",
-            target: "2",
+            target: "2.0",
           },
           {
             source: "0",
-            target: "3",
+            target: "3.0",
           },
           {
             source: "0",
-            target: "4",
-          },
-          {
-            source: "2520",
-            target: "44",
-          },
-          {
-            source: "2523",
-            target: "44",
+            target: "4.0",
           },
         ],
       },
       correctmap: "",
       caseId: "",
       examNo: "",
-      // diseaseAsk: [],
       askData: [],
-      // diseaseWatch: [],
       watchData: [],
-      // diseaseListen: [],
       listenData: [],
       feelData: [],
-      // listen: [],
-      // diseasePress: [],
-      // pressData: [],
-      // press: [],
-      // diseasePulse: [],
-      // pulseData: [],
-      // pulse: [],
     };
   },
   mounted() {
@@ -90,7 +72,7 @@ export default {
       },
       layout: {
         type: "dagre",
-        nodeSize: [200, 20],
+        nodeSize: [260, 20],
         rankdir: "LR",
         nodesep: 1,
         ranksep: 5,
@@ -98,7 +80,7 @@ export default {
       // groupByTypes: true,
       animate: true,
       defaultNode: {
-        size: [40, 30],
+        size: [200, 30],
         color: "steelblue",
         type: "rect",
         style: {
@@ -117,13 +99,33 @@ export default {
         },
       },
     });
+    setTimeout(() => {
+      this.correctmap.render();
+      this.correctmap.changeData(this.mapData);
+    }, 2000);
   },
   methods: {
+    gettreat(nameId) {
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/treat/correct`)
+        .then((res) => {
+          console.log(res.data.treatName);
+          console.log(res.data.agentias);
+
+          this.mapData.nodes.push({
+            id: (res.data.agentias[0].id + 100).toString(),
+            label: `${res.data.treatName}`,
+          });
+          this.mapData.edges.psuh({
+            source: nameId.toString(),
+            target: (res.data.agentias[0].id + 100).toString(),
+          });
+        });
+    },
     getcorrect() {
       this.axios
         .get(`/${this.examNo}/${this.caseId}/disease/correct`)
         .then((res) => {
-          console.log(res);
           let name = res.data.diseaseName;
           let nameId = res.data.diseaseNameId;
           let diseaseNameIssues = res.data.diseaseNameIssues;
@@ -147,9 +149,10 @@ export default {
           this.checkWatch(nameId, watch, diseases);
           this.checkListen(nameId, listen, diseases);
           this.checkFeel(nameId, feel, diseases);
+          this.checkEdges(name, nameId, diseaseNameIssues, diseases);
+          this.gettreat(nameId);
         });
     },
-    /*eslint-disable*/
     checkAsk(name, nameId, namelist, diseaselist) {
       let asklist = [namelist.issueIds];
       if (diseaselist.length > 1) {
@@ -157,10 +160,6 @@ export default {
           ele.issues.forEach((item) => {
             if (item.stageId == "1") {
               asklist.push(item.issueIds);
-              this.mapData.nodes.push({
-                id: nameId.toString(),
-                label: name.toString(),
-              });
             }
           });
         });
@@ -176,38 +175,11 @@ export default {
               label: `问:${ele.question} 答:${ele.answer}`,
             };
             let edges = {
-              source: "1",
+              source: "1.0",
               target: item.toString(),
             };
             this.mapData.nodes.push(nodes);
             this.mapData.edges.push(edges);
-          }
-        });
-      });
-      //问诊连线病名
-      namelist.issueIds.forEach((ele) => {
-        let edges = {
-          source: ele.toString(),
-          target: nameId.toString(),
-        };
-        this.mapData.edges.push(edges);
-      });
-      // 问诊连线各项病症
-      diseaselist.forEach((ele) => {
-        let nodes = {
-          id: ele.id.toString(),
-          label: ele.name.toString(),
-        };
-        this.mapData.nodes.push(nodes);
-        ele.issues.forEach((item) => {
-          if (item.stageId == "1") {
-            item.issueIds.forEach((e) => {
-              let edges = {
-                source: e.toString(),
-                target: ele.id.toString(),
-              };
-              this.mapData.edges.push(edges);
-            });
           }
         });
       });
@@ -233,33 +205,11 @@ export default {
               label: `${item.name}--${item.correctAnswer}`,
             };
             let edges = {
-              source: "2",
+              source: "2.0",
               target: ele.toString(),
             };
             this.mapData.nodes.push(nodes);
             this.mapData.edges.push(edges);
-          }
-        });
-      });
-      // 望诊各项>=病名
-      watch.issueIds.forEach((ele) => {
-        let edges = {
-          source: ele.toString(),
-          target: nameId.toString(),
-        };
-        this.mapData.edges.push(edges);
-      });
-      //望诊各项>=病症
-      disease.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          if (item.stageId == "1") {
-            item.issueIds.forEach((e) => {
-              let edges = {
-                source: e.toString(),
-                target: ele.id.toString(),
-              };
-              this.mapData.edges.push(edges);
-            });
           }
         });
       });
@@ -271,11 +221,6 @@ export default {
           if (item.stageId == "3") {
             item.issueIds.forEach((e) => {
               listenList.push(e);
-              let edges = {
-                source: e.toString(),
-                target: ele.id.toString(),
-              };
-              this.mapData.edges.push(edges);
             });
           }
         });
@@ -289,20 +234,13 @@ export default {
               label: `${item.name}--${item.correctAnswer}`,
             };
             let edges = {
-              source: "3",
+              source: "3.0",
               target: ele.toString(),
             };
             this.mapData.nodes.push(nodes);
             this.mapData.edges.push(edges);
           }
         });
-      });
-      listen.issueIds.forEach((ele) => {
-        let edges = {
-          source: ele.toString(),
-          target: nameId.toString(),
-        };
-        this.mapData.edges.push(edges);
       });
     },
     checkFeel(nameId, feel, disease) {
@@ -312,11 +250,6 @@ export default {
           if (item.stageId == "4") {
             item.issueIds.forEach((e) => {
               feelList.push(e);
-              let edges = {
-                source: ele.id.toString(),
-                target: e.toString(),
-              };
-              this.mapData.edges.push(edges);
             });
           }
         });
@@ -331,7 +264,7 @@ export default {
               label: `${item.name ? item.name : "切诊"}--${item.correctAnswer}`,
             };
             let edges = {
-              source: "4",
+              source: "4.0",
               target: ele.toString(),
             };
             this.mapData.edges.push(edges);
@@ -339,15 +272,37 @@ export default {
           }
         });
       });
-      feel.issueIds.forEach((ele) => {
-        let edges = {
-          source: nameId.toString(),
-          target: ele.toString(),
-        };
-        this.mapData.edges.push(edges);
+    },
+    checkEdges(name, nameId, diseaseNameIssues, diseases) {
+      //添加病名
+      this.mapData.nodes.push({
+        id: nameId.toString(),
+        label: name.toString(),
       });
-      this.correctmap.render();
-      this.correctmap.changeData(this.mapData);
+      //添加病症
+      diseases.forEach((ele) => {
+        this.mapData.nodes.push({
+          id: ele.id.toString(),
+          label: ele.name.toString(),
+        });
+        ele.issues.forEach((item) => {
+          item.issueIds.forEach((e) => {
+            this.mapData.edges.push({
+              source: e.toString(),
+              target: ele.id.toString(),
+            });
+          });
+        });
+      });
+      //四诊=>病名
+      diseaseNameIssues.forEach((ele) => {
+        ele.issueIds.forEach((item) => {
+          this.mapData.edges.push({
+            source: item.toString(),
+            target: nameId.toString(),
+          });
+        });
+      });
     },
   },
   watch: {

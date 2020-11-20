@@ -199,9 +199,8 @@
             diseasePulse.answer
           }}</span>
           <span style="width: 240px; text-align: center" class="options">
-            <i class="right" v-show="diseasePulse.correct"></i>
-            <i class="error" v-show="!diseasePulse.correct"></i
-          ></span>
+            <i class="right"></i>
+          </span>
         </li>
         <li v-for="(item, index) in diseaseFeel" :key="index">
           <span style="width: 561px; text-align: center">{{ item.name }}</span>
