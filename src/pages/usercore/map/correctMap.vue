@@ -49,6 +49,14 @@ export default {
             source: "0",
             target: "4",
           },
+          {
+            source: "2520",
+            target: "44",
+          },
+          {
+            source: "2523",
+            target: "44",
+          },
         ],
       },
       correctmap: "",
@@ -59,7 +67,8 @@ export default {
       // diseaseWatch: [],
       watchData: [],
       // diseaseListen: [],
-      // listenData: [],
+      listenData: [],
+      feelData: [],
       // listen: [],
       // diseasePress: [],
       // pressData: [],
@@ -74,19 +83,19 @@ export default {
     this.examNo = localStorage.getItem("examNo");
     this.correctmap = new G6.Graph({
       container: "correct",
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: 1500,
+      height: 700,
       modes: {
         default: ["drag-canvas", "drag-node"],
       },
       layout: {
         type: "dagre",
-        nodeSize: [40, 20],
-        align: "DL",
+        nodeSize: [200, 20],
         rankdir: "LR",
-        nodesep: 5,
-        ranksep: 30,
+        nodesep: 1,
+        ranksep: 5,
       },
+      // groupByTypes: true,
       animate: true,
       defaultNode: {
         size: [40, 30],
@@ -110,7 +119,6 @@ export default {
     });
   },
   methods: {
-    /*eslint-disable*/
     getcorrect() {
       this.axios
         .get(`/${this.examNo}/${this.caseId}/disease/correct`)
@@ -137,8 +145,11 @@ export default {
           });
           this.checkAsk(name, nameId, ask, diseases);
           this.checkWatch(nameId, watch, diseases);
+          this.checkListen(nameId, listen, diseases);
+          this.checkFeel(nameId, feel, diseases);
         });
     },
+    /*eslint-disable*/
     checkAsk(name, nameId, namelist, diseaselist) {
       let asklist = [namelist.issueIds];
       if (diseaselist.length > 1) {
@@ -157,7 +168,7 @@ export default {
       asklist = [].concat(...asklist);
       asklist = new Set(asklist);
       // 获取 病名 各项病症 问诊
-      this.askData.forEach((ele, index) => {
+      this.askData.forEach((ele) => {
         asklist.forEach((item) => {
           if (item == ele.id) {
             let nodes = {
@@ -187,6 +198,7 @@ export default {
           id: ele.id.toString(),
           label: ele.name.toString(),
         };
+        this.mapData.nodes.push(nodes);
         ele.issues.forEach((item) => {
           if (item.stageId == "1") {
             item.issueIds.forEach((e) => {
@@ -198,12 +210,11 @@ export default {
             });
           }
         });
-        this.mapData.nodes.push(nodes);
       });
     },
     checkWatch(nameId, watch, disease) {
       //获取望诊各项
-      let watchList = watch.issueIds;
+      let watchList = JSON.parse(JSON.stringify(watch.issueIds));
       disease.forEach((ele) => {
         ele.issues.forEach((item) => {
           if (item.stageId == "2") {
@@ -213,20 +224,130 @@ export default {
       });
       watchList = [].concat(...watchList);
       watchList = new Set(watchList);
-
       watchList.forEach((ele) => {
         this.watchData.forEach((item) => {
           if (ele == item.id) {
+            //望诊>=望诊各项
+            let nodes = {
+              id: `${ele}`,
+              label: `${item.name}--${item.correctAnswer}`,
+            };
+            let edges = {
+              source: "2",
+              target: ele.toString(),
+            };
+            this.mapData.nodes.push(nodes);
+            this.mapData.edges.push(edges);
+          }
+        });
+      });
+      // 望诊各项>=病名
+      watch.issueIds.forEach((ele) => {
+        let edges = {
+          source: ele.toString(),
+          target: nameId.toString(),
+        };
+        this.mapData.edges.push(edges);
+      });
+      //望诊各项>=病症
+      disease.forEach((ele) => {
+        ele.issues.forEach((item) => {
+          if (item.stageId == "1") {
+            item.issueIds.forEach((e) => {
+              let edges = {
+                source: e.toString(),
+                target: ele.id.toString(),
+              };
+              this.mapData.edges.push(edges);
+            });
+          }
+        });
+      });
+    },
+    checkListen(nameId, listen, disease) {
+      let listenList = JSON.parse(JSON.stringify(listen.issueIds));
+      disease.forEach((ele) => {
+        ele.issues.forEach((item) => {
+          if (item.stageId == "3") {
+            item.issueIds.forEach((e) => {
+              listenList.push(e);
+              let edges = {
+                source: e.toString(),
+                target: ele.id.toString(),
+              };
+              this.mapData.edges.push(edges);
+            });
+          }
+        });
+      });
+      listenList = new Set(listenList);
+      listenList.forEach((ele) => {
+        this.listenData.forEach((item) => {
+          if (item.id == ele) {
+            let nodes = {
+              id: `${ele}`,
+              label: `${item.name}--${item.correctAnswer}`,
+            };
+            let edges = {
+              source: "3",
+              target: ele.toString(),
+            };
+            this.mapData.nodes.push(nodes);
+            this.mapData.edges.push(edges);
+          }
+        });
+      });
+      listen.issueIds.forEach((ele) => {
+        let edges = {
+          source: ele.toString(),
+          target: nameId.toString(),
+        };
+        this.mapData.edges.push(edges);
+      });
+    },
+    checkFeel(nameId, feel, disease) {
+      let feelList = JSON.parse(JSON.stringify(feel.issueIds));
+      disease.forEach((ele) => {
+        ele.issues.forEach((item) => {
+          if (item.stageId == "4") {
+            item.issueIds.forEach((e) => {
+              feelList.push(e);
+              let edges = {
+                source: ele.id.toString(),
+                target: e.toString(),
+              };
+              this.mapData.edges.push(edges);
+            });
+          }
+        });
+      });
+      feelList = new Set(feelList);
+      this.feelData = [].concat(...this.feelData);
+      feelList.forEach((ele) => {
+        this.feelData.forEach((item) => {
+          if (ele == item.id) {
             let nodes = {
               id: ele.toString(),
-              label: `${item.name}--${item.answer}`,
+              label: `${item.name ? item.name : "切诊"}--${item.correctAnswer}`,
             };
+            let edges = {
+              source: "4",
+              target: ele.toString(),
+            };
+            this.mapData.edges.push(edges);
             this.mapData.nodes.push(nodes);
           }
         });
-        this.correctmap.render();
-        this.correctmap.changeData(this.mapData);
       });
+      feel.issueIds.forEach((ele) => {
+        let edges = {
+          source: nameId.toString(),
+          target: ele.toString(),
+        };
+        this.mapData.edges.push(edges);
+      });
+      this.correctmap.render();
+      this.correctmap.changeData(this.mapData);
     },
   },
   watch: {
@@ -236,6 +357,15 @@ export default {
     },
     watch: function () {
       this.watchData = this.watch;
+    },
+    listen: function () {
+      this.listenData = this.listen;
+    },
+    press: function () {
+      this.feelData.push(this.press);
+    },
+    pulse: function () {
+      this.feelData.push(this.pulse);
     },
   },
 };

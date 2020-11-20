@@ -115,10 +115,6 @@ export default {
         let showlen = showData.length;
         let correctData = this.trearCorrectData[0].druggeries;
         let correctlen = correctData.length;
-        if (showlen == correctlen) {
-          this.showData = showData;
-          return;
-        }
         if (showlen > correctlen) {
           if (!this.agentiaData[0].agentiaCorrect) {
             correctData.forEach((item, index) => {
@@ -131,7 +127,7 @@ export default {
         } else {
           if (!this.agentiaData[0].agentiaCorrect) {
             showData.forEach((item, index) => {
-              correctData[index].druggeryName=item.druggeryName
+              correctData[index].druggeryName = item.druggeryName;
             });
             this.showData = correctData;
           } else {

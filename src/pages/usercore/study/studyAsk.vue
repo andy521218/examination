@@ -176,9 +176,6 @@ export default {
       this.axios.get(`/${this.examNo}/${this.caseId}/asked`).then((res) => {
         this.askedData = res.data;
         this.askItemData = res.data;
-        res.data.forEach((item) => {
-          console.log(item.typeId);
-        });
       });
     },
     getcoreectasked() {
