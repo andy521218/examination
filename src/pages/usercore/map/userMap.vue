@@ -178,6 +178,11 @@ export default {
   main {
     width: 100%;
     height: 710px;
+    div {
+      width: 1420px;
+      height: 700px;
+      margin: 0 auto;
+    }
   }
 }
 </style>

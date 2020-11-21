@@ -1,5 +1,5 @@
 <template>
-  <div id="correct"></div>
+  <div id="correct" ref="correct"></div>
 </template>
 
 <script>
@@ -18,18 +18,22 @@ export default {
           {
             id: "1.0",
             label: "问",
+            size: [25, 30],
           },
           {
             id: "2.0",
             label: "望",
+            size: [25, 30],
           },
           {
             id: "3.0",
             label: "闻",
+            size: [25, 30],
           },
           {
             id: "4.0",
             label: "切",
+            size: [25, 30],
           },
         ],
         edges: [
@@ -61,38 +65,57 @@ export default {
     };
   },
   mounted() {
+    /*eslint-disable*/
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    let max = 100;
+    let correct = document.getElementById("correct");
+    window.addEventListener("mousewheel", (e) => {
+      if (e.wheelDelta > 0) {
+        // if (max == 100) {
+        //   return;
+        // }
+        max += 10;
+      } else {
+        if (max == 30) {
+          return;
+        }
+        max += -10;
+      }
+      correct.childNodes[0].style.height = (700 * max) / 100 + "px";
+      correct.childNodes[0].style.width = (1400 * max) / 100 + "px";
+    });
     this.correctmap = new G6.Graph({
       container: "correct",
-      width: 1500,
+      width: 1420,
       height: 700,
       modes: {
         default: ["drag-canvas", "drag-node"],
       },
       layout: {
         type: "dagre",
-        // size: [200, 200],
         rankdir: "LR",
         nodesep: 1,
-        // ranksep: 50,
-        width: 200,
+        ranksep: 50,
       },
 
-      // groupByTypes: true,
-      // animate: true,
       defaultNode: {
+        labelCfg: {
+          style: {
+            fill: "#fff",
+          },
+        },
         style: {
-          fill: "green",
-          stroke: "red",
-          lineWidth: 5,
-          radius: 10,
+          fill: "rgb(5,60,118)",
+          stroke: "#097ca8 ",
+          lineWidth: 1,
+          radius: 5,
         },
         type: "rect",
       },
       defaultEdge: {
         size: 1,
-        // color: "#e2e2e2",
+        color: "rgb(5,60,118)",
         style: {
           endArrow: {
             path: "M 4,0 L -4,-4 L -4,4 Z",
@@ -107,7 +130,6 @@ export default {
     }, 4000);
   },
   methods: {
-    /*eslint-disable*/
     getcorrect() {
       this.axios
         .get(`/${this.examNo}/${this.caseId}/disease/correct`)
@@ -184,9 +206,11 @@ export default {
       this.askData.forEach((ele) => {
         asklist.forEach((item) => {
           if (item == ele.id) {
+            let width = ele.question.length + ele.answer.length;
             let nodes = {
               id: item.toString(),
               label: `问:${ele.question} 答:${ele.answer}`,
+              size: [(width + 3) * 13, 30],
             };
             let edges = {
               source: "1.0",
@@ -339,3 +363,15 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+#correct {
+  position: relative;
+  canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+</style>
