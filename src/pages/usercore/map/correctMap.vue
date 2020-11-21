@@ -72,25 +72,27 @@ export default {
       },
       layout: {
         type: "dagre",
-        nodeSize: [260, 20],
+        // size: [200, 200],
         rankdir: "LR",
         nodesep: 1,
-        ranksep: 5,
+        // ranksep: 50,
+        width: 200,
       },
+
       // groupByTypes: true,
-      animate: true,
+      // animate: true,
       defaultNode: {
-        size: [200, 30],
-        color: "steelblue",
-        type: "rect",
         style: {
-          lineWidth: 2,
-          fill: "#fff",
+          fill: "green",
+          stroke: "red",
+          lineWidth: 5,
+          radius: 10,
         },
+        type: "rect",
       },
       defaultEdge: {
         size: 1,
-        color: "#e2e2e2",
+        // color: "#e2e2e2",
         style: {
           endArrow: {
             path: "M 4,0 L -4,-4 L -4,4 Z",
@@ -102,26 +104,10 @@ export default {
     setTimeout(() => {
       this.correctmap.render();
       this.correctmap.changeData(this.mapData);
-    }, 2000);
+    }, 4000);
   },
   methods: {
-    gettreat(nameId) {
-      this.axios
-        .get(`/${this.examNo}/${this.caseId}/treat/correct`)
-        .then((res) => {
-          console.log(res.data.treatName);
-          console.log(res.data.agentias);
-
-          this.mapData.nodes.push({
-            id: (res.data.agentias[0].id + 100).toString(),
-            label: `${res.data.treatName}`,
-          });
-          this.mapData.edges.psuh({
-            source: nameId.toString(),
-            target: (res.data.agentias[0].id + 100).toString(),
-          });
-        });
-    },
+    /*eslint-disable*/
     getcorrect() {
       this.axios
         .get(`/${this.examNo}/${this.caseId}/disease/correct`)
@@ -145,12 +131,40 @@ export default {
               feel = ele;
             }
           });
-          this.checkAsk(name, nameId, ask, diseases);
-          this.checkWatch(nameId, watch, diseases);
-          this.checkListen(nameId, listen, diseases);
-          this.checkFeel(nameId, feel, diseases);
-          this.checkEdges(name, nameId, diseaseNameIssues, diseases);
-          this.gettreat(nameId);
+          this.checkAsk(name, nameId + 0.5, ask, diseases);
+          this.checkWatch(nameId + 0.5, watch, diseases);
+          this.checkListen(nameId + 0.5, listen, diseases);
+          this.checkFeel(nameId + 0.5, feel, diseases);
+          this.checkEdges(name, nameId + 0.5, diseaseNameIssues, diseases);
+          this.gettreat(nameId + 0.5, diseases);
+        });
+    },
+    gettreat(nameId, diseases) {
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/treat/correct`)
+        .then((res) => {
+          let agentias = res.data.agentias;
+          let id = res.data.agentias[0].id + 0.5;
+          let treat = [];
+          agentias[0].druggeries.forEach((ele, index) => {
+            treat.push(ele.name);
+            if (index == agentias[0].druggeries.length - 1) {
+              this.mapData.nodes.push({
+                id: id.toString(),
+                label: `${res.data.treatName + agentias[0].name + treat}`,
+              });
+              diseases.forEach((ele) => {
+                this.mapData.edges.push({
+                  source: (ele.id + 0.5).toString(),
+                  target: id.toString(),
+                });
+              });
+              this.mapData.edges.push({
+                source: nameId.toString(),
+                target: id.toString(),
+              });
+            }
+          });
         });
     },
     checkAsk(name, nameId, namelist, diseaselist) {
@@ -282,14 +296,14 @@ export default {
       //添加病症
       diseases.forEach((ele) => {
         this.mapData.nodes.push({
-          id: ele.id.toString(),
+          id: (ele.id + 0.5).toString(),
           label: ele.name.toString(),
         });
         ele.issues.forEach((item) => {
           item.issueIds.forEach((e) => {
             this.mapData.edges.push({
               source: e.toString(),
-              target: ele.id.toString(),
+              target: (ele.id + 0.5).toString(),
             });
           });
         });
