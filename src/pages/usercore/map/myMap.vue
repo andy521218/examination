@@ -7,200 +7,112 @@ import G6 from "@antv/g6";
 export default {
   name: "my-map",
   mounted() {
-    var data = {
+    const data = {
       nodes: [
         {
-          id: "0",
-          label: "马月梅",
+          id: "node6",
+          groupId: "group3",
+          label: "rect",
+          x: 100,
+          y: 300,
         },
         {
-          id: "1",
-          label: "问",
+          id: "node1",
+          label: "fck",
+          groupId: "group1",
+          x: 100,
+          y: 100,
         },
         {
-          id: "2",
-          label: "望",
+          id: "node9",
+          label: "noGroup1",
+          groupId: "p1",
+          x: 300,
+          y: 210,
         },
         {
-          id: "3",
-          label: "闻",
+          id: "node2",
+          label: "node2",
+          groupId: "group1",
+          x: 150,
+          y: 200,
         },
         {
-          id: "4",
-          label: "切",
+          id: "node3",
+          label: "node3",
+          groupId: "group2",
+          x: 300,
+          y: 100,
         },
         {
-          id: "5",
-          label: "5",
+          id: "node7",
+          groupId: "p1",
+          label: "node7-p1",
+          x: 200,
+          y: 200,
         },
         {
-          id: "6",
-          label: "6",
-        },
-        {
-          id: "7",
-          label: "7",
-        },
-        {
-          id: "8",
-          label: "8",
-        },
-        {
-          id: "9",
-          label: "9",
-        },
-        {
-          id: "10",
-          label: "10",
-        },
-        {
-          id: "11",
-          label: "11",
-        },
-        {
-          id: "12",
-          label: "12",
-        },
-        {
-          id: "13",
-          label: "病名",
-        },
-        {
-          id: "14",
-          label: "病症1",
-        },
-        {
-          id: "15",
-          label: "病症2",
+          id: "node10",
+          label: "noGroup",
+          groupId: "p2",
+          x: 300,
+          y: 210,
         },
       ],
       edges: [
         {
-          source: "0",
-          target: "1",
+          source: "node1",
+          target: "node2",
         },
         {
-          source: "0",
-          target: "2",
-        },
-        {
-          source: "0",
-          target: "3",
-        },
-        {
-          source: "0",
-          target: "4",
-        },
-        {
-          source: "1",
-          target: "5",
-        },
-        {
-          source: "1",
-          target: "6",
-        },
-        {
-          source: "1",
-          target: "7",
-        },
-        {
-          source: "1",
-          target: "8",
-        },
-        {
-          source: "1",
-          target: "9",
-        },
-        {
-          source: "1",
-          target: "10",
-        },
-        {
-          source: "1",
-          target: "11",
-        },
-        {
-          source: "1",
-          target: "12",
-        },
-        {
-          source: "5",
-          target: "13",
-        },
-        {
-          source: "11",
-          target: "13",
-        },
-        {
-          source: "12",
-          target: "13",
-        },
-        {
-          source: "6",
-          target: "14",
-        },
-        {
-          source: "8",
-          target: "14",
-        },
-        {
-          source: "10",
-          target: "14",
-        },
-        {
-          source: "5",
-          target: "15",
-        },
-        {
-          source: "7",
-          target: "15",
-        },
-        {
-          source: "9",
-          target: "15",
-        },
-        {
-          source: "6",
-          target: "15",
+          source: "node2",
+          target: "node3",
         },
       ],
-    };
-    var graph = new G6.Graph({
-      container: "mountNode",
-      width: window.innerWidth,
-      height: window.innerHeight,
-      modes: {
-        default: ["drag-canvas", "drag-node"],
-      },
-      layout: {
-        type: "dagre",
-        nodeSize: [40, 20],
-        align: "DL",
-        rankdir: "LR",
-        nodesep: 5,
-        ranksep: 30,
-      },
-      animate: true,
-      defaultNode: {
-        size: [40, 20],
-        color: "steelblue",
-        type: "rect",
-        style: {
-          lineWidth: 2,
-          fill: "#fff",
+      groups: [
+        {
+          id: "group1",
+          title: {
+            text: "第一个分组",
+            stroke: "#444",
+            offsetX: -30,
+            offsetY: 30,
+          },
+          parentId: "p1",
         },
+        // {
+        //   id: "group2",
+        //   parentId: "p1",
+        // },
+        // {
+        //   id: "group3",
+        //   parentId: "p2",
+        // },
+        // {
+        //   id: "p1",
+        // },
+        // {
+        //   id: "p2",
+        // },
+      ],
+    };
+
+    const graph = new G6.Graph({
+      container: "mountNode",
+      width: 800,
+      height: 600,
+      pixelRatio: 2,
+      modes: {
+        default: ["drag-canvas"],
+      },
+      defaultNode: {
+        // shape: "circleNode",
       },
       defaultEdge: {
-        size: 1,
-        color: "#e2e2e2",
-        style: {
-          endArrow: {
-            path: "M 4,0 L -4,-4 L -4,4 Z",
-            d: 4,
-          },
-        },
+        color: "#bae7ff",
       },
     });
+
     graph.data(data);
     graph.render();
   },

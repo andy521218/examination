@@ -65,32 +65,14 @@ export default {
     };
   },
   mounted() {
-    /*eslint-disable*/
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
-    let max = 100;
-    let correct = document.getElementById("correct");
-    window.addEventListener("mousewheel", (e) => {
-      if (e.wheelDelta > 0) {
-        // if (max == 100) {
-        //   return;
-        // }
-        max += 10;
-      } else {
-        if (max == 30) {
-          return;
-        }
-        max += -10;
-      }
-      correct.childNodes[0].style.height = (700 * max) / 100 + "px";
-      correct.childNodes[0].style.width = (1400 * max) / 100 + "px";
-    });
     this.correctmap = new G6.Graph({
       container: "correct",
       width: 1420,
       height: 700,
       modes: {
-        default: ["drag-canvas", "drag-node"],
+        default: ["drag-canvas", "drag-node", "zoom-canvas"],
       },
       layout: {
         type: "dagre",
@@ -124,10 +106,6 @@ export default {
         },
       },
     });
-    setTimeout(() => {
-      this.correctmap.render();
-      this.correctmap.changeData(this.mapData);
-    }, 4000);
   },
   methods: {
     getcorrect() {
@@ -187,6 +165,8 @@ export default {
               });
             }
           });
+          this.correctmap.render();
+          this.correctmap.changeData(this.mapData);
         });
     },
     checkAsk(name, nameId, namelist, diseaselist) {
@@ -366,12 +346,12 @@ export default {
 
 <style lang="scss">
 #correct {
-  position: relative;
-  canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+  // position: relative;
+  // canvas {
+  //   position: absolute;
+  //   top: 50%;
+  //   left: 50%;
+  //   transform: translate(-50%, -50%);
+  // }
 }
 </style>
