@@ -151,7 +151,13 @@ export default {
             if (index == agentias[0].druggeries.length - 1) {
               this.mapData.nodes.push({
                 id: id.toString(),
-                label: `${res.data.treatName + agentias[0].name + treat}`,
+                label: [
+                  `治则治法: ${res.data.treatName}`,
+                  `遣方用药: ${agentias[0].name}`,
+                  treat,
+                ],
+                size: [300, 90],
+                shape: "multipleLabelsNode",
               });
               diseases.forEach((ele) => {
                 this.mapData.edges.push({
@@ -165,8 +171,61 @@ export default {
               });
             }
           });
+          G6.registerNode(
+            "multipleLabelsNode",
+            {
+              // 绘制节点
+              draw: function draw(cfg, group) {
+                var shape = this.drawShape(cfg, group);
+                if (cfg.label && cfg.label.length) {
+                  this.drawLabel(cfg, group);
+                }
+                return shape;
+              },
+              // 绘制label
+              drawLabel: function drawLabel(cfg, group) {
+               
+              
+                // const height = size[1];
+                var label = cfg.label;
+                // 绘制第一个label
+
+                group.addShape("text", {
+                  attrs: {
+                    text: label[0] || "",
+                    x: -150,
+                    y: -20,
+                    fill: "rgb(255,255,255)",
+                 
+                  },
+                });
+                if (label.length > 1) {
+                  // 绘制第二个label
+                  group.addShape("text", {
+                    attrs: {
+                      text: label[1] || "",
+                      x: -150,
+                      y: 10,
+                     fill: "rgb(255,255,255)",      
+                    },
+                  });
+                }
+                 group.addShape("text", {
+                    attrs: {
+                      text: label[2] || "",
+                      x: -150,
+                      y:40,
+                     fill: "rgb(255,255,255)",      
+                    },
+                  });
+              },
+            },
+            "rect"
+          );
+          this.correctmap.data(this.mapData);
+          //  this.correctmap.changeData(this.mapData);
           this.correctmap.render();
-          this.correctmap.changeData(this.mapData);
+          // this.correctmap.changeData(this.mapData);
         });
     },
     checkAsk(name, nameId, namelist, diseaselist) {
