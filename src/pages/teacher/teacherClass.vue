@@ -1,5 +1,6 @@
 <template>
   <div class="teacher_class">
+    <div class="main_mask" v-show="editClass"></div>
     <edit-class
       v-if="editClass"
       :specialtyData="specialtyData"

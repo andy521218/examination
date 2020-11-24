@@ -121,6 +121,7 @@ export default {
     close() {
       this.$parent.upData = {};
       this.$parent.tips = true;
+      this.$parent.mask = false;
       this.$parent.editStudentShow = false;
     },
     checkavatar() {

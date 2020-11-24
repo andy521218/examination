@@ -111,8 +111,6 @@ export default {
   },
   methods: {
     checkAnswer(correct) {
-      // console.log(this.disease);
-      // console.log(this.diseasename);
       //问诊
       let ask = [],
         diseaseask = [],
@@ -154,10 +152,46 @@ export default {
         }
       });
       //问诊
-      let askList = JSON.parse(JSON.stringify(ask));
-      askList.push(diseaseask);
-      askList = [].concat(...askList);
-      console.log(askList);
+      let askList = [];
+      ask.forEach((ele) => {
+        ele.forEach((item) => {
+          askList.push(item.issueId);
+        });
+      });
+      diseaseask.forEach((ele) => {
+        askList.push(ele.issueId);
+      });
+      askList = new Set(askList);
+      this.askData.forEach((ele) => {
+        askList.forEach((item) => {
+          if (ele.id == item) {
+            let width = ele.question.length + ele.answer.length;
+            this.mapData.nodes.push({
+              id: ele.id.toString(),
+              label: `问: ${ele.question} 答: ${ele.answer}`,
+              size: [(width + 4) * 13, 30],
+              // shape: "multipleLabelsNode",
+              // name: "ask",
+            });
+          }
+        });
+      });
+
+      //病名 及 症候
+      this.mapData.nodes.push({
+        id: "0.4",
+        label: this.diseasename.answer.toString(),
+        correct: this.diseasename.correct,
+      });
+      this.disease.forEach((ele) => {
+        this.mapData.nodes.push({
+          id: (ele.id + 0.5).toString(),
+          label: ele.answer.toString(),
+          correct: ele.correct,
+        });
+      });
+      //链接
+
       this.mytmap.data(this.mapData);
       this.mytmap.render();
     },

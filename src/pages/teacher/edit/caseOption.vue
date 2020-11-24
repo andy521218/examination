@@ -47,6 +47,7 @@ export default {
   methods: {
     close() {
       this.$parent.optionShow = false;
+      this.$parent.mask = false;
       this.radioData = "";
     },
     submit() {

@@ -1,5 +1,6 @@
 <template>
   <div class="case_look">
+    <div class="main_mask" v-show="mask" style="height: 730px; width: 87.5%"></div>
     <case-option
       :option="option"
       v-if="optionShow"
@@ -84,6 +85,7 @@ export default {
       option: "",
       watchData: "",
       imgurl: "",
+      mask: false,
     };
   },
   mounted() {
@@ -103,6 +105,7 @@ export default {
     openOption(e) {
       this.option = e;
       this.optionShow = true;
+      this.mask = true;
     },
     importimg() {
       this.imgs = this.$refs.imgs.files[0];
@@ -146,6 +149,7 @@ export default {
           if (res.code == "000000") {
             this.$Message.warning("编辑成功!");
             this.optionShow = false;
+            this.mask = false;
             this.getwatchdata();
           }
         });

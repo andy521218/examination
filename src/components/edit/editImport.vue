@@ -63,6 +63,7 @@ export default {
     },
     close() {
       this.$parent.editload = false;
+      this.$parent.mask = false;
     },
     submit() {
       if (!this.xlsxFile) {
@@ -75,6 +76,7 @@ export default {
         if (res.code == "000000") {
           this.$Message.warning("学生导入成功!");
           this.close();
+          this.$parent.mask = false;
           this.$emit("getData");
         } else {
           this.$Message.error(res.msg);

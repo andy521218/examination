@@ -1,5 +1,6 @@
 <template>
   <div class="case_hear">
+    <div class="main_mask" v-show="optionShow" style="height: 730px; width: 87.5%"></div>
     <case-option
       :option="option"
       v-if="optionShow"

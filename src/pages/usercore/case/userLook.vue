@@ -7,6 +7,7 @@
     ></case-option>
     <div class="case_layout">
       <div class="case_left">
+        <div class="main_mask" v-show="optionShow"></div>
         <case-header></case-header>
         <main>
           <ul class="main_tab">

@@ -1,13 +1,14 @@
 <template>
   <div class="teacher_user">
+     <div class="main_mask" v-show="mask"></div>
     <!-- 学习记录 -->
     <view-records v-if="0"></view-records>
     <!-- switch -->
-    <edit-dele :edit_title="edit_title" v-if="0">
+    <!-- <edit-dele :edit_title="edit_title" v-if="0">
       <template v-slot:edit_p>
         <p>确定将学生状态改为禁用?</p>
       </template>
-    </edit-dele>
+    </edit-dele> -->
     <!-- 编辑 添加 -->
     <edit-user
       :tips="tips"
@@ -49,7 +50,11 @@
 
     <!-- 导入 导出 -->
 
-    <edit-import @getData="getData" v-if="editload"></edit-import>
+    <edit-import
+      @getData="getData"
+      v-if="editload"
+      style="z-index: 9999"
+    ></edit-import>
     <div class="main_header">
       <button class="add" @click="addStudent">添加学生</button>
       <button class="import" style="margin-right: 213px" @click="importstudent">
@@ -140,7 +145,7 @@
 <script>
 import turnPage from "../../components/turnPage";
 import editUser from "../../components/edit/editUser";
-import editDele from "../../components/edit/editDele";
+// import editDele from "../../components/edit/editDele";
 import editImport from "../../components/edit/editImport";
 import viewRecords from "../../components/edit/viewRecords";
 
@@ -164,12 +169,13 @@ export default {
       selected: undefined,
       classRoomIdText: "",
       editload: false,
+      mask: false,
     };
   },
   components: {
     turnPage,
     editUser,
-    editDele,
+    // editDele,
     viewRecords,
     editImport,
   },
@@ -179,9 +185,11 @@ export default {
   },
   methods: {
     addStudent() {
+      this.mask = true;
       this.editStudentShow = true;
     },
     importstudent() {
+      this.mask = true;
       this.editload = true;
     },
     getData() {
@@ -213,6 +221,7 @@ export default {
         });
     },
     edit(e) {
+      this.mask = true;
       this.tips = false;
       this.editStudentShow = true;
       this.upData = e;
@@ -253,6 +262,7 @@ export default {
             this.tips = true;
             this.editStudentShow = false;
             this.$Message.warning(`${msg}成功!`);
+            this.mask = false;
           } else {
             this.$Message.error(res.msg);
           }

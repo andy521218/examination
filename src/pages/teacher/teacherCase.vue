@@ -215,6 +215,7 @@ export default {
     addAssessTrain() {
       if (!this.check) return this.$Message.error("请选择一项案例!");
       this.trainshow = true;
+      this.mask = true;
     },
     addExam() {
       if (!this.radioData.complete)
@@ -223,6 +224,7 @@ export default {
         if (res.code == "000000") {
           this.$Message.warning("设为考核案例成功!");
           this.allShow = false;
+          this.mask = false;
           this.getManage();
         } else {
           this.$Message.error("案例未完成,不可以设置为考核案例!");
@@ -236,6 +238,7 @@ export default {
         if (res.code == "000000") {
           this.$Message.warning("设为训练案例成功!");
           this.trainshow = false;
+          this.mask = false;
           this.getManage();
         } else {
           this.$Message.error("案例未完成,不可以设置为训练案例!");
@@ -269,6 +272,7 @@ export default {
     addAssessment() {
       if (!this.check) return this.$Message.error("请选择一项案例!");
       this.allShow = true;
+      this.mask = true;
     },
     link(item) {
       if (!item.draft) {
