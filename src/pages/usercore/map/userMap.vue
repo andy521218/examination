@@ -3,11 +3,17 @@
     <header>
       <ul>
         <li>
-          <input type="radio" name="map" @click="show = 'myanswer'" />
+          <input
+            type="radio"
+            name="map"
+            v-model="show"
+            value="myanswer"
+            @click="show = 'myanswer'"
+          />
           <label>我的答案</label>
         </li>
         <li>
-          <input type="radio" name="map" />
+          <input type="radio" v-model="show" name="map" />
           <label>答案对比</label>
         </li>
         <li>
@@ -31,7 +37,15 @@
       </ul>
     </header>
     <main>
-      <my-map v-show="show == 'myanswer'" :ask="ask"></my-map>
+      <my-map
+        v-show="show == 'myanswer'"
+        :ask="ask"
+        :watch="watch"
+        :listen="listen"
+        :press="press"
+        :pulse="pulse"
+        :correct="correct"
+      ></my-map>
       <correct-map
         v-show="show == 'correct'"
         :ask="ask"
@@ -39,6 +53,7 @@
         :listen="listen"
         :press="press"
         :pulse="pulse"
+        :correct="correct"
       ></correct-map>
     </main>
   </div>
@@ -57,12 +72,13 @@ export default {
     return {
       caseId: "",
       examNo: "",
-      show: "correct",
+      show: "myanswer",
       ask: [],
       watch: [],
       listen: [],
       press: [],
       pulse: [],
+      correct: "",
     };
   },
   mounted() {
@@ -73,6 +89,7 @@ export default {
     this.getListen();
     this.getPress();
     this.getPulse();
+    this.getcorrect();
   },
   methods: {
     getAsk() {
@@ -135,6 +152,13 @@ export default {
       this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
         this.pulse = res.data;
       });
+    },
+    getcorrect() {
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/disease/correct`)
+        .then((res) => {
+          this.correct = res;
+        });
     },
   },
 };

@@ -1,19 +1,19 @@
 <template>
-  <div id="correct" ref="correct"></div>
+  <div id="correct"></div>
 </template>
 
-<script>
+ <script>
 import G6 from "@antv/g6";
 export default {
   name: "correct-map",
-  props: ["ask", "watch", "listen", "press", "pulse"],
+  props: ["ask", "watch", "listen", "press", "pulse", "correct"],
   data() {
     return {
       mapData: {
         nodes: [
           {
             id: "0",
-            label: "范再娟",
+            label: ["范再娟"],
           },
           {
             id: "1.0",
@@ -78,10 +78,11 @@ export default {
         type: "dagre",
         rankdir: "LR",
         nodesep: 1,
-        ranksep: 50,
+        ranksep: 35,
       },
 
       defaultNode: {
+        size: [110, 30],
         labelCfg: {
           style: {
             fill: "#fff",
@@ -97,47 +98,37 @@ export default {
       },
       defaultEdge: {
         size: 1,
-        color: "rgb(5,60,118)",
-        style: {
-          endArrow: {
-            path: "M 4,0 L -4,-4 L -4,4 Z",
-            d: 4,
-          },
-        },
+        color: "rgb(0,235,255)",
       },
     });
   },
   methods: {
-    getcorrect() {
-      this.axios
-        .get(`/${this.examNo}/${this.caseId}/disease/correct`)
-        .then((res) => {
-          let name = res.data.diseaseName;
-          let nameId = res.data.diseaseNameId;
-          let diseaseNameIssues = res.data.diseaseNameIssues;
-          let diseases = res.data.diseases;
-          let ask, watch, listen, feel;
-          diseaseNameIssues.forEach((ele) => {
-            if (ele.stageId == "1") {
-              ask = ele;
-            }
-            if (ele.stageId == "2") {
-              watch = ele;
-            }
-            if (ele.stageId == "3") {
-              listen = ele;
-            }
-            if (ele.stageId == "4") {
-              feel = ele;
-            }
-          });
-          this.checkAsk(name, nameId + 0.5, ask, diseases);
-          this.checkWatch(nameId + 0.5, watch, diseases);
-          this.checkListen(nameId + 0.5, listen, diseases);
-          this.checkFeel(nameId + 0.5, feel, diseases);
-          this.checkEdges(name, nameId + 0.5, diseaseNameIssues, diseases);
-          this.gettreat(nameId + 0.5, diseases);
-        });
+    getcorrect(res) {
+      let name = res.data.diseaseName;
+      let nameId = res.data.diseaseNameId;
+      let diseaseNameIssues = res.data.diseaseNameIssues;
+      let diseases = res.data.diseases;
+      let ask, watch, listen, feel;
+      diseaseNameIssues.forEach((ele) => {
+        if (ele.stageId == "1") {
+          ask = ele;
+        }
+        if (ele.stageId == "2") {
+          watch = ele;
+        }
+        if (ele.stageId == "3") {
+          listen = ele;
+        }
+        if (ele.stageId == "4") {
+          feel = ele;
+        }
+      });
+      this.checkAsk(name, nameId + 0.5, ask, diseases);
+      this.checkWatch(nameId + 0.5, watch, diseases);
+      this.checkListen(nameId + 0.5, listen, diseases);
+      this.checkFeel(nameId + 0.5, feel, diseases);
+      this.checkEdges(name, nameId + 0.5, diseaseNameIssues, diseases);
+      this.gettreat(nameId + 0.5, diseases);
     },
     gettreat(nameId, diseases) {
       this.axios
@@ -145,20 +136,31 @@ export default {
         .then((res) => {
           let agentias = res.data.agentias;
           let id = res.data.agentias[0].id + 0.5;
-          let treat = [];
+          let treat = ["药物组成: "];
+          let height = 90;
+          let boxY = 32;
           agentias[0].druggeries.forEach((ele, index) => {
             treat.push(ele.name);
             if (index == agentias[0].druggeries.length - 1) {
+              if (treat.length > 7) {
+                treat[7] = treat[7] + "\n";
+                height = 120;
+                boxY = 42;
+              }
               this.mapData.nodes.push({
                 id: id.toString(),
                 label: [
-                  `治则治法: ${res.data.treatName}`,
+                  `治则治法: ${res.data.treatName
+                    .toString()
+                    .replace(/，/g, " ")}`,
                   `遣方用药: ${agentias[0].name}`,
-                  treat,
+                  treat.toString().replace(/,/g, " "),
                 ],
-                size: [300, 90],
+                size: [300, height],
+                name: "treat",
                 shape: "multipleLabelsNode",
               });
+
               diseases.forEach((ele) => {
                 this.mapData.edges.push({
                   source: (ele.id + 0.5).toString(),
@@ -169,63 +171,133 @@ export default {
                 source: nameId.toString(),
                 target: id.toString(),
               });
+              G6.registerNode(
+                "multipleLabelsNode",
+                {
+                  // 绘制节点
+                  draw: function draw(cfg, group) {
+                    var shape = this.drawShape(cfg, group);
+                    if (cfg.label && cfg.label.length) {
+                      this.drawLabel(cfg, group);
+                    }
+                    return shape;
+                  },
+                  // 绘制label
+                  drawLabel: function drawLabel(cfg, group) {
+                    var label = cfg.label;
+                    let block = -76;
+                    if (cfg.name == "treat") {
+                      for (let i = 0; i < 3; i++) {
+                        block += 30;
+                        group.addShape("rect", {
+                          attrs: {
+                            width: 10,
+                            height: 20,
+                            x: -145,
+                            y: block,
+                            fill: "rgb(0,235,255)",
+                          },
+                        });
+                      }
+                      // 绘制第一个label
+                      group.addShape("text", {
+                        attrs: {
+                          text: label[0] || "",
+                          x: -130,
+                          y: -28,
+                          fill: "rgb(255,255,255)",
+                        },
+                      });
+                      if (label.length > 1) {
+                        // 绘制第二个label
+                        group.addShape("text", {
+                          attrs: {
+                            text: label[1] || "",
+                            x: -130,
+                            y: 0,
+                            fill: "rgb(255,255,255)",
+                          },
+                        });
+                      }
+                      group.addShape("text", {
+                        attrs: {
+                          text: label[2] || "",
+                          x: -130,
+                          y: boxY,
+                          fill: "rgb(255,255,255)",
+                        },
+                      });
+                    }
+
+                    if (cfg.name == "ask") {
+                      group.addShape("rect", {
+                        attrs: {
+                          width: 10,
+                          height: 20,
+                          x: -cfg.size[0] / 2 + 5,
+                          y: -12,
+                          fill: "rgb(0,235,255)",
+                        },
+                      });
+                      group.addShape("text", {
+                        attrs: {
+                          text: label[0],
+                          textAlign: "center",
+                          y: 5,
+                          x: 5,
+                          fill: "rgb(255,255,255)",
+                        },
+                      });
+                    }
+
+                    if (cfg.name == "standard") {
+                      group.addShape("rect", {
+                        attrs: {
+                          width: 10,
+                          height: 20,
+                          x: -45,
+                          y: -10,
+                          fill: "rgb(0,235,255)",
+                        },
+                      });
+                      group.addShape("text", {
+                        attrs: {
+                          text: cfg.label,
+                          textAlign: "left",
+                          x: -30,
+                          y: 6,
+                          fill: "rgb(255,255,255)",
+                        },
+                      });
+                    }
+
+                    if (cfg.name == "edges") {
+                      group.addShape("rect", {
+                        attrs: {
+                          width: 10,
+                          height: 20,
+                          x: -25,
+                          y: -10,
+                          fill: "rgb(0,235,255)",
+                        },
+                      });
+                      group.addShape("text", {
+                        attrs: {
+                          text: cfg.label,
+                          x: -10,
+                          y: 6,
+                          fill: "rgb(255,255,255)",
+                        },
+                      });
+                    }
+                  },
+                },
+                "rect"
+              );
             }
           });
-          G6.registerNode(
-            "multipleLabelsNode",
-            {
-              // 绘制节点
-              draw: function draw(cfg, group) {
-                var shape = this.drawShape(cfg, group);
-                if (cfg.label && cfg.label.length) {
-                  this.drawLabel(cfg, group);
-                }
-                return shape;
-              },
-              // 绘制label
-              drawLabel: function drawLabel(cfg, group) {
-               
-              
-                // const height = size[1];
-                var label = cfg.label;
-                // 绘制第一个label
-
-                group.addShape("text", {
-                  attrs: {
-                    text: label[0] || "",
-                    x: -150,
-                    y: -20,
-                    fill: "rgb(255,255,255)",
-                 
-                  },
-                });
-                if (label.length > 1) {
-                  // 绘制第二个label
-                  group.addShape("text", {
-                    attrs: {
-                      text: label[1] || "",
-                      x: -150,
-                      y: 10,
-                     fill: "rgb(255,255,255)",      
-                    },
-                  });
-                }
-                 group.addShape("text", {
-                    attrs: {
-                      text: label[2] || "",
-                      x: -150,
-                      y:40,
-                     fill: "rgb(255,255,255)",      
-                    },
-                  });
-              },
-            },
-            "rect"
-          );
           this.correctmap.data(this.mapData);
-          //  this.correctmap.changeData(this.mapData);
           this.correctmap.render();
-          // this.correctmap.changeData(this.mapData);
         });
     },
     checkAsk(name, nameId, namelist, diseaselist) {
@@ -242,14 +314,18 @@ export default {
       asklist = [].concat(...asklist);
       asklist = new Set(asklist);
       // 获取 病名 各项病症 问诊
+      let blockArr = [];
       this.askData.forEach((ele) => {
         asklist.forEach((item) => {
           if (item == ele.id) {
             let width = ele.question.length + ele.answer.length;
+            blockArr.push(width);
             let nodes = {
               id: item.toString(),
-              label: `问:${ele.question} 答:${ele.answer}`,
-              size: [(width + 3) * 13, 30],
+              label: [`问:${ele.question} 答:${ele.answer}`],
+              size: [(width + 4) * 13, 30],
+              shape: "multipleLabelsNode",
+              name: "ask",
             };
             let edges = {
               source: "1.0",
@@ -280,6 +356,8 @@ export default {
             let nodes = {
               id: `${ele}`,
               label: `${item.name}--${item.correctAnswer}`,
+              shape: "multipleLabelsNode",
+              name: "standard",
             };
             let edges = {
               source: "2.0",
@@ -309,6 +387,8 @@ export default {
             let nodes = {
               id: `${ele}`,
               label: `${item.name}--${item.correctAnswer}`,
+              shape: "multipleLabelsNode",
+              name: "standard",
             };
             let edges = {
               source: "3.0",
@@ -339,6 +419,8 @@ export default {
             let nodes = {
               id: ele.toString(),
               label: `${item.name ? item.name : "切诊"}--${item.correctAnswer}`,
+              shape: "multipleLabelsNode",
+              name: "standard",
             };
             let edges = {
               source: "4.0",
@@ -355,12 +437,18 @@ export default {
       this.mapData.nodes.push({
         id: nameId.toString(),
         label: name.toString(),
+        shape: "multipleLabelsNode",
+        name: "edges",
+        size: [70, 30],
       });
       //添加病症
       diseases.forEach((ele) => {
         this.mapData.nodes.push({
           id: (ele.id + 0.5).toString(),
           label: ele.name.toString(),
+          shape: "multipleLabelsNode",
+          name: "edges",
+          size: [70, 30],
         });
         ele.issues.forEach((item) => {
           item.issueIds.forEach((e) => {
@@ -385,7 +473,7 @@ export default {
   watch: {
     ask: function () {
       this.askData = this.ask;
-      this.getcorrect();
+      this.getcorrect(this.correct);
     },
     watch: function () {
       this.watchData = this.watch;
@@ -402,15 +490,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-#correct {
-  // position: relative;
-  // canvas {
-  //   position: absolute;
-  //   top: 50%;
-  //   left: 50%;
-  //   transform: translate(-50%, -50%);
-  // }
-}
-</style>
