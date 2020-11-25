@@ -6,7 +6,7 @@
 import G6 from "@antv/g6";
 export default {
   name: "my-map",
-  props: ["ask", "watch", "listen", "press", "pulse", "correct"],
+  props: ["ask", "watch", "listen", "press", "pulse"],
   data() {
     return {
       mapData: {
@@ -68,7 +68,6 @@ export default {
       agentia: "",
     };
   },
-  /*eslint-disable*/
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
@@ -111,7 +110,7 @@ export default {
     });
   },
   methods: {
-    checkAnswer(correct) {
+    checkAnswer() {
       //问诊
       let ask = [],
         diseaseask = [],
@@ -160,7 +159,6 @@ export default {
        */
 
       //问诊
-      let askList = [];
       let askindex = 0;
       ask.forEach((ele) => {
         askindex += 0.1;
@@ -371,8 +369,6 @@ export default {
             });
           }
         });
-
-      this.agentia[0].druggeries.forEach((ele) => {});
       //病名 及 症候
       let treatindex = 0;
       this.mapData.nodes.push({

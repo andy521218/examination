@@ -44,7 +44,6 @@
         :listen="listen"
         :press="press"
         :pulse="pulse"
-        :correct="correct"
       ></my-map>
       <correct-map
         v-show="show == 'correct'"

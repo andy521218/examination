@@ -68,7 +68,6 @@ export default {
       agentia: "",
     };
   },
-  /*eslint-disable*/
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
@@ -111,16 +110,30 @@ export default {
     });
   },
   methods: {
+    /*eslint-disable*/
     checkAnswer(correct) {
       //问诊
       let ask = [],
         diseaseask = [],
+        correctask = [],
+        correctnameask = [],
         watch = [],
         diseasewatch = [],
+        correctwatch = [],
+        correctnamewatch = [],
         listen = [],
         diseaselisten = [],
+        correctlisten = [],
+        correctnamelisten = [],
         feel = [],
-        diseasefeel = [];
+        diseasefeel = [],
+        correctfeel = [],
+        correctnamefeel = [],
+        correctData = correct.data,
+        correctname = correctData.diseaseNameIssues,
+        correctdisease = correctData.diseases;
+
+      //我的答案病症
       this.disease.forEach((ele) => {
         ele.issueResults.forEach((item) => {
           if (item.stageId == "1") {
@@ -138,6 +151,24 @@ export default {
         });
       });
 
+      //正确答案病症
+      correctdisease.forEach((ele) => {
+        ele.issues.forEach((item) => {
+          if (item.stageId == "1") {
+            correctask.push(item.issueIds);
+          }
+          if (item.stageId == "2") {
+            correctwatch.push(item.issueIds);
+          }
+          if (item.stageId == "3") {
+            correctlisten.push(item.issueIds);
+          }
+          if (item.stageId == "4") {
+            correctfeel.push(item.issueIds);
+          }
+        });
+      });
+      //我的答案病名
       this.diseasename.issueResults.forEach((ele) => {
         if (ele.stageId == "1") {
           diseaseask = ele.issues;
@@ -152,6 +183,21 @@ export default {
           diseasefeel = ele.issues;
         }
       });
+      // 正确答案 病名
+      correctname.forEach((ele) => {
+        if (ele.stageId == "1") {
+          correctnameask = ele.issueIds;
+        }
+        if (ele.stageId == "2") {
+          correctnamewatch = ele.issueIds;
+        }
+        if (ele.stageId == "3") {
+          correctnamelisten = ele.issueIds;
+        }
+        if (ele.stageId == "4") {
+          correctnamefeel = ele.issueIds;
+        }
+      });
 
       /*防止ID冲突 
       病名各项+0.6    病名0.4
@@ -160,7 +206,6 @@ export default {
        */
 
       //问诊
-      let askList = [];
       let askindex = 0;
       ask.forEach((ele) => {
         askindex += 0.1;
@@ -184,6 +229,13 @@ export default {
             }
           });
         });
+      });
+      //比对问诊=>病症
+
+      correctnameask.forEach((item) => {
+        if (diseaseask.map((a) => a.issueId).indexOf(item) == "-1") {
+          console.log(item);
+        }
       });
       diseaseask.forEach((item) => {
         this.askData.forEach((ele) => {
@@ -372,7 +424,6 @@ export default {
           }
         });
 
-      this.agentia[0].druggeries.forEach((ele) => {});
       //病名 及 症候
       let treatindex = 0;
       this.mapData.nodes.push({
