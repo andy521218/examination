@@ -219,6 +219,7 @@ export default {
                           },
                         });
                       }
+                      //绘制第三个label
                       group.addShape("text", {
                         attrs: {
                           text: label[2] || "",
@@ -276,7 +277,7 @@ export default {
                         attrs: {
                           width: 10,
                           height: 20,
-                          x: -25,
+                          x: -30,
                           y: -10,
                           fill: "rgb(0,235,255)",
                         },
@@ -284,7 +285,7 @@ export default {
                       group.addShape("text", {
                         attrs: {
                           text: cfg.label,
-                          x: -10,
+                          x: -15,
                           y: 6,
                           fill: "rgb(255,255,255)",
                         },
@@ -439,7 +440,7 @@ export default {
         label: name.toString(),
         shape: "multipleLabelsNode",
         name: "edges",
-        size: [70, 30],
+        size: [80, 30],
       });
       //添加病症
       diseases.forEach((ele) => {
@@ -448,7 +449,7 @@ export default {
           label: ele.name.toString(),
           shape: "multipleLabelsNode",
           name: "edges",
-          size: [70, 30],
+          size: [80, 30],
         });
         ele.issues.forEach((item) => {
           item.issueIds.forEach((e) => {

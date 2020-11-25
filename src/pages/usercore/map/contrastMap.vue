@@ -1,11 +1,11 @@
 <template>
-  <div id="mymap"></div>
+  <div id="contrast"></div>
 </template>
 
 <script>
 import G6 from "@antv/g6";
 export default {
-  name: "my-map",
+  name: "contrast-map",
   props: ["ask", "watch", "listen", "press", "pulse", "correct"],
   data() {
     return {
@@ -77,7 +77,7 @@ export default {
     this.gettreat();
     this.getagentia();
     this.mytmap = new G6.Graph({
-      container: "mymap",
+      container: "contrast",
       width: 1420,
       height: 700,
       modes: {

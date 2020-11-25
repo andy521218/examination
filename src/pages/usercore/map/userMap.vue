@@ -13,7 +13,7 @@
           <label>我的答案</label>
         </li>
         <li>
-          <input type="radio" v-model="show" name="map" />
+          <input type="radio" name="map" @click="show = 'contrast'" />
           <label>答案对比</label>
         </li>
         <li>
@@ -55,6 +55,15 @@
         :pulse="pulse"
         :correct="correct"
       ></correct-map>
+      <contrast-map
+        v-show="show == 'contrast'"
+        :ask="ask"
+        :watch="watch"
+        :listen="listen"
+        :press="press"
+        :pulse="pulse"
+        :correct="correct"
+      />
     </main>
   </div>
 </template>
@@ -62,10 +71,12 @@
 <script>
 import correctMap from "./correctMap";
 import myMap from "./myMap";
+import contrastMap from "./contrastMap";
 export default {
   name: "user-map",
   components: {
     correctMap,
+    contrastMap,
     myMap,
   },
   data() {
