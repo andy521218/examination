@@ -11,14 +11,14 @@
             <span class="edit_red">*</span>
             <span class="edit_text">问题:</span>
           </div>
-          <input type="text" class="text_box" v-model="editData.answer" />
+          <input type="text" class="text_box" v-model="editData.question" />
         </li>
         <li>
           <div class="edit_left">
             <span class="edit_red">*</span>
             <span class="edit_text">答案:</span>
           </div>
-          <input type="text" class="text_box" v-model="editData.question" />
+          <input type="text" class="text_box" v-model="editData.answer" />
         </li>
         <li>
           <input type="checkbox" class="checkbox" v-model="editData.correct" />
