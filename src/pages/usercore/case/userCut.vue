@@ -65,7 +65,6 @@
                     style="border: 1px solid rgb(9, 124, 168); border-top: none"
                     v-for="(item, index) in pressItemData"
                     :key="index"
-                    @click="editPress(item)"
                   >
                     <div class="item_cont">
                       <span

@@ -59,7 +59,7 @@
 
       <div class="edit" v-if="drugSee">
         <div class="edit_title">
-          <span class="title">添加常见方剂</span>
+          <span class="title">查看方剂</span>
           <span class="edit_switch" @click="closeDrug()"></span>
         </div>
 
@@ -266,8 +266,12 @@ export default {
     },
     closeDrug() {
       let list = this.$refs.list;
-      for (let i = list.children.length; i > 2; i--) {
-        list.removeChild(list.children[i - 1]);
+      try {
+        for (let i = list.children.length; i > 2; i--) {
+          list.removeChild(list.children[i - 1]);
+        }
+      } catch (error) {
+        error;
       }
       this.prescription = {};
       this.drugSee = false;
@@ -281,7 +285,7 @@ export default {
     },
     seePrescription(e) {
       this.drugSee = true;
-      this.drug = true;
+      // this.drug = true;
       this.prescriptionItemData = e;
     },
     getPrescriptionData() {

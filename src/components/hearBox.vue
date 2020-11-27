@@ -1,6 +1,11 @@
 <template>
   <div class="cont_bg">
-    <edit-hear v-if="show" :hearData="hearData" @getData="getData"></edit-hear>
+    <edit-hear
+      v-if="show"
+      :hearData="hearData"
+      :songId="songId"
+      @getData="getData"
+    ></edit-hear>
     <div class="mask" v-if="show"></div>
     <div class="cont_header">{{ title }}性闻诊数据</div>
     <ul>
@@ -30,7 +35,7 @@
                 ref="song"
               ></audio>
               <span @click="play(i)">播放</span>
-              <span @click="editSong(item)">编辑</span>
+              <span @click="editSong(item, i)">编辑</span>
             </div>
           </div>
         </div>
@@ -53,6 +58,7 @@ export default {
       transformIndex: "-1",
       show: "",
       hearData: {},
+      songId: "",
       showIndex: "1000",
       gender: "",
       data: "",
@@ -82,9 +88,10 @@ export default {
     editResult() {
       this.show = true;
     },
-    editSong(item) {
+    editSong(item, i) {
       this.show = true;
       this.hearData = item;
+      this.songId = i.id;
     },
     play(e) {
       const song = document.getElementById("song");

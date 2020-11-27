@@ -112,7 +112,6 @@ export default {
     });
   },
   methods: {
-    /*eslint-disable*/
     checkAnswer(correct) {
       //问诊
       let ask = [],
@@ -527,10 +526,12 @@ export default {
         });
       });
 
+      /*eslint-disable*/
       //治疗
       let treatArr = [];
       let height = 90;
       let boxY = 32;
+
       let flag = true;
 
       this.agentia[0].druggeries.forEach((ele) => {
@@ -563,16 +564,16 @@ export default {
           });
         }
       });
+      //治疗错误
+
       if (!this.treat.correct || !this.agentia[0].agentiaCorrect || !flag) {
         let treatArr = [];
-        let boxY = 32;
         this.treatcorrect.forEach((ele, index) => {
           treatArr.push(ele.name);
           if (index == this.treatcorrect.length - 1) {
             if (treatArr.length > 7) {
               treatArr[6] = treatArr[6] + "\n";
               height = 120;
-              boxY = 42;
             }
             this.mapData.nodes.push({
               id: "0.8",
@@ -597,6 +598,13 @@ export default {
               });
             });
           }
+        });
+      } else {
+        this.disease.forEach((ele) => {
+          this.mapData.edges.push({
+            source: (ele.id + 0.9).toString(),
+            target: "0.7",
+          });
         });
       }
 
@@ -714,7 +722,7 @@ export default {
         source: "0.4",
         target: "0.7",
       });
-
+      //病症正确与否都需要连接治疗
       this.disease.forEach((ele) => {
         this.mapData.edges.push({
           source: (ele.id + 0.8).toString(),
@@ -850,8 +858,6 @@ export default {
             }
 
             if (cfg.name == "errortreat") {
-              console.log(cfg.label);
-              console.log(cfg.id);
               group.addShape("rect", {
                 attrs: {
                   width: 10,
@@ -871,8 +877,6 @@ export default {
               });
             }
             if (cfg.name == "agentia") {
-              console.log(cfg.label);
-              console.log(cfg.id);
               if (cfg.agentia) {
                 group.addShape("rect", {
                   attrs: {
@@ -963,17 +967,24 @@ export default {
                     fill: "rgb(0,235,255)",
                   },
                 });
-
+                let y = 32;
+                if (cfg.label[2].length > 21) {
+                  y = 42;
+                }
                 //绘制第三个label
                 group.addShape("text", {
                   attrs: {
                     text: cfg.label[2] || "",
                     x: -130,
-                    y: boxY,
+                    y: y,
                     fill: "rgb(255,255,255)",
                   },
                 });
               } else {
+                let y = 32;
+                if (cfg.label[2].length > 21) {
+                  y = 42;
+                }
                 group.addShape("rect", {
                   attrs: {
                     width: 10,
@@ -988,7 +999,7 @@ export default {
                   attrs: {
                     text: cfg.label[2] || "",
                     x: -130,
-                    y: boxY,
+                    y: y,
                     fill: "rgb(255,255,255)",
                   },
                 });
@@ -1063,7 +1074,9 @@ export default {
   watch: {
     ask: function () {
       this.askData = this.ask;
-      this.checkAnswer(this.correct);
+      setTimeout(() => {
+        this.checkAnswer(this.correct);
+      }, 1500);
     },
     watch: function () {
       this.watchData = this.watch;

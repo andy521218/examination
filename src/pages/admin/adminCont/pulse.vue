@@ -106,7 +106,11 @@
               <span class="edit_red">*</span>
               <span class="edit_text">按诊部位:</span>
             </div>
-            <select name id class="select" v-model="diagnosis.name">
+            <select
+              class="select"
+              v-model="diagnosis.name"
+              @change="getText(diagnosis.name)"
+            >
               <option :value="selectdefault">请选择</option>
               <option
                 :value="item"
@@ -190,6 +194,7 @@ export default {
       ],
       imgsData: "",
       imgUrl: "",
+      feelId: "",
       selectdefault: undefined,
     };
   },
@@ -226,23 +231,51 @@ export default {
         this.diagnosisData = res.data;
       });
     },
-    submitDiagnosis() {
-      if (!this.diagnosis.name) return this.$Message.warning("请选择按诊类别");
-      if (!this.diagnosis.options)
-        return this.$Message.warning("请填写按诊结果");
-      this.diagnosis.options = this.diagnosis.options.split(",");
-      this.http.post(`/meta/feel/1`, this.diagnosis).then((res) => {
-        if (res.code == "000000") {
-          this.$Message.warning("添加成功!");
-          setTimeout(() => {
-            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight + 155;
-          }, 300);
-          this.getData1();
-          this.addSwitch();
+    getText(val) {
+      let index = this.itemDown.indexOf(val);
+      if (index > "-1") {
+        if (!this.diagnosisData[index].id) {
+          return;
         } else {
-          this.$Message.error(res.msg);
+          this.diagnosis.options = this.diagnosisData[index].options.toString();
+          this.feelId = this.diagnosisData[index].id;
         }
-      });
+      }
+    },
+    submitDiagnosis() {
+      if (!this.feelId) {
+        if (!this.diagnosis.name)
+          return this.$Message.warning("请选择按诊类别");
+        if (!this.diagnosis.options)
+          return this.$Message.warning("请填写按诊结果");
+        this.diagnosis.options = this.diagnosis.options.split(",");
+        this.http.post(`/meta/feel/1`, this.diagnosis).then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning("添加成功!");
+            setTimeout(() => {
+              this.$refs.scroll.scrollTop =
+                this.$refs.scroll.scrollHeight + 155;
+            }, 300);
+            this.getData1();
+            this.addSwitch();
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+      } else {
+        this.diagnosis.options = this.diagnosis.options.split(",");
+        this.http
+          .put(`/meta/feel/1/${this.feelId}`, this.diagnosis)
+          .then((res) => {
+            if (res.code == "000000") {
+              this.$Message.warning("添加成功!");
+              this.getData1();
+              this.addSwitch();
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+      }
     },
 
     postPulse(methods, url, config) {

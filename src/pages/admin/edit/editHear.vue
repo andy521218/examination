@@ -1,7 +1,11 @@
 <template>
   <div class="edit">
     <div class="edit_title">
-      <span class="title">添加闻诊-{{ hearData.gender ? "女" : "男" }}</span>
+      <span class="title"
+        >{{ hearData.id ? "编辑" : "添加" }}闻诊-{{
+          hearData.gender ? "女" : "男"
+        }}</span
+      >
       <span class="edit_switch" @click="editResult()"></span>
     </div>
     <ul class="edit_class">
@@ -58,7 +62,7 @@
 <script>
 export default {
   name: "edit-hear",
-  props: ["hearData"],
+  props: ["hearData", "songId"],
   data() {
     return {
       fileValue: "",
@@ -134,7 +138,7 @@ export default {
           let url = `http://localhost:8080/api/download/${res.data}`;
           if (res.code == "000000") {
             this.http
-              .put(`/meta/listen/${this.hearData.id}`, {
+              .put(`/meta/listen/${this.songId}`, {
                 gender: this.hearData.gender,
                 name: this.hearData.name,
                 videoUrl: url,
