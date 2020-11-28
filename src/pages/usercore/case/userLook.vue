@@ -91,7 +91,11 @@ export default {
         .get(`/answer/${this.examNo}/${this.caseId}/watch/${this.typeId}`)
         .then((res) => {
           this.watchData = res.data.list;
-          this.imgurl = res.data.url;
+          if (/localhost/.test(res.data.url)) {
+            this.imgurl = res.data.url.replace(/localhost/, "101.132.150.87");
+          } else {
+            this.imgurl = this.$url + res.data.url;
+          }
         });
     },
     openOption(e) {

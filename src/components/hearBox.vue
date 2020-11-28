@@ -95,7 +95,11 @@ export default {
     },
     play(e) {
       const song = document.getElementById("song");
-      song.src = e.videoUrl;
+      if (/localhost/.test(e.videoUrl)) {
+        song.src = e.videoUrl.replace(/localhost/, "101.132.150.87");
+      } else {
+        song.src = this.$url + e.videoUrl;
+      }
       song.play();
     },
   },

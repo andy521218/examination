@@ -1,6 +1,10 @@
 <template>
   <div class="case_cut">
-    <div class="main_mask" style="height: 730px; width: 87.5%" v-show="optionShow"></div>
+    <div
+      class="main_mask"
+      style="height: 730px; width: 87.5%"
+      v-show="optionShow"
+    ></div>
     <case-option
       :option="option"
       v-if="optionShow"
@@ -144,7 +148,11 @@ export default {
       this.allShow = true;
     },
     seeImg(e) {
-      this.imgsUrl = e.picUrl;
+      if (/localhost/.test(e.picUrl)) {
+        this.imgsUrl = e.picUrl.replace(/localhost/, "101.132.150.87");
+      } else {
+        this.imgsUrl = this.$url + e.picUrl;
+      }
       this.imgDesc = e.description;
     },
     editPress(e) {

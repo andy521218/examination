@@ -50,8 +50,8 @@ export default {
   name: "login",
   data() {
     return {
-      user: "admin",
-      pwd: "123456!!",
+      user: "",
+      pwd: "",
       isShow: true,
       isChecked: false,
     };

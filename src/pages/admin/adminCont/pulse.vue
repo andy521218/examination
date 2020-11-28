@@ -289,8 +289,7 @@ export default {
 
       this.upload.post("/upload", imgData).then((res) => {
         if (res.code == "000000") {
-          let imgurl = `http://localhost:8080/api/download/${res.data}`;
-          this.pulse.picUrl = imgurl;
+          this.pulse.picUrl = res.data;
           this.http[methods](url, this.pulse).then((res) => {
             if (res.code == "000000") {
               this.$Message.warning(`${config}成功!`);
@@ -325,14 +324,22 @@ export default {
       this.pulseShow = false;
       this.pulse = item;
       this.imgShow = true;
-      this.imgUrl = item.picUrl;
+      if (/localhost/.test(item.picUrl)) {
+        this.imgurl = item.picUrl.replace(/localhost/, "101.132.150.87");
+      } else {
+        this.imgurl = this.$url + item.picUrl;
+      }
       this.puleseTitle = "查看";
     },
     editPulse(item) {
       this.pulseShow = true;
       this.pulse = item;
       this.imgShow = true;
-      this.imgUrl = item.picUrl;
+      if (/localhost/.test(item.picUrl)) {
+        this.imgurl = item.picUrl.replace(/localhost/, "101.132.150.87");
+      } else {
+        this.imgurl = this.$url + item.picUrl;
+      }
       this.puleseTitle = "编辑";
     },
   },

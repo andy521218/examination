@@ -108,13 +108,12 @@ export default {
         let formData = new window.FormData();
         formData.append("file", this.fileData);
         this.upload.post("/upload", formData).then((res) => {
-          let url = `http://localhost:8080/api/download/${res.data}`;
           if (res.code == "000000") {
             this.http
               .post(`/meta/listen/${this.groupId}`, {
                 gender: this.hearData.gender,
                 name: this.name,
-                videoUrl: url,
+                videoUrl: res.data,
               })
               .then((res) => {
                 if (res.code == "000000") {
@@ -135,13 +134,12 @@ export default {
         let formData = new window.FormData();
         formData.append("file", this.fileData);
         this.upload.post("/upload", formData).then((res) => {
-          let url = `http://localhost:8080/api/download/${res.data}`;
           if (res.code == "000000") {
             this.http
               .put(`/meta/listen/${this.songId}`, {
                 gender: this.hearData.gender,
                 name: this.hearData.name,
-                videoUrl: url,
+                videoUrl: res.data,
               })
               .then((res) => {
                 if (res.code == "000000") {

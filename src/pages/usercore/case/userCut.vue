@@ -440,7 +440,14 @@ export default {
             }
           }
           this.pulseData.reverse();
-          this.imgsUrl = res.data.picUrl;
+          if (/localhost/.test(res.data.picUrl)) {
+            this.imgsUrl = res.data.picUrl.replace(
+              /localhost/,
+              "101.132.150.87"
+            );
+          } else {
+            this.imgsUrl = this.$url + res.data.picUrl;
+          }
           this.answer = res.data.answer;
         });
     },

@@ -1,6 +1,10 @@
 <template>
   <div class="case_look">
-    <div class="main_mask" v-show="mask" style="height: 730px; width: 87.5%"></div>
+    <div
+      class="main_mask"
+      v-show="mask"
+      style="height: 730px; width: 87.5%"
+    ></div>
     <case-option
       :option="option"
       v-if="optionShow"
@@ -120,7 +124,7 @@ export default {
       imgsData.append("file", this.imgs);
 
       this.upload.post("/upload", imgsData).then((res) => {
-        let url = `http://localhost:8080/api/download/${res.data}`;
+        let url = res.data;
         this.axios
           .put(
             `/case/manage/${this.caseId}/watch/${
@@ -159,7 +163,11 @@ export default {
         .get(`/case/manage/${this.caseId}/watch/${this.typeId}`)
         .then((res) => {
           this.watchData = res.data.list;
-          this.imgurl = res.data.url;
+          if (/localhost/.test(res.data.url)) {
+            this.imgurl = res.data.url.replace(/localhost/, "101.132.150.87");
+          } else {
+            this.imgurl = this.$url + res.data.url;
+          }
         });
     },
   },

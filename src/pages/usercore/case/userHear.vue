@@ -9,7 +9,7 @@
       ></case-option>
       <div class="case_layout">
         <div class="case_left">
-           <div class="main_mask" v-show="optionShow"></div>
+          <div class="main_mask" v-show="optionShow"></div>
           <case-header></case-header>
           <main>
             <ul class="main_tab">
@@ -23,8 +23,8 @@
               按诊的结果均为正常
               <p></p>
             </div>
-            <div class="content scrollbar">
-              <div class="content_scrollbar" v-if="!normal_edit_show">
+            <div class="content scrollbar" v-if="!normal_edit_show">
+              <div class="content_scrollbar">
                 <ul>
                   <li><p>点击右侧空白处选择一个设置为正确选项:</p></li>
                   <li
@@ -79,7 +79,11 @@ export default {
   methods: {
     openOption(e) {
       this.option = e;
-      this.videoUrl = e.videoUrl;
+      if (/localhost/.test(e.videoUrl)) {
+        this.videoUrl = e.videoUrl.replace(/localhost/, "101.132.150.87");
+      } else {
+        this.videoUrl = this.$url + e.videoUrl;
+      }
       this.listenId = e.id;
       this.optionShow = true;
     },

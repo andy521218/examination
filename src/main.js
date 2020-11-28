@@ -28,6 +28,8 @@ Vue.use(VueAxios,axios);
 Vue.use(filters)
 Vue.prototype.http = http
 Vue.prototype.qs = qs
+Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
+// Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message=Message
 Vue.config.productionTip = false
