@@ -4,6 +4,7 @@
       v-if="result"
       :title="title"
       :type="type"
+      :item="item"
       @getItemData="getItemData"
     ></edit-result>
     <div class="mask" v-if="result"></div>
@@ -15,6 +16,7 @@
             <div class="item_left">
               <i></i>
               <span>{{ item.name }}</span>
+              <span class="edid_look_item" @click="edit(item)">编辑</span>
             </div>
             <div
               class="item_right"
@@ -42,6 +44,7 @@ export default {
       result: false,
       type: "",
       data: "",
+      item: "",
     };
   },
   components: {
@@ -59,6 +62,10 @@ export default {
       this.axios.get(`/meta/watch/${this.type}/options`).then((res) => {
         this.data = res.data;
       });
+    },
+    edit(item) {
+      this.item = item;
+      this.result = true;
     },
   },
   mounted() {
@@ -95,6 +102,15 @@ export default {
       height: 550px;
       padding-right: 10px;
       overflow-y: auto;
+      .item_left {
+        position: relative;
+        .edid_look_item {
+          position: absolute;
+          left: 350px;
+          width: 50px;
+          color: rgb(0, 235, 255);
+        }
+      }
     }
   }
 }
