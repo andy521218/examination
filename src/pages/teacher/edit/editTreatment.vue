@@ -204,11 +204,11 @@
             </ul>
             <!-- 切诊 -->
             <ul v-show="diseaseId == 3">
-              <li v-if="pulseData.answer">
+              <!-- <li v-if="diseasepulseData.answer">
                 <span>脉诊</span>
                 <p></p>
-                {{ pulseData.answer }}
-              </li>
+                {{ diseasepulseData.answer }}
+              </li> -->
               <li
                 v-for="(item, index) in diseasesPress"
                 :key="index"
@@ -267,6 +267,7 @@ export default {
       askData: [],
       diseaseName: "",
       defaultOptions: [],
+      diseasepulseData: "",
     };
   },
   mounted() {
@@ -373,11 +374,22 @@ export default {
         .then((res) => {
           this.diseaseName = res.data.diseaseName;
           let watch, listen, ask, press;
+          console.log(res.data);
           try {
-            ask = res.data.diseaseNameIssues[0].issueIds;
-            watch = res.data.diseaseNameIssues[1].issueIds;
-            listen = res.data.diseaseNameIssues[2].issueIds;
-            press = res.data.diseaseNameIssues[3].issueIds;
+            res.data.diseaseNameIssues.forEach((ele) => {
+              if (ele.stageId == "1") {
+                ask = ele.issueIds;
+              }
+              if (ele.stageId == "2") {
+                watch = ele.issueIds;
+              }
+              if (ele.stageId == "3") {
+                listen = ele.issueIds;
+              }
+              if (ele.stageId == "4") {
+                press = ele.issueIds;
+              }
+            });
             this.diseasesRadio = res.data.diseases;
             this.defaultOptions = res.data.diseases[0];
           } catch (error) {
@@ -470,7 +482,16 @@ export default {
             .get(`/case/manage/${this.caseId}/feel/pulse`)
             .then((res) => {
               if (res.data.answer) {
-                this.pulseData = res.data;
+                this.diseasesPressData.push({
+                  id: res.data.id,
+                  name: "脉诊",
+                  answer: res.data.answer,
+                });
+                press.forEach((ele) => {
+                  if (ele == res.data.id) {
+                    this.pulseData = res.data;
+                  }
+                });
               }
             });
         })
