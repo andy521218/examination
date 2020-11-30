@@ -49,7 +49,7 @@
                       style="margin-right: 20px"
                       v-model="answer"
                       :value="i.name"
-                      @change="putPulse"
+                      @change="putPulse(i)"
                     />
                     <p class="item_cont_title" @click="seeImg(i)">
                       {{ i.name }}
@@ -202,7 +202,8 @@ export default {
         });
       });
     },
-    putPulse() {
+    putPulse(e) {
+      console.log(e);
       this.http
         .put(
           `/case/manage/${this.caseId}/feel/pulse?${this.qs.stringify({
@@ -211,7 +212,14 @@ export default {
         )
         .then((res) => {
           if (res.code == "000000") {
-            return this.$Message.warning("更改答案成功!");
+            this.$Message.warning("更改答案成功!");
+            if (/localhost/.test(e.picUrl)) {
+              this.imgsUrl = e.picUrl.replace(/localhost/, "101.132.150.87");
+            } else {
+              this.imgsUrl = this.$url + e.picUrl;
+            }
+            this.imgDesc = e.description;
+            return;
           } else {
             this.$Message.error(res.msg);
           }
