@@ -141,9 +141,8 @@ export default {
           })
           .then((res) => {
             if (res.code == "000000") {
-              this.$Message.warning("添加案例成功!");
-              this.$emit("getManage");
-              this.close();
+              localStorage.setItem("caseId", res.data);
+              this.$router.push("/case");
             } else {
               this.$Message.error(res.msg);
             }
