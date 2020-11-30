@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       colorIndex: "-1",
-      menuData: "",
+      menuData: [],
+      authority: "",
     };
   },
   computed: {
@@ -38,37 +39,43 @@ export default {
     ]),
   },
   mounted() {
-    if (this.$store.state.menuId == "-1") {
-      this.$store.state.menuId = localStorage.getItem("bgindex");
-    }
-    this.axios.get("/users/current").then((res) => {
-      if (res.code == "000000") {
-        localStorage.setItem("authority", res.data.authority);
-        if (res.data.authority == "ADMIN") {
-          this.menuData = this.adminMenu;
-          return;
-        }
-        if (res.data.authority == "TEACHER") {
-          if (/message/.test(window.location)) {
-            this.messageMenu.splice(1, 2);
-            return (this.menuData = this.messageMenu);
+    this.getMenu();
+  },
+  methods: {
+    getMenu() {
+      if (this.$store.state.menuId == "-1") {
+        this.$store.state.menuId = localStorage.getItem("bgindex");
+      }
+
+      this.axios.get("/users/current").then((res) => {
+        if (res.code == "000000") {
+          localStorage.setItem("authority", res.data.authority);
+          this.authority = res.data.authority;
+          if (res.data.authority == "ADMIN") {
+            this.menuData = this.adminMenu;
+            return;
           }
-          if (/teacher/.test(window.location)) {
-            this.menuData = this.teacherMenu;
+          if (res.data.authority == "TEACHER") {
+            if (/message/.test(window.location)) {
+              this.menuData.push(this.messageMenu[0]);
+              this.menuData.push(this.messageMenu[3]);
+              return;
+            }
+            if (/teacher/.test(window.location)) {
+              this.menuData = this.teacherMenu;
+              return;
+            }
+          }
+          if (res.data.authority == "STUDENT") {
+            if (/message/.test(window.location)) {
+              return (this.menuData = this.messageMenu);
+            }
+            this.menuData = this.stuedntMenu;
             return;
           }
         }
-        if (res.data.authority == "STUDENT") {
-          if (/message/.test(window.location)) {
-            return (this.menuData = this.messageMenu);
-          }
-          this.menuData = this.stuedntMenu;
-          return;
-        }
-      }
-    });
-  },
-  methods: {
+      });
+    },
     oneRouting(index) {
       this.$store.state.menuId = index;
       localStorage.setItem("bgindex", index);
@@ -81,9 +88,8 @@ export default {
     },
   },
   watch: {
-    $route(to, from) {
-      console.log(to);
-      console.log(from);
+    $route() {
+      this.getMenu();
     },
   },
 };
