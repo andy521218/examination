@@ -2,7 +2,7 @@
   <div class="case_treatment">
     <div class="treatment_layout">
       <div class="layout_left">
-        <div class="title" @click="searchDurhshow = false">
+        <div class="title" @click="focusTreat">
           <p>治则治法</p>
           <div class="search scrollbar">
             <input
@@ -40,7 +40,7 @@
                   type="text"
                   class="text_box"
                   v-model="searchAgentia"
-                  @focus="agentiaShow = true"
+                  @focus="focusAgentia"
                   @blur="timerOutagentia"
                 />
                 <div class="search_down" v-show="agentiaShow">
@@ -64,7 +64,7 @@
                   type="text"
                   class="text_box drug_input"
                   v-model="searchDrug"
-                  @focus="searchDurhshow = true"
+                  @focus="focusDrug"
                 />
                 <button class="submit" @click="submitDrug">确定</button>
                 <div
@@ -625,6 +625,37 @@ export default {
       } catch (error) {
         return error;
       }
+    },
+    //获取焦点查询治则治法
+    focusTreat() {
+      this.treatShow = true;
+      this.axios
+        .get("/meta/treat", {
+          params: {
+            name: this.searchTreat,
+          },
+        })
+        .then((res) => {
+          this.treatData = res.data;
+        });
+    },
+    //获取焦点查询治则治法
+    focusAgentia() {
+      this.agentiaShow = true;
+      this.axios
+        .get("/meta/agentia", {
+          params: {
+            name: this.searchAgentia,
+          },
+        })
+        .then((res) => {
+          this.agentiaData = res.data.rows;
+        });
+    },
+    // 获取交代呢查询药物组成
+    focusDrug() {
+      this.searchDurhshow = true;
+      this.getDruggery();
     },
   },
   watch: {

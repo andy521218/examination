@@ -92,15 +92,15 @@
         <li><p class="tips">提示:根据病史合成选择病名和症型</p></li>
         <li>病名</li>
         <li>
-          <div class="search">
+          <div class="search scrollbar">
             <input
               type="text"
               class="text_box"
               v-model="searchDisease"
-              @focus="diseaseNameShow = true"
+              @focus="focusName"
               @blur="timerDiseaseout"
             />
-            <div class="search_down scrollbar">
+            <div class="search_down">
               <div class="search_down_cont" v-show="diseaseNameShow">
                 <div
                   class="search_item"
@@ -810,6 +810,20 @@ export default {
         //获取正确症候选项
         this.diseasecorrectData = res.data.diseases;
       });
+    },
+    //获取焦点查询
+    focusName() {
+      console.log(111);
+      this.diseaseNameShow = true;
+      this.axios
+        .get("/meta/disease/name", {
+          params: {
+            name: this.searchDisease,
+          },
+        })
+        .then((res) => {
+          this.diseaseNameData = res.data;
+        });
     },
   },
   watch: {

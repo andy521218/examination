@@ -9,7 +9,7 @@
               type="text"
               class="text_box"
               v-model="searchTreat"
-              @focus="treatShow = true"
+              @focus="focusTreat"
               @blur="timerOuttreat"
             />
             <div class="search_down scrollbar">
@@ -40,7 +40,7 @@
                   type="text"
                   class="text_box"
                   v-model="searchAgentia"
-                  @focus="agentiaShow = true"
+                  @focus="focusAgentia"
                   @blur="timerOutagentia"
                 />
                 <div class="search_down" v-show="agentiaShow">
@@ -523,6 +523,32 @@ export default {
       } catch (error) {
         return error;
       }
+    },
+    //获取焦点查询治则治法
+    focusTreat() {
+      this.treatShow = true;
+      this.axios
+        .get("/meta/treat", {
+          params: {
+            name: this.searchTreat,
+          },
+        })
+        .then((res) => {
+          this.treatData = res.data;
+        });
+    },
+    //获取焦点查询治则治法
+    focusAgentia() {
+      this.agentiaShow = true;
+      this.axios
+        .get("/meta/agentia", {
+          params: {
+            name: this.searchAgentia,
+          },
+        })
+        .then((res) => {
+          this.agentiaData = res.data.rows;
+        });
     },
   },
   watch: {
