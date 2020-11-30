@@ -13,7 +13,7 @@
           <img src="../../assets/public/timg.png" alt v-else />
           <span class="edit">点击修改头像</span>
         </div>
-        <span class="user_number">20200912</span>
+        <!-- <span class="user_number">20200912</span> -->
       </div>
     </div>
     <div class="user_bottom">
@@ -150,6 +150,7 @@ export default {
           height: 100%;
         }
         .edit {
+          background: rgb(0, 0, 0, 0) !important;
           position: relative;
           width: 100px;
           bottom: -20px;

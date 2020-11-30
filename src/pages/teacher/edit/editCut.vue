@@ -185,14 +185,20 @@ export default {
       this.axios.get(`/case/manage/${this.caseId}/feel/pulse`).then((res) => {
         this.pulseData.optinos = [];
         let arr = [];
+        let flag = false;
         for (let i = 0; i < res.data.optinos.length; i++) {
+          flag = false;
           arr.push(res.data.optinos[i]);
-          if (i % 10 == "1") {
+          if (i % 10 == "9") {
             this.pulseData.optinos.push(arr);
             arr = [];
+            flag = true;
           }
         }
-        this.pulseData.optinos.reverse();
+        if (!flag) {
+          this.pulseData.optinos.push(arr);
+        }
+        this.pulseData.optinos;
         this.answer = res.data.answer;
         res.data.optinos.forEach((item) => {
           if (res.data.answer == item.name) {
