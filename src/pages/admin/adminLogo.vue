@@ -1,24 +1,7 @@
 <template>
-  <div>
-    <input type="file" ref="fileId" @change="getFile" />
-    <button @click="importRow">11111111111</button>
-    <div class="imgs">
-      <img
-        src="http://localhost:8080/api/download/43/1602896667540.png"
-        alt=""
-        usemap="#catmap"
-      />
-      <map name="catmap">
-        <area
-          shape="rect"
-          coords="0,0,148,139"
-          @click="fn"
-          target="_blank"
-          alt="Venus"
-          style="cursor: pointer"
-        />
-      </map>
-    </div>
+  <div style="text-align: center">
+    <h4>LOGO修改</h4>
+    <h2>功能待完善</h2>
   </div>
 </template>
 
@@ -57,8 +40,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.imgs {
-}
-</style>

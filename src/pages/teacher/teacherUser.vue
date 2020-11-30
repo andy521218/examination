@@ -1,6 +1,6 @@
 <template>
   <div class="teacher_user">
-     <div class="main_mask" v-show="mask"></div>
+    <div class="main_mask" v-show="mask"></div>
     <!-- 学习记录 -->
     <view-records v-if="0"></view-records>
     <!-- switch -->
@@ -127,7 +127,7 @@
               <span @click="edit(item)">编辑</span>
             </td>
             <td>
-              <p>学习记录</p>
+              <p @click="seeRecord(item)">学习记录</p>
             </td>
           </tr>
         </tbody>
@@ -145,7 +145,6 @@
 <script>
 import turnPage from "../../components/turnPage";
 import editUser from "../../components/edit/editUser";
-// import editDele from "../../components/edit/editDele";
 import editImport from "../../components/edit/editImport";
 import viewRecords from "../../components/edit/viewRecords";
 
@@ -175,7 +174,6 @@ export default {
   components: {
     turnPage,
     editUser,
-    // editDele,
     viewRecords,
     editImport,
   },
@@ -233,6 +231,9 @@ export default {
       }
       this.classRoomIdText = "";
       return true;
+    },
+    seeRecord() {
+      this.$Message.error("功能待完善");
     },
     submit() {
       if (!this.checkclassRoomId()) return;

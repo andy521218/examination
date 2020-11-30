@@ -18,10 +18,10 @@
         <span>年龄:</span>
         <span>{{ caseData.age }}</span>
       </li>
-      <li>
+      <!-- <li>
         <span>工作:</span>
         <span>退休人员</span>
-      </li>
+      </li> -->
     </ul>
   </header>
 </template>

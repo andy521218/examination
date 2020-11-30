@@ -41,7 +41,6 @@ export default {
     if (this.$store.state.menuId == "-1") {
       this.$store.state.menuId = localStorage.getItem("bgindex");
     }
-
     this.axios.get("/users/current").then((res) => {
       if (res.code == "000000") {
         localStorage.setItem("authority", res.data.authority);
@@ -54,8 +53,10 @@ export default {
             this.messageMenu.splice(1, 2);
             return (this.menuData = this.messageMenu);
           }
-          this.menuData = this.teacherMenu;
-          return;
+          if (/teacher/.test(window.location)) {
+            this.menuData = this.teacherMenu;
+            return;
+          }
         }
         if (res.data.authority == "STUDENT") {
           if (/message/.test(window.location)) {
@@ -67,7 +68,6 @@ export default {
       }
     });
   },
-
   methods: {
     oneRouting(index) {
       this.$store.state.menuId = index;
@@ -78,6 +78,12 @@ export default {
     twoRouting(index, i) {
       this.colorIndex = i;
       this.$router.push(this.menuData[index].itemRouter[i]);
+    },
+  },
+  watch: {
+    $route(to, from) {
+      console.log(to);
+      console.log(from);
     },
   },
 };

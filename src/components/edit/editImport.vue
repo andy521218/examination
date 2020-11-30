@@ -59,7 +59,8 @@ export default {
       this.path = this.$refs.file.value;
     },
     downLoad() {
-      window.location.href = "http://localhost:8080/api/users/student/template";
+      let url = this.$url.replace("/download/", "");
+      window.location.href = `${url}/users/student/template`;
     },
     close() {
       this.$parent.editload = false;

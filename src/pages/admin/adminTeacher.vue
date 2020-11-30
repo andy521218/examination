@@ -39,7 +39,7 @@
     </edit-user>
     <div class="main_header">
       <button class="add" @click="addTeacher">添加教师</button>
-      <button class="import">教师导入</button>
+      <button class="import" @click="importTeacher">教师导入</button>
       <label for>院系</label>
       <select class="select" v-model="departmentId">
         <option value>请选择院系</option>
@@ -188,6 +188,9 @@ export default {
       }
       this.departmentsText = "";
       return true;
+    },
+    importTeacher() {
+      this.$Message.error("功能待完善");
     },
     edit(e) {
       this.tips = false;

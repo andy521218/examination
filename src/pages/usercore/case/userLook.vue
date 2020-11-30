@@ -23,7 +23,11 @@
           </ul>
           <div class="content scrollbar">
             <div class="content_scrollbar">
-              <ul>
+              <div class="normal_edit" v-show="!normal_show">
+                按诊的结果均为正常
+                <p></p>
+              </div>
+              <ul v-show="normal_show">
                 <li><p>点击右侧空白处选择一个设置为正确选项:</p></li>
                 <li
                   class="item_cont_border"
@@ -73,6 +77,7 @@ export default {
       id: "",
       imgurl: "",
       name: "",
+      normal_show: "",
     };
   },
   mounted() {
@@ -91,8 +96,11 @@ export default {
         .get(`/answer/${this.examNo}/${this.caseId}/watch/${this.typeId}`)
         .then((res) => {
           this.watchData = res.data.list;
+          this.normal_show = res.data.list.length;
           if (/localhost/.test(res.data.url)) {
             this.imgurl = res.data.url.replace(/localhost/, "101.132.150.87");
+          } else if (!res.data.url) {
+            this.imgurl = "";
           } else {
             this.imgurl = this.$url + res.data.url;
           }

@@ -91,7 +91,6 @@ export default {
         });
       } else {
         this.options = this.options.split(",");
-
         this.http
           .put(`/meta/watch/${this.type}/options/${this.item.id}`, {
             name: this.name,

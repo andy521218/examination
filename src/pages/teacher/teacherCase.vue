@@ -291,8 +291,6 @@ export default {
       this.$router.push("/case");
     },
   },
-
-  watch: {},
 };
 </script>
 

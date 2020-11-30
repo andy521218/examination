@@ -1,9 +1,9 @@
 <template>
   <div class="container">
     <div class="tab train" @click="routerCasehome"></div>
-    <div class="tab assessment"></div>
+    <div class="tab assessment" @click="routerSment"></div>
     <div class="tab problem" @click="routerMessagemy"></div>
-    <div class="tab care"></div>
+    <div class="tab care" @click="routerCare"></div>
   </div>
 </template>
 
@@ -27,6 +27,12 @@ export default {
     },
     routerMessagemy() {
       this.$router.push("messagemy");
+    },
+    routerSment() {
+      this.$Message.error("功能待完善");
+    },
+    routerCare() {
+      this.$Message.error("功能待完善");
     },
   },
 };

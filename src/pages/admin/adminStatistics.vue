@@ -1,12 +1,12 @@
 <template>
   <div class="admin_statistics">
-    <edit-dele :edit_title="edit_title">
+    <edit-dele :edit_title="edit_title" v-show="0">
       <template v-slot:edit_p>
         <p>确定删除2019级中医药1班?</p>
         <p class="edit_dele_p">(删除后无法找回)</p>
       </template>
     </edit-dele>
-    <div class="main_header">
+    <div class="main_header" v-show="0">
       <label for>专业</label>
       <select name id class="select">
         <option value>1</option>
@@ -36,8 +36,11 @@
       </select>
       <button class="submit">检索</button>
     </div>
-    <div class="main_table">
-      <table class="main_table" style="border-collapse:separate; border-spacing:0px 8px;">
+    <div class="main_table" v-show="0">
+      <table
+        class="main_table"
+        style="border-collapse: separate; border-spacing: 0px 8px"
+      >
         <thead class="thead-dark">
           <tr>
             <th class="table_5">序号</th>
@@ -59,7 +62,10 @@
             <td>中医药1班</td>
             <td>2020-07-01 15:30</td>
             <td>
-              <i-switch v-model="switchValue" true-color="rgb(0,235,255)"></i-switch>
+              <i-switch
+                v-model="switchValue"
+                true-color="rgb(0,235,255)"
+              ></i-switch>
             </td>
             <td>
               <span class="tbody_dele">删除</span>
@@ -73,7 +79,10 @@
             <td>中医药1班</td>
             <td>2020-07-01 15:30</td>
             <td>
-              <i-switch v-model="switchValue" true-color="rgb(0,235,255)"></i-switch>
+              <i-switch
+                v-model="switchValue"
+                true-color="rgb(0,235,255)"
+              ></i-switch>
             </td>
             <td>
               <span class="tbody_dele">删除</span>
@@ -82,7 +91,11 @@
         </tbody>
       </table>
     </div>
-    <turn-page class="admin_page"></turn-page>
+    <turn-page class="admin_page" v-show="0"></turn-page>
+    <div style="text-align: center">
+      <h4>数据管理</h4>
+      <h2>功能待完善</h2>
+    </div>
   </div>
 </template>
 
@@ -94,7 +107,7 @@ export default {
   data() {
     return {
       switchValue: true,
-      edit_title:'删除'
+      edit_title: "删除",
     };
   },
   components: {
