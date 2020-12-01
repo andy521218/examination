@@ -303,7 +303,7 @@ export default {
     },
     checkAsk(name, nameId, namelist, diseaselist) {
       let asklist = [namelist.issueIds];
-      if (diseaselist.length > 1) {
+      if (diseaselist.length >= 1) {
         diseaselist.forEach((ele) => {
           ele.issues.forEach((item) => {
             if (item.stageId == "1") {
@@ -340,98 +340,112 @@ export default {
     },
     checkWatch(nameId, watch, disease) {
       //获取望诊各项
-      let watchList = JSON.parse(JSON.stringify(watch.issueIds));
-      disease.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          if (item.stageId == "2") {
-            watchList.push(item.issueIds);
-          }
+      try {
+        let watchList = JSON.parse(JSON.stringify(watch.issueIds));
+        disease.forEach((ele) => {
+          ele.issues.forEach((item) => {
+            if (item.stageId == "2") {
+              watchList.push(item.issueIds);
+            }
+          });
         });
-      });
-      watchList = [].concat(...watchList);
-      watchList = new Set(watchList);
-      watchList.forEach((ele) => {
-        this.watchData.forEach((item) => {
-          if (ele == item.id) {
-            //望诊>=望诊各项
-            let nodes = {
-              id: `${ele}`,
-              label: `${item.name}--${item.correctAnswer}`,
-              shape: "multipleLabelsNode",
-              name: "standard",
-            };
-            let edges = {
-              source: "2.0",
-              target: ele.toString(),
-            };
-            this.mapData.nodes.push(nodes);
-            this.mapData.edges.push(edges);
-          }
+        watchList = [].concat(...watchList);
+        watchList = new Set(watchList);
+        watchList.forEach((ele) => {
+          this.watchData.forEach((item) => {
+            if (ele == item.id) {
+              //望诊>=望诊各项
+              let nodes = {
+                id: `${ele}`,
+                label: `${item.name}--${item.correctAnswer}`,
+                shape: "multipleLabelsNode",
+                name: "standard",
+              };
+              let edges = {
+                source: "2.0",
+                target: ele.toString(),
+              };
+              this.mapData.nodes.push(nodes);
+              this.mapData.edges.push(edges);
+            }
+          });
         });
-      });
+      } catch (error) {
+        error;
+      }
     },
     checkListen(nameId, listen, disease) {
-      let listenList = JSON.parse(JSON.stringify(listen.issueIds));
-      disease.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          if (item.stageId == "3") {
-            item.issueIds.forEach((e) => {
-              listenList.push(e);
-            });
-          }
+      try {
+        let listenList = JSON.parse(JSON.stringify(listen.issueIds));
+        disease.forEach((ele) => {
+          ele.issues.forEach((item) => {
+            if (item.stageId == "3") {
+              item.issueIds.forEach((e) => {
+                listenList.push(e);
+              });
+            }
+          });
         });
-      });
-      listenList = new Set(listenList);
-      listenList.forEach((ele) => {
-        this.listenData.forEach((item) => {
-          if (item.id == ele) {
-            let nodes = {
-              id: `${ele}`,
-              label: `${item.name}--${item.correctAnswer}`,
-              shape: "multipleLabelsNode",
-              name: "standard",
-            };
-            let edges = {
-              source: "3.0",
-              target: ele.toString(),
-            };
-            this.mapData.nodes.push(nodes);
-            this.mapData.edges.push(edges);
-          }
+        listenList = new Set(listenList);
+        listenList.forEach((ele) => {
+          this.listenData.forEach((item) => {
+            if (item.id == ele) {
+              let nodes = {
+                id: `${ele}`,
+                label: `${item.name}--${item.correctAnswer}`,
+                shape: "multipleLabelsNode",
+                name: "standard",
+              };
+              let edges = {
+                source: "3.0",
+                target: ele.toString(),
+              };
+              this.mapData.nodes.push(nodes);
+              this.mapData.edges.push(edges);
+            }
+          });
         });
-      });
+      } catch (error) {
+        error;
+      }
     },
     checkFeel(nameId, feel, disease) {
-      let feelList = JSON.parse(JSON.stringify(feel.issueIds));
-      disease.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          if (item.stageId == "4") {
-            item.issueIds.forEach((e) => {
-              feelList.push(e);
-            });
-          }
+      try {
+        let feelList = JSON.parse(JSON.stringify(feel.issueIds));
+        disease.forEach((ele) => {
+          ele.issues.forEach((item) => {
+            if (item.stageId == "4") {
+              item.issueIds.forEach((e) => {
+                feelList.push(e);
+              });
+            }
+          });
         });
-      });
-      feelList = new Set(feelList);
-      this.feelData = [].concat(...this.feelData);
-      feelList.forEach((ele) => {
-        this.feelData.forEach((item) => {
-          if (ele == item.id) {
-            let nodes = {
-              id: ele.toString(),
-              label: `${item.name ? item.name : "切诊"}--${item.correctAnswer}`,
-              shape: "multipleLabelsNode",
-              name: "standard",
-            };
-            let edges = {
-              source: "4.0",
-              target: ele.toString(),
-            };
-            this.mapData.edges.push(edges);
-            this.mapData.nodes.push(nodes);
-          }
+        feelList = new Set(feelList);
+        this.feelData = [].concat(...this.feelData);
+        feelList.forEach((ele) => {
+          this.feelData.forEach((item) => {
+            if (ele == item.id) {
+              let nodes = {
+                id: ele.toString(),
+                label: `${item.name ? item.name : "切诊"}--${
+                  item.correctAnswer
+                }`,
+                shape: "multipleLabelsNode",
+                name: "standard",
+              };
+              let edges = {
+                source: "4.0",
+                target: ele.toString(),
+              };
+              this.mapData.edges.push(edges);
+              this.mapData.nodes.push(nodes);
+            }
+          });
         });
-      });
+      } catch (error) {
+        error;
+      }
     },
     checkEdges(name, nameId, diseaseNameIssues, diseases) {
       //添加病名

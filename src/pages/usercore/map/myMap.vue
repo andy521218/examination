@@ -160,16 +160,41 @@ export default {
 
       //问诊
       let askindex = 0;
-      ask.forEach((ele) => {
-        askindex += 0.1;
-        askindex.toFixed(1);
-        ele.forEach((item) => {
-          this.askData.forEach((k) => {
-            if (item.issueId == k.id) {
-              let width = k.question.length + k.answer.length;
+      try {
+        ask.forEach((ele) => {
+          askindex += 0.1;
+          askindex.toFixed(1);
+          ele.forEach((item) => {
+            this.askData.forEach((k) => {
+              if (item.issueId == k.id) {
+                let width = k.question.length + k.answer.length;
+                this.mapData.nodes.push({
+                  id: (k.id + askindex).toString(),
+                  label: `问:${k.question} 答:${k.answer}`,
+                  size: [(width + 4) * 13, 30],
+                  correct: item.correct,
+                  shape: "multipleLabelsNode",
+                  name: "ask",
+                });
+                this.mapData.edges.push({
+                  source: "1.0",
+                  target: (k.id + askindex).toString(),
+                });
+              }
+            });
+          });
+        });
+      } catch (error) {
+        error;
+      }
+      try {
+        diseaseask.forEach((item) => {
+          this.askData.forEach((ele) => {
+            if (item.issueId == ele.id) {
+              let width = ele.question.length + ele.answer.length;
               this.mapData.nodes.push({
-                id: (k.id + askindex).toString(),
-                label: `问:${k.question} 答:${k.answer}`,
+                id: (ele.id + 0.6).toString(),
+                label: `问:${ele.question} 答:${ele.answer}`,
                 size: [(width + 4) * 13, 30],
                 correct: item.correct,
                 shape: "multipleLabelsNode",
@@ -177,161 +202,167 @@ export default {
               });
               this.mapData.edges.push({
                 source: "1.0",
-                target: (k.id + askindex).toString(),
+                target: (ele.id + 0.6).toString(),
               });
             }
           });
         });
-      });
-      diseaseask.forEach((item) => {
-        this.askData.forEach((ele) => {
-          if (item.issueId == ele.id) {
-            let width = ele.question.length + ele.answer.length;
-            this.mapData.nodes.push({
-              id: (ele.id + 0.6).toString(),
-              label: `问:${ele.question} 答:${ele.answer}`,
-              size: [(width + 4) * 13, 30],
-              correct: item.correct,
-              shape: "multipleLabelsNode",
-              name: "ask",
-            });
-            this.mapData.edges.push({
-              source: "1.0",
-              target: (ele.id + 0.6).toString(),
-            });
-          }
-        });
-      });
+      } catch (error) {
+        error;
+      }
 
       //望诊
-      let watchindex = 0;
-      watch.forEach((ele) => {
-        watchindex += 0.1;
-        watchindex.toFixed(1);
-        ele.forEach((item) => {
-          this.watchData.forEach((k) => {
-            if (item.issueId == k.id) {
+      try {
+        let watchindex = 0;
+        watch.forEach((ele) => {
+          watchindex += 0.1;
+          watchindex.toFixed(1);
+          ele.forEach((item) => {
+            this.watchData.forEach((k) => {
+              if (item.issueId == k.id) {
+                this.mapData.nodes.push({
+                  id: (watchindex + k.id).toString(),
+                  label: `${k.name}--${k.answer}`,
+                  correct: item.correct,
+                  shape: "multipleLabelsNode",
+                  name: "watch",
+                });
+                this.mapData.edges.push({
+                  source: "2.0",
+                  target: (watchindex + k.id).toString(),
+                });
+              }
+            });
+          });
+        });
+      } catch (error) {
+        error;
+      }
+
+      try {
+        diseasewatch.forEach((ele) => {
+          this.watchData.forEach((item) => {
+            if (ele.issueId == item.id) {
               this.mapData.nodes.push({
-                id: (watchindex + k.id).toString(),
-                label: `${k.name}--${k.answer}`,
-                correct: item.correct,
+                id: (item.id + 0.6).toString(),
+                label: `${item.name}--${item.answer}`,
+                correct: ele.correct,
                 shape: "multipleLabelsNode",
                 name: "watch",
               });
               this.mapData.edges.push({
                 source: "2.0",
-                target: (watchindex + k.id).toString(),
+                target: (item.id + 0.6).toString(),
               });
             }
           });
         });
-      });
+      } catch (error) {
+        error;
+      }
 
-      diseasewatch.forEach((ele) => {
-        this.watchData.forEach((item) => {
-          if (ele.issueId == item.id) {
-            this.mapData.nodes.push({
-              id: (item.id + 0.6).toString(),
-              label: `${item.name}--${item.answer}`,
-              correct: ele.correct,
-              shape: "multipleLabelsNode",
-              name: "watch",
-            });
-            this.mapData.edges.push({
-              source: "2.0",
-              target: (item.id + 0.6).toString(),
-            });
-          }
-        });
-      });
       //闻诊
-      let listenindex = 0;
-      listen.forEach((ele) => {
-        listenindex += 0.1;
-        listenindex.toFixed(1);
-        ele.forEach((item) => {
-          this.listenData.forEach((k) => {
-            if (item.issueId == k.id) {
+      try {
+        let listenindex = 0;
+        listen.forEach((ele) => {
+          listenindex += 0.1;
+          listenindex.toFixed(1);
+          ele.forEach((item) => {
+            this.listenData.forEach((k) => {
+              if (item.issueId == k.id) {
+                this.mapData.nodes.push({
+                  id: (listenindex + k.id).toString(),
+                  label: `${k.name}--${k.answer}`,
+                  correct: item.correct,
+                  shape: "multipleLabelsNode",
+                  name: "listen",
+                });
+                this.mapData.edges.push({
+                  source: "3.0",
+                  target: (listenindex + k.id).toString(),
+                });
+              }
+            });
+          });
+        });
+      } catch (error) {
+        error;
+      }
+      try {
+        diseaselisten.forEach((ele) => {
+          this.listenData.forEach((item) => {
+            if (ele.issueId == item.id) {
               this.mapData.nodes.push({
-                id: (listenindex + k.id).toString(),
-                label: `${k.name}--${k.answer}`,
-                correct: item.correct,
+                id: (item.id + 0.6).toString(),
+                label: `${item.name}--${item.answer}`,
+                correct: ele.correct,
                 shape: "multipleLabelsNode",
                 name: "listen",
               });
               this.mapData.edges.push({
                 source: "3.0",
-                target: (listenindex + k.id).toString(),
+                target: (item.id + 0.6).toString(),
               });
             }
           });
         });
-      });
-
-      diseaselisten.forEach((ele) => {
-        this.listenData.forEach((item) => {
-          if (ele.issueId == item.id) {
-            this.mapData.nodes.push({
-              id: (item.id + 0.6).toString(),
-              label: `${item.name}--${item.answer}`,
-              correct: ele.correct,
-              shape: "multipleLabelsNode",
-              name: "listen",
-            });
-            this.mapData.edges.push({
-              source: "3.0",
-              target: (item.id + 0.6).toString(),
-            });
-          }
-        });
-      });
+      } catch (error) {
+        error;
+      }
 
       //切诊
-      this.feelData = [].concat(...this.feelData);
-      let feelindex = 0;
-      feel.forEach((ele) => {
-        feelindex += 0.1;
-        feelindex.toFixed(1);
-        ele.forEach((item) => {
-          this.feelData.forEach((k) => {
-            if (item.issueId == k.id) {
+      try {
+        this.feelData = [].concat(...this.feelData);
+        let feelindex = 0;
+        feel.forEach((ele) => {
+          feelindex += 0.1;
+          feelindex.toFixed(1);
+          ele.forEach((item) => {
+            this.feelData.forEach((k) => {
+              if (item.issueId == k.id) {
+                this.mapData.nodes.push({
+                  id: (feelindex + k.id).toString(),
+                  label: `${k.name ? k.name : "切诊"}--${
+                    k.answer ? k.answer : ""
+                  }`,
+                  correct: item.correct,
+                  shape: "multipleLabelsNode",
+                  name: "feel",
+                });
+                this.mapData.edges.push({
+                  source: "4.0",
+                  target: (feelindex + k.id).toString(),
+                });
+              }
+            });
+          });
+        });
+      } catch (error) {
+        error;
+      }
+      try {
+        diseasefeel.forEach((ele) => {
+          this.feelData.forEach((item) => {
+            if (ele.issueId == item.id) {
               this.mapData.nodes.push({
-                id: (feelindex + k.id).toString(),
-                label: `${k.name ? k.name : "切诊"}--${
-                  k.answer ? k.answer : ""
+                id: (item.id + 0.6).toString(),
+                label: `${item.name ? item.name : "切诊"}--${
+                  item.answer ? item.answer : ""
                 }`,
-                correct: item.correct,
+                correct: ele.correct,
                 shape: "multipleLabelsNode",
                 name: "feel",
               });
               this.mapData.edges.push({
                 source: "4.0",
-                target: (feelindex + k.id).toString(),
+                target: (item.id + 0.6).toString(),
               });
             }
           });
         });
-      });
-
-      diseasefeel.forEach((ele) => {
-        this.feelData.forEach((item) => {
-          if (ele.issueId == item.id) {
-            this.mapData.nodes.push({
-              id: (item.id + 0.6).toString(),
-              label: `${item.name ? item.name : "切诊"}--${
-                item.answer ? item.answer : ""
-              }`,
-              correct: ele.correct,
-              shape: "multipleLabelsNode",
-              name: "feel",
-            });
-            this.mapData.edges.push({
-              source: "4.0",
-              target: (item.id + 0.6).toString(),
-            });
-          }
-        });
-      });
+      } catch (error) {
+        error;
+      }
 
       //治疗
       let treatArr = [];
