@@ -137,7 +137,7 @@
     <div class="dialectical_layout_left_two" v-show="!step">
       <div class="title">
         病名:{{ searchDisease }}
-        <button class="submit" @click="submitName">提交病名</button>
+        <button class="submit" @click="submitName">添加到辩证</button>
       </div>
       <ul class="main_tab">
         <li
@@ -251,7 +251,9 @@
           />
           <label for="">{{ item.name }}</label>
         </div>
-        <button class="submit disease" @click="submitDisease">提交症候</button>
+        <button class="submit disease" @click="submitDisease">
+          添加到辩证
+        </button>
       </div>
       <ul class="main_tab">
         <li

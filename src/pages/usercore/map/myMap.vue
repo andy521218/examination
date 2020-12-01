@@ -369,90 +369,103 @@ export default {
       let height = 90;
       let boxY = 32;
       let flag = true;
-      this.agentia[0].druggeries.forEach((ele) => {
-        if (!ele.correct) {
-          return (flag = false);
-        }
-      }),
-        this.agentia[0].druggeries.forEach((ele, index) => {
-          treatArr.push(ele.druggeryName);
-          if (index == this.agentia[0].druggeries.length - 1) {
-            if (treatArr.length > 7) {
-              treatArr[6] = treatArr[6] + "\n";
-              height = 120;
-              boxY = 42;
-            }
-            this.mapData.nodes.push({
-              id: "0.7",
-              label: [
-                `治则治法: ${[
-                  this.treat.answer.toString().replace(/，/g, " "),
-                ]}`,
-                `遣方用药: ${[this.agentia[0].agentiaAnswer]}`,
-                `药物组成: ${[treatArr.toString().replace(/,/g, " ")]}`,
-              ],
-              size: [300, height],
-              name: "agentia",
-              shape: "multipleLabelsNode",
-              treat: this.treat.correct,
-              agentia: this.agentia[0].agentiaCorrect,
-              aggregate: flag,
-            });
+      try {
+        this.agentia[0].druggeries.forEach((ele) => {
+          if (!ele.correct) {
+            return (flag = false);
           }
-        });
+        }),
+          this.agentia[0].druggeries.forEach((ele, index) => {
+            treatArr.push(ele.druggeryName);
+            if (index == this.agentia[0].druggeries.length - 1) {
+              if (treatArr.length > 7) {
+                treatArr[6] = treatArr[6] + "\n";
+                height = 120;
+                boxY = 42;
+              }
+              this.mapData.nodes.push({
+                id: "0.7",
+                label: [
+                  `治则治法: ${[
+                    this.treat.answer.toString().replace(/，/g, " "),
+                  ]}`,
+                  `遣方用药: ${[this.agentia[0].agentiaAnswer]}`,
+                  `药物组成: ${[treatArr.toString().replace(/,/g, " ")]}`,
+                ],
+                size: [300, height],
+                name: "agentia",
+                shape: "multipleLabelsNode",
+                treat: this.treat.correct,
+                agentia: this.agentia[0].agentiaCorrect,
+                aggregate: flag,
+              });
+            }
+          });
+      } catch (error) {
+        error;
+      }
+
       //病名 及 症候
-      let treatindex = 0;
-      this.mapData.nodes.push({
-        id: "0.4",
-        label: this.diseasename.answer.toString(),
-        correct: this.diseasename.correct,
-        shape: "multipleLabelsNode",
-        name: "treat",
-        size: [80, 30],
-      });
-      this.disease.forEach((ele) => {
-        treatindex += 0.1;
-        treatindex.toFixed(1);
+      try {
+        let treatindex = 0;
         this.mapData.nodes.push({
-          id: (ele.id + 0.8).toString(),
-          label: ele.answer.toString(),
-          correct: ele.correct,
+          id: "0.4",
+          label: this.diseasename.answer.toString(),
+          correct: this.diseasename.correct,
           shape: "multipleLabelsNode",
           name: "treat",
           size: [80, 30],
         });
-        //四诊连接症候
-        ele.issueResults.forEach((item) => {
-          item.issues.forEach((k) => {
-            this.mapData.edges.push({
-              source: (k.issueId + treatindex).toString(),
-              target: (ele.id + 0.8).toString(),
+        this.disease.forEach((ele) => {
+          treatindex += 0.1;
+          treatindex.toFixed(1);
+          this.mapData.nodes.push({
+            id: (ele.id + 0.8).toString(),
+            label: ele.answer.toString(),
+            correct: ele.correct,
+            shape: "multipleLabelsNode",
+            name: "treat",
+            size: [80, 30],
+          });
+          //四诊连接症候
+          ele.issueResults.forEach((item) => {
+            item.issues.forEach((k) => {
+              this.mapData.edges.push({
+                source: (k.issueId + treatindex).toString(),
+                target: (ele.id + 0.8).toString(),
+              });
             });
           });
         });
-      });
-      //四诊链接病名
-      this.diseasename.issueResults.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          this.mapData.edges.push({
-            source: (item.issueId + 0.6).toString(),
-            target: "0.4",
+      } catch (error) {
+        error;
+      }
+      try {
+        //四诊链接病名
+        this.diseasename.issueResults.forEach((ele) => {
+          ele.issues.forEach((item) => {
+            this.mapData.edges.push({
+              source: (item.issueId + 0.6).toString(),
+              target: "0.4",
+            });
           });
         });
-      });
 
-      //病名 症候 连接 治疗
-      this.mapData.edges.push({
-        source: "0.4",
-        target: "0.7",
-      });
-
-      this.disease.forEach((ele) => {
+        //病名 症候 连接 治疗
         this.mapData.edges.push({
-          source: (ele.id + 0.8).toString(),
+          source: "0.4",
           target: "0.7",
         });
-      });
+
+        this.disease.forEach((ele) => {
+          this.mapData.edges.push({
+            source: (ele.id + 0.8).toString(),
+            target: "0.7",
+          });
+        });
+      } catch (error) {
+        error;
+      }
 
       G6.registerNode(
         "multipleLabelsNode",
