@@ -9,7 +9,11 @@
             <img src="../../../assets/public/stop.png" alt="" />
             <span>暂停</span>
           </div>
-          <div class="sonserve" @click="submit" v-if="authority == 'STUDENT'">
+          <div
+            class="sonserve"
+            @click="confirm_show = true"
+            v-if="authority == 'STUDENT'"
+          >
             <img src="../../../assets/public/sonserve.png" alt="" />
             <span>完成</span>
           </div>
@@ -19,7 +23,7 @@
             v-if="authority == 'TEACHER'"
           >
             <img src="../../../assets/public/sonserve.png" alt="" />
-            <span @click="submit">完成</span>
+            <span>完成</span>
           </div>
           <!-- <div class="close">
             <img src="../../../assets/public/close.png" alt="" />
@@ -50,6 +54,7 @@
         </ul>
       </div>
       <div class="case_main">
+        <!-- 提交训练得分 -->
         <div class="edit_dele" v-if="fractionshow">
           <div class="edit">
             <div class="edit_title">
@@ -74,6 +79,29 @@
               <button class="edit_submit" @click="$router.push('userrecord')">
                 查看详情
               </button>
+            </div>
+          </div>
+        </div>
+        <!-- 提交确认 -->
+        <div class="edit_dele" v-if="confirm_show">
+          <div class="edit">
+            <div class="edit_title">
+              <span class="title" style="width: 100px">提示</span>
+            </div>
+            <ul>
+              <li style="text-align: center">
+                <span>您确认提交本次训练吗?</span>
+              </li>
+            </ul>
+            <div class="edit_btn_box">
+              <button
+                class="edit_submit"
+                style="margin-right: 40px"
+                @click="confirm_show = false"
+              >
+                取消
+              </button>
+              <button class="edit_submit" @click="submit">确认</button>
             </div>
           </div>
         </div>
@@ -120,6 +148,7 @@ export default {
       bgIndex: "0",
       authority: "",
       examNo: "",
+      confirm_show: false,
     };
   },
   components: {
@@ -174,6 +203,7 @@ export default {
     submit() {
       this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
         if (res.code == "000000") {
+          this.confirm_show = false;
           this.fractionshow = true;
           this.fraction = res.data;
         } else {
