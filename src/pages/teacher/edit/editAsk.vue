@@ -263,7 +263,7 @@ export default {
       }
       this.uploadAskData();
     },
-    uploadAskData(colorId = "1") {
+    uploadAskData(colorId = "0") {
       this.http
         .post(`/case/manage/${this.caseId}/ask`, {
           answer: this.answer,
