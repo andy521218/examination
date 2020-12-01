@@ -137,16 +137,14 @@
     <div class="dialectical_layout_left_two" v-show="!step">
       <div class="title">
         病名:{{ searchDisease }}
-        <p style="float: right; margin-right: 20px">
-          选中答案后,单击当前项设置
-        </p>
+        <button class="submit" @click="submitName">提交病名</button>
       </div>
       <ul class="main_tab">
         <li
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
-          @click="container(item, index)"
+          @click="typeId = index"
         >
           {{ item }}
           <div :class="{ active: typeId == index }"></div>
@@ -253,13 +251,14 @@
           />
           <label for="">{{ item.name }}</label>
         </div>
+        <button class="submit disease" @click="submitDisease">提交症候</button>
       </div>
       <ul class="main_tab">
         <li
           v-for="(item, index) in tab"
           :key="index"
           class="item_title"
-          @click="changeDisease(item, index)"
+          @click="diseaseChangeId = index"
         >
           {{ item }}
           <div :class="{ active: diseaseChangeId == index }"></div>
@@ -458,6 +457,7 @@ export default {
         this.diseaseAskData = [];
         this.diseasePressData = [];
         this.getAlldata();
+        this.diseaseUpdata = "";
         this.step = true;
       }
       this.diseaseCheckArr1 = this.diseaseCheckArr;
@@ -540,49 +540,6 @@ export default {
           },
         ]
       );
-    },
-    // 设置病名各项答案
-    container(item, i) {
-      this.typeId = i;
-      if (item == "望") {
-        this.checkUpdata(this.nameWatchData, item, i);
-      }
-      if (item == "闻") {
-        this.checkUpdata(this.namelistenData, item, i);
-      }
-      if (item == "问") {
-        this.checkUpdata(this.nameAskData, item, i);
-      }
-      if (item == "切") {
-        this.checkUpdata(this.namePressData, item, i);
-      }
-    },
-    // 比对病名依据上传数据
-    checkUpdata(nameData, item, stageId) {
-      if (nameData.length == "0") return;
-      for (let i = 0; i < this.upDiseaseName.length; i++) {
-        if (this.upDiseaseName[i].stageId == stageId + 1) {
-          if (nameData.toString() == this.upDiseaseName[i].issueIds.toString())
-            return;
-          this.upDiseaseName[i].issueIds = nameData;
-          return this.upName(item);
-        }
-      }
-    },
-    // 病名依据上传函数
-    upName(item) {
-      this.http
-        .post(
-          `/answer/${this.examNo}/${this.caseId}/diseasename/${this.diseaseNameId}`,
-          this.upDiseaseName
-        )
-        .then((res) => {
-          if (res.data) {
-            this.$Message.warning(`设置${this.searchDisease + item}诊成功!`);
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
     },
     //获取病症默认选项
     getDiseaseDefault() {
@@ -667,62 +624,74 @@ export default {
         return error;
       }
     },
-    //设置症候答案
-    changeDisease(item, i) {
-      this.diseaseChangeId = i;
-      if (item == "望") {
-        this.checkDisease(this.diseaseWatchData, item, i);
-      }
-      if (item == "闻") {
-        this.checkDisease(this.diseaselistenData, item, i);
-      }
-      if (item == "问") {
-        this.checkDisease(this.diseaseAskData, item, i);
-      }
-      if (item == "切") {
-        this.checkDisease(this.diseasePressData, item, i);
-      }
-    },
-    // 病症依据数据对比
-    checkDisease(itemName, item, stageId) {
-      if (!this.diseaseUpdata.name) return;
-      for (let i = 0; i < this.upDiseaseData.issues.length; i++) {
-        if (this.upDiseaseData.issues[i].stageId == stageId + 1) {
-          if (
-            itemName.toString() ==
-            this.upDiseaseData.issues[i].issueIds.toString()
-          ) {
-            return;
+    //上传病名
+    submitName() {
+      this.http
+        .post(
+          `/answer/${this.examNo}/${this.caseId}/diseasename/${this.diseaseNameId}`,
+          [
+            {
+              issueIds: this.nameAskData,
+              stageId: 1,
+            },
+            {
+              issueIds: this.nameWatchData,
+              stageId: 2,
+            },
+            {
+              issueIds: this.listenData,
+              stageId: 3,
+            },
+            {
+              issueIds: this.namePressData,
+              stageId: 4,
+            },
+          ]
+        )
+        .then((res) => {
+          if (res.code == "000000") {
+            this.getAlldata();
+            this.$Message.warning(`设置病名成功!`);
+          } else {
+            this.$Message.error(res.msg);
           }
-          this.upDiseaseData.issues[i].issueIds = itemName;
-          return this.upDisease(item);
-        }
-      }
+        });
     },
-    // 病症依据上传函数
-    upDisease(item) {
-      this.upDiseaseData.id = this.diseaseUpdata.id;
-      this.upDiseaseData.name = this.diseaseUpdata.name;
-      let arr = JSON.parse(JSON.stringify(this.upDiseaseData));
-      for (let i = 0; i < arr.issues.length; i++) {
-        if (arr.issues[i].issueIds.length == "0") {
-          arr.issues.splice(i, 1);
-          i--;
-        }
-      }
-
+    //上传病症
+    submitDisease() {
+      if (!this.diseaseUpdata.id) return this.$Message.error("请选择一项症候");
       this.axios
         .delete(
           `/answer/${this.examNo}/${this.caseId}/disease/${this.diseaseUpdata.id}`
         )
         .then(() => {
           this.http
-            .post(`/answer/${this.examNo}/${this.caseId}/disease`, arr)
+            .post(`/answer/${this.examNo}/${this.caseId}/disease`, {
+              id: this.diseaseUpdata.id,
+              issues: [
+                {
+                  issueIds: this.diseaseAskData,
+                  stageId: 1,
+                },
+                {
+                  issueIds: this.diseaseWatchData,
+                  stageId: 2,
+                },
+                {
+                  issueIds: this.diseaselistenData,
+                  stageId: 3,
+                },
+                {
+                  issueIds: this.diseasePressData,
+                  stageId: 4,
+                },
+              ],
+              name: this.diseaseUpdata.name,
+            })
             .then((res) => {
-              if (res.data) {
-                this.$Message.warning(
-                  `设置${this.diseaseUpdata.name + item}成功!`
-                );
+              if (res.code == "000000") {
+                this.getAlldata();
+                this.$Message.warning(`设置${this.diseaseUpdata.name}成功!`);
               } else {
                 this.$Message.error(res.msg);
               }
@@ -775,7 +744,6 @@ export default {
     },
     //获取焦点查询
     focusName() {
-      console.log(111);
       this.diseaseNameShow = true;
       this.axios
         .get("/meta/disease/name", {
@@ -859,6 +827,18 @@ export default {
 
   .dialectical_layout_left_two,
   .dialectical_layout_right_two {
+    .submit {
+      float: right;
+      margin-right: 20px;
+      margin-top: 10px;
+      width: 100px;
+      color: rgb(255, 255, 255);
+      background-color: rgb(35, 161, 248);
+    }
+    .disease {
+      position: absolute;
+      right: 10px;
+    }
     .main_cont {
       height: 500px;
       li {
