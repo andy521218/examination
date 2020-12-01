@@ -11,7 +11,10 @@
           </div>
           <div
             class="sonserve"
-            @click="confirm_show = true"
+            @click="
+              confirm_show = true;
+              fractionshow = true;
+            "
             v-if="authority == 'STUDENT'"
           >
             <img src="../../../assets/public/sonserve.png" alt="" />
@@ -55,7 +58,7 @@
       </div>
       <div class="case_main">
         <!-- 提交训练得分 -->
-        <div class="edit_dele" v-if="fractionshow">
+        <div class="edit_dele" v-if="number_show">
           <div class="edit">
             <div class="edit_title">
               <span class="title">本次训练得分</span>
@@ -83,7 +86,7 @@
           </div>
         </div>
         <!-- 提交确认 -->
-        <div class="edit_dele" v-if="confirm_show">
+        <div class="edit_dele" v-if="confirm_show" style="z-index: 99999">
           <div class="edit">
             <div class="edit_title">
               <span class="title" style="width: 100px">提示</span>
@@ -97,7 +100,10 @@
               <button
                 class="edit_submit"
                 style="margin-right: 40px"
-                @click="confirm_show = false"
+                @click="
+                  confirm_show = false;
+                  fractionshow = false;
+                "
               >
                 取消
               </button>
@@ -149,6 +155,7 @@ export default {
       authority: "",
       examNo: "",
       confirm_show: false,
+      number_show: false,
     };
   },
   components: {
@@ -201,10 +208,10 @@ export default {
       this.$router.push("/teachercase");
     },
     submit() {
+      this.number_show = true;
+      this.confirm_show = false;
       this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
         if (res.code == "000000") {
-          this.confirm_show = false;
-          this.fractionshow = true;
           this.fraction = res.data;
         } else {
           this.$Message.error(res.msg);
