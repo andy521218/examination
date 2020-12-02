@@ -1,5 +1,10 @@
 <template>
-  <div id="mymap"></div>
+  <div class="g6_map">
+    <div class="none_data" v-if="mapShow">
+      <span>暂无数据</span>
+    </div>
+    <div id="mymap" v-show="!mapShow"></div>
+  </div>
 </template>
 
 <script>
@@ -66,6 +71,7 @@ export default {
       diseasename: "",
       treat: "",
       agentia: "",
+      mapShow: false,
     };
   },
   mounted() {
@@ -112,6 +118,13 @@ export default {
   methods: {
     checkAnswer() {
       //问诊
+      if (
+        this.disease.length == 0 &&
+        this.diseasename.issueResults.length == "0"
+      ) {
+        this.mapShow = true;
+        return;
+      }
       let ask = [],
         diseaseask = [],
         watch = [],

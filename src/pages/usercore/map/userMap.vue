@@ -217,6 +217,15 @@ export default {
       height: 700px;
       margin: 0 auto;
     }
+    .none_data {
+      background: url("../../../assets/public/classroom.png") no-repeat center;
+      position: relative;
+      span {
+        position: absolute;
+        top: 400px;
+        left: 680px;
+      }
+    }
   }
 }
 </style>

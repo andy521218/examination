@@ -1,5 +1,10 @@
 <template>
-  <div id="contrast"></div>
+  <div class="g6_map">
+    <div class="none_data" v-if="mapShow">
+      <span>暂无数据</span>
+    </div>
+    <div id="contrast" v-show="!mapShow"></div>
+  </div>
 </template>
 
 <script>
@@ -67,6 +72,7 @@ export default {
       treat: "",
       agentia: "",
       treatcorrect: "",
+      mapShow: false,
     };
   },
   mounted() {
@@ -112,8 +118,16 @@ export default {
     });
   },
   methods: {
+    /*eslint-disable*/
     checkAnswer(correct) {
       //问诊
+      if (
+        this.disease.length == 0 &&
+        this.diseasename.issueResults.length == "0"
+      ) {
+        this.mapShow = true;
+        return;
+      }
       let ask = [],
         diseaseask = [],
         correctask = [],
@@ -639,127 +653,135 @@ export default {
         error;
       }
 
-      //病名 及 症候
-      let treatindex = 0;
-      this.mapData.nodes.push({
-        id: "0.4",
-        label: this.diseasename.answer.toString(),
-        correct: this.diseasename.correct,
-        shape: "multipleLabelsNode",
-        name: "treat",
-        size: [80, 30],
-      });
-      //当前病名错误
-      if (!this.diseasename.correct) {
+      try {
+        //病名 及 症候
+        let treatindex = 0;
         this.mapData.nodes.push({
-          id: "1.3",
-          label: this.diseasename.correctAnswer.toString(),
-          shape: "multipleLabelsNode",
-          name: "errortreat",
-          size: [80, 30],
-        });
-        correctname.forEach((ele) => {
-          ele.issueIds.forEach((item) => {
-            this.mapData.edges.push({
-              source: (item + 0.9).toString(),
-              target: "1.3",
-            });
-          });
-        });
-        this.mapData.edges.push({
-          source: "1.3",
-          target: "0.8",
-        });
-      } else {
-        //当前病名正确
-        correctname.forEach((ele) => {
-          ele.issueIds.forEach((item) => {
-            this.mapData.edges.push({
-              source: (item + 0.9).toString(),
-              target: "0.7",
-            });
-          });
-        });
-      }
-
-      this.disease.forEach((ele) => {
-        treatindex += 0.1;
-        treatindex.toFixed(1);
-        //病症名字 正确与否 都需要显示
-        this.mapData.nodes.push({
-          id: (ele.id + 0.8).toString(),
-          label: ele.answer.toString(),
-          correct: ele.correct,
+          id: "0.4",
+          label: this.diseasename.answer.toString(),
+          correct: this.diseasename.correct,
           shape: "multipleLabelsNode",
           name: "treat",
           size: [80, 30],
         });
-        //病症漏选项 如果病症错误
-        if (!ele.correct) {
+        //当前病名错误
+        if (!this.diseasename.correct) {
           this.mapData.nodes.push({
-            id: (ele.id + 0.9).toString(),
-            label: ele.correctAnswer.toString(),
+            id: "1.3",
+            label: this.diseasename.correctAnswer.toString(),
             shape: "multipleLabelsNode",
             name: "errortreat",
             size: [80, 30],
           });
-          correctdisease.forEach((y) => {
-            y.issues.forEach((item) => {
-              item.issueIds.forEach((k) => {
-                this.mapData.edges.push({
-                  source: (k + 0.9).toString(),
-                  target: (ele.id + 0.9).toString(),
-                });
+          correctname.forEach((ele) => {
+            ele.issueIds.forEach((item) => {
+              this.mapData.edges.push({
+                source: (item + 0.9).toString(),
+                target: "1.3",
               });
             });
           });
+          this.mapData.edges.push({
+            source: "1.3",
+            target: "0.8",
+          });
         } else {
-          //病症正确
-          correctdisease.forEach((y) => {
-            y.issues.forEach((item) => {
-              item.issueIds.forEach((k) => {
-                this.mapData.edges.push({
-                  source: (k + 0.9).toString(),
-                  target: (ele.id + 0.8).toString(),
-                });
+          //当前病名正确
+          correctname.forEach((ele) => {
+            ele.issueIds.forEach((item) => {
+              this.mapData.edges.push({
+                source: (item + 0.9).toString(),
+                target: "0.7",
               });
             });
           });
         }
 
-        //四诊连接症候
-        ele.issueResults.forEach((item) => {
-          item.issues.forEach((k) => {
-            this.mapData.edges.push({
-              source: (k.issueId + treatindex).toString(),
-              target: (ele.id + 0.8).toString(),
+        this.disease.forEach((ele) => {
+          treatindex += 0.1;
+          treatindex.toFixed(1);
+          //病症名字 正确与否 都需要显示
+          this.mapData.nodes.push({
+            id: (ele.id + 0.8).toString(),
+            label: ele.answer.toString(),
+            correct: ele.correct,
+            shape: "multipleLabelsNode",
+            name: "treat",
+            size: [80, 30],
+          });
+          //病症漏选项 如果病症错误
+          if (!ele.correct) {
+            this.mapData.nodes.push({
+              id: (ele.id + 0.9).toString(),
+              label: ele.correctAnswer.toString(),
+              shape: "multipleLabelsNode",
+              name: "errortreat",
+              size: [80, 30],
+            });
+            correctdisease.forEach((y) => {
+              y.issues.forEach((item) => {
+                item.issueIds.forEach((k) => {
+                  this.mapData.edges.push({
+                    source: (k + 0.9).toString(),
+                    target: (ele.id + 0.9).toString(),
+                  });
+                });
+              });
+            });
+          } else {
+            //病症正确
+            correctdisease.forEach((y) => {
+              y.issues.forEach((item) => {
+                item.issueIds.forEach((k) => {
+                  this.mapData.edges.push({
+                    source: (k + 0.9).toString(),
+                    target: (ele.id + 0.8).toString(),
+                  });
+                });
+              });
+            });
+          }
+
+          //四诊连接症候
+          ele.issueResults.forEach((item) => {
+            item.issues.forEach((k) => {
+              this.mapData.edges.push({
+                source: (k.issueId + treatindex).toString(),
+                target: (ele.id + 0.8).toString(),
+              });
             });
           });
         });
-      });
+      } catch (error) {
+        error;
+      }
 
-      //四诊链接病名
-      this.diseasename.issueResults.forEach((ele) => {
-        ele.issues.forEach((item) => {
-          this.mapData.edges.push({
-            source: (item.issueId + 0.6).toString(),
-            target: "0.4",
+      try {
+        //四诊链接病名
+        this.diseasename.issueResults.forEach((ele) => {
+          ele.issues.forEach((item) => {
+            this.mapData.edges.push({
+              source: (item.issueId + 0.6).toString(),
+              target: "0.4",
+            });
           });
         });
-      });
 
-      //病名 症候 连接 治疗
-      this.mapData.edges.push({
-        source: "0.4",
-        target: "0.7",
-      });
-      //病症正确与否都需要连接治疗
-      this.disease.forEach((ele) => {
+        //病名 症候 连接 治疗
         this.mapData.edges.push({
-          source: (ele.id + 0.8).toString(),
+          source: "0.4",
           target: "0.7",
         });
-      });
+        //病症正确与否都需要连接治疗
+        this.disease.forEach((ele) => {
+          this.mapData.edges.push({
+            source: (ele.id + 0.8).toString(),
+            target: "0.7",
+          });
+        });
+      } catch (error) {
+        error;
+      }
 
       G6.registerNode(
         "multipleLabelsNode",

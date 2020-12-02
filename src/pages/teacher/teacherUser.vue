@@ -2,7 +2,7 @@
   <div class="teacher_user">
     <div class="main_mask" v-show="mask"></div>
     <!-- 学习记录 -->
-    <view-records v-if="0"></view-records>
+    <view-records v-show="recordshow" :recordData="recordData"></view-records>
     <!-- switch -->
     <!-- <edit-dele :edit_title="edit_title" v-if="0">
       <template v-slot:edit_p>
@@ -169,6 +169,8 @@ export default {
       classRoomIdText: "",
       editload: false,
       mask: false,
+      recordData: "",
+      recordshow: false,
     };
   },
   components: {
@@ -237,11 +239,28 @@ export default {
         .get(`${e.id}/train/list`, {
           params: {
             page: "1",
-            size: "100",
+            size: "500",
           },
         })
         .then((res) => {
-          console.log(res);
+          if (res.data.rows.length == "0") {
+            this.$Message.error("暂无学习记录");
+            return;
+          }
+          let flag = false;
+          for (let i = 0; i < res.data.rows.length; i++) {
+            if (res.data.rows[i].status == "2") {
+              flag = true;
+              break;
+            }
+          }
+          if (!flag) {
+            this.$Message.error("暂无学习记录");
+            return;
+          }
+          this.recordshow = true;
+          this.recordData = res.data;
+          console.log(res.data);
         });
     },
     submit() {

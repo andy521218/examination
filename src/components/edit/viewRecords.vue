@@ -3,7 +3,7 @@
     <div class="edit">
       <div class="edit_title">
         <span class="title">学习记录</span>
-        <span class="edit_switch"></span>
+        <span class="edit_switch" @click="close"></span>
       </div>
       <div class="records_bottom scrollbar">
         <ul class="records_header">
@@ -15,173 +15,25 @@
           <li class="table_smal">成绩</li>
         </ul>
         <ul class="records_cont">
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">1</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
-          </li>
-          <li>
-            <p class="table_smal">心系病</p>
-            <p class="table_smal">张三</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_big">2020-05-20 13:14</p>
-            <p class="table_smal">50min</p>
-            <p class="table_smal">90</p>
+          <li
+            v-for="(item, index) in recordData.rows"
+            :key="index"
+            v-show="item.status == '2'"
+          >
+            <p class="table_smal">
+              {{ list[item.diseaseType].name }}
+            </p>
+            <p class="table_smal">
+              {{ item.name }}
+            </p>
+            <p class="table_big">
+              {{ item.beginTime | lastTime(item.beginTime) }}
+            </p>
+            <p class="table_big">
+              {{ item.endTime | lastTime(item.endTime) }}
+            </p>
+            <p class="table_smal">{{ item.duringTime / 60 }}min</p>
+            <p class="table_smal">{{ Math.round(item.score) }}</p>
           </li>
         </ul>
       </div>
@@ -192,6 +44,38 @@
 <script>
 export default {
   name: "view-records",
+  props: ["recordData"],
+  data() {
+    return {
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
+    };
+  },
+  methods: {
+    close() {
+      this.$parent.recordshow = false;
+    },
+  },
 };
 </script>
 
@@ -210,7 +94,7 @@ export default {
       width: 245px;
     }
     .records_header {
-      width: 100%;
+      width: 97%;
       margin: 0 auto;
       display: flex;
     }
@@ -223,13 +107,10 @@ export default {
       width: 97%;
       li {
         margin-top: 8px;
-        width: 99%;
+        width: 100%;
         display: flex;
         height: 45px;
         line-height: 45px;
-        p:last-child{
-            padding-left: 45px;
-        }
       }
       li:nth-child(odd) {
         background: rgb(26, 127, 195, 0.2);
