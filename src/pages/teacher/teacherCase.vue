@@ -89,6 +89,7 @@
       </ul>
     </div>
     <turn-page
+      ref="turnPage"
       v-show="total > size"
       :totaltotal="Number(total)"
       :size="Number(size)"
@@ -225,7 +226,8 @@ export default {
           this.$Message.warning("设为考核案例成功!");
           this.allShow = false;
           this.mask = false;
-          this.getManage();
+          this.$refs.turnPage.change;
+          this.getManage(this.$refs.turnPage.pages);
         } else {
           this.$Message.error("案例未完成,不可以设置为考核案例!");
         }
@@ -239,7 +241,7 @@ export default {
           this.$Message.warning("设为训练案例成功!");
           this.trainshow = false;
           this.mask = false;
-          this.getManage();
+          this.getManage(this.$refs.turnPage.pages);
         } else {
           this.$Message.error("案例未完成,不可以设置为训练案例!");
         }

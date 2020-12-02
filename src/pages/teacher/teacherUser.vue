@@ -232,8 +232,17 @@ export default {
       this.classRoomIdText = "";
       return true;
     },
-    seeRecord() {
-      this.$Message.error("功能待完善");
+    seeRecord(e) {
+      this.axios
+        .get(`${e.id}/train/list`, {
+          params: {
+            page: "1",
+            size: "100",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        });
     },
     submit() {
       if (!this.checkclassRoomId()) return;

@@ -17,6 +17,7 @@ export default {
   data() {
     return {
       pageNumber: "",
+      pages: "1",
     };
   },
   methods: {
@@ -24,6 +25,7 @@ export default {
       this.pageNumber = index;
     },
     change(page) {
+      this.pages = page;
       this.$emit("getData", page);
     },
   },

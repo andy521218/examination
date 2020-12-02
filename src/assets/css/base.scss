@@ -575,8 +575,19 @@ input[type="checkbox"]:checked:before {
     background-color: transparent;
   }
 
+  ::-moz-scrollbar {
+    width: 10px;
+    background-color: transparent;
+  }
+
   /*定义滚动条轨道 内阴影+圆角*/
   ::-webkit-scrollbar-track {
+    // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: rgb(75, 111, 143);
+  }
+
+  ::-moz-scrollbar-track {
     // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
     background-color: rgb(75, 111, 143);
@@ -589,8 +600,18 @@ input[type="checkbox"]:checked:before {
     background-color: rgb(0, 235, 255);
   }
 
+  ::-moz-scrollbar-thumb {
+    border-radius: 10px;
+    // -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: rgb(0, 235, 255);
+  }
+
   /*定义最上方和最下方的按钮*/
   ::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  -moz-scrollbar-button {
     display: none;
   }
 }
