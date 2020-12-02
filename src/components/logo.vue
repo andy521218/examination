@@ -15,6 +15,20 @@ export default {
   },
   methods: {
     link() {
+      if (this.authority == "STUDENT") {
+        let url = window.location.href;
+        if (
+          /userask/.test(url) ||
+          /userlook/.test(url) ||
+          /userHear/.test(url) ||
+          /usercut/.test(url) ||
+          /userdialectical/.test(url) ||
+          /usertreatment/.test(url)
+        ) {
+          this.$parent.index_show = true;
+          return;
+        }
+      }
       this.$router.push("/index");
     },
   },

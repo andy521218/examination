@@ -7,7 +7,7 @@
         <div class="home_case_left">
           <div class="stop" v-if="authority == 'STUDENT'">
             <img src="../../../assets/public/stop.png" alt="" />
-            <span>暂停</span>
+            <span @click="stopTime">暂停</span>
           </div>
           <div
             class="sonserve"
@@ -111,6 +111,55 @@
             </div>
           </div>
         </div>
+        <!-- 暂停确认 -->
+        <div class="edit_dele" v-if="stop_show">
+          <div class="edit">
+            <div class="edit_title">
+              <span class="title" style="width: 80px">已暂停</span>
+            </div>
+            <ul>
+              <li style="text-align: center">
+                <p style="font-weight: bold">案例训练已暂停</p>
+              </li>
+            </ul>
+            <div class="edit_btn_box">
+              <button
+                class="edit_submit"
+                style="margin-right: 40px"
+                @click="$router.push('casehome')"
+              >
+                返回首页
+              </button>
+              <button class="edit_submit" @click="startTime">继续训练</button>
+            </div>
+          </div>
+        </div>
+        <!-- 返回首页 -->
+        <div class="edit_dele" v-if="index_show">
+          <div class="edit">
+            <div class="edit_title">
+              <span class="title" style="width: 80px">提 示</span>
+            </div>
+            <ul>
+              <li style="text-align: center">
+                <p style="font-weight: bold">确定返回首页并暂停案例训练吗</p>
+                <span style="font-weight: bold"
+                  >（您可以在个人中心-学习记录中继续完成没有完成的训练）</span
+                >
+              </li>
+            </ul>
+            <div class="edit_btn_box">
+              <button
+                class="edit_submit"
+                style="margin-right: 40px"
+                @click="$router.push('casehome')"
+              >
+                返回首页
+              </button>
+              <button class="edit_submit" @click="startTime">继续训练</button>
+            </div>
+          </div>
+        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -154,8 +203,11 @@ export default {
       bgIndex: "0",
       authority: "",
       examNo: "",
+      time: "",
       confirm_show: false,
       number_show: false,
+      stop_show: false,
+      index_show: false,
     };
   },
   components: {
@@ -169,6 +221,25 @@ export default {
     }
     this.examNo = localStorage.getItem("examNo");
     this.authority = localStorage.getItem("authority");
+    if (this.authority == "STUDENT") {
+      let url = window.location.href;
+      if (
+        /userask/.test(url) ||
+        /userlook/.test(url) ||
+        /userHear/.test(url) ||
+        /usercut/.test(url) ||
+        /userdialectical/.test(url) ||
+        /usertreatment/.test(url)
+      ) {
+        this.time = setInterval(() => {
+          this.http.put(
+            `/exam/${this.examNo}/during?${this.qs.stringify({
+              during: 30,
+            })}`
+          );
+        }, 30000);
+      }
+    }
     if (this.authority == "STUDENT") {
       this.item = [
         {
@@ -218,6 +289,25 @@ export default {
         }
       });
     },
+    stopTime() {
+      this.fractionshow = true;
+      this.stop_show = true;
+      clearInterval(this.time);
+    },
+    startTime() {
+      this.fractionshow = false;
+      this.stop_show = false;
+      this.index_show = false;
+      this.time = setInterval(() => {
+        this.http.put(`/exam/${this.examNo}/during`, {
+          during: "30",
+        });
+      }, 30000);
+    },
+  },
+  beforeRouteLeave(to, from, next) {
+    clearInterval(this.time);
+    next();
   },
 };
 </script>

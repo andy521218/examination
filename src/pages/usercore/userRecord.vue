@@ -40,7 +40,7 @@
             <td>{{ item.name }}</td>
             <td>{{ item.beginTime | lastTime(item.beginTime) }}</td>
             <td>{{ item.endTime | lastTime(item.endTime, "未完成") }}</td>
-            <td>{{ item.endTime | duringTime(item.beginTime) }}</td>
+            <td>{{ item.duringTime / 60 }}min</td>
             <td>{{ Math.round(item.score) }}分</td>
             <td v-show="item.status == 1">
               <span @click="toKeep(item)">继续学习</span>
