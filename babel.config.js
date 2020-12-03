@@ -2,8 +2,16 @@ module.exports = {
   "presets": [
     '@vue/cli-plugin-babel/preset'
   ],
-  "plugins": [["import", {
+  "plugins": [
+    ["import", {
     "libraryName": "view-design",
     "libraryDirectory": "src/components"
-  }]]
+  }],
+  [
+    "component",
+    {
+      "libraryName": "element-ui",
+      "styleLibraryName": "theme-chalk"
+    }
+  ]]
 }

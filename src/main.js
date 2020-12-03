@@ -7,7 +7,7 @@ import 'nprogress/nprogress.css'
 import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
-import { Switch ,Message,Circle,Icon } from 'view-design';
+import { Switch ,Message,Circle,Icon,  } from 'view-design';
 import axios from "axios"
 import http from "../src/http/http"
 import upload from "../src/http/upload"
@@ -17,19 +17,20 @@ import teacher from "./router/teacher"
 import user from "./router/user"
 import qs from "qs";
 import filters from './filters'
+import {DatePicker,TimePicker} from "element-ui"
 
 
 Vue.component('i-switch', Switch);
 Vue.component('i-circle', Circle);
 Vue.component('i-con', Icon);
 Vue.use(VueAxios,axios);
-
+Vue.use(DatePicker,TimePicker)
 
 Vue.use(filters)
 Vue.prototype.http = http
 Vue.prototype.qs = qs
-Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
-// Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
+// Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
+Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message=Message
 Vue.config.productionTip = false
