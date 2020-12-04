@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "add-discuss",
-  props: ["discussData", "messageId"],
+  props: ["discussData", "messageId", "index", "privateTopic"],
   data() {
     return {
       message: "",
@@ -36,6 +36,7 @@ export default {
         this.$Message.error("请输入要回复的内容");
         return;
       }
+
       if (!this.messageId) {
         this.axios
           .post(`/topic/${this.discussData.topicId}/message`, {
@@ -43,9 +44,18 @@ export default {
           })
           .then((res) => {
             if (res.code == "000000") {
+              this.axios
+                .get(`/topic/${this.discussData.topicId}/message`, {
+                  params: {
+                    page: "1",
+                    size: "500",
+                  },
+                })
+                .then((res) => {
+                  this.$parent.replyTwoData = res.data.rows;
+                  this.$parent.notice_top_show = this.index;
+                });
               this.close();
-            } else {
-              this.$Message.error(res.msg);
             }
           });
         return;
@@ -56,6 +66,17 @@ export default {
         })
         .then((res) => {
           if (res.code == "000000") {
+            this.axios
+              .get(`/topic/${this.discussData.topicId}/message`, {
+                params: {
+                  page: "1",
+                  size: "500",
+                },
+              })
+              .then((res) => {
+                this.$parent.notice_top_show = this.index;
+                this.$parent.replyTwoData = res.data.rows;
+              });
             this.close();
           } else {
             this.$Message.error(res.msg);

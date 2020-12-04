@@ -115,7 +115,11 @@ export default {
               this.diseaseType = "";
               this.message = "";
               this.title = "";
-              this.$Message.warning("发布问题成功!");
+              let authority = localStorage.getItem("authority");
+              if (authority == "STUDENT") {
+                this.$store.state.menuId = 2;
+                this.$router.push("/messagemy");
+              }
             } else {
               this.$Message.error(res.msg);
             }

@@ -46,7 +46,6 @@ export default {
       if (this.$store.state.menuId == "-1") {
         this.$store.state.menuId = localStorage.getItem("bgindex");
       }
-
       this.axios.get("/users/current").then((res) => {
         if (res.code == "000000") {
           localStorage.setItem("authority", res.data.authority);

@@ -4,10 +4,12 @@
       v-if="discuss_show"
       :discussData="discussData"
       :messageId="messageId"
+      :index="index"
+      :privateTopic="privateTopic"
     ></add-discuss>
     <see-img :url="url" v-show="imgs_show"></see-img>
     <div class="main_header">
-      <button class="dele" v-if="dele">批量删除</button>
+      <button class="dele" v-show="dele" @click="deleTopic">批量删除</button>
       <label for>分类</label>
       <select name id class="select" v-model="diseaseType">
         <option value>请选择病系</option>
@@ -36,7 +38,12 @@
             <span class="load_text">展开回复</span>
           </div> -->
           <div class="message_left">
-            <input type="checkbox" v-if="dele" />
+            <input
+              type="checkbox"
+              v-show="dele"
+              v-model="deleCheck"
+              :value="item.topicId"
+            />
             <div class="message_img">
               <!-- <div class="notice" v-show="notice_show">
                 <div class="notice_top">发送私信</div>
@@ -58,7 +65,9 @@
               @click="seeImg(i)"
             />
             <div class="message_btn">
-              <span class="message_reply" @click="reply(item)">回复</span>
+              <span class="message_reply" @click="reply(item, index)"
+                >回复</span
+              >
               <span>{{ item.createTime | messageTime(item.createTime) }}</span>
             </div>
           </div>
@@ -100,7 +109,7 @@
                 </div>
 
                 <!-- 三级回复 -->
-                <div class="message_three_cont">
+                <div class="message_three_cont" v-if="0">
                   <ul class="message_two">
                     <li class="message_two_item three">
                       <div class="message_two_top">
@@ -191,6 +200,7 @@ import addDiscuss from "../components/edit/addDiscuss";
 import seeImg from "../components/edit/seeImg";
 export default {
   name: "discuss",
+  props: ["dele", "privateTopic"],
   data() {
     return {
       list: [
@@ -215,6 +225,7 @@ export default {
           name: "肾系病",
         },
       ],
+      deleCheck: [],
       diseaseType: "",
       keyword: "",
       topicData: "",
@@ -225,19 +236,23 @@ export default {
       replyTwoData: "",
       messageId: "",
       url: "",
+      index: "",
     };
   },
   components: {
     addDiscuss,
     seeImg,
   },
-  props: ["dele"],
   mounted() {
-    this.getTopic();
+    if (!this.privateTopic) {
+      this.getTopic();
+    } else {
+      this.getMine();
+    }
   },
   methods: {
     //获取话题列表
-    getTopic() {
+    getTopic(index = "-1") {
       this.axios
         .get("/topic", {
           params: {
@@ -248,17 +263,33 @@ export default {
         })
         .then((res) => {
           this.topicData = res.data.rows;
-          console.log(res);
+          this.notice_top_show = index;
+        });
+    },
+    //获取我的问题
+    getMine(index = "-1") {
+      this.axios
+        .get("/topic/mine", {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.topicData = res.data.rows;
+          this.notice_top_show = index;
         });
     },
     // 1级回复
-    reply(e) {
+    reply(e, index) {
+      this.index = index;
       this.discuss_show = true;
       this.discussData = e;
     },
     //2级回复
     replyTwo(item, index) {
       this.notice_top_show = index;
+      this.discussData = item;
       this.axios
         .get(`/topic/${item.topicId}/message`, {
           params: {
@@ -280,6 +311,20 @@ export default {
     seeImg(i) {
       this.imgs_show = true;
       this.url = this.$url + i;
+    },
+    //删除话题
+    deleTopic() {
+      this.axios.delete(`/topic/${this.deleCheck.toString()}`).then((res) => {
+        if (res.code == "000000") {
+          if (!this.privateTopic) {
+            this.getTopic();
+          } else {
+            this.getMine();
+          }
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };
@@ -497,7 +542,7 @@ export default {
               }
             }
             .message_two_item_bottom {
-              border-bottom: 1px solid rgb(255, 255, 255);
+              // border-bottom: 1px solid rgb(255, 255, 255);
               position: relative;
               p {
                 display: inline-block;

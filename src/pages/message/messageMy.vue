@@ -1,6 +1,6 @@
 <template>
   <div class="message_forum">
-    <discuss :dele="dele"></discuss>
+    <discuss :dele="dele" :privateTopic="privateTopic"></discuss>
   </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
   data() {
     return {
       dele: true,
+      privateTopic: true,
     };
   },
   components: {
