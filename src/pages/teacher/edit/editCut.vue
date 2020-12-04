@@ -39,8 +39,8 @@
                 >
                   <div
                     class="item_cont"
-                    style="width: 94px"
                     v-for="(i, index) in item"
+                    style="width: 117px"
                     :key="index"
                   >
                     <input
@@ -51,7 +51,11 @@
                       :value="i.name"
                       @change="putPulse(i)"
                     />
-                    <p class="item_cont_title" @click="seeImg(i)">
+                    <p
+                      class="item_cont_title"
+                      style="width: 70px"
+                      @click="seeImg(i)"
+                    >
                       {{ i.name }}
                     </p>
                   </div>
@@ -189,7 +193,7 @@ export default {
         for (let i = 0; i < res.data.optinos.length; i++) {
           flag = false;
           arr.push(res.data.optinos[i]);
-          if (i % 10 == "9") {
+          if (i % 8 == "7") {
             this.pulseData.optinos.push(arr);
             arr = [];
             flag = true;
@@ -198,7 +202,6 @@ export default {
         if (!flag) {
           this.pulseData.optinos.push(arr);
         }
-        this.pulseData.optinos;
         this.answer = res.data.answer;
         res.data.optinos.forEach((item) => {
           if (res.data.answer == item.name) {

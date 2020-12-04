@@ -35,7 +35,7 @@
                   >
                     <div
                       class="item_cont"
-                      style="width: 94px"
+                      style="width: 117px"
                       v-for="(i, index) in item"
                       :key="index"
                     >
@@ -432,14 +432,21 @@ export default {
         .then((res) => {
           this.pulseData = [];
           let arr = [];
+          let flag = false;
           for (let i = 0; i < res.data.options.length; i++) {
+            flag = false;
             arr.push(res.data.options[i]);
-            if (i % 10 == "1") {
+            console.log(i % 8);
+            if (i % 8 == "7") {
               this.pulseData.push(arr);
               arr = [];
+              flag = true;
             }
           }
-          this.pulseData.reverse();
+          if (!flag) {
+            this.pulseData.push(arr);
+          }
+
           if (/localhost/.test(res.data.picUrl)) {
             this.imgsUrl = res.data.picUrl.replace(
               /localhost/,
