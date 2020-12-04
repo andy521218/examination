@@ -1,79 +1,106 @@
 <template>
   <div class="message_forum scrollbar">
-    <add-discuss v-if="0"></add-discuss>
-    <see-img :url="url" v-if="0"></see-img>
+    <add-discuss
+      v-if="discuss_show"
+      :discussData="discussData"
+      :messageId="messageId"
+    ></add-discuss>
+    <see-img :url="url" v-show="imgs_show"></see-img>
     <div class="main_header">
       <button class="dele" v-if="dele">批量删除</button>
       <label for>分类</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select name id class="select" v-model="diseaseType">
+        <option value>请选择病系</option>
+        <option :value="item.id" v-for="(item, index) in list" :key="index">
+          {{ item.name }}
+        </option>
       </select>
-      <input type="text" class="text_box" placeholder="请输入关键词" />
+      <input
+        type="text"
+        v-model="keyword"
+        class="text_box"
+        placeholder="请输入关键词"
+      />
       <button class="submit">检索</button>
     </div>
     <div class="main_table">
       <ul class="message_list">
         <!-- 1级问题 -->
-        <li class="message_item edit_class">
-          <div class="load">
+        <li
+          class="message_item edit_class"
+          v-for="(item, index) in topicData"
+          :key="index"
+        >
+          <!-- <div class="load" v-show="notice_top_show == index">
             <span class="load_icon"></span>
             <span class="load_text">展开回复</span>
-          </div>
+          </div> -->
           <div class="message_left">
             <input type="checkbox" v-if="dele" />
             <div class="message_img">
-              <div class="notice">
+              <!-- <div class="notice" v-show="notice_show">
                 <div class="notice_top">发送私信</div>
                 <div class="notice_bottom"></div>
-              </div>
+              </div> -->
               <img src="../assets/img/home/user.png" title="发送私信" />
-              <span>张三</span>
+              <span>{{ item.name }}</span>
             </div>
-            <div class="message_title">
-              <span>大数据的哈数据库的哈萨克觉得哈萨克的撒大苏打实打实发生发生得等哈数据库的哈萨克记得哈数据库说的话卡刷生得等哈数据库的哈萨克记得生得等哈数据库的哈萨克记得</span>
-              <span>大厦打开萨迪克吉萨高地和凯撒干点啥大哥杀手看到过哈萨克结婚打算空间和空间号登机口撒谎打卡时间</span>
+            <div class="message_title" @click="replyTwo(item, index)">
+              <span>{{ item.title }}</span>
+              <span>{{ item.message }}</span>
             </div>
           </div>
           <div class="message_right">
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
+            <img
+              v-for="(i, index) in item.imgs"
+              :key="index"
+              :src="$url + i"
+              @click="seeImg(i)"
+            />
             <div class="message_btn">
-              <span class="message_reply">回复</span>
-              <span>2020-07-24</span>
+              <span class="message_reply" @click="reply(item)">回复</span>
+              <span>{{ item.createTime | messageTime(item.createTime) }}</span>
             </div>
           </div>
           <!-- 二级回复 -->
-          <div class="message_two_cont" v-if="1">
+          <div
+            class="message_two_cont"
+            v-for="(replay, replayIndex) in replyTwoData"
+            v-show="notice_top_show == index"
+            :key="replayIndex"
+          >
             <ul class="message_two">
               <li class="message_two_item">
                 <div class="message_two_top">
                   <div class="message_user_img">
-                    <div class="notice">
+                    <!-- <div class="notice" v-show="notice_top_show">
                       <div class="notice_top">发送私信</div>
                       <div class="notice_bottom"></div>
-                    </div>
-                    <img src="../assets/img/home/user.png" alt />
+                    </div> -->
+                    <img src="../assets/img/home/user.png" title="发送私信" />
                   </div>
-                  <span>同学1:</span>
+                  <span>{{ replay.name }}:</span>
                 </div>
 
                 <div class="message_two_item_bottom">
-                  <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
+                  <p>
+                    {{ replay.message }}
+                  </p>
                   <div class="message_two_item_right">
-                    <span class="message_two_item_btn">回复</span>
+                    <span
+                      class="message_two_item_btn"
+                      @click="replyThree(item, replay)"
+                      >回复</span
+                    >
                     <span class="message_two_item_btn" v-if="dele">删除</span>
-                    <span class="message_two_item_time">2020-07-13 18:20</span>
+                    <span class="message_two_item_time">{{
+                      replay.createTime | lastTime(replay.createTime)
+                    }}</span>
                   </div>
                 </div>
 
                 <!-- 三级回复 -->
-                <div class="message_three_cont" v-if="1">
+                <div class="message_three_cont">
                   <ul class="message_two">
                     <li class="message_two_item three">
                       <div class="message_two_top">
@@ -85,11 +112,17 @@
                         <span>同学2</span>
                       </div>
                       <div class="message_three_item_bottom">
-                        <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
+                        <p>
+                          撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的
+                        </p>
                         <div class="message_three_item_right">
                           <span class="message_three_item_btn">回复</span>
-                          <span class="message_three_item_btn" v-if="dele">删除</span>
-                          <span class="message_three_item_time">2020-07-13 18:20</span>
+                          <span class="message_three_item_btn" v-if="dele"
+                            >删除</span
+                          >
+                          <span class="message_three_item_time"
+                            >2020-07-13 18:20</span
+                          >
                         </div>
                       </div>
                     </li>
@@ -103,11 +136,17 @@
                         <span>同学2</span>
                       </div>
                       <div class="message_three_item_bottom">
-                        <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
+                        <p>
+                          撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的
+                        </p>
                         <div class="message_three_item_right">
                           <span class="message_three_item_btn">回复</span>
-                          <span class="message_three_item_btn" v-if="dele">删除</span>
-                          <span class="message_three_item_time">2020-07-13 18:20</span>
+                          <span class="message_three_item_btn" v-if="dele"
+                            >删除</span
+                          >
+                          <span class="message_three_item_time"
+                            >2020-07-13 18:20</span
+                          >
                         </div>
                       </div>
                     </li>
@@ -121,165 +160,17 @@
                         <span>同学2</span>
                       </div>
                       <div class="message_three_item_bottom">
-                        <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
+                        <p>
+                          撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的
+                        </p>
                         <div class="message_three_item_right">
                           <span class="message_three_item_btn">回复</span>
-                          <span class="message_three_item_btn" v-if="dele">删除</span>
-                          <span class="message_three_item_time">2020-07-13 18:20</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="message_item edit_class">
-          <div class="load">
-            <span class="load_icon"></span>
-            <span class="load_text">展开回复</span>
-          </div>
-          <div class="message_left">
-            <input type="checkbox" v-if="dele" />
-            <div class="message_img">
-              <div class="notice">
-                <div class="notice_top">发送私信</div>
-                <div class="notice_bottom"></div>
-              </div>
-              <img src="../assets/img/home/user.png" title="发送私信" />
-              <span>张三</span>
-            </div>
-            <div class="message_title">
-              <span>大数据的哈数据库的哈萨克觉得哈萨克的撒大苏打实打实发生发生得等哈数据库的哈萨克记得哈数据库说的话卡刷生得等哈数据库的哈萨克记得生得等哈数据库的哈萨克记得</span>
-              <span>大厦打开萨迪克吉萨高地和凯撒干点啥大哥杀手看到过哈萨克结婚打算空间和空间号登机口撒谎打卡时间</span>
-            </div>
-          </div>
-          <div class="message_right">
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
-            <div class="message_btn">
-              <span class="message_reply">回复</span>
-              <span>2020-07-24</span>
-            </div>
-          </div>
-          <!-- 二级回复 -->
-          <div class="message_two_cont" v-if="1">
-            <ul class="message_two">
-              <li class="message_two_item">
-                <div class="message_two_top">
-                  <div class="message_user_img">
-                    <div class="notice">
-                      <div class="notice_top">发送私信</div>
-                      <div class="notice_bottom"></div>
-                    </div>
-                    <img src="../assets/img/home/user.png" alt />
-                  </div>
-                  <span>同学1:</span>
-                </div>
-                <div class="message_two_item_bottom">
-                  <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
-                  <div class="message_two_item_right">
-                    <span class="message_two_item_btn">回复</span>
-                    <span class="message_two_item_btn" v-if="dele">删除</span>
-                    <span class="message_two_item_time">2020-07-13 18:20</span>
-                  </div>
-                </div>
-
-                <!-- 三级回复 -->
-                <div class="message_three_cont" v-if="1">
-                  <ul class="message_two">
-                    <li class="message_two_item three">
-                      <div class="message_two_top">
-                        <div class="message_user_img">
-                          <img src="../assets/img/home/user.png" alt />
-                        </div>
-                        <span>同学1</span>
-                        <span>回复</span>
-                        <span>同学2</span>
-                      </div>
-                      <div class="message_three_item_bottom">
-                        <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
-                        <div class="message_three_item_right">
-                          <span class="message_three_item_btn">回复</span>
-                          <span class="message_three_item_btn" v-if="dele">删除</span>
-                          <span class="message_three_item_time">2020-07-13 18:20</span>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </li>
-        <li class="message_item edit_class">
-          <div class="message_left">
-            <input type="checkbox" v-if="dele" />
-            <div class="message_img">
-              <div class="notice">
-                <div class="notice_top">发送私信</div>
-                <div class="notice_bottom"></div>
-              </div>
-              <img src="../assets/img/home/user.png" title="发送私信" />
-              <span>张三</span>
-            </div>
-            <div class="message_title">
-              <span>大数据的哈数据库的哈萨克觉得哈萨克觉dasdasdas的撒大苏打实打实发生发生得等哈数据库的哈萨克记得哈数据库说的话卡刷点卡数据的哈萨克</span>
-              <span>大厦打开萨迪克吉萨高地和凯撒干点啥大哥杀手看到过哈萨克结婚打算空间和空间号登机口撒谎打卡时间</span>
-            </div>
-          </div>
-          <div class="message_right">
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
-            <img src="../assets/img/home/user.png" alt />
-            <div class="message_btn">
-              <span class="message_reply">回复</span>
-              <span>2020-07-24</span>
-            </div>
-          </div>
-          <!-- 二级回复 -->
-          <div class="message_two_cont" v-if="1">
-            <ul class="message_two">
-              <li class="message_two_item">
-                <div class="message_two_top">
-                  <div class="message_user_img">
-                    <div class="notice">
-                      <div class="notice_top">发送私信</div>
-                      <div class="notice_bottom"></div>
-                    </div>
-                    <img src="../assets/img/home/user.png" alt />
-                  </div>
-                  <span>同学1:</span>
-                </div>
-                <div class="message_two_item_bottom">
-                  <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
-                  <div class="message_two_item_right">
-                    <span class="message_two_item_btn">回复</span>
-                    <span class="message_two_item_btn" v-if="dele">删除</span>
-                    <span class="message_two_item_time">2020-07-13 18:20</span>
-                  </div>
-                </div>
-
-                <!-- 三级回复 -->
-                <div class="message_three_cont" v-if="1">
-                  <ul class="message_two">
-                    <li class="message_two_item three">
-                      <div class="message_two_top">
-                        <div class="message_user_img">
-                          <img src="../assets/img/home/user.png" alt />
-                        </div>
-                        <span>同学1</span>
-                        <span>回复</span>
-                        <span>同学2</span>
-                      </div>
-                      <div class="message_three_item_bottom">
-                        <p>撒大撒大撒的撒和节能宣传周名称的的的的大撒大撒大撒的撒和节能宣传周名称的的的的</p>
-                        <div class="message_three_item_right">
-                          <span class="message_three_item_btn">回复</span>
-                          <span class="message_three_item_btn" v-if="dele">删除</span>
-                          <span class="message_three_item_time">2020-07-13 18:20</span>
+                          <span class="message_three_item_btn" v-if="dele"
+                            >删除</span
+                          >
+                          <span class="message_three_item_time"
+                            >2020-07-13 18:20</span
+                          >
                         </div>
                       </div>
                     </li>
@@ -302,8 +193,38 @@ export default {
   name: "discuss",
   data() {
     return {
-      url:
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600503265386&di=d1fea52a78eeff71cf94e6555e73b2d7&imgtype=0&src=http%3A%2F%2Ft9.baidu.com%2Fit%2Fu%3D3363001160%2C1163944807%26fm%3D79%26app%3D86%26f%3DJPEG%3Fw%3D1280%26h%3D830",
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
+      diseaseType: "",
+      keyword: "",
+      topicData: "",
+      discussData: "",
+      discuss_show: false,
+      imgs_show: false,
+      notice_top_show: "-1",
+      replyTwoData: "",
+      messageId: "",
+      url: "",
     };
   },
   components: {
@@ -311,6 +232,56 @@ export default {
     seeImg,
   },
   props: ["dele"],
+  mounted() {
+    this.getTopic();
+  },
+  methods: {
+    //获取话题列表
+    getTopic() {
+      this.axios
+        .get("/topic", {
+          params: {
+            keyword: this.keyword,
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.topicData = res.data.rows;
+          console.log(res);
+        });
+    },
+    // 1级回复
+    reply(e) {
+      this.discuss_show = true;
+      this.discussData = e;
+    },
+    //2级回复
+    replyTwo(item, index) {
+      this.notice_top_show = index;
+      this.axios
+        .get(`/topic/${item.topicId}/message`, {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.replyTwoData = res.data.rows;
+        });
+    },
+    //3级回复
+    replyThree(one, two) {
+      this.discuss_show = true;
+      this.discussData = one;
+      this.messageId = two.messageId;
+    },
+    //查看大图
+    seeImg(i) {
+      this.imgs_show = true;
+      this.url = this.$url + i;
+    },
+  },
 };
 </script>
 

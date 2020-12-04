@@ -1,13 +1,17 @@
 <template>
   <div class="add_discuss">
     <div class="discuss_header">
-      <span>回复同学1</span>
-      <span class="discuss_icon"></span>
+      <span>{{ discussData.name }}</span>
+      <span class="discuss_icon" @click="close"></span>
     </div>
     <div class="discuss_cont">
-      <textarea placeholder="请输入回复内容..." maxlength="130" v-model="textVal"></textarea>
-      <span>{{textVal.length}}/130</span>
-      <button class="messageBtn">确定</button>
+      <textarea
+        placeholder="请输入回复内容..."
+        maxlength="130"
+        v-model="message"
+      ></textarea>
+      <span>{{ message.length }}/130</span>
+      <button class="submit" @click="submit">确定</button>
     </div>
   </div>
 </template>
@@ -15,10 +19,49 @@
 <script>
 export default {
   name: "add-discuss",
+  props: ["discussData", "messageId"],
   data() {
     return {
-      textVal: "",
+      message: "",
     };
+  },
+  methods: {
+    close() {
+      this.$parent.discuss_show = false;
+      this.message = "";
+      this.$parent.messageId = "";
+    },
+    submit() {
+      if (!this.message) {
+        this.$Message.error("请输入要回复的内容");
+        return;
+      }
+      if (!this.messageId) {
+        this.axios
+          .post(`/topic/${this.discussData.topicId}/message`, {
+            message: this.message,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.close();
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+        return;
+      }
+      this.axios
+        .post(`/topic/${this.discussData.topicId}/message/${this.messageId}`, {
+          message: this.message,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.close();
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+    },
   },
 };
 </script>
@@ -32,13 +75,10 @@ export default {
   top: 17%;
   margin-left: -202px;
   z-index: 999999;
+  background: url("../../assets/public/box_1.png") no-repeat center;
+  background-size: 100% 100%;
   .discuss_header {
     height: 45px;
-    background-image: linear-gradient(
-      to right,
-      rgb(18, 195, 237),
-      rgb(47, 138, 255)
-    );
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,12 +97,12 @@ export default {
   .discuss_cont {
     height: 335px;
     width: 100%;
-    background: rgb(255, 255, 255);
     order: 1px solid transparent;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     position: relative;
-    .messageBtn {
+    .submit {
+      width: 100px;
       margin: 10px auto;
     }
     textarea {
@@ -70,9 +110,11 @@ export default {
       height: 220px;
       margin: 15px 23px;
       padding: 10px 15px;
+      background: rgb(9, 54, 97);
+      color: rgb(255, 255, 255);
+      border: 1px solid rgb(0, 235, 255);
     }
     span {
-      color: rgb(110, 111, 113);
       position: absolute;
       right: 30px;
       bottom: 105px;

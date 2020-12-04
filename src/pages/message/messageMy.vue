@@ -1,16 +1,12 @@
 <template>
   <div class="message_forum">
-    <discuss :dele="dele">
-      <template v-slot:page>
-        <turn-page></turn-page>
-      </template>
-    </discuss>
+    <discuss :dele="dele"></discuss>
   </div>
 </template>
 
 <script>
 import discuss from "../../components/discuss";
-import turnPage from "../../components/turnPage";
+
 export default {
   name: "message-my",
   data() {
@@ -20,7 +16,6 @@ export default {
   },
   components: {
     discuss,
-    turnPage,
   },
 };
 </script>

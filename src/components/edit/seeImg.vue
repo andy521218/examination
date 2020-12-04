@@ -1,8 +1,8 @@
 <template>
   <div class="see_img">
     <img :src="url" alt />
-    <div>
-        <img src="../../assets/public/switch.png" alt="">
+    <div @click="$parent.imgs_show = false">
+      <img src="../../assets/public/switch.png" alt="" />
     </div>
   </div>
 </template>
@@ -42,8 +42,8 @@ export default {
     padding: 10px;
     cursor: pointer;
   }
-  div:hover{
-      background: rgb(0,235,255);
+  div:hover {
+    background: rgb(0, 235, 255);
   }
 }
 </style>

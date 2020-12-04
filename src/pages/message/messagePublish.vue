@@ -2,29 +2,44 @@
   <div class="message_publish">
     <div class="publish_select">
       <label for>分类</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select name id class="select" v-model="diseaseType">
+        <option value>请选择病系</option>
+        <option :value="item.id" v-for="(item, index) in list" :key="index">
+          {{ item.name }}
+        </option>
       </select>
     </div>
     <div class="publish_text">
       <label for>标题</label>
-      <input type="text" placeholder="请输入问题标题..." maxlength="30" class="text_box" v-model="textVal" />
-      <span>{{textVal.length}}/30</span>
+      <input
+        type="text"
+        placeholder="请输入问题标题..."
+        maxlength="30"
+        class="text_box"
+        v-model="title"
+      />
+      <span>{{ title.length }}/30</span>
     </div>
     <div class="publish_area">
       <label for>内容</label>
-      <textarea placeholder="请输入问题内容..." v-model="textareaVal" maxlength="130"></textarea>
-      <span>{{textareaVal.length}}/130</span>
+      <textarea
+        placeholder="请输入问题内容..."
+        v-model="message"
+        maxlength="130"
+      ></textarea>
+      <span>{{ message.length }}/130</span>
     </div>
     <div class="input_file">
-      <input type="file" />
+      <input
+        type="file"
+        accept="image/*"
+        multiple
+        @change="uploadImgs"
+        ref="imgs"
+      />
+      <p>+</p>
     </div>
-    <button class="submit">提交</button>
+    <button class="submit" @click="submit">提交</button>
   </div>
 </template>
 
@@ -33,9 +48,83 @@ export default {
   name: "message-publish",
   data() {
     return {
-      textVal: "",
-      textareaVal: "",
+      message: "",
+      title: "",
+      list: [
+        {
+          id: 1,
+          name: "心系病",
+        },
+        {
+          id: 2,
+          name: "肝系病",
+        },
+        {
+          id: 3,
+          name: "脾胃病",
+        },
+        {
+          id: 4,
+          name: "肺系病",
+        },
+        {
+          id: 5,
+          name: "肾系病",
+        },
+      ],
+      diseaseType: "",
+      file: "",
     };
+  },
+  methods: {
+    submit() {
+      if (!this.diseaseType) {
+        this.$Message.error("请选择病系");
+        return;
+      }
+      if (!this.title) {
+        this.$Message.error("请输入标题");
+        return;
+      }
+      if (this.file.length > 3) {
+        this.$Message.error("照片超出上限3张");
+        return;
+      }
+      let formData = new window.FormData();
+      let promise = [];
+      for (let i = 0; i < this.file.length; i++) {
+        promise.push(
+          new Promise((resolve) => {
+            formData.append("file", this.file[i]);
+            this.upload.post("upload", formData).then((res) => {
+              return resolve(res.data);
+            });
+          })
+        );
+      }
+      Promise.all(promise).then((res) => {
+        this.http
+          .post("/topic", {
+            diseaseType: this.diseaseType,
+            imgs: res,
+            message: this.message,
+            title: this.title,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.diseaseType = "";
+              this.message = "";
+              this.title = "";
+              this.$Message.warning("发布问题成功!");
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+      });
+    },
+    uploadImgs() {
+      this.file = this.$refs.imgs.files;
+    },
   },
 };
 </script>
@@ -105,25 +194,27 @@ export default {
     height: 100px;
     margin-left: 815px;
     margin-top: 25px;
+    position: relative;
     input {
       width: 100%;
       height: 100%;
-      position: relative;
       outline: none;
-      &::after {
-        content: "+";
-        line-height: 100px;
-        text-align: center;
-        font-size: 50px;
-        color: rgb(0, 235, 255);
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        border: 1px solid rgb(0, 235, 255);
-        background-color: rgb(5, 61, 118);
-        top: 0;
-        left: 0;
-      }
+      opacity: 0;
+      z-index: 99;
+      position: absolute;
+    }
+    p {
+      line-height: 100px;
+      text-align: center;
+      font-size: 50px;
+      color: rgb(0, 235, 255);
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      border: 1px solid rgb(0, 235, 255);
+      background-color: rgb(5, 61, 118);
+      top: 0;
+      left: 0;
     }
   }
   .submit {

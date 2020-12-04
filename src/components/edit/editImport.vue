@@ -1,6 +1,6 @@
 <template>
   <div class="editimport">
-    <div class="case_right">
+    <div class="case_right edit">
       <div class="edit_title">
         <span class="title">导入学生</span>
         <span class="edit_switch" @click="close()"></span>
