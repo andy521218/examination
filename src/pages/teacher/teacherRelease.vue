@@ -278,6 +278,11 @@ export default {
       this.mask = false;
       this.check = [];
       this.examCaseNumber = {};
+      this.examData = {
+        rommsId: "默认",
+      };
+      this.starttime = "";
+      this.endtime = "";
       this.releaseExam_show = false;
     },
     //获取案例列表
@@ -338,7 +343,8 @@ export default {
       }
       this.start();
       this.end();
-      if (this.examCaseNumber.length > 0) {
+      let obj = Object.keys(this.examCaseNumber);
+      if (obj.length > 0) {
         this.uploadexam();
       } else {
         this.check.forEach((ele) => {
@@ -353,35 +359,52 @@ export default {
         this.$Message.error("请重新设置各项案例分数!");
         return;
       }
+      let obj = Object.keys(this.examCaseNumber).length;
+      if (obj != this.check.length) {
+        this.$Message.error("请检查案例分值不可为空");
+        return;
+      }
+      for (const key in this.examCaseNumber) {
+        if (!this.examCaseNumber[key]) {
+          this.$Message.error("请检查案例分值不可为空");
+          return;
+        }
+      }
       /*eslint-disable*/
       let cases = [];
-      this.check.forEach((item) => {
-        this.manageData.forEach((ele) => {
-          if (item == ele.name) {
-            cases.push(ele.caseId);
+      for (let key in this.examCaseNumber) {
+        this.manageData.forEach((item) => {
+          if (item.name == key) {
+            cases.push({
+              caseId: item.caseId,
+              score: this.examCaseNumber[key],
+            });
           }
         });
-      });
-      console.log(cases);
-      // this.axios.post("/exam", {
-      //   cases: [
-      //     {
-      //       caseId: 0,
-      //       score: 0,
-      //     },
-      //   ],
-      //   classes: [
-      //     {
-      //       beginTime: this.starttime,
-      //       classroomId: this.examData.rommsId,
-      //       endTime: this.endtime,
-      //     },
-      //   ],
-      //   name: this.examData.name,
-      // });
+      }
+      this.http
+        .post("/exam", {
+          cases,
+          classes: [
+            {
+              beginTime: this.starttime,
+              classroomId: this.examData.rommsId,
+              endTime: this.endtime,
+            },
+          ],
+          name: this.examData.name,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.close();
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
     },
     // 计算分数
     totalNumber() {
+      this.examNumber = 0;
       for (const key in this.examCaseNumber) {
         this.examNumber += Number(this.examCaseNumber[key]);
       }
