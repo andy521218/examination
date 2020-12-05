@@ -7,7 +7,7 @@ import 'nprogress/nprogress.css'
 import 'view-design/dist/styles/iview.css'
 import "./assets/css/rest.css"
 import "./assets/css/base.scss"
-import { Switch ,Message,Circle,Icon,  } from 'view-design';
+import { Switch ,Message,Circle,Icon,} from 'view-design';
 import axios from "axios"
 import http from "../src/http/http"
 import upload from "../src/http/upload"
@@ -17,14 +17,14 @@ import teacher from "./router/teacher"
 import user from "./router/user"
 import qs from "qs";
 import filters from './filters'
-import {DatePicker,TimePicker} from "element-ui"
+import {DatePicker,TimePicker,MessageBox } from "element-ui"
 
 
 Vue.component('i-switch', Switch);
 Vue.component('i-circle', Circle);
 Vue.component('i-con', Icon);
 Vue.use(VueAxios,axios);
-Vue.use(DatePicker,TimePicker)
+Vue.use(DatePicker,TimePicker,MessageBox)
 
 Vue.use(filters)
 Vue.prototype.http = http
@@ -48,6 +48,15 @@ axios.defaults.transformRequest = [function (data) {
  }]
 
 axios.interceptors.response.use(function onFulfilled(response) {
+  if(response.data.code=='100014'){
+    MessageBox.alert("其他地点登入", "提示", {
+      confirmButtonText: "确定",
+      type:"error",
+      callback: () => {
+        router.push('/login')
+      }
+    });
+  }
   return response.data;
 }, function onRejected(reason) {
   Message.error('连接服务器超时')
@@ -55,15 +64,33 @@ axios.interceptors.response.use(function onFulfilled(response) {
 });
 
 axios.defaults.validateStatus = function (status) {
- if(status=='401') return  Message.error('长时间未操作,请重新登入!')
+ if(status=='401'){
+  MessageBox.alert("长时间未操作,请重新登入!", "提示", {
+    confirmButtonText: "确定",
+    type:"error",
+    callback: () => {
+      router.push('/login')
+    }
+  });
+ }
  return /^(2|3|4)\d{2}$/.test(status);
 }
 
 axios.defaults.withCredentials = true;
 
 router.beforeEach((to, from, next) => {
+  let authority=localStorage.getItem('authority')
+
+  if(!authority){
+    MessageBox.alert("您未登入,请登入后访问!", "提示", {
+      confirmButtonText: "确定",
+      type:"error",
+      callback: () => {
+        router.push('/login')
+      }
+    });
+  }
   to.name=='index'?store.state.flag=false:store.state.flag=true
-  var authority=localStorage.getItem('authority')
  if(to.name==from.name && !!authority){
         if(authority=='ADMIN'){
           router.addRoutes(admin)

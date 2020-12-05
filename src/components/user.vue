@@ -25,9 +25,7 @@
                 <img :src="item.avatar ? item.avatar : url" alt />
               </div>
               <div class="user_column">
-                <div class="title">
-                  {{ item.userId }}回复:{{ item.message }}
-                </div>
+                <div class="title">{{ item.name }}回复:{{ item.message }}</div>
                 <div class="cont">
                   {{ item.title }}
                 </div>
