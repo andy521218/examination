@@ -296,8 +296,6 @@ export default {
     },
     //2级回复
     replyTwo(item, index) {
-      this.notice_top_show = index;
-      this.discussData = item;
       this.axios
         .get(`/topic/${item.topicId}/message`, {
           params: {
@@ -306,7 +304,13 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.$Message.warning("当前项无回复内容");
+            return;
+          }
           this.replyTwoData = res.data.rows;
+          this.notice_top_show = index;
+          this.discussData = item;
         });
     },
     //3级回复

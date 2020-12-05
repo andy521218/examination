@@ -284,6 +284,9 @@ export default {
                 white-space: nowrap;
                 color: rgb(40, 200, 240);
               }
+              .title {
+                margin-top: 20px;
+              }
               .cont {
                 color: rgb(175, 175, 175);
               }
