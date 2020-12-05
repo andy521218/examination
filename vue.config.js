@@ -6,6 +6,7 @@ module.exports = {
         '/api':{
           target:'http://59.110.218.110:8080/api',
           // target:'http://101.132.150.87:8080/api',
+          // target:'http://192.168.16.95:8080/api',
           changeOrigin:true,
           pathRewrite:{
             '/api':''

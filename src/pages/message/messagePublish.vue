@@ -38,6 +38,15 @@
         ref="imgs"
       />
       <p>+</p>
+      <div
+        class="preview_img"
+        :class="{ small: index > 0 }"
+        v-for="(item, index) in imgUrl"
+        :key="index"
+      >
+        <i @click="deleImg(index)"></i>
+        <img :src="item" alt="" />
+      </div>
     </div>
     <button class="submit" @click="submit">提交</button>
   </div>
@@ -74,6 +83,8 @@ export default {
       ],
       diseaseType: "",
       file: "",
+      imgUrl: [],
+      uploadImgData: [],
     };
   },
   methods: {
@@ -86,16 +97,16 @@ export default {
         this.$Message.error("请输入标题");
         return;
       }
-      if (this.file.length > 3) {
+      if (this.imgUrl.length > 3) {
         this.$Message.error("照片超出上限3张");
         return;
       }
       let formData = new window.FormData();
       let promise = [];
-      for (let i = 0; i < this.file.length; i++) {
+      for (let i = 0; i < this.uploadImgData.length; i++) {
         promise.push(
           new Promise((resolve) => {
-            formData.append("file", this.file[i]);
+            formData.append("file", this.uploadImgData[i]);
             this.upload.post("upload", formData).then((res) => {
               return resolve(res.data);
             });
@@ -126,8 +137,25 @@ export default {
           });
       });
     },
+    //上传图片
     uploadImgs() {
-      this.file = this.$refs.imgs.files;
+      let file = "";
+      if (this.imgUrl.length > 2) {
+        this.$Message.error("图片超出上限3张");
+        return;
+      }
+      file = this.$refs.imgs.files[0];
+      this.uploadImgData.push(file);
+      let fileExample = new FileReader();
+      fileExample.readAsDataURL(file);
+      fileExample.onload = (ev) => {
+        this.imgUrl.push(ev.target.result);
+      };
+    },
+    //删除预览图片
+    deleImg(index) {
+      this.imgUrl.splice(index, 1);
+      this.this.uploadImgData.splice(index, 1);
     },
   },
 };
@@ -194,17 +222,17 @@ export default {
     }
   }
   .input_file {
-    width: 100px;
+    width: 97%;
     height: 100px;
-    margin-left: 815px;
-    margin-top: 25px;
     position: relative;
+    margin-top: 30px;
     input {
-      width: 100%;
-      height: 100%;
+      width: 100px;
+      height: 100px;
       outline: none;
       opacity: 0;
       z-index: 99;
+      right: 0;
       position: absolute;
     }
     p {
@@ -218,7 +246,33 @@ export default {
       border: 1px solid rgb(0, 235, 255);
       background-color: rgb(5, 61, 118);
       top: 0;
-      left: 0;
+      right: 0;
+    }
+    .preview_img {
+      width: 100px;
+      height: 100px;
+      padding: 3px;
+      border: 1px solid rgb(0, 235, 255);
+      position: relative;
+      float: right;
+      margin-right: 130px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      i {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: url("../../assets/public/error.png") no-repeat center;
+        border-radius: 50%;
+        position: absolute;
+        right: -15px;
+        top: -14px;
+      }
+    }
+    .small {
+      margin-right: 30px;
     }
   }
   .submit {
