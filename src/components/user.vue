@@ -1,196 +1,39 @@
 <template>
   <div class="home_user">
-    <div class="home_user_left">
+    <div class="home_user_left" @mousemove="move" @mouseleave="leave">
       <i></i>
       <span>消息</span>
-      <p>99</p>
-      <div class="user_message">
+      <p :class="{ active: total > 0 }">
+        {{ messageData.total }}
+      </p>
+      <div class="user_message" :class="{ active: active_show }">
         <i></i>
         <div class="user_pseudo"></div>
         <div class="user_name">
           <span class="my_message">我的消息</span>
-          <span class="dele_message">清空消息</span>
+          <span class="dele_message" @click="deleallmessage">清空消息</span>
         </div>
         <div class="user_list scrollbar">
           <ul>
-            <li>
+            <li
+              v-for="(item, index) in messageData.rows"
+              :key="index"
+              @click="seeMessage(item)"
+            >
               <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
+                <div class="border" v-show="item.status"></div>
+                <img :src="item.avatar ? item.avatar : url" alt />
               </div>
               <div class="user_column">
                 <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                  {{ item.userId }}回复:{{ item.message }}
                 </div>
                 <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
+                  {{ item.title }}
                 </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                <div class="time">
+                  {{ item.createTime | lastTime(item.createTime) }}
                 </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
-              </div>
-            </li>
-            <li>
-              <div class="user_img">
-                <div class="border"></div>
-                <img :src="url" alt />
-              </div>
-              <div class="user_column">
-                <div class="title">
-                  XXX回复:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                </div>
-                <div class="cont">
-                  我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容我提问的内容?
-                </div>
-                <div class="time">2020-07-02 13:15</div>
               </div>
             </li>
           </ul>
@@ -236,10 +79,13 @@ export default {
   data() {
     return {
       url:
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600668765311&di=942d4b57df1934ca5fa4ef29310f1acd&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202006%2F12%2F20200612180401_mvgks.thumb.400_0.jpeg",
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607154641504&di=916323c0d529c4662d2cca0728e2193f&imgtype=0&src=http%3A%2F%2Ffiles.bbs.tl.changyou.com%2Fdata%2Fattachment%2Fforum%2F201508%2F04%2F115041d8rtar5rzl9bz3j8.jpg",
       itemIndex: "-1",
       current: "",
       list: [],
+      messageData: "",
+      active_show: false,
+      total: "",
     };
   },
   computed: {
@@ -258,6 +104,7 @@ export default {
         this.list = this.stuedntMenu;
       }
     });
+    this.getmessage();
   },
   methods: {
     routeLink(router, index) {
@@ -271,6 +118,49 @@ export default {
       this.$router.push(router);
       this.$store.state.menuId = index;
       localStorage.setItem("bgindex", index);
+    },
+    //获取提示消息
+    getmessage() {
+      this.axios
+        .get("/message/my", {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.messageData = res.data;
+          this.total = res.data.rows.length;
+        });
+    },
+    //设为已读消息
+    seeMessage(item) {
+      this.axios.delete(`/message/${item.messageId}`).then((res) => {
+        if (res.code == "000000") {
+          this.getmessage();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
+    },
+    //清空所有消息
+    deleallmessage() {
+      this.axios.delete("message/my").then((res) => {
+        if (res.code == "000000") {
+          this.getmessage();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
+    },
+    //显示隐藏消息
+    move() {
+      if (this.messageData.rows.length > 0) {
+        this.active_show = true;
+      }
+    },
+    leave() {
+      this.active_show = false;
     },
   },
 };
@@ -303,11 +193,11 @@ export default {
       top: 10px;
       right: 36px;
       text-align: center;
+      display: none;
     }
     .user_message {
       position: absolute;
       width: 685px;
-      height: 700px;
       background: rgb(255, 255, 255);
       z-index: 999999;
       max-height: 700px;
@@ -352,10 +242,13 @@ export default {
           margin-right: 30px;
           color: rgb(175, 175, 175);
         }
+        .dele_message:hover {
+          cursor: pointer;
+        }
       }
       .user_list {
         width: 100%;
-        height: 645px;
+        max-height: 645px;
         ::-webkit-scrollbar-track {
           border-radius: 10px;
           background-color: rgb(175, 175, 175);
@@ -368,7 +261,7 @@ export default {
           overflow-y: auto;
           width: 98%;
           margin: 0 auto;
-          height: 645px;
+          max-height: 100%;
           li {
             width: 96%;
             height: 75px;
@@ -407,9 +300,9 @@ export default {
         }
       }
     }
-  }
-  .home_user_left:hover .user_message {
-    display: block;
+    .active {
+      display: block;
+    }
   }
   .home_user_right {
     display: flex;

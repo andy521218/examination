@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       user: "",
-      pwd: "",
+      pwd: "123456",
       isShow: true,
       isChecked: false,
     };

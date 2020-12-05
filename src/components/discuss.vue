@@ -23,7 +23,7 @@
         class="text_box"
         placeholder="请输入关键词"
       />
-      <button class="submit">检索</button>
+      <button class="submit" @click="searchTopic">检索</button>
     </div>
     <div class="main_table">
       <ul class="message_list">
@@ -96,12 +96,17 @@
                     {{ replay.message }}
                   </p>
                   <div class="message_two_item_right">
-                    <span
+                    <!-- <span
                       class="message_two_item_btn"
                       @click="replyThree(item, replay)"
                       >回复</span
+                    > -->
+                    <span
+                      class="message_two_item_btn"
+                      v-show="dele"
+                      @click="deletopicTwo(item, replay)"
+                      >删除</span
                     >
-                    <span class="message_two_item_btn" v-if="dele">删除</span>
                     <span class="message_two_item_time">{{
                       replay.createTime | lastTime(replay.createTime)
                     }}</span>
@@ -257,6 +262,7 @@ export default {
         .get("/topic", {
           params: {
             keyword: this.keyword,
+            diseaseType: this.diseaseType,
             page: "1",
             size: "500",
           },
@@ -271,6 +277,8 @@ export default {
       this.axios
         .get("/topic/mine", {
           params: {
+            diseaseType: this.diseaseType,
+            keyword: this.keyword,
             page: "1",
             size: "500",
           },
@@ -316,15 +324,31 @@ export default {
     deleTopic() {
       this.axios.delete(`/topic/${this.deleCheck.toString()}`).then((res) => {
         if (res.code == "000000") {
-          if (!this.privateTopic) {
-            this.getTopic();
-          } else {
-            this.getMine();
-          }
+          this.getMine();
         } else {
           this.$Message.error(res.msg);
         }
       });
+    },
+    //删除回复
+    deletopicTwo(item, replay) {
+      console.log(item);
+      console.log(replay);
+      this.axios
+        .delete(`/topic/${item.topicId}/message/${replay.messageId}`)
+        .then((res) => {
+          if (res.code == "000000") {
+            this.replyTwo(item, this.notice_top_show);
+          }
+        });
+    },
+    //搜索
+    searchTopic() {
+      if (!this.privateTopic) {
+        this.getTopic();
+      } else {
+        this.getMine();
+      }
     },
   },
 };

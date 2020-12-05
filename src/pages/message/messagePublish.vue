@@ -1,5 +1,6 @@
 <template>
   <div class="message_publish">
+    <img alt="" />
     <div class="publish_select">
       <label for>分类</label>
       <select name id class="select" v-model="diseaseType">
@@ -30,13 +31,7 @@
       <span>{{ message.length }}/130</span>
     </div>
     <div class="input_file">
-      <input
-        type="file"
-        accept="image/*"
-        multiple
-        @change="uploadImgs"
-        ref="imgs"
-      />
+      <input type="file" accept="image/*" @change="uploadImgs" ref="imgs" />
       <p>+</p>
       <div
         class="preview_img"
@@ -101,14 +96,18 @@ export default {
         this.$Message.error("照片超出上限3张");
         return;
       }
-      let formData = new window.FormData();
       let promise = [];
       for (let i = 0; i < this.uploadImgData.length; i++) {
+        let formData = new window.FormData();
         promise.push(
-          new Promise((resolve) => {
+          new Promise((resolve, rejected) => {
             formData.append("file", this.uploadImgData[i]);
             this.upload.post("upload", formData).then((res) => {
-              return resolve(res.data);
+              if (res.code == "000000") {
+                return resolve(res.data);
+              } else {
+                return rejected();
+              }
             });
           })
         );
@@ -155,7 +154,7 @@ export default {
     //删除预览图片
     deleImg(index) {
       this.imgUrl.splice(index, 1);
-      this.this.uploadImgData.splice(index, 1);
+      this.uploadImgData.splice(index, 1);
     },
   },
 };
@@ -164,7 +163,7 @@ export default {
 <style lang="scss">
 .message_publish {
   width: 940px;
-  margin: 45px auto;
+  margin: 0 auto;
   label {
     display: inline-block;
     width: 30px;

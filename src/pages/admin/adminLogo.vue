@@ -2,6 +2,9 @@
   <div style="text-align: center">
     <h4>LOGO修改</h4>
     <h2>功能待完善</h2>
+    <input type="file" ref="fileId" @change="getFile" />
+    <button @click="importRow">上传</button>
+    <img :src="url" alt="">
   </div>
 </template>
 
@@ -10,6 +13,7 @@ export default {
   data() {
     return {
       xlsxFile: "",
+      url:''
     };
   },
   methods: {
