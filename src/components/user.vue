@@ -259,7 +259,7 @@ export default {
           overflow-y: auto;
           width: 98%;
           margin: 0 auto;
-          max-height: 100%;
+          max-height: 645px;
           li {
             width: 96%;
             height: 75px;
