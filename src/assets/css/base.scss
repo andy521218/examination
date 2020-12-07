@@ -1486,3 +1486,86 @@ input[type="checkbox"]:checked:before {
     background-size: 100% 100%;
   }
 }
+
+.case_user_main {
+  background: url("../../assets/public/box.png") center no-repeat;
+  background-size: 100% 100%;
+  margin: 0 auto;
+  width: 1740px;
+  height: 720px;
+  padding: 2% 2%;
+
+  ul {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .case_user_item {
+      width: 280px;
+      height: 240px;
+      margin: 0 26px 60px 26px;
+      position: relative;
+
+      .case_img {
+        background: url("../../assets/public/caseBox.png") no-repeat;
+
+        .case_active {
+          background: rgb(0, 0, 0, 0.5);
+          display: none;
+          width: 96%;
+          height: 96%;
+          left: 2%;
+          top: 2%;
+          position: absolute;
+
+          .case_img_tips {
+            position: absolute;
+            width: 88px;
+            height: 90px;
+            left: 50%;
+            top: 50%;
+            margin-left: -44px;
+            margin-top: -45px;
+
+            span {
+              width: 40px;
+              margin-left: 25px;
+              margin-bottom: 20px;
+            }
+          }
+
+          span {
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+          }
+        }
+      }
+
+      .case_img:hover .case_active {
+        display: block;
+        cursor: pointer;
+      }
+
+      .case_current {
+        width: 80%;
+        margin-left: 20%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        span {
+          width: 50%;
+        }
+      }
+    }
+  }
+
+  .case_page {
+    margin-top: 20px;
+  }
+}

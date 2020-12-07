@@ -34,7 +34,13 @@ export const teacher=[
           main:() => import('../pages/teacher/teacherRelease'),
         },
       },
-
+      {
+        path: '/teacherexam',
+        name: 'teacherexam',
+        components:{
+          main:() => import('../pages/teacher/teacherExam'),
+        },
+      },
       {
         path: '/teacherstatistics',
         name: 'teacherstatistics',

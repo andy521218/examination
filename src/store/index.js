@@ -118,6 +118,11 @@ export default new Vuex.Store({
         item: "",
       },
       {
+        title: "考试管理",
+        router: "teacherexam",
+        item: "",
+      },
+      {
         title: "数据分析",
         router: "teacherstatistics",
         item: "",

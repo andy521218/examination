@@ -66,6 +66,19 @@
           </el-date-picker>
           <p class="edit_tips">{{ endText }}</p>
         </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">考试时长:</span>
+          </div>
+          <input
+            type="text"
+            class="text_box"
+            v-model="examData.examTime"
+            placeholder="请输入考试时长"
+          />
+          <p class="edit_tips">{{ examText }}</p>
+        </li>
       </ul>
       <div class="number scrollbar">
         <div class="number_itps">
@@ -91,7 +104,6 @@
           </ul>
         </div>
         <div class="bottom_text">
-          <p>考试时长:{{ examTime }}分钟</p>
           <p>目前案例分数:{{ examNumber }}分</p>
         </div>
       </div>
@@ -129,9 +141,9 @@
                 <div class="item_three" v-if="item.exam">考</div>
               </div>
             </div>
-            <div class="bottom release">
+            <!-- <div class="bottom release">
               <span>已发布</span>
-            </div>
+            </div> -->
           </div>
           <div class="case_bottom">
             <span>姓名: {{ item.name }}</span>
@@ -203,7 +215,7 @@ export default {
       roomsText: "",
       startText: "",
       endText: "",
-      examTime: "0",
+      examText: "",
       examNumber: 0,
       flag: true,
       examCase: [],
@@ -253,7 +265,6 @@ export default {
         this.flag = false;
         return;
       }
-      this.examTime = (this.endtime - this.starttime) / 60000;
     },
     end() {
       this.flag = true;
@@ -272,7 +283,6 @@ export default {
         this.flag = false;
         return;
       }
-      this.examTime = (this.endtime - this.starttime) / 60000;
     },
     close() {
       this.mask = false;
@@ -341,6 +351,15 @@ export default {
       } else {
         this.endText = "";
       }
+      if (!this.examData.examTime) {
+        this.examText = "请输入考试时长";
+        return;
+      }
+      if (isNaN(this.examData.examTime)) {
+        this.examText = "请输入正确的数字";
+        return;
+      }
+      this.examText = "";
       this.start();
       this.end();
       let obj = Object.keys(this.examCaseNumber);
@@ -355,10 +374,6 @@ export default {
     },
     //上传发布考试
     uploadexam() {
-      if (this.examNumber != "100") {
-        this.$Message.error("请重新设置各项案例分数!");
-        return;
-      }
       let obj = Object.keys(this.examCaseNumber).length;
       if (obj != this.check.length) {
         this.$Message.error("请检查案例分值不可为空");
@@ -370,7 +385,10 @@ export default {
           return;
         }
       }
-      /*eslint-disable*/
+      if (this.examNumber != "100") {
+        this.$Message.error("请重新设置各项案例分数,总分应为100分!");
+        return;
+      }
       let cases = [];
       for (let key in this.examCaseNumber) {
         this.manageData.forEach((item) => {
@@ -382,6 +400,7 @@ export default {
           }
         });
       }
+      this.examData.examTime = this.examData.examTime * 60000;
       this.http
         .post("/exam", {
           cases,
@@ -390,6 +409,7 @@ export default {
               beginTime: this.starttime,
               classroomId: this.examData.rommsId,
               endTime: this.endtime,
+              duringLimit: this.examData.examTime,
             },
           ],
           name: this.examData.name,

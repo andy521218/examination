@@ -26,10 +26,13 @@ export default {
       this.$router.push("casehome");
     },
     routerMessagemy() {
-      this.$router.push("messagemy");
+      this.$store.state.menuId = "0";
+      this.$router.push("messageforum");
     },
     routerSment() {
-      this.$Message.error("功能待完善");
+      if (localStorage.getItem("authority") != "STUDENT")
+        return this.$Message.error("无权访问");
+      this.$router.push("examindex");
     },
     routerCare() {
       this.$Message.error("功能待完善");

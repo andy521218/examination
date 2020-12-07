@@ -6,109 +6,17 @@
       </div>
       <div class="private_left_cont">
         <ul class="dialogue edit_class">
-          <li>
+          <li v-for="(item, index) in messagelist" :key="index">
             <input type="checkbox" />
             <div class="user_img">
               <div class="border"></div>
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
+              <img :src="item.avatar" alt v-if="item.avatar" />
+              <img src="../../assets/img/home/user.png" alt="" v-else />
+              <span>{{ item.name }}</span>
             </div>
             <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
-            </div>
-          </li>
-          <li>
-            <input type="checkbox" />
-            <div class="user_img">
-              <img src="../../assets/img/home/user.png" alt />
-              <span>张三张三是</span>
-            </div>
-            <div class="private_title">
-              <span
-                >大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就大叔大婶进口的哈萨克觉得撒旦的大撒大哈萨克的哈萨克就</span
-              >
-              <p>2020-05-20 16:50</p>
+              <span>{{ item.message }}</span>
+              <p>{{ item.time | lastTime(item.time) }}</p>
             </div>
           </li>
         </ul>
@@ -157,19 +65,37 @@
 export default {
   name: "message-private",
   data() {
-    return {};
+    return {
+      imgUrl: "../../assets/img/home/user.png",
+      messagelist: "",
+      dialogue: "",
+    };
   },
   mounted() {
     this.getIm();
+    this.getImid();
+    // this.postMessage();
   },
   methods: {
     //获取对话列表
     getIm() {
       this.axios.get("/im").then((res) => {
-        console.log(res);
+        this.messagelist = res.data;
       });
     },
-    //获取对话热播列表
+    //获取聊天信息列表
+    getImid() {
+      this.axios.get(`/im/1`).then((res) => {
+        this.dialogue = res.data;
+      });
+    },
+    //发送聊天信息
+    postMessage() {
+      this.http.post(`/im`, {
+        userId: 8,
+        message: "测试发送私信127",
+      });
+    },
   },
 };
 </script>

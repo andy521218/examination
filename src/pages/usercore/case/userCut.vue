@@ -436,7 +436,6 @@ export default {
           for (let i = 0; i < res.data.options.length; i++) {
             flag = false;
             arr.push(res.data.options[i]);
-            console.log(i % 8);
             if (i % 8 == "7") {
               this.pulseData.push(arr);
               arr = [];

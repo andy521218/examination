@@ -92,6 +92,16 @@ export const user=[
   ]
 },
 {
+  path: '/examindex',
+  name: 'examindex',
+  component:() => import('../pages/usercore/exam/index'),
+},
+{
+  path: '/examcase',
+  name: 'examcase',
+  component:() => import('../pages/usercore/exam/caseIndex'),
+},
+{
   path: '/casehome',
   name: 'casehome',
   component:() => import('../pages/usercore/case/caseHome'),

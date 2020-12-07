@@ -4,7 +4,7 @@
       <i></i>
       <span>消息</span>
       <p :class="{ active: total > 0 }">
-        {{ messageData.total }}
+        {{ total }}
       </p>
       <div class="user_message" :class="{ active: active_show }">
         <i></i>
@@ -83,7 +83,7 @@ export default {
       list: [],
       messageData: "",
       active_show: false,
-      total: "",
+      total: 0,
     };
   },
   computed: {
@@ -128,7 +128,11 @@ export default {
         })
         .then((res) => {
           this.messageData = res.data;
-          this.total = res.data.rows.length;
+          this.messageData.rows.forEach((item) => {
+            if (item.status) {
+              this.total++;
+            }
+          });
         });
     },
     //设为已读消息
@@ -175,7 +179,8 @@ export default {
     align-items: center;
     position: relative;
     i {
-      background: url("../assets/img/home/news.png");
+      background: url("../assets/img/home/news.png") no-repeat center;
+      background-size: 100% 100%;
       width: 27px;
       height: 30px;
       margin-right: 10px;
