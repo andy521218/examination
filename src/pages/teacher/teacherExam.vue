@@ -1,5 +1,79 @@
 <template>
   <div class="teacher_exam">
+    <div class="edit release_exam" v-show="exam_show">
+      <div class="edit_title">
+        <span class="title">发布考试</span>
+        <span class="edit_switch" @click="close"></span>
+      </div>
+      <ul>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">考试名称:</span>
+          </div>
+          <span>{{ seeExamdata.name }}</span>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">考试班级:</span>
+          </div>
+          <span>
+            {{ seeExamdata.classroonName }}
+          </span>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">开始时间:</span>
+          </div>
+          <span>{{
+            seeExamdata.beginTime | lastTime(seeExamdata.beginTime)
+          }}</span>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">结束时间:</span>
+          </div>
+          <span>{{ seeExamdata.endTime | lastTime(seeExamdata.endTime) }}</span>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">考试时长:</span>
+          </div>
+          <span> 40分 </span>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">考试状态:</span>
+          </div>
+          <span v-if="seeExamdata.status == 2">已结束</span>
+          <span v-if="seeExamdata.status == 1">进行中</span>
+          <span v-if="seeExamdata.status == 0">未开始</span>
+        </li>
+      </ul>
+      <div class="number scrollbar">
+        <div class="number_title">
+          <span>案例</span>
+          <span>分值</span>
+        </div>
+        <div class="ul_scrollbar">
+          <ul class="case_item">
+            <li v-for="(item, index) in check" :key="index">
+              <span>{{ item.name }}</span>
+              <span>{{ item.caseId }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="edit_btn_box">
+        <!-- <button class="edit_cancel" @click="close">取消</button> -->
+        <button class="edit_submit" @click="close">确定</button>
+      </div>
+    </div>
     <div class="main_header">
       <button class="add" style="margin-right: 644px">批量存档</button>
       <label for>状态</label>
@@ -77,7 +151,7 @@
               >
             </td>
             <td class="see_dele">
-              <p>查看</p>
+              <p @click="seeExam(item)">查看</p>
               <p>取消</p>
             </td>
           </tr>
@@ -103,9 +177,12 @@ export default {
   },
   data() {
     return {
+      exam_show: false,
       page: "1",
       total: "",
       size: "10",
+      seeExamdata: {},
+      check: [],
       examData: "",
     };
   },
@@ -136,6 +213,17 @@ export default {
       });
       return nameArr;
     },
+    seeExam(item) {
+      this.exam_show = true;
+      this.seeExamdata.classroonName = item.classrooms[0].classroonName;
+      this.seeExamdata.beginTime = item.classrooms[0].beginTime;
+      this.seeExamdata.endTime = item.classrooms[0].endTime;
+      this.seeExamdata.status = item.classrooms[0].status;
+      this.check = item.cases;
+    },
+    close() {
+      this.exam_show = false;
+    },
   },
 };
 </script>
@@ -164,6 +252,65 @@ export default {
   p:last-child {
     border: 1px solid rgb(252, 94, 95);
     color: rgb(252, 94, 95);
+  }
+}
+.number {
+  margin-left: 13%;
+  margin-top: 20px;
+  width: 72%;
+  p {
+    display: inline-block;
+    width: 100px;
+  }
+  span {
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+  }
+  span:first-child {
+    border-right: 1px solid rgb(0, 235, 255);
+  }
+  .number_title {
+    border: 1px solid rgb(0, 235, 255);
+    border-bottom: none;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 10px;
+  }
+  .ul_scrollbar {
+    border: 1px solid rgb(0, 235, 255);
+    border-bottom: none;
+    .case_item {
+      width: 100%;
+      margin-left: 0;
+      max-height: 130px;
+      overflow-y: auto;
+      li {
+        margin-top: 0;
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid rgb(0, 235, 255);
+        .text_box {
+          text-align: center;
+          padding-left: 0;
+          width: 50%;
+          height: 28px;
+          border: none;
+        }
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+  .bottom_text {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .number_itps {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
