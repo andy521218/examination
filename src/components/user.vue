@@ -92,6 +92,7 @@ export default {
   mounted() {
     this.axios.get("/users/current").then((res) => {
       this.current = res.data;
+      localStorage.setItem("userId", res.data.id);
       if (res.data.authority == "ADMIN") {
         this.list = this.adminMenu;
       }
@@ -119,6 +120,7 @@ export default {
     },
     //获取提示消息
     getmessage() {
+      this.total = 0;
       this.axios
         .get("/message/my", {
           params: {
@@ -137,9 +139,23 @@ export default {
     },
     //设为已读消息
     seeMessage(item) {
+      console.log(item);
       this.axios.delete(`/message/${item.messageId}`).then((res) => {
         if (res.code == "000000") {
           this.getmessage();
+          this.$store.state.menuId = 3;
+          if (!item.title) {
+            this.$router.push({
+              name: "messageprivate",
+              params: {
+                topicId: item.topicId,
+                userId: item.userId,
+              },
+            });
+          } else {
+            this.$store.state.menuId = 0;
+            this.$router.push("messageforum");
+          }
         } else {
           this.$Message.error(res.msg);
         }

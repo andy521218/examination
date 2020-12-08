@@ -70,7 +70,6 @@
         </div>
       </div>
       <div class="edit_btn_box">
-        <!-- <button class="edit_cancel" @click="close">取消</button> -->
         <button class="edit_submit" @click="close">确定</button>
       </div>
     </div>

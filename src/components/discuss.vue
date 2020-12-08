@@ -49,7 +49,11 @@
                 <div class="notice_top">发送私信</div>
                 <div class="notice_bottom"></div>
               </div> -->
-              <img src="../assets/img/home/user.png" title="发送私信" />
+              <img
+                src="../assets/img/home/user.png"
+                @click="sendmessage(item)"
+                title="发送私信"
+              />
               <span>{{ item.name }}</span>
             </div>
             <div class="message_title" @click="replyTwo(item, index)">
@@ -86,7 +90,11 @@
                       <div class="notice_top">发送私信</div>
                       <div class="notice_bottom"></div>
                     </div> -->
-                    <img src="../assets/img/home/user.png" title="发送私信" />
+                    <img
+                      src="../assets/img/home/user.png"
+                      @click="sendTwoMessage(replay)"
+                      title="发送私信"
+                    />
                   </div>
                   <span>{{ replay.name }}:</span>
                 </div>
@@ -336,8 +344,6 @@ export default {
     },
     //删除回复
     deletopicTwo(item, replay) {
-      console.log(item);
-      console.log(replay);
       this.axios
         .delete(`/topic/${item.topicId}/message/${replay.messageId}`)
         .then((res) => {
@@ -345,6 +351,36 @@ export default {
             this.replyTwo(item, this.notice_top_show);
           }
         });
+    },
+    //发送私信
+    sendmessage(item) {
+      let userId = localStorage.getItem("userId");
+      if (userId == item.userId) {
+        this.$Message.error("不可以发送私信给自己");
+        return;
+      }
+      this.$store.state.menuId = 3;
+      this.$router.push({
+        name: "messageprivate",
+        params: {
+          userId: item.userId,
+        },
+      });
+    },
+    //二级私信
+    sendTwoMessage(replay) {
+      let userId = localStorage.getItem("userId");
+      if (userId == replay.userId) {
+        this.$Message.error("不可以发送私信给自己");
+        return;
+      }
+      this.$store.state.menuId = 3;
+      this.$router.push({
+        name: "messageprivate",
+        params: {
+          userId: replay.userId,
+        },
+      });
     },
     //搜索
     searchTopic() {

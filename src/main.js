@@ -64,6 +64,10 @@ axios.interceptors.response.use(function onFulfilled(response) {
 });
 
 axios.defaults.validateStatus = function (status) {
+  if(status=='401'){
+    Message.error('长时间未操作,请重新登入!')
+    router.push('/login')
+  }
  return /^(2|3|4)\d{2}$/.test(status);
 }
 
@@ -84,7 +88,7 @@ router.beforeEach((to, from, next) => {
     }
  }
   to.name=='index'?store.state.flag=false:store.state.flag=true
- if(to.name==from.name && !!authority){
+ if(to.name==from.name){
         if(authority=='ADMIN'){
           router.addRoutes(admin)
         }

@@ -54,13 +54,13 @@ export const user=[
         main:() => import('../pages/usercore/userStatistics'),
       } 
     },
-  {
+    {
     path:'/usermap',
     name:'/usermap',
     components:{
       main:()=>import('../pages/usercore/map/userMap')
     }
-  },
+    },
     {
       path: '/messageforum',
       name: 'messageforum',

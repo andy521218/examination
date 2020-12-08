@@ -6,7 +6,11 @@
       </div>
       <div class="private_left_cont">
         <ul class="dialogue edit_class">
-          <li v-for="(item, index) in messagelist" :key="index">
+          <li
+            v-for="(item, index) in messagelist"
+            :key="index"
+            @click="seetopic(item)"
+          >
             <input type="checkbox" />
             <div class="user_img">
               <div class="border"></div>
@@ -24,37 +28,36 @@
     </div>
     <div class="private_right">
       <div class="private_right_header">
-        <span>王老师</span>
+        <span>{{ name }}</span>
       </div>
       <div class="private_right_cont">
-        <ul>
-          <li>
-            <div class="private_right_left"></div>
-            <div class="private_right_right">
+        <ul ref="scroll">
+          <li
+            :class="{ active: item.userId == checkId }"
+            v-for="(item, index) in dialogue"
+            :key="index"
+          >
+            <div class="private_right_left" v-if="item.userId != checkId">
+              <img :src="item.avatar" alt v-if="item.avatar" />
+              <img src="../../assets/img/home/user.png" v-else />
               <div class="frame">
-                <span
-                  >的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦</span
-                >
+                <span>{{ item.message }}</span>
                 <div></div>
               </div>
-              <img src="../../assets/img/home/user.png" alt />
             </div>
-          </li>
-          <li>
-            <div class="private_right_left">
-              <img src="../../assets/img/home/user.png" alt />
+            <div class="private_right_right" v-if="item.userId == checkId">
               <div class="frame">
-                <span
-                  >的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦的撒旦撒旦</span
-                >
+                <span>{{ item.message }}</span>
                 <div></div>
               </div>
+              <img :src="item.avatar" alt v-if="item.avatar" />
+              <img src="../../assets/img/home/user.png" v-else />
             </div>
           </li>
         </ul>
         <div class="private_right_bottom">
-          <textarea></textarea>
-          <button class="submit">发送</button>
+          <textarea v-model="message"></textarea>
+          <button class="submit" @click="submit">发送</button>
         </div>
       </div>
     </div>
@@ -69,12 +72,29 @@ export default {
       imgUrl: "../../assets/img/home/user.png",
       messagelist: "",
       dialogue: "",
+      name: "",
+      userId: "",
+      message: "",
+      id: "",
+      checkId: "",
     };
   },
   mounted() {
+    this.checkId = localStorage.getItem("userId");
     this.getIm();
-    this.getImid();
-    // this.postMessage();
+    //此Id发送私信获得
+    let userId = this.$route.params.userId;
+    if (!userId) {
+      this.userId = "";
+    } else {
+      this.userId = userId;
+    }
+    //此id消息回复获得
+    let topicId = this.$route.params.topicId;
+    if (!topicId) return;
+    this.userId = userId;
+    this.id = topicId;
+    this.getImid(topicId);
   },
   methods: {
     //获取对话列表
@@ -84,17 +104,34 @@ export default {
       });
     },
     //获取聊天信息列表
-    getImid() {
-      this.axios.get(`/im/1`).then((res) => {
+    getImid(id) {
+      this.axios.get(`/im/${id}`).then((res) => {
         this.dialogue = res.data;
       });
     },
     //发送聊天信息
-    postMessage() {
-      this.http.post(`/im`, {
-        userId: 8,
-        message: "测试发送私信127",
-      });
+    submit() {
+      this.axios
+        .post(`/im`, {
+          userId: this.userId,
+          message: this.message,
+        })
+        .then((res) => {
+          if (res.code == "000000") {
+            this.getImid(this.id);
+            this.message = "";
+            setTimeout(() => {
+              this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
+            }, 1000);
+          }
+        });
+    },
+    //查看聊天对话框信息
+    seetopic(item) {
+      this.userId = item.userId;
+      this.id = item.id;
+      this.name = item.name;
+      this.getImid(item.id);
     },
   },
 };
@@ -185,6 +222,7 @@ export default {
       width: 98%;
       height: 65px;
       margin: 0 auto;
+      padding-left: 10px;
       border-bottom: 1px solid rgb(0, 235, 255);
       span {
         line-height: 65px;
@@ -201,7 +239,6 @@ export default {
         li {
           width: 98%;
           display: flex;
-          justify-content: space-between;
           margin-top: 10px;
           color: rgb(0, 0, 0);
           .private_right_left {
@@ -265,6 +302,9 @@ export default {
             }
           }
         }
+        .active {
+          justify-content: flex-end;
+        }
       }
       .private_right_bottom {
         width: 100%;
@@ -278,6 +318,8 @@ export default {
           margin-left: 1%;
           margin-right: 1.5%;
           background: rgb(26, 127, 195, 0.2);
+          color: rgb(255, 255, 255);
+          padding: 1%;
         }
         .submit {
           width: 85px;
