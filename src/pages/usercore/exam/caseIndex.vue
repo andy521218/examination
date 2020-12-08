@@ -4,9 +4,14 @@
       <logo></logo>
       <user></user>
     </header>
-    <div class="case_user_main exam_index">
+    <div class="case_user_main exam_index_list">
       <ul>
-        <li class="case_user_item">
+        <li
+          class="case_user_item"
+          v-for="(item, index) in examData"
+          :key="index"
+          @click="startExam(item)"
+        >
           <div class="case_img">
             <img src="../../../assets/public/timg.png" alt="" />
             <div class="case_active">
@@ -17,9 +22,9 @@
             </div>
           </div>
           <div class="case_current">
-            <span>姓名:</span>
-            <span>性别:</span>
-            <span>年龄:</span>
+            <span>姓名: {{ item.name }}</span>
+            <span>性别: {{ item.gender ? "男" : "女" }}</span>
+            <span>年龄: {{ item.age }}</span>
           </div>
         </li>
       </ul>
@@ -49,15 +54,24 @@ export default {
   methods: {
     getExam() {
       this.axios.get("/exam").then((res) => {
-        console.log(res);
+        localStorage.setItem("examNo", res.data[3].examNo);
+        let caseIds = res.data[3].caseId;
+        this.axios.get(`/case/${caseIds}/meta`).then((res) => {
+          this.examData = res.data;
+        });
       });
+    },
+    startExam(item) {
+      localStorage.setItem("caseId", item.caseId);
+      localStorage.setItem("exam", true);
+      this.$router.push("userask");
     },
   },
 };
 </script>
 
 <style lang="scss">
-.exam_index {
+.exam_index_list {
   margin-top: 30px;
   height: 800px;
   position: relative;

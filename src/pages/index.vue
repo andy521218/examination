@@ -18,6 +18,7 @@ export default {
     localStorage.removeItem("askedArr");
     localStorage.removeItem("pressItemData");
     localStorage.removeItem("sex");
+    localStorage.removeItem("exam");
   },
   methods: {
     routerCasehome() {

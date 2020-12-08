@@ -1,13 +1,14 @@
 <template>
   <div class="logo" @click="link">
-    <h1 v-if="authority != 'ADMIN'"></h1>
-    <span v-if="authority != 'ADMIN'">首页</span>
+    <h1 v-if="authority != 'ADMIN' && exam == null"></h1>
+    <span v-if="authority != 'ADMIN' && exam == null">首页</span>
   </div>
 </template>
 
 <script>
 export default {
   name: "logo",
+  props: ["exam"],
   data() {
     return {
       authority: "",

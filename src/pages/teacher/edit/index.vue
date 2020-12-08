@@ -2,10 +2,10 @@
   <div class="home" style="min-width: 1920px">
     <div class="main_mask" v-if="fractionshow"></div>
     <header class="home_header">
-      <logo></logo>
+      <logo :exam="exam"></logo>
       <div class="home_user">
         <div class="home_case_left">
-          <div class="stop" v-if="authority == 'STUDENT'">
+          <div class="stop" v-if="authority == 'STUDENT' && exam == null">
             <img src="../../../assets/public/stop.png" alt="" />
             <span @click="stopTime">暂停</span>
           </div>
@@ -61,7 +61,7 @@
         <div class="edit_dele" v-if="number_show">
           <div class="edit">
             <div class="edit_title">
-              <span class="title">本次训练得分</span>
+              <span class="title">本次{{ exam ? "考试" : "训练" }}得分</span>
             </div>
             <ul>
               <li style="text-align: center">
@@ -75,11 +75,15 @@
               <button
                 class="edit_submit"
                 style="margin-right: 40px"
-                @click="$router.push('casehome')"
+                @click="$router.push('index')"
               >
                 返回首页
               </button>
-              <button class="edit_submit" @click="$router.push('userrecord')">
+              <button
+                class="edit_submit"
+                v-if="!exam"
+                @click="$router.push('userrecord')"
+              >
                 查看详情
               </button>
             </div>
@@ -93,7 +97,7 @@
             </div>
             <ul>
               <li style="text-align: center">
-                <span>您确认提交本次训练吗?</span>
+                <span>您确认提交本次{{ exam ? "考试" : "训练" }}吗?</span>
               </li>
             </ul>
             <div class="edit_btn_box">
@@ -126,7 +130,7 @@
               <button
                 class="edit_submit"
                 style="margin-right: 40px"
-                @click="$router.push('casehome')"
+                @click="$router.push('index')"
               >
                 返回首页
               </button>
@@ -152,7 +156,7 @@
               <button
                 class="edit_submit"
                 style="margin-right: 40px"
-                @click="$router.push('casehome')"
+                @click="$router.push('index')"
               >
                 返回首页
               </button>
@@ -162,6 +166,10 @@
         </div>
         <router-view></router-view>
       </div>
+    </div>
+    <div class="timer" v-if="exam">
+      <i></i>
+      <span>00:00:00</span>
     </div>
   </div>
 </template>
@@ -208,12 +216,14 @@ export default {
       number_show: false,
       stop_show: false,
       index_show: false,
+      exam: null,
     };
   },
   components: {
     logo,
   },
   mounted() {
+    this.exam = localStorage.getItem("exam");
     if (this.bgIndex == "0") {
       localStorage.getItem("caseMenuId")
         ? (this.bgIndex = localStorage.getItem("caseMenuId"))
@@ -281,13 +291,21 @@ export default {
     submit() {
       this.number_show = true;
       this.confirm_show = false;
-      this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
-        if (res.code == "000000") {
+      let exam = localStorage.getItem("exam");
+      let examNo = localStorage.getItem("examNo");
+      if (exam) {
+        this.axios.put(`/exam/${examNo}/finished`).then((res) => {
           this.fraction = res.data;
-        } else {
-          this.$Message.error(res.msg);
-        }
-      });
+        });
+      } else {
+        this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
+          if (res.code == "000000") {
+            this.fraction = res.data;
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+      }
     },
     stopTime() {
       this.fractionshow = true;
@@ -374,6 +392,23 @@ export default {
     background: url("../../../assets/public/box.png") no-repeat center;
     background-size: 100% 100%;
     padding: 30px;
+  }
+}
+.timer {
+  position: relative;
+  width: 130px;
+  bottom: 70px;
+  text-align: center;
+  i {
+    width: 40px;
+    height: 40px;
+    background: url("../../../assets/public/time.png") no-repeat;
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+  }
+  span {
+    font-size: 18px;
   }
 }
 </style>
