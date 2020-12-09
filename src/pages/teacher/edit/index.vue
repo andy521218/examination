@@ -9,14 +9,7 @@
             <img src="../../../assets/public/stop.png" alt="" />
             <span @click="stopTime">暂停</span>
           </div>
-          <div
-            class="sonserve"
-            @click="
-              confirm_show = true;
-              fractionshow = true;
-            "
-            v-if="authority == 'STUDENT'"
-          >
+          <div class="sonserve" @click="complete" v-if="authority == 'STUDENT'">
             <img src="../../../assets/public/sonserve.png" alt="" />
             <span>完成</span>
           </div>
@@ -169,7 +162,7 @@
     </div>
     <div class="timer" v-if="exam">
       <i></i>
-      <span>00:00:00</span>
+      <span>{{ hour }}:{{ mint }}:{{ second }}</span>
     </div>
   </div>
 </template>
@@ -217,6 +210,12 @@ export default {
       stop_show: false,
       index_show: false,
       exam: null,
+      hour: "",
+      mint: "",
+      second: "59",
+      duringLimit: "",
+      total: 0,
+      endtime: "",
     };
   },
   components: {
@@ -278,6 +277,31 @@ export default {
         },
       ];
     }
+    let examNo = localStorage.getItem("examNo");
+    this.duringLimit = localStorage.getItem("duringLimit");
+    this.http
+      .put(
+        `/exam/${examNo}/during?${this.qs.stringify({
+          during: 0,
+        })}`
+      )
+      .then((res) => {
+        let duringLimit = res.data;
+        if (!duringLimit) return;
+        this.duringLimit = this.duringLimit - duringLimit / 60;
+        if (this.duringLimit < 0) {
+          this.$MessageBox.alert("已超出考试时间", "提示", {
+            confirmButtonText: "确定",
+            type: "error",
+            callback: () => {
+              this.$router.push("/examcase");
+            },
+          });
+        }
+      });
+    setInterval(() => {
+      this.countDown();
+    }, 1000);
   },
   methods: {
     routeLink(i) {
@@ -288,30 +312,34 @@ export default {
     saveCase() {
       this.$router.push("/teachercase");
     },
+    //点击完成
+    complete() {
+      let exam = localStorage.getItem("exam");
+      if (exam) {
+        this.$router.push("examcase");
+      } else {
+        this.confirm_show = true;
+        this.fractionshow = true;
+      }
+    },
     submit() {
       this.number_show = true;
       this.confirm_show = false;
-      let exam = localStorage.getItem("exam");
-      let examNo = localStorage.getItem("examNo");
-      if (exam) {
-        this.axios.put(`/exam/${examNo}/finished`).then((res) => {
+      this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
+        if (res.code == "000000") {
           this.fraction = res.data;
-        });
-      } else {
-        this.axios.post(`/train/${this.examNo}/finished`).then((res) => {
-          if (res.code == "000000") {
-            this.fraction = res.data;
-          } else {
-            this.$Message.error(res.msg);
-          }
-        });
-      }
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
+    //案例训练开始计时
     stopTime() {
       this.fractionshow = true;
       this.stop_show = true;
       clearInterval(this.time);
     },
+    //案例训练停止计时
     startTime() {
       this.fractionshow = false;
       this.stop_show = false;
@@ -321,6 +349,36 @@ export default {
           during: "30",
         });
       }, 30000);
+    },
+    //正式考试倒计时
+    /*eslint-disable*/
+    countDown() {
+      if (!this.hour) {
+        this.hour = parseInt(this.duringLimit / 60);
+        this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
+      }
+      if (!this.mint) {
+        if (this.hour > 0) {
+          this.mint = parseInt(this.duringLimit - this.hour * 60);
+        } else {
+          this.mint = parseInt(this.duringLimit);
+        }
+        if (this.mint == "60") {
+          this.mint = 59;
+        }
+        this.mint < 9 ? "0" + this.mint : this.mint;
+      }
+      this.second--;
+      this.second = this.second < 10 ? "0" + this.second : this.second;
+      if (this.second == 0) {
+        this.second = 59;
+        this.mint--;
+      }
+      if (this.mint == "0") {
+        this.mint = 59;
+        this.hour--;
+        this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
+      }
     },
   },
   beforeRouteLeave(to, from, next) {

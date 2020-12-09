@@ -400,7 +400,6 @@ export default {
           }
         });
       }
-      this.examData.examTime = this.examData.examTime * 60000;
       this.http
         .post("/exam", {
           cases,

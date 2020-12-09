@@ -2,23 +2,19 @@
   <div class="message_private scrollbar">
     <div class="private_left">
       <div class="private_left_header">
-        <button class="dele">批量删除</button>
+        <button class="dele" @click="deleTopic">批量删除</button>
       </div>
       <div class="private_left_cont">
         <ul class="dialogue edit_class">
-          <li
-            v-for="(item, index) in messagelist"
-            :key="index"
-            @click="seetopic(item)"
-          >
-            <input type="checkbox" />
+          <li v-for="(item, index) in messagelist" :key="index">
+            <input type="checkbox" v-model="topicArr" :value="item.id" />
             <div class="user_img">
-              <div class="border"></div>
+              <div class="border" v-show="item.hasUnread"></div>
               <img :src="item.avatar" alt v-if="item.avatar" />
               <img src="../../assets/img/home/user.png" alt="" v-else />
               <span>{{ item.name }}</span>
             </div>
-            <div class="private_title">
+            <div class="private_title" @click="seetopic(item)">
               <span>{{ item.message }}</span>
               <p>{{ item.time | lastTime(item.time) }}</p>
             </div>
@@ -77,6 +73,7 @@ export default {
       message: "",
       id: "",
       checkId: "",
+      topicArr: [],
     };
   },
   mounted() {
@@ -107,6 +104,9 @@ export default {
     getImid(id) {
       this.axios.get(`/im/${id}`).then((res) => {
         this.dialogue = res.data;
+        // this.axios.delete(`/im/message/${id}`).then(() => {
+        //   this.getIm();
+        // });
       });
     },
     //发送聊天信息
@@ -123,6 +123,7 @@ export default {
             setTimeout(() => {
               this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
             }, 1000);
+            this.getIm();
           }
         });
     },
@@ -132,6 +133,12 @@ export default {
       this.id = item.id;
       this.name = item.name;
       this.getImid(item.id);
+    },
+    //删除对话
+    deleTopic() {
+      this.axios.delete(`/im/${this.topicArr}`).then(() => {
+        this.getIm();
+      });
     },
   },
 };

@@ -76,24 +76,20 @@
     <div class="main_header">
       <button class="add" style="margin-right: 644px">批量存档</button>
       <label for>状态</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select v-model="state" class="select">
+        <option value="">请选择状态</option>
+        <option value="0">未开始</option>
+        <option value="1">进行中</option>
+        <option value="2">已结束</option>
       </select>
       <label for class="big_left">考试名称</label>
-      <select name id class="select" style="width: 250px">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-      </select>
-      <button class="submit">检索</button>
+      <input
+        type="text"
+        class="text_box"
+        placeholder="请输入关键字查询"
+        v-model="keyword"
+      />
+      <button class="submit" @click="getexam('1')">检索</button>
     </div>
     <div class="main_table">
       <table
@@ -116,7 +112,7 @@
         <tbody>
           <tr v-for="(item, index) in examData" :key="index">
             <td>{{ index | sortNumber(page) }}</td>
-            <td></td>
+            <td>{{ item.name }}</td>
             <td>{{ item.classrooms[0].classroonName }}</td>
             <td>
               {{
@@ -151,7 +147,7 @@
             </td>
             <td class="see_dele">
               <p @click="seeExam(item)">查看</p>
-              <p>取消</p>
+              <p @click="deleExam(item)">取消</p>
             </td>
           </tr>
         </tbody>
@@ -183,6 +179,8 @@ export default {
       seeExamdata: {},
       check: [],
       examData: "",
+      state: "",
+      keyword: "",
     };
   },
   mounted() {
@@ -194,7 +192,8 @@ export default {
       this.axios
         .get("exam/list", {
           params: {
-            keyword: "1",
+            status: this.state,
+            keyword: this.keyword,
             page: page,
             size: this.size,
           },
@@ -222,6 +221,17 @@ export default {
     },
     close() {
       this.exam_show = false;
+    },
+    //删除试卷
+    deleExam(item) {
+      this.axios.delete(`/exam/${item.examNo}`).then((res) => {
+        if (res.code == "000000") {
+          this.$Message.warning("取消成功!");
+          this.getexam();
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
   },
 };

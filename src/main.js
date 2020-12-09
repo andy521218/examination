@@ -24,7 +24,7 @@ Vue.component('i-switch', Switch);
 Vue.component('i-circle', Circle);
 Vue.component('i-con', Icon);
 Vue.use(VueAxios,axios);
-Vue.use(DatePicker,TimePicker,MessageBox)
+Vue.use(DatePicker,TimePicker)
 
 Vue.use(filters)
 Vue.prototype.http = http
@@ -34,6 +34,7 @@ Vue.prototype.qs = qs
 Vue.prototype.$url = 'http://localhost:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message=Message
+Vue.prototype.$MessageBox=MessageBox
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = '/api';
