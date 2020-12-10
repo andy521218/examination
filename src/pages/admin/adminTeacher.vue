@@ -1,5 +1,6 @@
 <template>
   <div class="admin_record">
+    <div class="main_mask" v-show="mask"></div>
     <edit-user
       :tips="tips"
       v-if="editStudentShow"
@@ -37,6 +38,15 @@
         <p class="edit_tips">{{ departmentsText }}</p>
       </template>
     </edit-user>
+
+    <edit-import
+      :title="'教师'"
+      :uploadUrl="uploadUrl"
+      @getData="getData"
+      @downLoad="downLoad"
+      v-if="editload"
+    ></edit-import>
+
     <div class="main_header">
       <button class="add" @click="addTeacher">添加教师</button>
       <button class="import" @click="importTeacher">教师导入</button>
@@ -117,12 +127,19 @@
 <script>
 import turnPage from "../../components/turnPage";
 import editUser from "../../components/edit/editUser";
+import editImport from "../../components/edit/editImport";
 
 export default {
   name: "admin-teacher",
+  components: {
+    turnPage,
+    editUser,
+    editImport,
+  },
   data() {
     return {
       upData: {},
+      uploadUrl: "/users/teacher/import",
       tips: true,
       switchValue: "",
       editStudentShow: false,
@@ -136,11 +153,9 @@ export default {
       departmentsText: "",
       departmentId: "",
       selected: undefined,
+      editload: false,
+      mask: false,
     };
-  },
-  components: {
-    turnPage,
-    editUser,
   },
   mounted() {
     this.getData();
@@ -148,6 +163,7 @@ export default {
   },
   methods: {
     addTeacher() {
+      this.mask = true;
       this.editStudentShow = true;
     },
     getdepartments() {
@@ -189,11 +205,17 @@ export default {
       this.departmentsText = "";
       return true;
     },
+    downLoad() {
+      let url = this.$url.replace("/download/", "");
+      window.location.href = `${url}/users/teach/template`;
+    },
     importTeacher() {
-      this.$Message.error("功能待完善");
+      this.mask = true;
+      this.editload = true;
     },
     edit(e) {
       this.tips = false;
+      this.mask = true;
       this.editStudentShow = true;
       this.upData = e;
       this.upData.did = e.departmentId;
@@ -223,6 +245,7 @@ export default {
           this.upData = {};
           this.tips = true;
           this.editStudentShow = false;
+          this.mask = false;
           this.$Message.warning(`${msg}成功!`);
         } else {
           this.$Message.error(res.msg);

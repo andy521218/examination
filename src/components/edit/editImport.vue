@@ -2,7 +2,7 @@
   <div class="editimport">
     <div class="case_right edit">
       <div class="edit_title">
-        <span class="title">导入学生</span>
+        <span class="title">导入{{ title }}</span>
         <span class="edit_switch" @click="close()"></span>
       </div>
       <div class="case_right_cont">
@@ -47,6 +47,7 @@
 <script>
 export default {
   name: "edit-import",
+  props: ["title", "uploadUrl"],
   data() {
     return {
       xlsxFile: "",
@@ -59,8 +60,7 @@ export default {
       this.path = this.$refs.file.value;
     },
     downLoad() {
-      let url = this.$url.replace("/download/", "");
-      window.location.href = `${url}/users/student/template`;
+      this.$emit("downLoad");
     },
     close() {
       this.$parent.editload = false;
@@ -70,12 +70,11 @@ export default {
       if (!this.xlsxFile) {
         return this.$Message.error("请先添加文件!");
       }
-
       let formData = new window.FormData();
       formData.append("file", this.xlsxFile);
-      this.upload.post("/users/student/import", formData).then((res) => {
+      this.upload.post(this.uploadUrl, formData).then((res) => {
         if (res.code == "000000") {
-          this.$Message.warning("学生导入成功!");
+          this.$Message.warning(`${this.title}导入成功!`);
           this.close();
           this.$parent.mask = false;
           this.$emit("getData");
@@ -90,6 +89,7 @@ export default {
 
 <style lang="scss">
 .editimport {
+  z-index: 999999;
   position: absolute;
   left: 50%;
   margin-left: -235px;

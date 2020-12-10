@@ -51,9 +51,11 @@
     <!-- 导入 导出 -->
 
     <edit-import
+      :title="'学生'"
+      :uploadUrl="uploadUrl"
       @getData="getData"
+      @downLoad="downLoad"
       v-if="editload"
-      style="z-index: 9999"
     ></edit-import>
     <div class="main_header">
       <button class="add" @click="addStudent">添加学生</button>
@@ -152,7 +154,7 @@ export default {
   name: "teacher-user",
   data() {
     return {
-      edit_title: "提示",
+      uploadUrl: "/users/student/import",
       switchValue: "",
       editStudentShow: false,
       tips: true,
@@ -219,6 +221,10 @@ export default {
         .then((res) => {
           this.classRoom = res.data.rows;
         });
+    },
+    downLoad() {
+      let url = this.$url.replace("/download/", "");
+      window.location.href = `${url}/users/student/template`;
     },
     edit(e) {
       this.mask = true;
