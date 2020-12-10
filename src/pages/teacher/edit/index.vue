@@ -223,6 +223,9 @@ export default {
   },
   mounted() {
     this.exam = localStorage.getItem("exam");
+    if (this.exam) {
+      this.disableExam(false);
+    }
     if (this.bgIndex == "0") {
       localStorage.getItem("caseMenuId")
         ? (this.bgIndex = localStorage.getItem("caseMenuId"))
@@ -289,15 +292,15 @@ export default {
         let duringLimit = res.data;
         if (!duringLimit) return;
         this.duringLimit = this.duringLimit - duringLimit / 60;
-        if (this.duringLimit < 0) {
-          this.$MessageBox.alert("已超出考试时间", "提示", {
-            confirmButtonText: "确定",
-            type: "error",
-            callback: () => {
-              this.$router.push("/examcase");
-            },
-          });
-        }
+        // if (this.duringLimit < 0) {
+        //   this.$MessageBox.alert("考试时间已结束", "提示", {
+        //     confirmButtonText: "确定",
+        //     type: "error",
+        //     callback: () => {
+        //       this.$router.push("/examcase");
+        //     },
+        //   });
+        // }
       });
     setInterval(() => {
       this.countDown();
@@ -351,7 +354,6 @@ export default {
       }, 30000);
     },
     //正式考试倒计时
-    /*eslint-disable*/
     countDown() {
       if (!this.hour) {
         this.hour = parseInt(this.duringLimit / 60);
@@ -380,9 +382,40 @@ export default {
         this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
       }
     },
+    //禁用考试项
+    disableExam(flag) {
+      document.oncontextmenu = function () {
+        return flag;
+      };
+      document.onkeydown = function () {
+        var e = window.event || arguments[0];
+        if (e.keyCode == 123) {
+          return flag;
+        }
+      };
+      if (flag) return;
+      let _this = this;
+      window.onblur = function () {
+        _this.$MessageBox.alert(
+          "您已经离开当前考试界面,成绩可能作废!",
+          "提示",
+          {
+            confirmButtonText: "确定",
+            type: "error",
+          }
+        );
+      };
+      window.onbeforeunload = function (e) {
+        var a = window.event || e;
+        a.returnValue = "确定离开当前页面吗？";
+      };
+    },
   },
   beforeRouteLeave(to, from, next) {
     clearInterval(this.time);
+    this.disableExam(true);
+    window.onblur = "";
+    window.onbeforeunload = "";
     next();
   },
 };

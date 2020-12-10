@@ -264,7 +264,21 @@ export default {
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
-    this.getTabdata();
+    let exam = localStorage.getItem("exam");
+    if (exam) {
+      this.axios
+        .get(`/meta/ask/module`, {
+          params: {
+            caseId: this.caseId,
+          },
+        })
+        .then((res) => {
+          this.tabData = res.data;
+        });
+    } else {
+      this.getTabdata();
+    }
+
     let arr = JSON.parse(localStorage.getItem("askedArr"));
     if (arr == null || arr.length == "0") {
       return;

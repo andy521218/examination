@@ -126,7 +126,7 @@
                   | lastTime(item.classrooms[0].endTime)
               }}
             </td>
-            <td>40分</td>
+            <td>{{ item.classrooms[0].duringLimit }}分</td>
             <td style="width: 200px">
               <span class="nameTxT">
                 {{ caseName(item) }}
@@ -213,6 +213,7 @@ export default {
     },
     seeExam(item) {
       this.exam_show = true;
+      this.seeExamdata.name = item.name;
       this.seeExamdata.classroonName = item.classrooms[0].classroonName;
       this.seeExamdata.beginTime = item.classrooms[0].beginTime;
       this.seeExamdata.endTime = item.classrooms[0].endTime;
