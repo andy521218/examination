@@ -5,32 +5,32 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sex:'',
-    flag:false,
-    menuId:'-1',
-    avatar:'',
+    sex: '',
+    flag: false,
+    menuId: '-1',
+    avatar: '',
     messageMenu: [
       {
-      title:'问题讨论',
-      router:'messageforum',
-      item:''
-    },
-    {
-      title:'问题提问',
-      router:'messagepublish',
-      item:''
-    },
-    {
-      title:'我的问题',
-      router:'messagemy',
-      item:''
-    },
-    {
-      title:'我的私信',
-      router:'messageprivate',
-      item:''
-    },
-  ],
+        title: '问题讨论',
+        router: 'messageforum',
+        item: ''
+      },
+      {
+        title: '问题提问',
+        router: 'messagepublish',
+        item: ''
+      },
+      {
+        title: '我的问题',
+        router: 'messagemy',
+        item: ''
+      },
+      {
+        title: '我的私信',
+        router: 'messageprivate',
+        item: ''
+      },
+    ],
     adminMenu: [
       {
         title: "教师管理",
@@ -142,11 +142,6 @@ export default new Vuex.Store({
       {
         title: "学习记录",
         router: "userrecord",
-        item: "",
-      },
-      {
-        title: "考试成绩",
-        router: "userachievement",
         item: "",
       },
       {
