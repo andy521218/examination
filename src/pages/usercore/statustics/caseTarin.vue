@@ -80,7 +80,13 @@
             <span>平均分</span>
           </div>
           <div class="train_bottom_left_main_block">
-            <div v-show="min">
+            <img
+              v-show="!score_show"
+              class="train_bottom_left_main_itps"
+              src="../../../assets/public/number.png"
+              alt=""
+            />
+            <div v-show="min && score_show == true">
               <img
                 src="../../../assets/public/yellowblock.png"
                 :style="{ width: min + 'px' }"
@@ -90,7 +96,7 @@
                 >{{ parseInt(report.minScore) }}分</span
               >
             </div>
-            <div v-show="max">
+            <div v-show="max && score_show == true">
               <img
                 src="../../../assets/public/bluenlock.png"
                 :style="{ width: max + 'px' }"
@@ -100,7 +106,7 @@
                 >{{ parseInt(report.maxScore) }}分</span
               >
             </div>
-            <div v-show="avg">
+            <div v-show="avg && score_show == true">
               <img
                 src="../../../assets/public/violetblokc.png"
                 :style="{ width: avg + 'px' }"
@@ -122,7 +128,13 @@
         </div>
         <div class="train_bottom_right_main">
           <div class="train_bottom_right_main_box">
-            <div>
+            <img
+              v-show="!number_show"
+              class="train_bottom_right_main_itps"
+              src="../../../assets/public/number.png"
+              alt=""
+            />
+            <div class="train_bottom_right_main_box_item">
               <span v-show="report.historgram050"
                 >{{ report.historgram050 }}次</span
               >
@@ -142,7 +154,7 @@
                 alt=""
               />
             </div>
-            <div>
+            <div class="train_bottom_right_main_box_item">
               <span v-show="report.historgram6070"
                 >{{ report.historgram6070 }}次</span
               >
@@ -152,7 +164,7 @@
                 alt=""
               />
             </div>
-            <div>
+            <div class="train_bottom_right_main_box_item">
               <span v-show="report.historgram7080"
                 >{{ report.historgram7080 }}次</span
               >
@@ -162,7 +174,7 @@
                 alt=""
               />
             </div>
-            <div>
+            <div class="train_bottom_right_main_box_item">
               <span v-show="report.historgram8090"
                 >{{ report.historgram8090 }}次</span
               >
@@ -172,7 +184,7 @@
                 alt=""
               />
             </div>
-            <div>
+            <div class="train_bottom_right_main_box_item">
               <span v-show="report.historgram90"
                 >{{ report.historgram90 }}次</span
               >
@@ -204,6 +216,8 @@ export default {
   data() {
     return {
       report: {},
+      score_show: true,
+      number_show: false,
       min: 0,
       max: 0,
       avg: 0,
@@ -228,23 +242,31 @@ export default {
           },
         })
         .then((res) => {
+          console.log(res);
+          this.score_show = true;
+          this.number_show = true;
           this.report = res.data;
           this.min = (res.data.minScore / 100) * 540;
           this.max = (res.data.maxScore / 100) * 540;
           // this.avg = (res.data.avgScore / 100) * 540;
+          if (res.data.minScore == null) {
+            this.score_show = false;
+          }
           this.historgram050 = 0;
           this.historgram5060 = 0;
           this.historgram6070 = 0;
           this.historgram7080 = 0;
           this.historgram90 = 0;
           let totalCnt = res.data.totalCnt;
-          if (res.data.historgram050 == null) return;
+          if (res.data.historgram050 == null) {
+            this.number_show = false;
+            return;
+          }
           this.historgram050 = (res.data.historgram050 / totalCnt) * 200;
           this.historgram5060 = (res.data.historgram5060 / totalCnt) * 200;
           this.historgram6070 = (res.data.historgram6070 / totalCnt) * 200;
           this.historgram7080 = (res.data.historgram7080 / totalCnt) * 200;
           this.historgram90 = (res.data.historgram90 / totalCnt) * 200;
-          console.log(res);
         });
     },
   },
@@ -359,11 +381,14 @@ export default {
             line-height: 25px;
           }
         }
+        .train_bottom_left_main_itps {
+          margin-left: 30%;
+          margin-top: -5%;
+        }
       }
     }
     .train_bottom_right_main {
       .train_bottom_right_main_box {
-        margin-left: 15px;
         margin-top: 4%;
         height: 85%;
         width: 100%;
@@ -371,7 +396,7 @@ export default {
         border-top: none;
         border-right: none;
         display: flex;
-        div {
+        .train_bottom_right_main_box_item {
           display: flex;
           flex-direction: column;
           align-self: flex-end;
@@ -386,6 +411,12 @@ export default {
           span {
             color: rgb(0, 235, 255);
           }
+        }
+        .train_bottom_right_main_itps {
+          width: 254px;
+          height: 196px;
+          margin-left: 35%;
+          margin-bottom: 4%;
         }
       }
       .train_bottom_right_main_item {

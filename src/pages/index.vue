@@ -33,7 +33,13 @@ export default {
     routerSment() {
       if (localStorage.getItem("authority") != "STUDENT")
         return this.$Message.error("无权访问");
-      this.$router.push("examindex");
+      this.axios.get("/exam").then((res) => {
+        if (!res.data.length != "0") {
+          this.$Message.error("当前暂无考试");
+          return;
+        }
+        this.$router.push("examindex");
+      });
     },
     routerCare() {
       this.$Message.error("功能待完善");
