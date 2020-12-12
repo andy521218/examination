@@ -65,7 +65,7 @@ export default new Vuex.Store({
           "药材库",
         ],
         show: false,
-        router: "admincontent",
+        router: "adminhear",
         itemRouter: [
           "adminlook",
           "adminhear",
@@ -96,36 +96,50 @@ export default new Vuex.Store({
         title: "账号管理",
         router: "teacheruser",
         item: "",
+        show: false,
       },
       {
         title: "班级管理",
         router: "teacherclass",
         item: "",
+        show: false,
       },
       {
         title: "学生成绩",
         router: "teacherstudent",
         item: "",
+        show: false,
       },
       {
         title: "案例管理",
         router: "teachercase",
         item: "",
+        show: false,
       },
       {
         title: "发布考试",
         router: "teacherrelease",
         item: "",
+        show: false,
       },
       {
         title: "考试管理",
         router: "teacherexam",
         item: "",
+        show: false,
       },
       {
         title: "数据分析",
-        router: "teacherstatistics",
-        item: "",
+        show: false,
+        item: [
+          "训练分析",
+          "考试分析",
+        ],
+        router: "examanalysis",
+        itemRouter: [
+          "examanalysis",
+          "trainanalysis",
+        ],
       },
     ],
     stuedntMenu: [

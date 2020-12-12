@@ -307,11 +307,11 @@ export default {
         position: relative;
         p {
           position: absolute;
-          width: 200px;
+          width: 220px;
           border: 3px rgb(0, 235, 245) solid;
           border-radius: 3px;
           left: 50%;
-          margin-left: -100px;
+          margin-left: -110px;
           bottom: -10px;
         }
         .orange_border {

@@ -1,6 +1,3 @@
 <template>
-  <div style="text-align: center">
-    <h4>数据</h4>
-    <h2>功能待完善</h2>
-  </div>
+  <router-view></router-view>
 </template>

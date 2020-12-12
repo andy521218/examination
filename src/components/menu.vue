@@ -60,7 +60,11 @@ export default {
               this.menuData.push(this.messageMenu[3]);
               return;
             }
-            if (/teacher/.test(window.location)) {
+            if (
+              /teacher/.test(window.location) ||
+              /examanalysis/.test(window.location) ||
+              /trainanalysis/.test(window.location)
+            ) {
               this.menuData = this.teacherMenu;
               return;
             }
