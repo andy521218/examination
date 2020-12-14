@@ -374,7 +374,6 @@ export default {
         .then((res) => {
           this.diseaseName = res.data.diseaseName;
           let watch, listen, ask, press;
-          console.log(res.data);
           try {
             res.data.diseaseNameIssues.forEach((ele) => {
               if (ele.stageId == "1") {

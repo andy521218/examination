@@ -795,7 +795,6 @@ export default {
     },
     //获取焦点查询
     focusName() {
-      console.log(111);
       this.diseaseNameShow = true;
       this.axios
         .get("/meta/disease/name", {

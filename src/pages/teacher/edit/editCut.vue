@@ -212,7 +212,6 @@ export default {
       });
     },
     putPulse(e) {
-      console.log(e);
       this.http
         .put(
           `/case/manage/${this.caseId}/feel/pulse?${this.qs.stringify({

@@ -139,7 +139,6 @@ export default {
     },
     //设为已读消息
     seeMessage(item) {
-      console.log(item);
       this.axios.delete(`/message/${item.messageId}`).then((res) => {
         if (res.code == "000000") {
           this.getmessage();

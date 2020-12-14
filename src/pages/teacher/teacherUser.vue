@@ -266,7 +266,6 @@ export default {
           }
           this.recordshow = true;
           this.recordData = res.data;
-          console.log(res.data);
         });
     },
     submit() {

@@ -11,7 +11,7 @@
           <p :class="{ active: active == 2 }"></p>
         </div>
       </div>
-      <div class="statistics_right">
+      <div class="statistics_right" v-show="active == 1">
         <select class="select" v-model="diseaseType">
           <option v-for="(item, index) in list" :key="index" :value="item.id">
             {{ item.name }}
@@ -133,6 +133,34 @@ export default {
     height: 85%;
     width: 95%;
     margin: 0 auto;
+  }
+  .tarin_top_item_title {
+    height: 49px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    i {
+      margin-top: 10px;
+      margin-left: 20px;
+      width: 25px;
+      height: 49px;
+      background: url("../../assets/public/0235255.png");
+    }
+    .orange {
+      background: url("../../assets/public/25113894.png");
+    }
+    .violet {
+      background: url("../../assets/public/171130255.png");
+    }
+    span {
+      font-size: 17px;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+    .train_bottom_right_total {
+      position: absolute;
+      right: 20px;
+    }
   }
 }
 </style>

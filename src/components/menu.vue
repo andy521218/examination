@@ -24,7 +24,7 @@ export default {
   name: "user-home",
   data() {
     return {
-      colorIndex: "-1",
+      colorIndex: "0",
       menuData: [],
       authority: "",
     };

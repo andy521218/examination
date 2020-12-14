@@ -234,7 +234,6 @@ export default {
   },
   methods: {
     getreport() {
-      console.log(1);
       this.axios
         .get("/my/train/report", {
           params: {
@@ -242,7 +241,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
           this.score_show = true;
           this.number_show = true;
           this.report = res.data;
@@ -429,36 +427,6 @@ export default {
           flex: 1;
         }
       }
-    }
-  }
-  .tarin_top_item_title {
-    margin-top: 3px;
-    height: 49px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    i {
-      margin-left: 20px;
-      width: 25px;
-      height: 49px;
-      background: url("../../../assets/public/0235255.png");
-    }
-    .orange {
-      background: url("../../../assets/public/25113894.png");
-    }
-    span {
-      font-size: 17px;
-      margin-left: 10px;
-      font-weight: bold;
-    }
-    .train_bottom_right_total {
-      position: absolute;
-      right: 20px;
-    }
-    .train_bottom_right_people {
-      position: absolute;
-      bottom: -20px;
-      left: 50px;
     }
   }
 }
