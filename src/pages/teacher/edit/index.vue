@@ -444,8 +444,10 @@ export default {
 .case_container {
   width: 100%;
   height: 791px;
+  max-width: 1920px;
   margin-top: 43px;
   display: flex;
+  margin: 30px auto;
   .case_menu {
     width: 100px;
     height: 100%;

@@ -1,42 +1,44 @@
 <template>
   <div class="login" ref="login">
     <div class="login-bg">
-      <div class="login-left">
-        <img src="../assets/img/login/left.png" alt />
-      </div>
-      <div class="login-right">
-        <div class="login-box user">
-          <img src="../assets/img/login/user.png" alt />
-          <input
-            type="text"
-            v-model="user"
-            placeholder="用户名"
-            @change="userName"
-          />
+      <div class="center_auto">
+        <div class="login-left">
+          <img src="../assets/img/login/left.png" alt />
         </div>
-        <div class="login-box pwd">
-          <img src="../assets/img/login/pwd.png" alt />
-          <input
-            type="password"
-            v-model="pwd"
-            placeholder="请输入密码......"
-            @change="password"
-          />
-        </div>
-        <div class="related">
-          <div class="related_left">
-            <input type="radio" :checked="isChecked" @click="checked" />
-            <label for>记住密码</label>
+        <div class="login-right">
+          <div class="login-box user">
+            <img src="../assets/img/login/user.png" alt />
+            <input
+              type="text"
+              v-model="user"
+              placeholder="用户名"
+              @change="userName"
+            />
           </div>
-          <div class="related_right">
-            <span>忘记密码?</span>
+          <div class="login-box pwd">
+            <img src="../assets/img/login/pwd.png" alt />
+            <input
+              type="password"
+              v-model="pwd"
+              placeholder="请输入密码......"
+              @change="password"
+            />
           </div>
+          <div class="related">
+            <div class="related_left">
+              <input type="radio" :checked="isChecked" @click="checked" />
+              <label for>记住密码</label>
+            </div>
+            <div class="related_right">
+              <span>忘记密码?</span>
+            </div>
+          </div>
+          <div class="btn" @click="login">
+            <span>登 入</span>
+          </div>
+          <span class="count">访问次数:123456次</span>
+          <div class="notes">技术支持:上海域园信息科技有限公司</div>
         </div>
-        <div class="btn" @click="login">
-          <span>登 入</span>
-        </div>
-        <span class="count">访问次数:123456次</span>
-        <div class="notes">技术支持:上海域园信息科技有限公司</div>
       </div>
     </div>
   </div>
@@ -118,11 +120,17 @@ export default {
     width: 100%;
     height: 100%;
     display: flex;
-    min-width: 1375px;
-    min-height: 920px;
     overflow: hidden;
     background: url("../assets/img/login/bg.png") no-repeat;
     background-size: 100% 100%;
+    .center_auto {
+      width: 100%;
+      height: 100%;
+      max-width: 1920px;
+      max-height: 937px;
+      display: flex;
+      margin: auto auto;
+    }
   }
   .login-left {
     width: 960px;

@@ -5,13 +5,11 @@
         <div class="tarin_top_item_title">
           <i></i>
           <span>考试成绩</span>
-          <p class="train_bottom_right_people" style="left: 30px; top: 65px">
-            分数
-          </p>
+          <p class="train_bottom_right_people">分数</p>
           <div class="tarin_top_item_title_itps">注:滚动鼠标滑轮翻页</div>
         </div>
         <img
-          v-show="!exam_show"
+          v-show="exam_show"
           class="case_exam_top_itps"
           src="../../../assets/public/number.png"
           alt=""
@@ -43,7 +41,7 @@
           <div class="tarin_top_item_title_itps">注:滚动鼠标滑轮翻页</div>
         </div>
         <img
-          v-show="!classroom_show"
+          v-show="classroom_show"
           class="case_exam_top_itps"
           src="../../../assets/public/number.png"
           alt=""
@@ -108,6 +106,11 @@ export default {
           this.name = [];
           this.rank = [];
           this.score = [];
+          if (res.data.length == 0) {
+            this.exam_show = true;
+          } else {
+            this.exam_show = false;
+          }
           res.data.forEach((item) => {
             this.name.push(item.name);
             this.rank.push(item.rank);
@@ -135,6 +138,11 @@ export default {
   .tarin_top_item_title_itps {
     position: absolute;
     right: 15px;
+  }
+  .train_bottom_right_people {
+    position: absolute;
+    top: 65px;
+    left: 28px;
   }
   .case_exam_top {
     width: 100%;
@@ -208,7 +216,7 @@ export default {
       display: flex;
       li {
         display: flex;
-        flex: 1;
+        width: 10%;
         p {
           width: 20px;
           height: 20px;

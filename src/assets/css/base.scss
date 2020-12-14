@@ -1492,11 +1492,12 @@ input[type="checkbox"]:checked:before {
 .case_user_main {
   background: url("../../assets/public/box.png") center no-repeat;
   background-size: 100% 100%;
-  margin: 0 auto;
+  margin: auto auto;
   width: 1740px;
   height: 720px;
-  padding: 2% 2%;
-
+  padding: 39px;
+  min-width: 1740px;
+  min-height: 720px;
   ul {
     width: 100%;
     display: flex;

@@ -85,6 +85,11 @@ export const user = [
     ]
   },
   {
+    path: '/prose',
+    name: 'prose',
+    component: () => import('../components/prose'),
+  },
+  {
     path: '/examindex',
     name: 'examindex',
     component: () => import('../pages/usercore/exam/index'),

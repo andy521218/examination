@@ -42,7 +42,7 @@ export default {
       });
     },
     routerCare() {
-      this.$Message.error("功能待完善");
+      this.$router.push("prose");
     },
   },
 };

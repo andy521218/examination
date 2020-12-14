@@ -98,7 +98,11 @@ export const teacher = [
       },
     ]
   },
-
+  {
+    path: '/prose',
+    name: 'prose',
+    component: () => import('../components/prose'),
+  },
   //案例管理
   {
     path: '/case',
