@@ -358,6 +358,7 @@ export default {
   },
   watch: {
     keyword: function () {
+      if (!this.keyword) return;
       this.getAskData(this.typeId);
     },
   },

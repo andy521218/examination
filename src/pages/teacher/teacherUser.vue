@@ -108,7 +108,7 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in studentData" :key="index">
-            <td>{{ index + 1 }}</td>
+            <td>{{ index | sortNumber(page) }}</td>
             <td>{{ item.userName }}</td>
             <td>{{ item.passwd }}</td>
             <td>{{ item.name }}</td>
@@ -194,14 +194,15 @@ export default {
       this.mask = true;
       this.editload = true;
     },
-    getData() {
+    getData(page = "1") {
+      this.page = page;
       this.axios
         .get("/users/student", {
           params: {
             classRoomId: this.classRoomID,
             fuzzyName: this.searchName,
             status: this.status,
-            page: this.page,
+            page: page,
             size: this.size,
           },
         })

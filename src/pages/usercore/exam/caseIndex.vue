@@ -15,22 +15,20 @@
         <div class="edit">
           <div class="edit_title">
             <span class="title">本次考试得分</span>
-            <span class="edit_switch" @click="examNumber_show = false"></span>
+            <span class="edit_switch" @click="closeItps"></span>
           </div>
           <ul>
             <li>
               <p>
                 <span style="font-size: 30px; font-weight: bold">{{
-                  examNumber
+                  parseInt(examNumber)
                 }}</span
                 >分
               </p>
             </li>
           </ul>
           <div class="edit_btn_box">
-            <button class="edit_submit" @click="examNumber_show = false">
-              确定
-            </button>
+            <button class="edit_submit" @click="closeItps">确定</button>
           </div>
         </div>
       </div>
@@ -120,6 +118,10 @@ export default {
         this.examNumber_show = true;
         this.deleshow = false;
       });
+    },
+    closeItps() {
+      this.examNumber_show = false;
+      this.$router.push("index");
     },
   },
 };

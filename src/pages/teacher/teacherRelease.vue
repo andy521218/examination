@@ -83,7 +83,6 @@
       <div class="number scrollbar">
         <div class="number_itps">
           <p>案例总分值累计应为100分</p>
-          <!-- <p>下列案例可滚动</p> -->
         </div>
         <div class="number_title">
           <span>案例</span>
@@ -104,7 +103,8 @@
           </ul>
         </div>
         <div class="bottom_text">
-          <p>目前案例分数:{{ examNumber }}分</p>
+          <p>目前案例分数:</p>
+          {{ examNumber }}分
         </div>
       </div>
       <div class="edit_btn_box">
@@ -488,10 +488,12 @@ export default {
       .bottom_text {
         margin-top: 10px;
         display: flex;
+
         justify-content: space-between;
       }
       .number_itps {
         display: flex;
+
         justify-content: space-between;
       }
     }

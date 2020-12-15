@@ -63,7 +63,7 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in classroomsData" :key="index">
-            <td>{{ index + 1 }}</td>
+            <td>{{ index | sortNumber(page) }}</td>
             <td>{{ item.departmentName }}</td>
             <td>{{ item.specialtyName }}</td>
             <td>{{ item.gradeName }}</td>
@@ -166,6 +166,7 @@ export default {
       this.getData();
     },
     getData(page = 1) {
+      this.page = page;
       this.axios
         .get("classrooms", {
           params: {

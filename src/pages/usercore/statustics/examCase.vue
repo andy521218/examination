@@ -38,15 +38,23 @@
         <div class="tarin_top_item_title">
           <i class="violet"></i>
           <span>班级排名</span>
+          <p class="train_bottom_right_people">名次</p>
           <div class="tarin_top_item_title_itps">注:滚动鼠标滑轮翻页</div>
         </div>
         <img
-          v-show="classroom_show"
+          v-show="!classroom_show"
           class="case_exam_top_itps"
           src="../../../assets/public/number.png"
           alt=""
         />
-        <div class="case_exam_main_classroom"></div>
+        <div class="case_exam_main_classroom">
+          <canvas id="canvas" width="700" height="445"></canvas>
+        </div>
+        <div class="case_exam_main_classroom_list">
+          <span v-for="(item, index) in name" :key="index">{{
+            index | sortNumber(page)
+          }}</span>
+        </div>
       </div>
     </div>
     <div class="case_exam_bottom">
@@ -72,6 +80,7 @@ export default {
       name: [],
       rank: [],
       score: [],
+      sortHeight: [],
       time: "",
     };
   },
@@ -82,6 +91,17 @@ export default {
   methods: {
     handleScroll(e) {
       clearTimeout(this.time);
+      console.log(e.wheelDelta);
+      if (this.name.length < 10) {
+        if (e.wheelDelta < 1) {
+          return;
+        }
+      }
+      if (this.page == "1") {
+        if (e.wheelDelta > 1) {
+          return;
+        }
+      }
       this.time = setTimeout(() => {
         if (e.wheelDelta > 1) {
           this.page++;
@@ -93,9 +113,6 @@ export default {
       }, 800);
     },
     getReport() {
-      this.name = [];
-      this.rank = [];
-      this.score = [];
       this.axios
         .get("/my/exam/report", {
           params: {
@@ -108,18 +125,56 @@ export default {
           this.score = [];
           if (res.data.length == 0) {
             this.exam_show = true;
+            return;
           } else {
             this.exam_show = false;
           }
-          res.data.forEach((item) => {
+          res.data.forEach((item, index) => {
             this.name.push(item.name);
             this.rank.push(item.rank);
             this.score.push({
               score: item.score,
               height: (item.score / 100) * 435,
             });
+            if (res.data.length - 1 == index) {
+              this.classroomSort();
+            }
           });
         });
+    },
+    classroomSort() {
+      this.sortHeight = [];
+      let arr = JSON.parse(JSON.stringify(this.rank));
+      arr = arr.sort();
+      let min = arr[0],
+        max = arr[arr.length - 1];
+      let difference = max - min;
+      this.rank.forEach((item) => {
+        this.sortHeight.push(500 - (difference / item) * 445);
+      });
+      let canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      ctx.strokeStyle = "rgb(0,235,255)";
+      ctx.font = "18px Arial";
+      ctx.fillStyle = "rgb(60,190,250)";
+      ctx.beginPath();
+      let y = 38.5;
+      this.sortHeight.forEach((item, index) => {
+        ctx.lineTo(y, item);
+        ctx.fillText(this.rank[index] + "名", y - 15, item - 15);
+        let img = new Image();
+        img.src = `http://localhost:8080/api/download/61/1608018030700.png`;
+        (() => {
+          let img_y = y;
+          img.onload = () => {
+            ctx.drawImage(img, img_y - 10, item - 10, 20, 20);
+          };
+        })();
+        y += 75;
+        if (this.sortHeight.length - 1 == index) {
+          ctx.stroke();
+        }
+      });
     },
   },
   watch: {
@@ -151,7 +206,6 @@ export default {
     .case_exam_examumber {
       width: 49%;
       height: 100%;
-      background: cadetblue;
       background: url("../../../assets/public/background.png") no-repeat center;
       background-size: 100% 100%;
       position: relative;
@@ -197,13 +251,34 @@ export default {
       width: 49%;
       height: 100%;
       position: relative;
-    }
-    .case_exam_top_itps {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: -98px;
-      margin-left: -127px;
+
+      .case_exam_top_itps {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -98px;
+        margin-left: -127px;
+      }
+      .case_exam_main_classroom {
+        width: 90%;
+        height: 75%;
+        margin: 6% auto 0 auto;
+        border: 1px solid rgb(9, 124, 168);
+        border-top: none;
+        border-right: none;
+      }
+      .case_exam_main_classroom_list {
+        width: 90%;
+        height: 8%;
+        margin: 0 auto;
+        display: flex;
+        text-align: center;
+        align-items: center;
+        position: relative;
+        span {
+          width: 11.1%;
+        }
+      }
     }
   }
   .case_exam_bottom {

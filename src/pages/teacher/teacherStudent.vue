@@ -4,24 +4,26 @@
     <div class="main_header">
       <button class="add" style="margin-right: 644px">批量存档</button>
       <label for>班级</label>
-      <select name id class="select">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select name id class="select" v-model="classroomId" @change="getReport">
+        <option
+          v-for="(item, index) in classrooms"
+          :key="index"
+          :value="item.id"
+        >
+          {{ item.name }}
+        </option>
       </select>
       <label for class="big_left">试卷名称</label>
-      <select name id class="select" style="width: 250px">
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
-        <option value>1</option>
+      <select v-model="testPaperId" class="select" style="width: 250px">
+        <option
+          v-for="(item, index) in examName"
+          :key="index"
+          :value="item.testPaperId"
+        >
+          {{ item.name }}
+        </option>
       </select>
-      <button class="submit">检索</button>
+      <button class="submit" @click="getResult">检索</button>
     </div>
     <div class="main_table">
       <table
@@ -77,6 +79,55 @@ export default {
   components: {
     turnPage,
     editScore,
+  },
+  data() {
+    return {
+      classrooms: "",
+      classroomId: "",
+      examName: "",
+      testPaperId: "",
+      result: "",
+    };
+  },
+  mounted() {
+    this.getclassrooms();
+  },
+  methods: {
+    getclassrooms() {
+      this.axios
+        .get("classrooms", {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.classrooms = res.data.rows;
+          this.classroomId = res.data.rows[0].id;
+          this.getReport();
+        });
+    },
+    getReport() {
+      this.axios
+        .get(`/case/report/testpaper/${this.classroomId}`)
+        .then((res) => {
+          this.examName = res.data;
+        });
+    },
+    getResult() {
+      this.axios
+        .get("/exam/result", {
+          params: {
+            classroomId: this.classroomId,
+            testPaperId: this.testPaperId,
+            page: 1,
+            size: "10",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        });
+    },
   },
 };
 </script>
