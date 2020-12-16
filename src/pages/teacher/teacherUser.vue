@@ -88,53 +88,51 @@
       />
       <button class="submit" @click="getData">检索</button>
     </div>
-    <div class="main_table">
-      <table
-        class="main_table"
-        style="border-collapse: separate; border-spacing: 0px 8px"
-      >
-        <thead class="thead-dark">
-          <tr>
-            <th class="table_5">序号</th>
-            <th class="table_10">用户名/学号</th>
-            <th class="table_10">密码</th>
-            <th class="table_10">姓名</th>
-            <th class="table_10">班级</th>
-            <th class="table_10">最近登入时间</th>
-            <th class="table_10">状态</th>
-            <th class="table_10">操作</th>
-            <th class="table_10">查看</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in studentData" :key="index">
-            <td>{{ index | sortNumber(page) }}</td>
-            <td>{{ item.userName }}</td>
-            <td>{{ item.passwd }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.classRoomName }}</td>
-            <td>
-              {{
-                item.lastLoginTime | lastTime(item.lastLoginTime, "从未登入")
-              }}
-            </td>
-            <td>
-              <i-switch
-                true-color="rgb(0,235,255)"
-                v-model="item.status"
-                @on-change="switchChange(item)"
-              ></i-switch>
-            </td>
-            <td>
-              <span @click="edit(item)">编辑</span>
-            </td>
-            <td>
-              <p @click="seeRecord(item)">学习记录</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <table
+      class="main_table"
+      style="border-collapse: separate; border-spacing: 0px 8px"
+    >
+      <thead class="thead-dark">
+        <tr>
+          <th class="table_5">序号</th>
+          <th class="table_10">用户名/学号</th>
+          <th class="table_10">密码</th>
+          <th class="table_10">姓名</th>
+          <th class="table_10">班级</th>
+          <th class="table_10">最近登入时间</th>
+          <th class="table_10">状态</th>
+          <th class="table_10">操作</th>
+          <th class="table_10">查看</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in studentData" :key="index">
+          <td>{{ index | sortNumber(page) }}</td>
+          <td>{{ item.userName }}</td>
+          <td>{{ item.passwd }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.classRoomName }}</td>
+          <td>
+            {{ item.lastLoginTime | lastTime(item.lastLoginTime, "从未登入") }}
+          </td>
+          <td>
+            <i-switch
+              true-color="rgb(0,235,255)"
+              v-model="item.status"
+              @on-change="switchChange(item)"
+            ></i-switch>
+          </td>
+          <td>
+            <span @click="edit(item)">编辑</span>
+          </td>
+          <td>
+            <p @click="seeRecord(item)">学习记录</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <main-itps v-show="main_show"></main-itps>
     <turn-page
       v-show="total > size"
       :totaltotal="Number(total)"
@@ -145,6 +143,7 @@
 </template>
 
 <script>
+import mainItps from "../../components/mainItps";
 import turnPage from "../../components/turnPage";
 import editUser from "../../components/edit/editUser";
 import editImport from "../../components/edit/editImport";
@@ -173,6 +172,7 @@ export default {
       mask: false,
       recordData: "",
       recordshow: false,
+      main_show: false,
     };
   },
   components: {
@@ -180,6 +180,7 @@ export default {
     editUser,
     viewRecords,
     editImport,
+    mainItps,
   },
   mounted() {
     this.getData();
@@ -207,6 +208,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.studentData = res.data.rows;
           this.total = res.data.total;
         });

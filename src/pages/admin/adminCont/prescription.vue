@@ -96,7 +96,11 @@
             @blur="blurprescription"
           />
           <button class="submit">检索</button>
-          <div class="search_box scrollbar" v-show="prescriptionSearchShow">
+          <div
+            class="search_box scrollbar"
+            style="width: 500px"
+            v-show="prescriptionSearchShow"
+          >
             <div class="search_scrollbar">
               <div
                 v-for="(item, index) in prescriptionData"
@@ -169,7 +173,11 @@
             @blur="blurName"
           />
           <button class="submit">检索</button>
-          <div class="search_box scrollbar" v-show="searchShow">
+          <div
+            class="search_box scrollbar"
+            style="width: 500px"
+            v-show="searchShow"
+          >
             <div class="search_scrollbar">
               <div
                 v-for="(item, index) in seacrhNamedata"

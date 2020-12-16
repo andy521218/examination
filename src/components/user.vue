@@ -188,6 +188,7 @@ export default {
   display: flex;
   height: 50px;
   margin-top: 20px;
+  // justify-content: flex-end;
   .home_user_left {
     display: flex;
     align-content: center;

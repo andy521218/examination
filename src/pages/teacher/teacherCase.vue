@@ -88,6 +88,7 @@
         </li>
       </ul>
     </div>
+    <main-itps v-show="main_show"></main-itps>
     <turn-page
       ref="turnPage"
       v-show="total > size"
@@ -99,6 +100,7 @@
 </template>
 
 <script>
+import mainItps from "../../components/mainItps";
 import turnPage from "../../components/turnPage";
 import editDele from "../../components/edit/editDele";
 import addCase from "../../components/edit/addCase";
@@ -108,6 +110,7 @@ export default {
     turnPage,
     editDele,
     addCase,
+    mainItps,
   },
   data() {
     return {
@@ -167,6 +170,7 @@ export default {
       searchOptions: "",
       radioData: {},
       screenWidth: "",
+      main_show: false,
     };
   },
   mounted() {
@@ -175,7 +179,6 @@ export default {
     let timeout;
     window.onresize = () => {
       this.screenWidth = document.body.clientWidth;
-
       if (timeout) clearTimeout(timeout);
       timeout = setTimeout(() => {
         if (this.screenWidth >= "1900") {
@@ -267,6 +270,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.manageData = res.data.rows;
           this.total = res.data.total;
         });

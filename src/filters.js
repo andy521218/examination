@@ -25,7 +25,7 @@ export function lastTime(e) {
   }
  export function sortNumber(index,page){
     if(page=='1') return index+1
-    if(page>'1') return page*10+arguments[0]+1
+    if(page>'1') return page*10+arguments[0]+1-10
   }
 export function duringTime(end,begin){
   if(end=='0')  return 0 

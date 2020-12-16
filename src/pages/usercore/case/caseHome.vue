@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <header class="home_header" style="flex-direction: row-reverse">
+    <header class="home_header">
+      <logo :index="index"></logo>
       <user></user>
     </header>
     <ul class="case_type">
@@ -36,6 +37,7 @@
           </div>
         </li>
       </ul>
+      <main-itps v-show="main_show"></main-itps>
       <turn-page
         v-show="total > size"
         :totaltotal="Number(total)"
@@ -47,14 +49,17 @@
 </template>
 
 <script>
+import mainItps from "../../../components/mainItps";
 import user from "../../../components/user";
 import turnPage from "../../../components/turnPage";
-
+import logo from "../../../components/logo";
 export default {
   name: "case-home",
   components: {
     user,
     turnPage,
+    mainItps,
+    logo,
   },
   data() {
     return {
@@ -84,6 +89,8 @@ export default {
       size: "10",
       page: "1",
       caseData: {},
+      main_show: false,
+      index: false,
     };
   },
   mounted() {
@@ -103,6 +110,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.caseData = res.data.rows;
           this.total = res.data.total;
         });
@@ -144,5 +156,4 @@ export default {
     cursor: pointer;
   }
 }
-
 </style>

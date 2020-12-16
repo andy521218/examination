@@ -1,5 +1,5 @@
 <template>
-  <div class="study_ask">
+  <div class="study_ask" style="z-index: 99999">
     <div class="study_title" style="justify-content: space-between">
       <div class="study_title_left">
         <span>问诊</span>
@@ -97,7 +97,7 @@
               :style="{ background: select[item.colorId].color }"
             ></i>
             <div class="ask_column">
-              <span>问: {{ item.question }}11111111</span>
+              <span>问: {{ item.question }}</span>
               <span>答: {{ item.answer }}</span>
             </div>
           </div>
@@ -112,7 +112,7 @@
 <script>
 export default {
   name: "study-ask",
-  props: ["scoreData"],
+  props: ["scoreData", "userId"],
   data() {
     return {
       select: [
@@ -173,10 +173,16 @@ export default {
         });
     },
     getAskdata() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/asked`).then((res) => {
-        this.askedData = res.data;
-        this.askItemData = res.data;
-      });
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/asked`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.askedData = res.data;
+          this.askItemData = res.data;
+        });
     },
     getcoreectasked() {
       let asklist = [];
@@ -187,6 +193,7 @@ export default {
               .get(`/${this.examNo}/${this.caseId}/correctasked`, {
                 params: {
                   typeId: this.tabData[i].moduleId,
+                  userId: this.userId,
                 },
               })
               .then((res) => {

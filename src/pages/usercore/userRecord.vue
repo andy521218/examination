@@ -16,43 +16,43 @@
       />
       <button class="submit" @click="getTrain(page)">检索</button>
     </div>
-    <div class="main_table">
-      <table
-        class="main_table"
-        style="border-collapse: separate; border-spacing: 0px 8px"
-      >
-        <thead class="thead-dark">
-          <tr>
-            <th class="table_5">序号</th>
-            <th class="table_10">病系</th>
-            <th class="table_10">患者</th>
-            <th class="table_10">开始时间</th>
-            <th class="table_10">完成时间</th>
-            <th class="table_10">用时</th>
-            <th class="table_10">成绩</th>
-            <th class="table_10">查看</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in trainData" :key="index">
-            <td>{{ index | sortNumber(page) }}</td>
-            <td>{{ checkDisease(item.diseaseType) }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.beginTime | lastTime(item.beginTime) }}</td>
-            <td>{{ item.endTime | lastTime(item.endTime, "未完成") }}</td>
-            <td>{{ item.duringTime / 60 }}min</td>
-            <td>{{ Math.round(item.score) }}分</td>
-            <td v-show="item.status == 1">
-              <span @click="toKeep(item)">继续学习</span>
-            </td>
-            <td v-show="item.status == 2">
-              <span @click="toStudy(item)">辩证过程</span>
-              <span @click="toMapping(item)">思维导图</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
+    <table
+      class="main_table"
+      style="border-collapse: separate; border-spacing: 0px 8px"
+    >
+      <thead class="thead-dark">
+        <tr>
+          <th class="table_5">序号</th>
+          <th class="table_10">病系</th>
+          <th class="table_10">患者</th>
+          <th class="table_10">开始时间</th>
+          <th class="table_10">完成时间</th>
+          <th class="table_10">用时</th>
+          <th class="table_10">成绩</th>
+          <th class="table_10">查看</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in trainData" :key="index">
+          <td>{{ index | sortNumber(page) }}</td>
+          <td>{{ checkDisease(item.diseaseType) }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.beginTime | lastTime(item.beginTime) }}</td>
+          <td>{{ item.endTime | lastTime(item.endTime, "未完成") }}</td>
+          <td>{{ item.duringTime / 60 }}min</td>
+          <td>{{ Math.round(item.score) }}分</td>
+          <td v-show="item.status == 1">
+            <span @click="toKeep(item)">继续学习</span>
+          </td>
+          <td v-show="item.status == 2">
+            <span @click="toStudy(item)">辩证过程</span>
+            <span @click="toMapping(item)">思维导图</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <main-itps v-show="main_show"></main-itps>
     <turn-page
       v-show="total > size"
       :totaltotal="Number(total)"
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import mainItps from "../../components/mainItps";
 import turnPage from "../../components/turnPage";
 export default {
   name: "user-record",
@@ -96,10 +97,12 @@ export default {
       size: "10",
       trainData: {},
       page: "",
+      main_show: false,
     };
   },
   components: {
     turnPage,
+    mainItps,
   },
   mounted() {
     this.getTrain(1);
@@ -137,6 +140,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.trainData = res.data.rows;
           this.total = res.data.total;
         });

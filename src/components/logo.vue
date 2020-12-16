@@ -1,14 +1,16 @@
 <template>
   <div class="logo" @click="link">
-    <h1 v-if="authority != 'ADMIN' && exam == null"></h1>
-    <span v-if="authority != 'ADMIN' && exam == null">首页</span>
+    <h1 v-if="authority != 'ADMIN' && exam == null && index == true"></h1>
+    <span v-if="authority != 'ADMIN' && exam == null && index == true"
+      >首页</span
+    >
   </div>
 </template>
 
 <script>
 export default {
   name: "logo",
-  props: ["exam"],
+  props: ["exam", "index"],
   data() {
     return {
       authority: "",
@@ -35,6 +37,11 @@ export default {
   },
   mounted() {
     this.authority = localStorage.getItem("authority");
+    if (/index/.test(window.location.href)) {
+      this.$parent.index = false;
+    } else {
+      this.$parent.index = true;
+    }
   },
 };
 </script>

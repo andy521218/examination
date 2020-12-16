@@ -43,7 +43,7 @@
             <span class="edit_red">*</span>
             <span class="edit_text">考试时长:</span>
           </div>
-          <span> 40分 </span>
+          <span> {{ seeExamdata.duringLimit }}分 </span>
         </li>
         <li>
           <div class="edit_left">
@@ -64,7 +64,7 @@
           <ul class="case_item">
             <li v-for="(item, index) in check" :key="index">
               <span>{{ item.name }}</span>
-              <span>{{ item.caseId }}</span>
+              <span>{{ item.score }}</span>
             </li>
           </ul>
         </div>
@@ -91,68 +91,67 @@
       />
       <button class="submit" @click="getexam('1')">检索</button>
     </div>
-    <div class="main_table">
-      <table
-        class="main_table"
-        style="border-collapse: separate; border-spacing: 0px 8px"
-      >
-        <thead class="thead-dark">
-          <tr>
-            <th>序号</th>
-            <th>考试名称</th>
-            <th>考试班级</th>
-            <th>开始时间</th>
-            <th>结束时间</th>
-            <th>考试时长</th>
-            <th>案例</th>
-            <th>状态</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in examData" :key="index">
-            <td>{{ index | sortNumber(page) }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.classrooms[0].classroonName }}</td>
-            <td>
-              {{
-                item.classrooms[0].beginTime
-                  | lastTime(item.classrooms[0].beginTime)
-              }}
-            </td>
-            <td>
-              {{
-                item.classrooms[0].endTime
-                  | lastTime(item.classrooms[0].endTime)
-              }}
-            </td>
-            <td>{{ item.classrooms[0].duringLimit }}分</td>
-            <td style="width: 200px">
-              <span class="nameTxT">
-                {{ caseName(item) }}
-              </span>
-            </td>
-            <td class="status">
-              <span
-                v-if="item.classrooms[0].status == 2"
-                style="color: rgb(255, 255, 255)"
-                >已结束</span
-              >
-              <span v-if="item.classrooms[0].status == 1">进行中</span>
-              <span
-                v-if="item.classrooms[0].status == 0"
-                style="color: rgb(255, 255, 255)"
-                >未开始</span
-              >
-            </td>
-            <td class="see_dele">
-              <p @click="seeExam(item)">查看</p>
-              <p @click="deleExam(item)">取消</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
+    <table
+      class="main_table"
+      style="border-collapse: separate; border-spacing: 0px 8px"
+    >
+      <thead class="thead-dark">
+        <tr>
+          <th>序号</th>
+          <th>考试名称</th>
+          <th>考试班级</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>考试时长</th>
+          <th>案例</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in examData" :key="index">
+          <td>{{ index | sortNumber(page) }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.classrooms[0].classroonName }}</td>
+          <td>
+            {{
+              item.classrooms[0].beginTime
+                | lastTime(item.classrooms[0].beginTime)
+            }}
+          </td>
+          <td>
+            {{
+              item.classrooms[0].endTime | lastTime(item.classrooms[0].endTime)
+            }}
+          </td>
+          <td>{{ item.classrooms[0].duringLimit }}分</td>
+          <td style="width: 200px">
+            <span class="nameTxT">
+              {{ caseName(item) }}
+            </span>
+          </td>
+          <td class="status">
+            <span
+              v-if="item.classrooms[0].status == 2"
+              style="color: rgb(255, 255, 255)"
+              >已结束</span
+            >
+            <span v-if="item.classrooms[0].status == 1">进行中</span>
+            <span
+              v-if="item.classrooms[0].status == 0"
+              style="color: rgb(255, 255, 255)"
+              >未开始</span
+            >
+          </td>
+          <td class="see_dele">
+            <p @click="seeExam(item)">查看</p>
+            <p @click="deleExam(item)">取消</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <main-itps v-show="main_show"></main-itps>
     <turn-page
       ref="turnPage"
       v-show="total > size"
@@ -164,11 +163,13 @@
 </template>
 
 <script>
+import mainItps from "../../components/mainItps";
 import turnPage from "../../components/turnPage";
 export default {
   name: "teacher-exam",
   components: {
     turnPage,
+    mainItps,
   },
   data() {
     return {
@@ -181,6 +182,7 @@ export default {
       examData: "",
       state: "",
       keyword: "",
+      main_show: false,
     };
   },
   mounted() {
@@ -199,6 +201,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.examData = res.data.rows;
           this.total = res.data.total;
         });
@@ -213,10 +220,12 @@ export default {
     },
     seeExam(item) {
       this.exam_show = true;
+      console.log(item);
       this.seeExamdata.name = item.name;
       this.seeExamdata.classroonName = item.classrooms[0].classroonName;
       this.seeExamdata.beginTime = item.classrooms[0].beginTime;
       this.seeExamdata.endTime = item.classrooms[0].endTime;
+      this.seeExamdata.duringLimit = item.classrooms[0].duringLimit;
       this.seeExamdata.status = item.classrooms[0].status;
       this.check = item.cases;
     },

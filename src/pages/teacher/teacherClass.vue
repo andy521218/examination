@@ -82,6 +82,7 @@
           </tr>
         </tbody>
       </table>
+      <main-itps v-show="main_show"></main-itps>
       <turn-page
         v-show="total > size"
         :totaltotal="Number(total)"
@@ -93,6 +94,7 @@
 </template>
 
 <script>
+import mainItps from "../../components/mainItps";
 import editClass from "../../components/edit/editClass";
 import turnPage from "../../components/turnPage";
 export default {
@@ -100,6 +102,7 @@ export default {
   components: {
     editClass,
     turnPage,
+    mainItps,
   },
   data() {
     return {
@@ -117,6 +120,7 @@ export default {
       tips: true,
       selected: undefined,
       searchName: "",
+      main_show: false,
     };
   },
   mounted() {
@@ -179,6 +183,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.total = res.data.total;
           this.classroomsData = res.data.rows;
         });

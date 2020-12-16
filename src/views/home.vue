@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <header class="home_header">
-      <logo></logo>
+      <logo :index="index"></logo>
       <user></user>
     </header>
     <div class="user_core" v-if="this.$store.state.flag">
@@ -28,10 +28,13 @@ export default {
     menuTab,
     logo,
   },
+  data() {
+    return {
+      index: false,
+    };
+  },
   mounted() {
     localStorage.removeItem("bgindex");
-    // localStorage.removeItem("examNo");
-    // localStorage.removeItem("caseId");
     localStorage.removeItem("caseMenuId");
     localStorage.removeItem("askedArr");
     localStorage.removeItem("pressItemData");
@@ -39,6 +42,14 @@ export default {
     this.axios.get("/users/current").then((res) => {
       localStorage.setItem("authority", res.data.authority);
     });
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (to.name == "index") {
+      this.index = false;
+    } else {
+      this.index = true;
+    }
+    next();
   },
 };
 </script>

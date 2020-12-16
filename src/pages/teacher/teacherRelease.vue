@@ -153,6 +153,7 @@
         </li>
       </ul>
     </div>
+    <main-itps v-show="main_show"></main-itps>
     <turn-page
       ref="turnPage"
       v-show="total > size"
@@ -165,11 +166,12 @@
 
 <script>
 import turnPage from "../../components/turnPage";
-
+import mainItps from "../../components/mainItps";
 export default {
   name: "teacher-release",
   components: {
     turnPage,
+    mainItps,
   },
   data() {
     return {
@@ -220,6 +222,7 @@ export default {
       flag: true,
       examCase: [],
       examCaseNumber: {},
+      main_show: false,
     };
   },
   mounted() {
@@ -312,6 +315,11 @@ export default {
           },
         })
         .then((res) => {
+          if (!res.data.rows) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.manageData = res.data.rows;
           this.total = res.data.total;
         });
