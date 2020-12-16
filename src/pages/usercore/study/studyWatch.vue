@@ -93,9 +93,14 @@ export default {
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.userId = localStorage.getItem("examId");
     for (let i = 0; i < 3; i++) {
       this.axios
-        .get(`${this.examNo}/${this.caseId}/watched/${i}`)
+        .get(`/${this.examNo}/${this.caseId}/watched/${i}`, {
+          params: {
+            userId: this.userId,
+          },
+        })
         .then((res) => {
           if (i == 0) {
             this.watchone = res.data;

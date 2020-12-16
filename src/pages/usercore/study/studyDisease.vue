@@ -338,18 +338,24 @@ export default {
       feelData: [],
       diseaseFeel: [],
       correctshow: false,
+      userId: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.userId = localStorage.getItem("examId");
     this.getDiseasename();
   },
   methods: {
     //获取病名数据
     getDiseasename() {
       this.axios
-        .get(`${this.examNo}/${this.caseId}/diseasename`)
+        .get(`${this.examNo}/${this.caseId}/diseasename`, {
+          params: {
+            userId: this.userId,
+          },
+        })
         .then((res) => {
           this.diseaseNameData = res.data;
           this.showData = res.data;
@@ -373,26 +379,36 @@ export default {
             error;
           }
           //获取问诊
-          this.axios.get(`${this.examNo}/${this.caseId}/asked`).then((res) => {
-            this.ask = res.data;
-            try {
-              res.data.forEach((item) => {
-                ask.forEach((ele) => {
-                  if (ele.issueId == item.id) {
-                    item.correct = ele.correct;
-                    this.askData.push(item);
-                  }
+          this.axios
+            .get(`${this.examNo}/${this.caseId}/asked`, {
+              params: {
+                userId: this.userId,
+              },
+            })
+            .then((res) => {
+              this.ask = res.data;
+              try {
+                res.data.forEach((item) => {
+                  ask.forEach((ele) => {
+                    if (ele.issueId == item.id) {
+                      item.correct = ele.correct;
+                      this.askData.push(item);
+                    }
+                  });
                 });
-              });
-            } catch (error) {
-              error;
-            }
-          });
+              } catch (error) {
+                error;
+              }
+            });
           //获取望诊
 
           for (let i = 0; i < 3; i++) {
             this.axios
-              .get(`/${this.examNo}/${this.caseId}/watched/${i}`)
+              .get(`/${this.examNo}/${this.caseId}/watched/${i}`, {
+                params: {
+                  userId: this.userId,
+                },
+              })
               .then((res) => {
                 try {
                   res.data.forEach((item) => {
@@ -411,7 +427,11 @@ export default {
           }
           //获取闻诊
           this.axios
-            .get(`/${this.examNo}/${this.caseId}/listened`)
+            .get(`/${this.examNo}/${this.caseId}/listened`, {
+              params: {
+                userId: this.userId,
+              },
+            })
             .then((res) => {
               this.listen = res.data;
               try {
@@ -428,41 +448,59 @@ export default {
               }
             });
           //获取切诊
-          this.axios.get(`/${this.examNo}/${this.caseId}/press`).then((res) => {
-            this.press = res.data;
-            try {
-              feel.forEach((ele) => {
-                res.data.forEach((item) => {
-                  if (ele.issueId == item.id) {
-                    ele.correct = item.correct;
-                    this.feelData.push(item);
+          this.axios
+            .get(`/${this.examNo}/${this.caseId}/press`, {
+              params: {
+                userId: this.userId,
+              },
+            })
+            .then((res) => {
+              this.press = res.data;
+              try {
+                feel.forEach((ele) => {
+                  res.data.forEach((item) => {
+                    if (ele.issueId == item.id) {
+                      ele.correct = item.correct;
+                      this.feelData.push(item);
+                    }
+                  });
+                });
+              } catch (error) {
+                error;
+              }
+            });
+          // 脉诊
+          this.axios
+            .get(`/${this.examNo}/${this.caseId}/pulse`, {
+              params: {
+                userId: this.userId,
+              },
+            })
+            .then((res) => {
+              this.pulse = res.data;
+              try {
+                feel.forEach((item) => {
+                  if (res.data.id == item.issueId) {
+                    this.pulseData = res.data;
                   }
                 });
-              });
-            } catch (error) {
-              error;
-            }
-          });
-          // 脉诊
-          this.axios.get(`/${this.examNo}/${this.caseId}/pulse`).then((res) => {
-            this.pulse = res.data;
-            try {
-              feel.forEach((item) => {
-                if (res.data.id == item.issueId) {
-                  this.pulseData = res.data;
-                }
-              });
-            } catch (error) {
-              error;
-            }
-          });
+              } catch (error) {
+                error;
+              }
+            });
         });
     },
     //获取症型数据
     getDisease() {
-      this.axios.get(`${this.examNo}/${this.caseId}/disease`).then((res) => {
-        this.diseaseData = res.data;
-      });
+      this.axios
+        .get(`${this.examNo}/${this.caseId}/disease`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.diseaseData = res.data;
+        });
     },
     //下拉框四诊
     switchIteM(item) {

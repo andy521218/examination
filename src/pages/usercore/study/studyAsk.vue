@@ -112,7 +112,7 @@
 <script>
 export default {
   name: "study-ask",
-  props: ["scoreData", "userId"],
+  props: ["scoreData"],
   data() {
     return {
       select: [
@@ -147,6 +147,7 @@ export default {
       tabData: "",
       caseId: "",
       examNo: "",
+      userId: "",
       askedData: {},
       askItemData: {},
       correctaskked: [],
@@ -157,6 +158,7 @@ export default {
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.userId = localStorage.getItem("examId");
     this.getTabdata();
     this.getAskdata();
   },

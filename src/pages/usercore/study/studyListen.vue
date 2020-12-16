@@ -50,19 +50,27 @@ export default {
       listen_item_data: [],
       typeId: "0",
       caseId: "",
+      userId: "",
       examNo: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.userId = localStorage.getItem("examId");
     this.getListen();
   },
   methods: {
     getListen() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/listened`).then((res) => {
-        this.listen_item_data = res.data;
-      });
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/listened`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.listen_item_data = res.data;
+        });
     },
   },
 };

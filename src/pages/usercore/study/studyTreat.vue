@@ -83,11 +83,13 @@ export default {
       agentiaData: {},
       trearCorrectData: [],
       druggeriesData: [],
+      userId: "",
     };
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
     this.examNo = localStorage.getItem("examNo");
+    this.userId = localStorage.getItem("examId");
     this.getTreat();
     this.getAgentia();
   },
@@ -147,21 +149,37 @@ export default {
       }
     },
     getTreat() {
-      this.axios.get(`${this.examNo}/${this.caseId}/treat`).then((res) => {
-        this.trearData.push(res.data);
-        this.showData.push(res.data);
-      });
+      this.axios
+        .get(`${this.examNo}/${this.caseId}/treat`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.trearData.push(res.data);
+          this.showData.push(res.data);
+        });
     },
     //我的答案
     getAgentia() {
-      this.axios.get(`${this.examNo}/${this.caseId}/agentia`).then((res) => {
-        this.agentiaData = res.data;
-      });
+      this.axios
+        .get(`${this.examNo}/${this.caseId}/agentia`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.agentiaData = res.data;
+        });
     },
     //正确答案
     getTreatCorrect() {
       this.axios
-        .get(`${this.examNo}/${this.caseId}/treat/correct`)
+        .get(`/${this.examNo}/${this.caseId}/treat/correct`, {
+          params: {
+            userId: this.userId,
+          },
+        })
         .then((res) => {
           this.trearCorrectData = res.data.agentias;
         });

@@ -145,6 +145,28 @@ export default {
     studyDisease,
     studyTreat,
   },
+  data() {
+    return {
+      examNo: "",
+      caseId: "",
+      examId: "",
+      scoreData: "",
+      titleIndex: "1",
+    };
+  },
+  mounted() {
+    this.examId = localStorage.getItem("examId");
+    this.examNo = localStorage.getItem("examNo");
+    this.caseId = localStorage.getItem("caseId");
+    this.getscore();
+  },
+  methods: {
+    getscore() {
+      this.axios.get(`/${this.examNo}/${this.caseId}/score`).then((res) => {
+        this.scoreData = res.data;
+      });
+    },
+  },
 };
 </script>
 

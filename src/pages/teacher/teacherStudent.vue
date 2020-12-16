@@ -31,9 +31,24 @@
       </select>
       <button class="submit" @click="getResult(1)">检索</button>
     </div>
-    <div class="records">
-      <user-study></user-study>
+    <!-- 学习记录 -->
+    <div class="records" v-if="records_show">
+      <div class="records_tile">
+        <ul>
+          <li
+            v-for="(item, index) in caseId"
+            :key="index"
+            @click="tapExam(item, index)"
+          >
+            案例{{ index + 1 }}
+            <p :class="{ active: title_index == index }"></p>
+          </li>
+        </ul>
+        <div class="switch_close" @click="close">X</div>
+      </div>
+      <study-main></study-main>
     </div>
+
     <table
       class="main_table"
       style="border-collapse: separate; border-spacing: 0px 8px"
@@ -45,8 +60,9 @@
           <th>用户名/学号</th>
           <th>姓名</th>
           <th>班级</th>
-          <th>考试日期</th>
-          <th>用时</th>
+          <th>开始日期</th>
+          <th>结束日期</th>
+          <th>学生用时</th>
           <th>考试成绩</th>
           <th>作答记录</th>
           <th>主观成绩</th>
@@ -56,10 +72,11 @@
         <tr v-for="(item, index) in examNumber" :key="index">
           <td>{{ index | sortNumber(page) }}</td>
           <td>考试名称</td>
-          <td>{{ item.userId }}</td>
+          <td>{{ item.username }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.classroomName }}</td>
           <td>{{ item.startTime | lastTime(item.startTime) }}</td>
+          <td>{{ item.finishTime | lastTime(item.finishTime) }}</td>
           <td>{{ parseInt((item.finishTime - item.startTime) / 60000) }}分</td>
           <td>
             <span>{{ parseInt(item.score) }}</span>
@@ -87,14 +104,14 @@
 import turnPage from "../../components/turnPage";
 import mainItps from "../../components/mainItps";
 import editScore from "../../components/edit/editScore";
-import userStudy from "../../pages/usercore/case/userStudy";
+import studyMain from "../usercore/study/studyMain";
 export default {
   name: "teahcer-student",
   components: {
     turnPage,
     editScore,
     mainItps,
-    userStudy,
+    studyMain,
   },
   data() {
     return {
@@ -108,8 +125,10 @@ export default {
       main_show: false,
       examNumber: "",
       editscore_show: false,
+      records_show: false,
       editData: "",
-      userId: "",
+      title_index: "",
+      caseId: [],
     };
   },
   mounted() {
@@ -169,9 +188,18 @@ export default {
     seeExam(item) {
       localStorage.setItem("caseId", item.caseId[0]);
       localStorage.setItem("examNo", item.examNo);
-      this.userId = item.userId;
+      localStorage.setItem("examId", item.userId);
+      this.caseId = item.caseId;
+      this.records_show = true;
       this.ask = true;
-      console.log(item);
+    },
+    //切换案例
+    tapExam(caseId, index) {
+      this.title_index = index;
+      this.$store.state.examId = index;
+    },
+    close() {
+      this.records_show = false;
     },
   },
 };
@@ -183,7 +211,50 @@ export default {
   position: absolute;
   height: 100%;
   width: 100%;
-  top: 0;
+  top: -10px;
+  background: url("../../assets/public/23a9142cc272e65ed9e24189f5cd7bb.png")
+    no-repeat center;
+  background-size: 100% 100%;
+  .records_tile {
+    width: 99%;
+    height: 50px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgb(9, 124, 168);
+
+    ul {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      li {
+        width: 5%;
+        cursor: pointer;
+        position: relative;
+        margin-right: 15px;
+        p {
+          display: none;
+          position: absolute;
+          width: 80%;
+          height: 3px;
+          background: rgb(0, 235, 255);
+          border-radius: 2px;
+          left: 10%;
+          bottom: -13px;
+        }
+        .active {
+          display: block;
+        }
+      }
+    }
+    .switch_close {
+      position: absolute;
+      font-size: 22px;
+      right: 20px;
+      top: 10px;
+      cursor: pointer;
+    }
+  }
 }
 </style>
 
