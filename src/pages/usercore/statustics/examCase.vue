@@ -151,33 +151,44 @@ export default {
     },
     classroomSort() {
       this.sortHeight = [];
+      let canvas = document.getElementById("canvas");
       let arr = JSON.parse(JSON.stringify(this.rank));
       arr = arr.sort();
       let min = arr[0],
         max = arr[arr.length - 1];
-      let difference = max - min;
-      this.rank.forEach((item) => {
-        this.sortHeight.push(500 - (difference / item) * 445);
+      this.itemName.forEach((item, index) => {
+        if (item.flag == 0) {
+          this.rank[index] = max;
+        }
       });
-      let canvas = document.getElementById("canvas");
+      this.rank.forEach((item) => {
+        if (item == 1) {
+          this.sortHeight.push(50);
+        } else if (item == max) {
+          this.sortHeight.push(425);
+        } else {
+          this.sortHeight.push((item / (max - min)) * 222 + 20);
+        }
+      });
       var ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "rgb(0,235,255)";
       ctx.font = "18px Arial";
       ctx.fillStyle = "rgb(60,190,250)";
       ctx.beginPath();
-      let y = 38.5;
+      let x = 38.5;
       this.sortHeight.forEach((item, index) => {
-        ctx.lineTo(y, item);
-        ctx.fillText(this.rank[index] + "名", y - 15, item - 15);
+        ctx.lineTo(x, item);
+        ctx.fillText(this.rank[index] + "名", x - 15, item - 15);
         let img = new Image();
         img.src = `http://localhost:8080/api/download/61/1608018030700.png`;
         (() => {
-          let img_y = y;
+          let img_x = x;
           img.onload = () => {
-            ctx.drawImage(img, img_y - 10, item - 10, 20, 20);
+            ctx.drawImage(img, img_x - 10, item - 10, 20, 20);
           };
         })();
-        y += 75;
+        x += 69;
         if (this.sortHeight.length - 1 == index) {
           ctx.stroke();
         }
