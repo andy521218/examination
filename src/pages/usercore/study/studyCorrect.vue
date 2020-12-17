@@ -220,9 +220,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-correct",
   props: ["tabData", "mainId"],
+  computed: {
+    ...mapState(["examId"]),
+  },
   data() {
     return {
       caseId: "",
@@ -502,6 +506,22 @@ export default {
   },
   watch: {
     mainId: function () {
+      this.seeDiseaseItem(this.showData.diseases[0]);
+    },
+    examId: function () {
+      this.caseId = this.examId;
+      this.askData = [];
+      this.watchData = [];
+      this.listenData = [];
+      this.pulseData = {};
+      this.feelData = []; 
+      this.correctData = {};
+      this.ask = [];
+      this.watch = [];
+      this.press = [];
+      this.pulse = [];
+      this.$parent.typeId = "1";
+      this.getcorrect();
       this.seeDiseaseItem(this.showData.diseases[0]);
     },
   },

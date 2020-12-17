@@ -2,7 +2,7 @@
   <div class="study_disease">
     <div class="study_title">
       <div class="study_title_left">
-        <span>问诊</span>
+        <span>辩证</span>
         <div v-for="(item, index) in list" :key="index">
           <input
             type="radio"
@@ -269,10 +269,14 @@
 
 <script>
 import studyCorrect from "./studyCorrect";
+import { mapState } from "vuex";
 export default {
   name: "study-disease",
   components: {
     studyCorrect,
+  },
+  computed: {
+    ...mapState(["examId"]),
   },
   data() {
     return {
@@ -604,6 +608,10 @@ export default {
   watch: {
     press: function () {
       this.getDisease();
+    },
+    examId: function () {
+      this.caseId = this.examId;
+      this.getDiseasename();
     },
   },
 };

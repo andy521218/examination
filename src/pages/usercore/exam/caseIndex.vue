@@ -99,11 +99,14 @@ export default {
         localStorage.setItem("examNo", res.data[0].examNo);
         localStorage.setItem("duringLimit", time);
         let caseIds = res.data[0].caseId;
+        this.axios.post(`/exam/${res.data[0].examNo}/start`);
         this.axios.get(`/case/${caseIds}/meta`).then((res) => {
           this.examData = res.data;
         });
       });
     },
+    //开始计时
+
     //开始考试
     startExam(item) {
       localStorage.setItem("caseId", item.caseId);

@@ -110,9 +110,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-ask",
   props: ["scoreData"],
+  computed: {
+    ...mapState(["examId"]),
+  },
   data() {
     return {
       select: [
@@ -230,6 +234,11 @@ export default {
   watch: {
     tabData: function () {
       this.getcoreectasked();
+    },
+    examId: function () {
+      this.caseId = this.examId;
+      this.getTabdata();
+      this.getAskdata();
     },
   },
 };

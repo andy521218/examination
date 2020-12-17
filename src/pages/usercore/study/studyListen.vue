@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-listen",
   data() {
@@ -53,6 +54,9 @@ export default {
       userId: "",
       examNo: "",
     };
+  },
+   computed: {
+    ...mapState(["examId"]),
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
@@ -71,6 +75,12 @@ export default {
         .then((res) => {
           this.listen_item_data = res.data;
         });
+    },
+  },
+   watch: {
+    examId: function () {
+      this.caseId = this.examId;
+       this.getListen();
     },
   },
 };

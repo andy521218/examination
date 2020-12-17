@@ -9,7 +9,7 @@ export default new Vuex.Store({
     flag: false,
     menuId: '-1',
     avatar: '',
-    examId: '222',
+    examId: '',
     messageMenu: [
       {
         title: '问题讨论',

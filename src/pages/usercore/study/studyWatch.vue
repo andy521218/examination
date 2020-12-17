@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-watch",
   data() {
@@ -89,6 +90,9 @@ export default {
       watchthree: [],
       showId: "0",
     };
+  },
+  computed: {
+    ...mapState(["examId"]),
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
@@ -117,6 +121,32 @@ export default {
   methods: {
     seeWatch(item) {
       this.showId = item.id;
+    },
+  },
+  watch: {
+    examId: function () {
+      this.caseId = this.examId;
+      this.typeId = "0";
+      this.showId = "0";
+      for (let i = 0; i < 3; i++) {
+        this.axios
+          .get(`/${this.examNo}/${this.caseId}/watched/${i}`, {
+            params: {
+              userId: this.userId,
+            },
+          })
+          .then((res) => {
+            if (i == 0) {
+              this.watchone = res.data;
+            }
+            if (i == 1) {
+              this.watchtwo = res.data;
+            }
+            if (i == 2) {
+              this.watchthree = res.data;
+            }
+          });
+      }
     },
   },
 };

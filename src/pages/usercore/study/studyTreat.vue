@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-treat",
   data() {
@@ -85,6 +86,9 @@ export default {
       druggeriesData: [],
       userId: "",
     };
+  },
+  computed: {
+    ...mapState(["examId"]),
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
@@ -188,6 +192,13 @@ export default {
   watch: {
     agentiaData: function () {
       this.getTreatCorrect();
+    },
+    examId: function () {
+      this.caseId = this.examId;
+      this.trearData = [];
+      this.showData = [];
+      this.getTreat();
+      this.getAgentia();
     },
   },
 };

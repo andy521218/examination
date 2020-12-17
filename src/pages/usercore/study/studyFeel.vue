@@ -1,7 +1,7 @@
 <template>
   <div class="study_feel">
     <div class="study_title">
-      <span>望诊</span>
+      <span>切诊</span>
       <div v-for="(item, index) in list" :key="index">
         <input
           type="radio"
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "study-feel",
   data() {
@@ -65,6 +66,9 @@ export default {
       userId: "",
       examNo: "",
     };
+  },
+  computed: {
+    ...mapState(["examId"]),
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
@@ -107,6 +111,14 @@ export default {
         .then((res) => {
           this.pulseData.push(res.data);
         });
+    },
+  },
+  watch: {
+    examId: function () {
+      this.caseId = this.examId;
+      this.typeId = "0";
+      this.getPress();
+      this.getpulse();
     },
   },
 };

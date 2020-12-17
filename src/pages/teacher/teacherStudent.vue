@@ -71,22 +71,66 @@
       <tbody>
         <tr v-for="(item, index) in examNumber" :key="index">
           <td>{{ index | sortNumber(page) }}</td>
-          <td>考试名称</td>
+          <td>{{ item.examName }}</td>
           <td>{{ item.username }}</td>
           <td>{{ item.name }}</td>
           <td>{{ item.classroomName }}</td>
           <td>{{ item.startTime | lastTime(item.startTime) }}</td>
           <td>{{ item.finishTime | lastTime(item.finishTime) }}</td>
-          <td>{{ parseInt((item.finishTime - item.startTime) / 60000) }}分</td>
-          <td>
+          <td v-if="item.startTime && item.finishTime">
+            {{ parseInt((item.finishTime - item.startTime) / 60000) }}分
+          </td>
+          <td v-else>
+            <p
+              style="
+                color: rgb(252, 94, 95);
+                border: 1px solid rgb(252, 94, 95);
+              "
+            >
+              缺考
+            </p>
+          </td>
+          <td v-if="item.startTime && item.finishTime">
             <span>{{ parseInt(item.score) }}</span>
           </td>
-          <td>
+          <td v-else>
+            <p
+              style="
+                color: rgb(252, 94, 95);
+                border: 1px solid rgb(252, 94, 95);
+              "
+            >
+              缺考
+            </p>
+          </td>
+
+          <td v-if="item.startTime && item.finishTime">
             <p @click="seeExam(item)">查看</p>
           </td>
-          <td>
+          <td v-else>
+            <p
+              @click="seeExam(item)"
+              style="
+                color: rgb(252, 94, 95);
+                border: 1px solid rgb(252, 94, 95);
+              "
+            >
+              缺考
+            </p>
+          </td>
+          <td v-if="item.startTime && item.finishTime">
             <p v-if="!item.adjustScore" @click="editScore(item)">打分</p>
             <span v-else>{{ item.adjustScore }}</span>
+          </td>
+          <td v-else>
+            <p
+              style="
+                color: rgb(252, 94, 95);
+                border: 1px solid rgb(252, 94, 95);
+              "
+            >
+              缺考
+            </p>
           </td>
         </tr>
       </tbody>
@@ -186,6 +230,10 @@ export default {
     },
     //查看
     seeExam(item) {
+      if (!item.caseId) {
+        this.$Message.error("当前考试无案例");
+        return;
+      }
       localStorage.setItem("caseId", item.caseId[0]);
       localStorage.setItem("examNo", item.examNo);
       localStorage.setItem("examId", item.userId);
@@ -196,7 +244,7 @@ export default {
     //切换案例
     tapExam(caseId, index) {
       this.title_index = index;
-      this.$store.state.examId = index;
+      this.$store.state.examId = caseId;
     },
     close() {
       this.records_show = false;
@@ -209,9 +257,9 @@ export default {
 <style lang="scss">
 .records {
   position: absolute;
-  height: 100%;
+  height: 103.8%;
   width: 100%;
-  top: -10px;
+  top: -30px;
   background: url("../../assets/public/23a9142cc272e65ed9e24189f5cd7bb.png")
     no-repeat center;
   background-size: 100% 100%;
@@ -220,7 +268,6 @@ export default {
     height: 50px;
     margin: 0 auto;
     border-bottom: 1px solid rgb(9, 124, 168);
-
     ul {
       width: 100%;
       height: 100%;

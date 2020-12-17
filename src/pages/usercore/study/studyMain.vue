@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import studyAsk from "../study/studyAsk";
 import studyWatch from "../study/studyWatch";
 import studyListen from "../study/studyListen";
@@ -145,26 +146,41 @@ export default {
     studyDisease,
     studyTreat,
   },
+  computed: {
+    ...mapState(["examId"]),
+  },
   data() {
     return {
       examNo: "",
       caseId: "",
-      examId: "",
+      userId: "",
       scoreData: "",
       titleIndex: "1",
     };
   },
   mounted() {
-    this.examId = localStorage.getItem("examId");
+    this.userId = localStorage.getItem("examId");
     this.examNo = localStorage.getItem("examNo");
     this.caseId = localStorage.getItem("caseId");
     this.getscore();
   },
   methods: {
     getscore() {
-      this.axios.get(`/${this.examNo}/${this.caseId}/score`).then((res) => {
-        this.scoreData = res.data;
-      });
+      this.axios
+        .get(`/${this.examNo}/${this.caseId}/score`, {
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          this.scoreData = res.data;
+        });
+    },
+  },
+  watch: {
+    examId: function () {
+      this.caseId = this.examId;
+      this.getscore();
     },
   },
 };
@@ -172,7 +188,7 @@ export default {
 
 <style lang="scss">
 .user_study {
-  height: 100%;
+  height: 99%;
   width: 100%;
   padding: 1%;
   header {
