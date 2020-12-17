@@ -281,7 +281,7 @@ export default {
       ];
     }
     let examNo = localStorage.getItem("examNo");
-    this.duringLimit = localStorage.getItem("duringLimit");
+    this.duringLimit = localStorage.getItem("duringLimit")/60000;
     this.http
       .put(
         `/exam/${examNo}/during?${this.qs.stringify({
@@ -291,16 +291,17 @@ export default {
       .then((res) => {
         let duringLimit = res.data;
         if (!duringLimit) return;
+        console.log(1);
         this.duringLimit = this.duringLimit - duringLimit / 60;
-        // if (this.duringLimit < 0) {
-        //   this.$MessageBox.alert("考试时间已结束", "提示", {
-        //     confirmButtonText: "确定",
-        //     type: "error",
-        //     callback: () => {
-        //       this.$router.push("/examcase");
-        //     },
-        //   });
-        // }
+        if (this.duringLimit < 0) {
+          this.$MessageBox.alert("考试时间已结束", "提示", {
+            confirmButtonText: "确定",
+            type: "error",
+            callback: () => {
+              this.$router.push("/examcase");
+            },
+          });
+        }
       });
     setInterval(() => {
       this.countDown();

@@ -96,6 +96,7 @@ export default {
     getExam() {
       this.axios.get("/exam").then((res) => {
         let time = res.data[0].duringLimit;
+        console.log(res);
         localStorage.setItem("examNo", res.data[0].examNo);
         localStorage.setItem("duringLimit", time);
         let caseIds = res.data[0].caseId;
