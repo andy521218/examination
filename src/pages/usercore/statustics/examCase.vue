@@ -59,9 +59,14 @@
     </div>
     <div class="case_exam_bottom">
       <ul>
-        <li v-for="(item, index) in name" :key="index">
-          <p>{{ index }}</p>
-          <span>{{ item }}</span>
+        <li v-for="(item, index) in itemName" :key="index">
+          <p>{{ index | sortNumber(page) }}</p>
+          <span>{{ item.name }}</span>
+          <span
+            style="color: rgb(252, 94, 95); margin-left: 5px"
+            v-if="item.flag == 0"
+            >(缺考)</span
+          >
         </li>
       </ul>
     </div>
@@ -81,6 +86,7 @@ export default {
       rank: [],
       score: [],
       sortHeight: [],
+      itemName: [],
       time: "",
     };
   },
@@ -91,7 +97,6 @@ export default {
   methods: {
     handleScroll(e) {
       clearTimeout(this.time);
-      console.log(e.wheelDelta);
       if (this.name.length < 10) {
         if (e.wheelDelta < 1) {
           return;
@@ -104,10 +109,10 @@ export default {
       }
       this.time = setTimeout(() => {
         if (e.wheelDelta > 1) {
-          this.page++;
+          this.page--;
           this.getReport();
         } else {
-          this.page--;
+          this.page++;
           this.getReport();
         }
       }, 800);
@@ -117,9 +122,11 @@ export default {
         .get("/my/exam/report", {
           params: {
             size: this.size,
+            page: this.page,
           },
         })
         .then((res) => {
+          this.itemName = res.data.rows;
           this.name = [];
           this.rank = [];
           this.score = [];
@@ -129,14 +136,14 @@ export default {
           } else {
             this.exam_show = false;
           }
-          res.data.forEach((item, index) => {
+          res.data.rows.forEach((item, index) => {
             this.name.push(item.name);
             this.rank.push(item.rank);
             this.score.push({
               score: item.score,
               height: (item.score / 100) * 435,
             });
-            if (res.data.length - 1 == index) {
+            if (res.data.rows.length - 1 == index) {
               this.classroomSort();
             }
           });

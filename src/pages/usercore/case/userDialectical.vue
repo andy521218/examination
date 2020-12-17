@@ -527,6 +527,7 @@ export default {
     },
     // search正确病名
     diseaseVal(e) {
+      this.diseaseCheckArr = [];
       this.searchDisease = e.name;
       this.diseaseNameId = e.id;
       this.axios.get(`/meta/disease/${e.id}`).then((res) => {
@@ -661,15 +662,19 @@ export default {
     },
     //上传病症
     submitDisease() {
-      if (!this.diseaseUpdata.id) return this.$Message.error("请选择一项症候");
+      console.log(this.diseaseCheckArr1);
+      let index = this.diseaseCheckArr1
+        .map((item) => item.id)
+        .indexOf(this.diseaseDeafault);
+      if (index == "-1") return this.$Message.error("请选择一项症候");
       this.axios
         .delete(
-          `/answer/${this.examNo}/${this.caseId}/disease/${this.diseaseUpdata.id}`
+          `/answer/${this.examNo}/${this.caseId}/disease/${this.diseaseCheckArr1[index].id}`
         )
         .then(() => {
           this.http
             .post(`/answer/${this.examNo}/${this.caseId}/disease`, {
-              id: this.diseaseUpdata.id,
+              id: this.diseaseDeafault,
               issues: [
                 {
                   issueIds: this.diseaseAskData,
@@ -688,12 +693,14 @@ export default {
                   stageId: 4,
                 },
               ],
-              name: this.diseaseUpdata.name,
+              name: this.diseaseCheckArr1[index].name,
             })
             .then((res) => {
               if (res.code == "000000") {
                 this.getAlldata();
-                this.$Message.warning(`设置${this.diseaseUpdata.name}成功!`);
+                this.$Message.warning(
+                  `设置${this.diseaseCheckArr1[index].name}成功!`
+                );
               } else {
                 this.$Message.error(res.msg);
               }

@@ -479,7 +479,8 @@ export default {
         this.diseaselistenData = [];
         this.diseaseAskData = [];
         this.diseasePressData = [];
-        (this.upDiseaseData = {
+        this.diseaseCheckArr1 = [];
+        this.upDiseaseData = {
           id: "",
           issues: [
             {
@@ -500,8 +501,8 @@ export default {
             },
           ],
           name: "",
-        }),
-          (this.step = true);
+        };
+        this.step = true;
       }
       this.diseaseCheckArr1 = this.diseaseCheckArr;
     },
@@ -576,6 +577,7 @@ export default {
     },
     // search正确病名
     diseaseVal(e) {
+      this.diseaseCheckArr = [];
       this.axios.delete(`/case/manage/${this.caseId}/disease/name`).then(() => {
         this.searchDisease = e.name;
         this.diseaseNameId = e.id;

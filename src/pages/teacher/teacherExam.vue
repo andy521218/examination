@@ -220,7 +220,6 @@ export default {
     },
     seeExam(item) {
       this.exam_show = true;
-      console.log(item);
       this.seeExamdata.name = item.name;
       this.seeExamdata.classroonName = item.classrooms[0].classroonName;
       this.seeExamdata.beginTime = item.classrooms[0].beginTime;

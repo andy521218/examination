@@ -74,7 +74,6 @@ export default {
         return;
       }
       this.scoreText = "";
-      console.log(this.examNumber);
       this.http
         .put(
           `/exam/result/${this.editData.id}?${this.qs.stringify({
