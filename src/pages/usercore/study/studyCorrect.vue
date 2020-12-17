@@ -521,6 +521,7 @@ export default {
       this.press = [];
       this.pulse = [];
       this.$parent.typeId = "1";
+      this.$parent.mainId = "1";
       this.getcorrect();
       this.seeDiseaseItem(this.showData.diseases[0]);
     },
