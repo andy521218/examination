@@ -53,7 +53,8 @@
       <ul class="caseList">
         <li v-for="(item, index) in manageData" :key="index">
           <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
+            <img :src="$url + item.picUrl" alt="" v-if="item.picUrl" />
+            <img src="../../assets/public/timg.png" alt="" v-else />
             <div class="state">
               <input
                 type="radio"

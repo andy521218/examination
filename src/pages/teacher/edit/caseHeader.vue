@@ -1,6 +1,7 @@
 <template>
   <header>
-    <img src="../../../assets/public/timg1.jpg" alt="" />
+    <img :src="$url + caseData.picUrl" alt="" v-if="caseData.picUrl" />
+    <img src="../../../assets/public/timg.png" alt="" v-else />
     <ul>
       <li>
         <span>姓名:</span>
@@ -58,11 +59,13 @@ export default {
   },
   mounted() {
     this.caseId = localStorage.getItem("caseId");
+
     this.getcaseData();
   },
   methods: {
     getcaseData() {
       this.axios.get(`/case/${this.caseId}`).then((res) => {
+        console.log(res);
         localStorage.setItem("sex", res.data.gender);
         this.caseData = res.data;
         this.$store.state.sex = res.data.gender;

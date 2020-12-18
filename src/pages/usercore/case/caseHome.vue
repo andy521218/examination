@@ -21,7 +21,8 @@
           :key="index"
         >
           <div class="case_img" @click="examStart(item)">
-            <img src="../../../assets/public/timg.png" alt="" />
+            <img :src="$url + item.picUrl" alt="" v-if="item.picUrl" />
+            <img src="../../../assets/public/timg.png" alt="" v-else />
             <div class="case_active">
               <div class="case_img_tips">
                 <img src="../../../assets/public/caseTips.png" alt="" />

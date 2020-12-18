@@ -642,7 +642,7 @@ export default {
               stageId: 2,
             },
             {
-              issueIds: this.listenData,
+              issueIds: this.namelistenData,
               stageId: 3,
             },
             {

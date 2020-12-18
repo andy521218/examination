@@ -73,6 +73,23 @@
           </select>
           <p class="edit_tips">{{ diseaseTypeText }}</p>
         </li>
+        <li class="upload_logo">
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">头像:</span>
+          </div>
+          <div class="upload_logo_main">
+            <div class="upload_logo_main_border">
+              <img
+                class="itps_logo"
+                src="../../assets/public/uploadImg.png"
+                alt=""
+              />
+              <input type="file" ref="logo" @change="uploadImg" />
+              <img v-show="imgUrl" class="preview_logo" :src="imgUrl" alt="" />
+            </div>
+          </div>
+        </li>
       </ul>
       <div class="edit_btn_box">
         <button class="edit_cancel" @click="close">取消</button>
@@ -94,6 +111,8 @@ export default {
       nameText: "",
       ageText: "",
       diseaseTypeText: "",
+      fileLogo: "",
+      imgUrl: "",
     };
   },
   methods: {
@@ -130,25 +149,76 @@ export default {
       this.diseaseTypeText = "";
       return true;
     },
+    uploadImg() {
+      this.fileLogo = this.$refs.logo.files[0];
+      let fileExample = new FileReader();
+      fileExample.readAsDataURL(this.fileLogo);
+      fileExample.onload = (ev) => {
+        this.imgUrl = ev.target.result;
+      };
+    },
     submit() {
       if (this.changeName() && this.changeAge() && this.changeType()) {
-        this.http
-          .post("/case/manage", {
-            name: this.upData.name,
-            age: this.upData.age,
-            diseaseType: this.upData.diseaseType,
-            gender: this.gender,
-          })
-          .then((res) => {
-            if (res.code == "000000") {
-              localStorage.setItem("caseId", res.data);
-              this.$router.push("/case");
-            } else {
-              this.$Message.error(res.msg);
-            }
-          });
+        let formData = new window.FormData();
+        formData.append("file", this.fileLogo);
+
+        this.upload.post("/upload", formData).then((res) => {
+          if (res.code == "000000") {
+            this.http
+              .post("/case/manage", {
+                name: this.upData.name,
+                age: this.upData.age,
+                diseaseType: this.upData.diseaseType,
+                gender: this.gender,
+                picUrl: res.data,
+              })
+              .then((res) => {
+                if (res.code == "000000") {
+                  localStorage.setItem("caseId", res.data);
+                  this.$router.push("/case");
+                } else {
+                  this.$Message.error(res.msg);
+                }
+              });
+          }
+        });
       }
     },
   },
 };
 </script>
+
+<style lang="scss">
+.upload_logo {
+  display: flex;
+  .upload_logo_main {
+    width: 265px;
+    height: 228px;
+    position: relative;
+    .upload_logo_main_border {
+      width: 100%;
+      height: 100%;
+      border: rgb(9, 124, 168) 1px solid;
+      text-align: center;
+      .itps_logo {
+        margin-top: 94px;
+      }
+      input {
+        opacity: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .preview_logo {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -99;
+      }
+    }
+  }
+}
+</style>
