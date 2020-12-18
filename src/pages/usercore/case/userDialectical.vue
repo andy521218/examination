@@ -662,7 +662,6 @@ export default {
     },
     //上传病症
     submitDisease() {
-      console.log(this.diseaseCheckArr1);
       let index = this.diseaseCheckArr1
         .map((item) => item.id)
         .indexOf(this.diseaseDeafault);

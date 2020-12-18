@@ -51,7 +51,7 @@
     </div>
 
     <edit-dele
-      edit_title="方剂删除"
+      :title="'方剂删除'"
       v-if="allShow"
       @deleSubmit="deleSubmit"
       @closeEdit="close"
@@ -74,30 +74,34 @@
         />
         <button class="submit">检索</button>
       </li>
-      <li v-for="(item, index) in prescriptionData" :key="index">
-        <div class="item_cont">
-          <div class="item_left">
-            <i></i>
-            <span>{{ item.name }}</span>
-          </div>
-          <div class="item_container_between">
-            <div>
-              <span @click="seePrescription(item)" v-if="prescriptionSwitch"
-                >查看</span
-              >
-              <span @click="editPrescription(item)" v-if="prescriptionSwitch"
-                >修改</span
-              >
-              <span
-                class="item_container_between_dele"
-                @click="delePrescription(item)"
-                >删除</span
-              >
+    </ul>
+    <div class="scrollbar">
+      <ul style="height: 500px; overflow-y: auto">
+        <li v-for="(item, index) in prescriptionData" :key="index">
+          <div class="item_cont">
+            <div class="item_left">
+              <i></i>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="item_container_between">
+              <div>
+                <span @click="seePrescription(item)" v-if="prescriptionSwitch"
+                  >查看</span
+                >
+                <span @click="editPrescription(item)" v-if="prescriptionSwitch"
+                  >修改</span
+                >
+                <span
+                  class="item_container_between_dele"
+                  @click="delePrescription(item)"
+                  >删除</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
     <button class="addResult" @click="addDrug()">+</button>
   </div>
 </template>
@@ -126,6 +130,7 @@ export default {
     close() {
       this.drug = false;
       this.prescriptionSwitch = true;
+      this.allShow = false;
       this.prescription = {};
     },
     addDrug() {
@@ -183,7 +188,7 @@ export default {
           if (res.code == "000000") {
             this.getPrescriptionData();
             this.$Message.warning("删除成功!");
-            this.close;
+            this.close();
           }
         });
     },

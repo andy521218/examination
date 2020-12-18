@@ -4,7 +4,7 @@
     <div class="mask" v-if="druggeryShow"></div>
     <!-- 删除弹窗 -->
     <edit-dele
-      edit_title="方剂删除"
+      :title="'方药删除'"
       v-if="allShow"
       @deleSubmit="deleSubmit"
       @closeEdit="close"
@@ -79,18 +79,27 @@
         </li>
         <li class="display">
           <div class="edit_left">
-            <span class="edit_red">*</span>
+            <span class="edit_red"></span>
             <span class="edit_text">方药图片:</span>
           </div>
           <div class="uploadImg">
-            <input type="file" />
+            <input type="file" ref="uploadImg" @change="uploadImg" />
             <img src="../../../assets/public/uploadImg.png" alt />
+            <img v-show="imgUrl" class="preview_img" :src="imgUrl" alt="" />
           </div>
         </li>
       </ul>
       <div class="edit_btn_box">
-        <button class="edit_cancel" @click="close()" v-if="druggerySwitch">取消</button>
-        <button class="edit_submit" @click="submitDruggery()" v-if="druggerySwitch">确定</button>
+        <button class="edit_cancel" @click="close()" v-if="druggerySwitch">
+          取消
+        </button>
+        <button
+          class="edit_submit"
+          @click="submitDruggery()"
+          v-if="druggerySwitch"
+        >
+          确定
+        </button>
       </div>
     </div>
     <div class="cont_header">常见方药</div>
@@ -108,24 +117,28 @@
         />
         <button class="submit">检索</button>
       </li>
-      <li v-for="(item, index) in druggeryData" :key="index">
-        <div class="item_cont">
-          <div class="item_left">
-            <i></i>
-            <span>{{ item.name }}</span>
-          </div>
-          <div class="item_container_between">
-            <div>
-              <span @click="see(item)">查看</span>
-              <span @click="edit(item)">修改</span>
-              <span class="item_container_between_dele" @click="dele(item)"
-                >删除</span
-              >
+    </ul>
+    <div class="scrollbar">
+      <ul style="height: 500px; overflow-y: auto">
+        <li v-for="(item, index) in druggeryData" :key="index">
+          <div class="item_cont">
+            <div class="item_left">
+              <i></i>
+              <span>{{ item.name }}</span>
+            </div>
+            <div class="item_container_between">
+              <div>
+                <span @click="see(item)">查看</span>
+                <span @click="edit(item)">修改</span>
+                <span class="item_container_between_dele" @click="dele(item)"
+                  >删除</span
+                >
+              </div>
             </div>
           </div>
-        </div>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
     <button class="addResult" @click="addDruggery()">+</button>
   </div>
 </template>
@@ -146,6 +159,8 @@ export default {
       druggerySearch: "",
       druggeryData: "",
       druggery: {},
+      fileImg: "",
+      imgUrl: "",
     };
   },
   mounted() {
@@ -155,7 +170,10 @@ export default {
     close() {
       this.druggeryShow = false;
       this.druggerySwitch = true;
+      this.allShow = false;
       this.druggery = {};
+      this.imgUrl = "";
+      this.fileImg = "";
     },
     addDruggery() {
       this.druggeryShow = true;
@@ -164,10 +182,14 @@ export default {
       this.druggeryShow = true;
       this.druggerySwitch = false;
       this.druggery = e;
+      if (!e.picUrl) return;
+      this.imgUrl = this.$url + e.picUrl;
     },
     edit(e) {
       this.druggeryShow = true;
       this.druggery = e;
+      if (!e.picUrl) return;
+      this.imgUrl = this.$url + e.picUrl;
     },
     dele(e) {
       this.allShow = true;
@@ -195,34 +217,73 @@ export default {
           this.druggeryData = res.data.rows;
         });
     },
+    uploadImg() {
+      this.fileImg = this.$refs.uploadImg.files[0];
+      let preview = new FileReader();
+      preview.readAsDataURL(this.fileImg);
+      preview.onload = (ev) => {
+        this.imgUrl = ev.target.result;
+      };
+    },
     submitDruggery() {
       if (!this.druggery.alias) return this.$Message.error("请填写方药名称");
       if (!this.druggery.name) return this.$Message.error("请填写方药别名");
       if (!this.druggery.notice) return this.$Message.error("请填写方药用法");
       if (!this.druggery.usage) return this.$Message.error("请填写注意事项");
-      var methods, title, id;
+      var methods, title, url;
+
       if (!this.druggery.id) {
         methods = "post";
         title = "添加";
-        id = "";
+        url = "/meta/herb/druggery";
       } else {
         methods = "put";
         title = "修改";
-        id = this.druggery.id;
+        url = `/meta/herb/druggery/${this.druggery.id}`;
       }
-      this.http[methods](`/meta/herb/druggery/${id}`, {
-        alias: this.druggery.alias,
-        name: this.druggery.name,
-        notice: this.druggery.notice,
-        usage: this.druggery.usage,
-      }).then((res) => {
-        if (res.code == "000000") {
-          this.$Message.warning(`${title}成功!`);
-          this.close();
-          this.getDruggeryData();
-        }
-      });
+
+      if (!this.fileImg) {
+        this.http[methods](url, this.druggery).then((res) => {
+          if (res.code == "000000") {
+            this.$Message.warning(`${title}成功!`);
+            this.close();
+            this.getDruggeryData();
+          }
+        });
+      } else {
+        let from = new window.FormData();
+        from.append("file", this.fileImg);
+        this.upload.post("/upload", from).then((res) => {
+          if (res.code == "000000") {
+            this.http[methods](url, {
+              alias: this.druggery.alias,
+              name: this.druggery.name,
+              notice: this.druggery.notice,
+              usage: this.druggery.usage,
+              picUrl: res.data,
+            }).then((res) => {
+              if (res.code == "000000") {
+                this.$Message.warning(`${title}成功!`);
+                this.close();
+                this.getDruggeryData();
+              }
+            });
+          }
+        });
+      }
     },
   },
 };
 </script>
+
+<style lang="scss">
+.prescription .cont_bg .edit li .uploadImg .preview_img {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  margin-left: 0;
+  margin-top: 0;
+  z-index: 9;
+}
+</style>
