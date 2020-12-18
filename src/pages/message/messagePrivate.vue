@@ -104,9 +104,6 @@ export default {
     getImid(id) {
       this.axios.get(`/im/${id}`).then((res) => {
         this.dialogue = res.data;
-        // this.axios.delete(`/im/message/${id}`).then(() => {
-        //   this.getIm();
-        // });
       });
     },
     //发送聊天信息

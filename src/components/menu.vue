@@ -55,6 +55,7 @@ export default {
             return;
           }
           if (res.data.authority == "TEACHER") {
+            this.menuData = [];
             if (/message/.test(window.location)) {
               this.menuData.push(this.messageMenu[0]);
               this.menuData.push(this.messageMenu[3]);

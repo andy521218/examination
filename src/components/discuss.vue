@@ -1,12 +1,15 @@
 <template>
   <div class="message_forum scrollbar">
+    <div class="main_mask" v-show="discuss_show"></div>
     <add-discuss
       v-if="discuss_show"
       :discussData="discussData"
       :messageId="messageId"
       :index="index"
       :privateTopic="privateTopic"
+      :textIpts="textIpts"
     ></add-discuss>
+
     <see-img :url="url" v-show="imgs_show"></see-img>
     <div class="main_header">
       <button class="dele" v-show="dele" @click="deleTopic">批量删除</button>
@@ -242,7 +245,7 @@ export default {
       diseaseType: "",
       keyword: "",
       topicData: "",
-      discussData: "",
+      discussData: {},
       discuss_show: false,
       imgs_show: false,
       notice_top_show: "-1",
@@ -250,6 +253,7 @@ export default {
       messageId: "",
       url: "",
       index: "",
+      textIpts: "",
     };
   },
   components: {
@@ -359,13 +363,10 @@ export default {
         this.$Message.error("不可以发送私信给自己");
         return;
       }
-      this.$store.state.menuId = 3;
-      this.$router.push({
-        name: "messageprivate",
-        params: {
-          userId: item.userId,
-        },
-      });
+      this.textIpts = "请输入私信内容......";
+      this.discuss_show = true;
+      this.discussData.name = item.name;
+      this.discussData.userId = item.userId;
     },
     //二级私信
     sendTwoMessage(replay) {

@@ -6,7 +6,7 @@
     </div>
     <div class="discuss_cont">
       <textarea
-        placeholder="请输入回复内容..."
+        :placeholder="textIpts ? textIpts : '请输入回复内容....'"
         maxlength="130"
         v-model="message"
       ></textarea>
@@ -19,7 +19,7 @@
 <script>
 export default {
   name: "add-discuss",
-  props: ["discussData", "messageId", "index", "privateTopic"],
+  props: ["discussData", "messageId", "index", "privateTopic", "textIpts"],
   data() {
     return {
       message: "",
@@ -30,13 +30,29 @@ export default {
       this.$parent.discuss_show = false;
       this.message = "";
       this.$parent.messageId = "";
+      this.$parent.discussData = {};
+      this.$parent.textIpts = "";
     },
     submit() {
       if (!this.message) {
         this.$Message.error("请输入要回复的内容");
         return;
       }
-
+      if (!this.discussData.topicId) {
+        this.axios
+          .post(`/im`, {
+            userId: this.discussData.userId,
+            message: this.message,
+          })
+          .then((res) => {
+            if (res.code == "000000") {
+              this.close();
+            } else {
+              this.$Message.error(res.msg);
+            }
+          });
+        return;
+      }
       if (!this.messageId) {
         this.axios
           .post(`/topic/${this.discussData.topicId}/message`, {

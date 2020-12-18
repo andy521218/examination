@@ -611,6 +611,10 @@ export default {
     },
     examId: function () {
       this.caseId = this.examId;
+      this.askData = [];
+      this.watchData = [];
+      this.listenData = [];
+      this.feelData = [];
       this.getDiseasename();
     },
   },

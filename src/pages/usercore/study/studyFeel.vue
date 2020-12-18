@@ -117,6 +117,7 @@ export default {
     examId: function () {
       this.caseId = this.examId;
       this.typeId = "0";
+      this.pulseData = [];
       this.getPress();
       this.getpulse();
     },

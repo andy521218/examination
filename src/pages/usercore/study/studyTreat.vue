@@ -197,6 +197,8 @@ export default {
       this.caseId = this.examId;
       this.trearData = [];
       this.showData = [];
+      this.showId = "1";
+      this.typeId = "1";
       this.getTreat();
       this.getAgentia();
     },

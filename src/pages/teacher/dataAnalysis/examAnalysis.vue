@@ -55,7 +55,7 @@
             </div>
             <div class="tarin_bottm_border" v-show="!people_show">
               <span
-                >当前参与人数:{{ report.totalUser }}/{{ report.userDone }}</span
+                >当前参与人数:{{ report.userDone }}/{{ report.totalUser }}</span
               >
               <p style="border: 3px rgb(0, 235, 245) solid"></p>
             </div>
@@ -72,13 +72,13 @@
               alt=""
             />
             <div class="exam_left_top_averageTime_main" v-show="!examtime_show">
-              <span>{{ report.avgCostTime }}</span>
+              <span>{{parseInt(report.avgCostTime / 60000) }}</span>
               <span style="font-size: 30px">分</span>
             </div>
             <div class="tarin_bottm_border" v-show="!examtime_show">
               <span
-                >{{ report.totalCnt }}次考试平均用时{{
-                  report.avgCostTime
+                >{{ report.userDone }}次考试平均用时{{
+                  parseInt(report.avgCostTime / 60000)
                 }}分钟</span
               >
               <p style="border: 3px rgb(251, 138, 94) solid"></p>
@@ -151,7 +151,7 @@
         <div class="exam_right_main" v-show="!examNumber_show">
           <div class="exam_right_main_block">
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram050 }}人</span>
+              <span v-show="historgram050">{{ report.historgram050 }}人</span>
               <img
                 :style="{ height: historgram050 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -159,7 +159,7 @@
               />
             </div>
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram5060 }}人</span>
+              <span v-show="historgram5060">{{ report.historgram5060 }}人</span>
               <img
                 :style="{ height: historgram5060 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -167,7 +167,7 @@
               />
             </div>
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram6070 }}人</span>
+              <span v-show="historgram6070">{{ report.historgram6070 }}人</span>
               <img
                 :style="{ height: historgram6070 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -175,7 +175,7 @@
               />
             </div>
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram7080 }}人</span>
+              <span v-show="historgram8090">{{ report.historgram7080 }}人</span>
               <img
                 :style="{ height: historgram7080 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -183,7 +183,7 @@
               />
             </div>
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram8090 }}人</span>
+              <span v-show="historgram8090">{{ report.historgram8090 }}人</span>
               <img
                 :style="{ height: historgram8090 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -191,7 +191,7 @@
               />
             </div>
             <div class="exam_right_main_block_item">
-              <span>{{ report.historgram90 }}人</span>
+              <span v-show="historgram90">{{ report.historgram90 }}人</span>
               <img
                 :style="{ height: historgram90 + 'px' }"
                 src="../../../assets/public/numberblock.png"
@@ -306,7 +306,17 @@ export default {
           } else {
             this.examNumber_show = false;
             this.historgram050 =
-              (res.data.historgram050 / res.data.userDone) * 575;
+              (res.data.historgram050 / res.data.totalUser) * 440;
+            this.historgram5060 =
+              (res.data.historgram5060 / res.data.totalUser) * 440;
+            this.historgram6070 =
+              (res.data.historgram6070 / res.data.totalUser) * 440;
+            this.historgram7080 =
+              (res.data.historgram7080 / res.data.totalUser) * 440;
+            this.historgram8090 =
+              (res.data.historgram8090 / res.data.totalUser) * 440;
+            this.historgram90 =
+              (res.data.historgram90 / res.data.totalUser) * 440;
           }
         });
     },

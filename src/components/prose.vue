@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <header class="home_header">
-      <logo></logo>
+      <logo :index="true"></logo>
       <user></user>
     </header>
     <div class="prose">
