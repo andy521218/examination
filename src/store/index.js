@@ -136,10 +136,10 @@ export default new Vuex.Store({
           "训练分析",
           "考试分析",
         ],
-        router: "examanalysis",
+        router: "trainanalysis",
         itemRouter: [
-          "examanalysis",
           "trainanalysis",
+          "examanalysis",
         ],
       },
     ],

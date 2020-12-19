@@ -7,7 +7,7 @@
           <p :class="{ active: active == 1 }"></p>
         </div>
         <div class="caseexam" @click="tabCase(2)">
-          正在考试
+          正式考试
           <p :class="{ active: active == 2 }"></p>
         </div>
       </div>

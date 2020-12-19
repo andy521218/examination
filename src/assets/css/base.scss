@@ -349,7 +349,10 @@ input[type="checkbox"]:checked:before {
   margin: 0 auto;
   display: flex;
   border-bottom: 1px solid rgb(9, 124, 168);
-
+  justify-content: space-between;
+  div{
+    display: flex;
+  }
   .submit {
     width: 115px;
     margin-left: 40px;
@@ -778,7 +781,6 @@ input[type="checkbox"]:checked:before {
     .two {
       width: 150px;
       margin-left: 15px;
-      margin-right: 414px;
       background: rgb(0, 186, 201);
     }
   }

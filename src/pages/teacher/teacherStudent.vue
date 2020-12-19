@@ -6,30 +6,40 @@
       @getResult="getResult"
     ></edit-score>
     <div class="main_header">
-      <button class="add" style="margin-right: 644px">批量存档</button>
-      <label for>班级</label>
-      <select name id class="select" v-model="classroomId" @change="getReport">
-        <option value="">请选择班级</option>
-        <option
-          v-for="(item, index) in classrooms"
-          :key="index"
-          :value="item.id"
+      <div>
+        <button class="add">批量存档</button>
+      </div>
+      <div>
+        <label for>班级</label>
+        <select
+          name
+          id
+          class="select"
+          v-model="classroomId"
+          @change="getReport"
         >
-          {{ item.name }}
-        </option>
-      </select>
-      <label for class="big_left">试卷名称</label>
-      <select v-model="testPaperId" class="select" style="width: 250px">
-        <option value="">请选择试卷名称</option>
-        <option
-          v-for="(item, index) in examName"
-          :key="index"
-          :value="item.testPaperId"
-        >
-          {{ item.name }}
-        </option>
-      </select>
-      <button class="submit" @click="getResult(1)">检索</button>
+          <option value="">请选择班级</option>
+          <option
+            v-for="(item, index) in classrooms"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <label for class="big_left">试卷名称</label>
+        <select v-model="testPaperId" class="select" style="width: 250px">
+          <option value="">请选择试卷名称</option>
+          <option
+            v-for="(item, index) in examName"
+            :key="index"
+            :value="item.testPaperId"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <button class="submit" @click="getResult(1)">检索</button>
+      </div>
     </div>
     <!-- 学习记录 -->
     <div class="records" v-if="records_show">

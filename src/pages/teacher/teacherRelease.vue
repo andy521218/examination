@@ -1,4 +1,4 @@
-<template>
+    <template>
   <div class="teacher case release">
     <div class="main_mask" v-if="mask"></div>
     <!-- 发布考试 -->
@@ -113,17 +113,19 @@
       </div>
     </div>
     <div class="main_header">
-      <button class="add" @click="add" style="margin-right: 1020px">
-        发布考试
-      </button>
-      <label for>病系</label>
-      <select v-model="diseaseType" class="select">
-        <option value="默认">请选择病系</option>
-        <option v-for="(item, index) in list" :key="index" :value="item.id">
-          {{ item.name }}
-        </option>
-      </select>
-      <button class="submit" @click="getManage('1')">检索</button>
+      <div>
+        <button class="add" @click="add">发布考试</button>
+      </div>
+      <div>
+        <label for>病系</label>
+        <select v-model="diseaseType" class="select">
+          <option value="">请选择病系</option>
+          <option v-for="(item, index) in list" :key="index" :value="item.id">
+            {{ item.name }}
+          </option>
+        </select>
+        <button class="submit" @click="getManage('1')">检索</button>
+      </div>
     </div>
     <div class="main_table">
       <ul class="caseList">

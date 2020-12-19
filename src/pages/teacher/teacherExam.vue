@@ -74,22 +74,26 @@
       </div>
     </div>
     <div class="main_header">
-      <button class="add" style="margin-right: 644px">批量存档</button>
-      <label for>状态</label>
-      <select v-model="state" class="select">
-        <option value="">请选择状态</option>
-        <option value="0">未开始</option>
-        <option value="1">进行中</option>
-        <option value="2">已结束</option>
-      </select>
-      <label for class="big_left">考试名称</label>
-      <input
-        type="text"
-        class="text_box"
-        placeholder="请输入关键字查询"
-        v-model="keyword"
-      />
-      <button class="submit" @click="getexam('1')">检索</button>
+      <div>
+        <button class="add">批量存档</button>
+      </div>
+      <div>
+        <label for>状态</label>
+        <select v-model="state" class="select">
+          <option value="">请选择状态</option>
+          <option value="0">未开始</option>
+          <option value="1">进行中</option>
+          <option value="2">已结束</option>
+        </select>
+        <label for class="big_left">考试名称</label>
+        <input
+          type="text"
+          class="text_box"
+          placeholder="请输入关键字查询"
+          v-model="keyword"
+        />
+        <button class="submit" @click="getexam('1')">检索</button>
+      </div>
     </div>
 
     <table

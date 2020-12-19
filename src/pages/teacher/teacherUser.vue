@@ -58,35 +58,37 @@
       v-if="editload"
     ></edit-import>
     <div class="main_header">
-      <button class="add" @click="addStudent">添加学生</button>
-      <button class="import" style="margin-right: 213px" @click="importstudent">
-        导入学生
-      </button>
-      <label for>班级</label>
-      <select class="select" v-model="classRoomID">
-        <option value>请选择班级</option>
-        <option
-          v-for="(item, index) in classRoom"
-          :key="index"
-          :value="item.id"
-        >
-          {{ item.name }}
-        </option>
-      </select>
-      <label for>状态</label>
-      <select class="select" style="width: 170px" v-model="status">
-        <option value>请选择状态</option>
-        <option value="true">正常</option>
-        <option value="false">禁用</option>
-      </select>
-      <label for>姓名</label>
-      <input
-        type="text"
-        class="text_box"
-        placeholder="请输入学生姓名"
-        v-model="searchName"
-      />
-      <button class="submit" @click="getData">检索</button>
+      <div>
+        <button class="add" @click="addStudent">添加学生</button>
+        <button class="import" @click="importstudent">导入学生</button>
+      </div>
+      <div>
+        <label for>班级</label>
+        <select class="select" v-model="classRoomID">
+          <option value>请选择班级</option>
+          <option
+            v-for="(item, index) in classRoom"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <label for>状态</label>
+        <select class="select" style="width: 170px" v-model="status">
+          <option value>请选择状态</option>
+          <option value="true">正常</option>
+          <option value="false">禁用</option>
+        </select>
+        <label for>姓名</label>
+        <input
+          type="text"
+          class="text_box"
+          placeholder="请输入学生姓名"
+          v-model="searchName"
+        />
+        <button class="submit" @click="getData">检索</button>
+      </div>
     </div>
     <table
       class="main_table"

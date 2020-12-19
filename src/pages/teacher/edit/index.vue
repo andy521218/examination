@@ -6,7 +6,11 @@
       <div class="home_user">
         <div class="home_case_left">
           <div class="stop" v-if="authority == 'STUDENT' && exam == null">
-            <img src="../../../assets/public/stop.png" alt="" />
+            <img
+              src="../../../assets/public/stop.png"
+              alt=""
+              @click="stopTime"
+            />
             <span @click="stopTime">暂停</span>
           </div>
           <div class="sonserve" @click="complete" v-if="authority == 'STUDENT'">
@@ -281,7 +285,7 @@ export default {
       ];
     }
     let examNo = localStorage.getItem("examNo");
-    this.duringLimit = localStorage.getItem("duringLimit")/60000;
+    this.duringLimit = localStorage.getItem("duringLimit") / 60000;
     this.http
       .put(
         `/exam/${examNo}/during?${this.qs.stringify({

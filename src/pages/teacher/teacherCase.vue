@@ -26,28 +26,36 @@
     <!-- 新增案例 -->
     <add-case v-if="addCase" :list="list" @getManage="getManage"></add-case>
     <div class="main_header">
-      <button class="add" @click="add">新增案例</button>
-      <button class="add_case one" @click="addAssessment">设为考核案例</button>
-      <button class="add_case two" @click="addAssessTrain">设为训练案例</button>
-      <label for>病系</label>
-      <select v-model="diseaseType" class="select">
-        <option value>请选择病系</option>
-        <option v-for="(item, index) in list" :key="index" :value="item.id">
-          {{ item.name }}
-        </option>
-      </select>
-      <label for>分类</label>
-      <select v-model="searchOptions" class="select">
-        <option value="">请选择分类</option>
-        <option
-          v-for="(item, index) in options"
-          :key="index"
-          :value="item.upName"
-        >
-          {{ item.name }}
-        </option>
-      </select>
-      <button class="submit" @click="getManage('1')">检索</button>
+      <div>
+        <button class="add" @click="add">新增案例</button>
+        <button class="add_case one" @click="addAssessment">
+          设为考核案例
+        </button>
+        <button class="add_case two" @click="addAssessTrain">
+          设为训练案例
+        </button>
+      </div>
+      <div>
+        <label for>病系</label>
+        <select v-model="diseaseType" class="select">
+          <option value>请选择病系</option>
+          <option v-for="(item, index) in list" :key="index" :value="item.id">
+            {{ item.name }}
+          </option>
+        </select>
+        <label for>分类</label>
+        <select v-model="searchOptions" class="select">
+          <option value="">请选择分类</option>
+          <option
+            v-for="(item, index) in options"
+            :key="index"
+            :value="item.upName"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <button class="submit" @click="getManage('1')">检索</button>
+      </div>
     </div>
     <div class="main_table">
       <ul class="caseList">

@@ -48,33 +48,37 @@
     ></edit-import>
 
     <div class="main_header">
-      <button class="add" @click="addTeacher">添加教师</button>
-      <button class="import" @click="importTeacher">教师导入</button>
-      <label for>院系</label>
-      <select class="select" v-model="departmentId">
-        <option value>请选择院系</option>
-        <option
-          v-for="(item, index) in departments"
-          :key="index"
-          :value="item.id"
-        >
-          {{ item.name }}
-        </option>
-      </select>
-      <label for>状态</label>
-      <select class="select" style="width: 170px" v-model="status">
-        <option value>请选择状态</option>
-        <option value="true">正常</option>
-        <option value="false">禁用</option>
-      </select>
-      <label for>教师姓名</label>
-      <input
-        type="text"
-        class="text_box"
-        v-model="searchName"
-        placeholder="请输入教师姓名"
-      />
-      <button class="submit" @click="getData">检索</button>
+      <div>
+        <button class="add" @click="addTeacher">添加教师</button>
+        <button class="import" @click="importTeacher">教师导入</button>
+      </div>
+      <div>
+        <label for>院系</label>
+        <select class="select" v-model="departmentId">
+          <option value>请选择院系</option>
+          <option
+            v-for="(item, index) in departments"
+            :key="index"
+            :value="item.id"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+        <label for>状态</label>
+        <select class="select" style="width: 170px" v-model="status">
+          <option value>请选择状态</option>
+          <option value="true">正常</option>
+          <option value="false">禁用</option>
+        </select>
+        <label for>教师姓名</label>
+        <input
+          type="text"
+          class="text_box"
+          v-model="searchName"
+          placeholder="请输入教师姓名"
+        />
+        <button class="submit" @click="getData">检索</button>
+      </div>
     </div>
     <div class="main_table">
       <table
@@ -116,7 +120,7 @@
       </table>
     </div>
     <turn-page
-      class="admin_page"
+      v-show="total > 10"
       :totaltotal="Number(total)"
       :size="Number(size)"
       @getData="getData"
