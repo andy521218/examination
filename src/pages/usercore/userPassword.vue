@@ -6,14 +6,38 @@
         <input type="text" class="text_box" v-model="password.oldPwd" />
         <p>{{ oldPwd }}</p>
       </li>
-      <li>
+      <li style="position: relative">
         <span>新密码:</span>
-        <input type="text" class="text_box" v-model="password.newPwd" />
+        <input :type="type" class="text_box" v-model="password.newPwd" />
+        <img
+          v-if="type == 'password'"
+          src="../../assets/public/pwd.png"
+          class="edit_pwd"
+          @click="type = 'text'"
+        />
+        <img
+          v-else
+          src="../../assets/public/pwdmove.png"
+          @click="type = 'password'"
+          class="edit_pwd"
+        />
         <p>{{ newPwd }}</p>
       </li>
-      <li>
+      <li style="position: relative">
         <span>确认新密码:</span>
-        <input type="text" class="text_box" v-model="password.confirmPwd" />
+        <input :type="type" class="text_box" v-model="password.confirmPwd" />
+        <img
+          v-if="type == 'password'"
+          src="../../assets/public/pwd.png"
+          class="edit_pwd"
+          @click="type = 'text'"
+        />
+        <img
+          v-else
+          src="../../assets/public/pwdmove.png"
+          @click="type = 'password'"
+          class="edit_pwd"
+        />
         <p>{{ confirmPwd }}</p>
       </li>
     </ul>
@@ -30,6 +54,7 @@ export default {
       oldPwd: "",
       newPwd: "",
       confirmPwd: "",
+      type: "password",
     };
   },
   methods: {
@@ -60,6 +85,7 @@ export default {
           if (res.code == "000000") {
             this.$Message.warning("密码修改成功!");
             this.password = {};
+            this.$router.push("/");
           } else {
             this.$Message.error(res.msg);
           }
@@ -87,6 +113,13 @@ export default {
       .text_box {
         width: 325px;
         margin: 0 10px;
+      }
+      .edit_pwd {
+        width: 19px;
+        height: 13px;
+        position: absolute;
+        right: 275px;
+        top: 10px;
       }
       p {
         color: rgb(255, 0, 0);
