@@ -4,7 +4,7 @@
       class="admin_menu_item"
       v-for="(item, index) in menuData"
       :key="index"
-      v-show="item.title != '修改密码'"
+      v-show="item.title != '修改密码' && item.title != '个人信息'"
     >
       <p :class="{ active: menuId == index }" @click="oneRouting(index)">
         {{ item.title }}

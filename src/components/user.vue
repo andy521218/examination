@@ -39,14 +39,18 @@
       </div>
     </div>
     <div class="home_user_right">
-      <div class="user_img_big">
+      <div
+        class="user_img_big"
+        @mousemove="select_show = true"
+        @mouseleave="select_show = false"
+      >
         <img
           :src="avatar ? avatar : current.avatar"
           alt=""
           v-if="current.avatar"
         />
         <img src="../assets/public/timg.png" alt v-else />
-        <div class="headr_select">
+        <div class="headr_select" v-show="select_show">
           <p></p>
           <div class="pseudo"></div>
           <div class="select_name">用户名</div>
@@ -76,13 +80,12 @@ export default {
   name: "user-header",
   data() {
     return {
-      url:
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1607154641504&di=916323c0d529c4662d2cca0728e2193f&imgtype=0&src=http%3A%2F%2Ffiles.bbs.tl.changyou.com%2Fdata%2Fattachment%2Fforum%2F201508%2F04%2F115041d8rtar5rzl9bz3j8.jpg",
       itemIndex: "-1",
       current: "",
       list: [],
       messageData: "",
       active_show: false,
+      select_show: false,
       total: 0,
     };
   },
@@ -109,10 +112,12 @@ export default {
     routeLink(item, index) {
       if (item.title == "修改密码") {
         this.$store.commit("editPassword", true);
+        this.select_show = false;
         return;
       }
       if (item.title == "个人信息") {
         this.$store.commit("editCurrent", true);
+        this.select_show = false;
         return;
       }
       this.itemIndex = index;
@@ -354,7 +359,6 @@ export default {
         height: 100%;
       }
       .headr_select {
-        display: none;
         width: 150px;
         position: absolute;
         text-align: center;
@@ -425,9 +429,6 @@ export default {
           }
         }
       }
-    }
-    .user_img_big:hover .headr_select {
-      display: block;
     }
   }
 }
