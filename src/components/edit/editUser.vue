@@ -11,12 +11,14 @@
           type="text"
           class="text_box"
           placeholder="请输入用户名/学号"
+          v-if="!$store.state.editCurrent"
           v-model="upData.userName"
           @change="checkuserName"
         />
+        <span class="edit_text_i" v-else>{{ upData.userName }}</span>
         <p class="edit_tips">{{ userNameText }}</p>
       </li>
-      <li>
+      <li v-show="!$store.state.editCurrent">
         <div class="edit_left">
           <span class="edit_red">*</span>
           <span class="edit_text">密码:</span>
@@ -123,6 +125,7 @@ export default {
       this.$parent.tips = true;
       this.$parent.mask = false;
       this.$parent.editStudentShow = false;
+      this.$store.commit("editCurrent", false);
     },
     checkavatar() {
       if (!this.upData.name) {

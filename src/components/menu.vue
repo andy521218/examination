@@ -1,6 +1,11 @@
 <template>
   <div class="user_menu">
-    <div class="admin_menu_item" v-for="(item, index) in menuData" :key="index">
+    <div
+      class="admin_menu_item"
+      v-for="(item, index) in menuData"
+      :key="index"
+      v-show="item.title != '修改密码'"
+    >
       <p :class="{ active: menuId == index }" @click="oneRouting(index)">
         {{ item.title }}
       </p>

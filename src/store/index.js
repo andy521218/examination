@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import qs from "qs";
+import { Message } from 'view-design';
+import http from '../http/http'
 
 Vue.use(Vuex)
 
@@ -8,6 +11,9 @@ export default new Vuex.Store({
     sex: '',
     flag: false,
     menuId: '-1',
+    editPwd: false,
+    editCurrent: false,
+    current: '',
     avatar: '',
     examId: '',
     messageMenu: [
@@ -91,6 +97,11 @@ export default new Vuex.Store({
         router: "adminnumber",
         itemRouter: "",
       },
+      {
+        title: "修改密码",
+        item: "",
+        show: false,
+      },
     ],
     teacherMenu: [
       {
@@ -142,6 +153,16 @@ export default new Vuex.Store({
           "examanalysis",
         ],
       },
+      {
+        title: "修改密码",
+        item: "",
+        show: false,
+      },
+      {
+        title: "个人信息",
+        item: "",
+        show: false,
+      },
     ],
     stuedntMenu: [
       {
@@ -167,6 +188,25 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
+    editPassword(state, flag) {
+      state.editPwd = flag
+    },
+    editCurrent(state, flag) {
+      state.editCurrent = flag
+    },
+    submit(state) {
+      let obj = {
+        mobile: state.current.mobile,
+        email: state.current.email
+      }
+      http.put(`/my/profile?${qs.stringify(obj)}`,).then(res => {
+        if (res.code == '000000') {
+          Message.error(res.msg)
+        } else {
+          Message.error(res.msg)
+        }
+      })
+    }
   },
   actions: {
   },

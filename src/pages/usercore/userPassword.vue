@@ -3,12 +3,22 @@
     <ul>
       <li>
         <span>旧密码:</span>
-        <input type="text" class="text_box" v-model="password.oldPwd" />
+        <input
+          type="text"
+          class="text_box"
+          placeholder="请输入旧密码"
+          v-model="password.oldPwd"
+        />
         <p>{{ oldPwd }}</p>
       </li>
       <li style="position: relative">
         <span>新密码:</span>
-        <input :type="type" class="text_box" v-model="password.newPwd" />
+        <input
+          :type="type"
+          class="text_box"
+          placeholder="请输入新密码"
+          v-model="password.newPwd"
+        />
         <img
           v-if="type == 'password'"
           src="../../assets/public/pwd.png"
@@ -25,7 +35,12 @@
       </li>
       <li style="position: relative">
         <span>确认新密码:</span>
-        <input :type="type" class="text_box" v-model="password.confirmPwd" />
+        <input
+          :type="type"
+          class="text_box"
+          placeholder="请确认新密码"
+          v-model="password.confirmPwd"
+        />
         <img
           v-if="type == 'password'"
           src="../../assets/public/pwd.png"

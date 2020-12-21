@@ -56,7 +56,7 @@
                 v-for="(item, index) in list"
                 :key="index"
                 :class="{ select_item: itemIndex == index }"
-                @click="routeLink(item.router, index)"
+                @click="routeLink(item, index)"
               >
                 {{ item.title }}
               </li>
@@ -106,15 +106,23 @@ export default {
     this.getmessage();
   },
   methods: {
-    routeLink(router, index) {
+    routeLink(item, index) {
+      if (item.title == "修改密码") {
+        this.$store.commit("editPassword", true);
+        return;
+      }
+      if (item.title == "个人信息") {
+        this.$store.commit("editCurrent", true);
+        return;
+      }
       this.itemIndex = index;
-      if (router == "退出登入") {
+      if (item == "退出登入") {
         this.axios.get("logout").then(() => {
           this.$router.push("/");
           localStorage.clear();
         });
       }
-      this.$router.push(router);
+      this.$router.push(item.router);
       this.$store.state.menuId = index;
       localStorage.setItem("bgindex", index);
     },

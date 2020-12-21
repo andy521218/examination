@@ -4,12 +4,46 @@
     <div class="tab assessment" @click="routerSment"></div>
     <div class="tab problem" @click="routerMessagemy"></div>
     <div class="tab care" @click="routerCare"></div>
+    <edit-password
+      style="top: -50%"
+      v-if="$store.state.editPwd"
+    ></edit-password>
+    <edit-user
+      @submit="$store.commit('submit')"
+      :tips="false"
+      :title="'信息'"
+      :upData="$store.state.current"
+      style="top: -50%"
+      v-if="$store.state.editCurrent"
+    >
+      <template v-slot:user>
+        <div class="edit_left">
+          <span class="edit_red">*</span>
+          <span class="edit_text">用户名/工号:</span>
+        </div>
+      </template>
+      <template v-slot:select>
+        <div class="edit_left">
+          <span class="edit_red">*</span>
+          <span class="edit_text">院系:</span>
+        </div>
+        <span class="edit_text_i">{{
+          $store.state.current.departmentName
+        }}</span>
+      </template>
+    </edit-user>
   </div>
 </template>
 
 <script>
+import editPassword from "../components/edit/editPassword";
+import editUser from "../components/edit/editUser";
 export default {
   name: "index",
+  components: {
+    editPassword,
+    editUser,
+  },
   mounted() {
     localStorage.removeItem("bgindex");
     localStorage.removeItem("examNo");
@@ -58,6 +92,7 @@ export default {
   left: 50%;
   margin-top: -197px;
   margin-left: -740px;
+
   .tab {
     width: 390px;
     height: 420px;

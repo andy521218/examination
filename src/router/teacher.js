@@ -74,7 +74,6 @@ export const teacher = [
           main: () => import('../pages/teacher/teacherUser'),
         },
       },
-
       {
         path: '/messageforum',
         name: 'messageforum',
