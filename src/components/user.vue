@@ -80,17 +80,24 @@ export default {
   name: "user-header",
   data() {
     return {
+      url:
+        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608543609478&di=15aeca3ca7760bc505b7974de0dbccaa&imgtype=0&src=http%3A%2F%2Fdiy.qqjay.com%2Fu%2Ffiles%2F2012%2F0217%2Fb693a3b6d232ffe861da22287c888729.jpg",
       itemIndex: "-1",
       current: "",
       list: [],
-      messageData: "",
       active_show: false,
       select_show: false,
-      total: 0,
     };
   },
   computed: {
-    ...mapState(["adminMenu", "teacherMenu", "stuedntMenu", "avatar"]),
+    ...mapState([
+      "adminMenu",
+      "teacherMenu",
+      "stuedntMenu",
+      "avatar",
+      "total",
+      "messageData",
+    ]),
   },
   mounted() {
     this.axios.get("/users/current").then((res) => {
@@ -106,7 +113,6 @@ export default {
         this.list = this.stuedntMenu;
       }
     });
-    this.getmessage();
   },
   methods: {
     routeLink(item, index) {
@@ -132,24 +138,24 @@ export default {
       localStorage.setItem("bgindex", index);
     },
     //获取提示消息
-    getmessage() {
-      this.total = 0;
-      this.axios
-        .get("/message/my", {
-          params: {
-            page: "1",
-            size: "500",
-          },
-        })
-        .then((res) => {
-          this.messageData = res.data;
-          this.messageData.rows.forEach((item) => {
-            if (item.status) {
-              this.total++;
-            }
-          });
-        });
-    },
+    // getmessage() {
+    //   this.total = 0;
+    //   this.axios
+    //     .get("/message/my", {
+    //       params: {
+    //         page: "1",
+    //         size: "500",
+    //       },
+    //     })
+    //     .then((res) => {
+    //       this.messageData = res.data;
+    //       this.messageData.rows.forEach((item) => {
+    //         if (item.status) {
+    //           this.total++;
+    //         }
+    //       });
+    //     });
+    // },
     //设为已读消息
     seeMessage(item) {
       this.axios.delete(`/message/${item.messageId}`).then((res) => {

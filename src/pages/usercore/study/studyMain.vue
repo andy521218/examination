@@ -19,9 +19,9 @@
         :class="{ active: titleIndex == 1 }"
         @click="titleIndex = 1"
       >
-        <span class="chart_item_title">问(30分)</span>
+        <span class="chart_item_title">问({{ askscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.ask) / 30) * 100"
+          :percent="(Math.floor(scoreData.ask) / askscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -36,9 +36,9 @@
         :class="{ active: titleIndex == 2 }"
         @click="titleIndex = 2"
       >
-        <span class="chart_item_title">望(12分)</span>
+        <span class="chart_item_title">望({{ watchscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.watch) / 12) * 100"
+          :percent="(Math.floor(scoreData.watch) / watchscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -53,9 +53,9 @@
         :class="{ active: titleIndex == 3 }"
         @click="titleIndex = 3"
       >
-        <span class="chart_item_title">闻(3分)</span>
+        <span class="chart_item_title">闻({{ listenscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.listen) / 3) * 100"
+          :percent="(Math.floor(scoreData.listen) / listenscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -70,9 +70,9 @@
         :class="{ active: titleIndex == 4 }"
         @click="titleIndex = 4"
       >
-        <span class="chart_item_title">切(5分)</span>
+        <span class="chart_item_title">切({{ feelscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.feel) / 5) * 100"
+          :percent="(Math.floor(scoreData.feel) / feelscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -87,9 +87,9 @@
         :class="{ active: titleIndex == 5 }"
         @click="titleIndex = 5"
       >
-        <span class="chart_item_title">辩证(32分)</span>
+        <span class="chart_item_title">辩证({{ dialecticalscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.disease) / 32) * 100"
+          :percent="(Math.floor(scoreData.disease) / dialecticalscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -104,9 +104,9 @@
         :class="{ active: titleIndex == 6 }"
         @click="titleIndex = 6"
       >
-        <span class="chart_item_title">治疗(18分)</span>
+        <span class="chart_item_title">治疗({{ treatmentscore }}分)</span>
         <i-circle
-          :percent="(Math.floor(scoreData.treat) / 18) * 100"
+          :percent="(Math.floor(scoreData.treat) / treatmentscore) * 100"
           class="item"
           stroke-color="rgb(50,168,255)"
           trail-color="rgb(25,72,114)"
@@ -156,15 +156,47 @@ export default {
       userId: "",
       scoreData: "",
       titleIndex: "1",
+      askscore: "",
+      watchscore: "",
+      listenscore: "",
+      feelscore: "",
+      dialecticalscore: "",
+      treatmentscore: 0,
     };
   },
   mounted() {
     this.userId = localStorage.getItem("examId");
     this.examNo = localStorage.getItem("examNo");
     this.caseId = localStorage.getItem("caseId");
+    this.getSettingScore();
     this.getscore();
   },
   methods: {
+    getSettingScore() {
+      this.axios.get("/case/manage/score/setting").then((res) => {
+        console.log(res);
+        res.data.forEach((item) => {
+          if (item.name == "问诊") {
+            this.askscore = item.score;
+          }
+          if (item.name == "望诊") {
+            this.watchscore = item.score;
+          }
+          if (item.name == "闻诊") {
+            this.listenscore = item.score;
+          }
+          if (item.name == "切诊") {
+            this.feelscore = item.score;
+          }
+          if (item.name == "辩证") {
+            this.dialecticalscore = item.score;
+          }
+          if (item.name == "治则治法" || item.name == "方药方剂") {
+            this.treatmentscore += item.score;
+          }
+        });
+      });
+    },
     getscore() {
       this.axios
         .get(`/${this.examNo}/${this.caseId}/score`, {

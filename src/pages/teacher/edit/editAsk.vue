@@ -107,7 +107,7 @@
             <span>第一步:</span>
           </li>
           <li>
-            <button class="submit">下载模板</button>
+            <button class="submit" @click="download">下载模板</button>
             <div class="case_rigt_tips">
               <span>请先下载Excel模板</span>
               <span>(已有模板请执行第二步)</span>
@@ -120,7 +120,7 @@
           <li>
             <div class="upload">
               <button class="submit">选择文件</button>
-              <input type="file" @change="upload()" ref="file" />
+              <input type="file" @change="changeFile()" ref="file" />
             </div>
             <div>
               <span>仅支持Excel文件</span>
@@ -131,8 +131,8 @@
           </li>
         </ul>
         <div class="edit_btn_box">
-          <button class="edit_cancel">取消</button>
-          <button class="edit_submit">确定</button>
+          <button class="edit_cancel" @click="close">取消</button>
+          <button class="edit_submit" @click="submitExcel">确定</button>
         </div>
         <div class="case_right_desc">
           <span>提示:</span>
@@ -204,6 +204,7 @@ export default {
       askData: {},
       editData: {},
       tabData: {},
+      excel: "",
     };
   },
   mounted() {
@@ -212,12 +213,36 @@ export default {
     this.getTabdata();
   },
   methods: {
+    download() {
+      let url = this.$url.replace("/download/", "");
+      window.location.href = `${url}/case/manage/ask/template`;
+    },
+    close() {
+      this.route = "";
+      this.excel = "";
+    },
+    submitExcel() {
+      let fromData = new window.FormData();
+      fromData.append("file", this.excel);
+      this.upload
+        .post(`/case/manage/${this.caseId}/ask/import`, fromData)
+        .then((res) => {
+          if (res.code == "000000") {
+            this.route = "";
+            this.excel = "";
+            this.getaskData();
+          } else {
+            this.$Message.error(res.msg);
+          }
+        });
+    },
     container(i) {
       this.typeId = i;
       this.getaskData();
     },
-    upload() {
+    changeFile() {
       this.route = this.$refs.file.value;
+      this.excel = this.$refs.file.files[0];
     },
     openCont(e) {
       this.editData = e;

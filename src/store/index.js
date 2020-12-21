@@ -13,6 +13,8 @@ export default new Vuex.Store({
     menuId: '-1',
     editPwd: false,
     editCurrent: false,
+    total: 0,
+    messageData: '',
     current: '',
     avatar: '',
     examId: '',
@@ -166,12 +168,12 @@ export default new Vuex.Store({
     ],
     stuedntMenu: [
       {
-        title: "个人信息",
+        title: "个人信息 ",
         router: "usercenter",
         item: "",
       },
       {
-        title: "修改密码",
+        title: "修改密码 ",
         router: "userpassword",
         item: "",
       },
