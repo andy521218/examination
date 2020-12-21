@@ -44,7 +44,7 @@
         @mousemove="select_show = true"
         @mouseleave="select_show = false"
       >
-        <img :src="current.avatar" alt="" v-if="current.avatar" />
+        <img :src="$url + current.avatar" alt="" v-if="current.avatar" />
         <img
           v-else
           src="../assets/public/cfbadfe21ef4dd007eff3324a281cc9.png"

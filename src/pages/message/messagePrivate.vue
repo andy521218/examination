@@ -10,7 +10,7 @@
             <input type="checkbox" v-model="topicArr" :value="item.id" />
             <div class="user_img">
               <div class="border" v-show="item.hasUnread"></div>
-              <img :src="item.avatar" />
+              <img :src="$url + item.avatar" />
               <span>{{ item.name }}</span>
             </div>
             <div class="private_title" @click="seetopic(item)">
@@ -33,8 +33,7 @@
             :key="index"
           >
             <div class="private_right_left" v-if="item.userId != checkId">
-              <img :src="item.avatar" alt v-if="item.avatar" />
-              <img src="../../assets/img/home/user.png" v-else />
+              <img :src="avatarUrl" />
               <div class="frame">
                 <span>{{ item.message }}</span>
                 <div></div>
@@ -45,8 +44,7 @@
                 <span>{{ item.message }}</span>
                 <div></div>
               </div>
-              <img :src="item.avatar" alt v-if="item.avatar" />
-              <img src="../../assets/img/home/user.png" v-else />
+              <img :src="$url + $store.state.current.avatar" alt />
             </div>
           </li>
         </ul>
@@ -73,6 +71,7 @@ export default {
       id: "",
       checkId: "",
       topicArr: [],
+      avatarUrl: "",
     };
   },
   mounted() {
@@ -128,6 +127,7 @@ export default {
       this.userId = item.userId;
       this.id = item.id;
       this.name = item.name;
+      this.avatarUrl = this.$url + item.avatar;
       this.getImid(item.id);
     },
     //删除对话
@@ -144,6 +144,11 @@ export default {
 .message_private {
   height: 100%;
   display: flex;
+  img {
+    border-radius: 3px;
+    width: 55px;
+    height: 55px;
+  }
   .private_left {
     width: 40%;
     margin-left: 5px;
@@ -189,7 +194,6 @@ export default {
               margin-bottom: 10px;
               width: 50px;
               height: 50px;
-              border-radius: 3px;
             }
             span {
               font-size: 12px;

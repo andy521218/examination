@@ -9,8 +9,8 @@
             @change="uploadlogo"
             ref="logo"
           />
-          <img :src="current.avatar" alt="" v-if="current.avatar" />
-          <img :src="$url + studentAvatar" alt v-else />
+          <img :src="$url + current.avatar" v-if="current.avatar" />
+          <img :src="$url + studentAvatar" v-else />
           <span class="edit">点击修改头像</span>
         </div>
         <!-- <span class="user_number">20200912</span> -->
@@ -70,7 +70,7 @@ export default {
       formData.append("file", logo);
       this.upload.post("/upload", formData).then((res) => {
         let url = this.qs.stringify({
-          avatar: `http://localhost:8080/api/download/${res.data}`,
+          avatar: res.data,
         });
         this.http.put(`/users/avatar?${url}`);
       });

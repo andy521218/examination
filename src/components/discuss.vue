@@ -53,7 +53,7 @@
                 <div class="notice_bottom"></div>
               </div> -->
               <img
-                :src="item.userAvatar"
+                :src="$url + item.userAvatar"
                 @click="sendmessage(item)"
                 title="发送私信"
               />
@@ -94,7 +94,7 @@
                       <div class="notice_bottom"></div>
                     </div> -->
                     <img
-                      src="../assets/img/home/user.png"
+                      :src="$url + replay.userAvatar"
                       @click="sendTwoMessage(replay)"
                       title="发送私信"
                     />
