@@ -237,6 +237,7 @@ export default {
         msg = "编辑";
       }
       this.http[methods](`/users/${id}/teacher/${url}`, {
+        avatar: this.$url + this.teacherAvatar,
         name: this.upData.name,
         passwd: this.upData.passwd,
         userName: this.upData.userName,

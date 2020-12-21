@@ -53,7 +53,7 @@
                 <div class="notice_bottom"></div>
               </div> -->
               <img
-                src="../assets/img/home/user.png"
+                :src="item.userAvatar"
                 @click="sendmessage(item)"
                 title="发送私信"
               />

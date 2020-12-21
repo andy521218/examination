@@ -291,6 +291,7 @@ export default {
       }
       {
         this.http[methods](`/users/student/${url}`, {
+          avatar: this.$url + this.studentAvatar,
           name: this.upData.name,
           passwd: this.upData.passwd,
           userName: this.upData.userName,

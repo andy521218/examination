@@ -159,9 +159,12 @@ export default {
     },
     submit() {
       if (this.changeName() && this.changeAge() && this.changeType()) {
+        if (!this.fileLogo) {
+          this.$Message.error("请上传头像!");
+          return;
+        }
         let formData = new window.FormData();
         formData.append("file", this.fileLogo);
-
         this.upload.post("/upload", formData).then((res) => {
           if (res.code == "000000") {
             this.http

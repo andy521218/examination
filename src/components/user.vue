@@ -22,7 +22,7 @@
             >
               <div class="user_img">
                 <div class="border" v-show="item.status"></div>
-                <img :src="item.avatar ? item.avatar : url" alt />
+                <img :src="item.avatar" alt />
               </div>
               <div class="user_column">
                 <div class="title">{{ item.name }}回复:{{ item.message }}</div>
@@ -44,12 +44,12 @@
         @mousemove="select_show = true"
         @mouseleave="select_show = false"
       >
+        <img :src="current.avatar" alt="" v-if="current.avatar" />
         <img
-          :src="avatar ? avatar : current.avatar"
+          v-else
+          src="../assets/public/cfbadfe21ef4dd007eff3324a281cc9.png"
           alt=""
-          v-if="current.avatar"
         />
-        <img src="../assets/public/timg.png" alt v-else />
         <div class="headr_select" v-show="select_show">
           <p></p>
           <div class="pseudo"></div>
@@ -80,8 +80,6 @@ export default {
   name: "user-header",
   data() {
     return {
-      url:
-        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1608543609478&di=15aeca3ca7760bc505b7974de0dbccaa&imgtype=0&src=http%3A%2F%2Fdiy.qqjay.com%2Fu%2Ffiles%2F2012%2F0217%2Fb693a3b6d232ffe861da22287c888729.jpg",
       itemIndex: "-1",
       current: "",
       list: [],
@@ -138,29 +136,23 @@ export default {
       localStorage.setItem("bgindex", index);
     },
     //获取提示消息
-    // getmessage() {
-    //   this.total = 0;
-    //   this.axios
-    //     .get("/message/my", {
-    //       params: {
-    //         page: "1",
-    //         size: "500",
-    //       },
-    //     })
-    //     .then((res) => {
-    //       this.messageData = res.data;
-    //       this.messageData.rows.forEach((item) => {
-    //         if (item.status) {
-    //           this.total++;
-    //         }
-    //       });
-    //     });
-    // },
+    getmessage() {
+      this.axios
+        .get("/message/my", {
+          params: {
+            page: "1",
+            size: "500",
+          },
+        })
+        .then((res) => {
+          this.$store.state.messageData = res.data;
+          this.$store.state.total = 0;
+        });
+    },
     //设为已读消息
     seeMessage(item) {
       this.axios.delete(`/message/${item.messageId}`).then((res) => {
         if (res.code == "000000") {
-          this.getmessage();
           this.$store.state.menuId = 3;
           if (!item.title) {
             this.$router.push({

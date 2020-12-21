@@ -10,8 +10,7 @@
             <input type="checkbox" v-model="topicArr" :value="item.id" />
             <div class="user_img">
               <div class="border" v-show="item.hasUnread"></div>
-              <img :src="item.avatar" alt v-if="item.avatar" />
-              <img src="../../assets/img/home/user.png" alt="" v-else />
+              <img :src="item.avatar" />
               <span>{{ item.name }}</span>
             </div>
             <div class="private_title" @click="seetopic(item)">
@@ -190,6 +189,7 @@ export default {
               margin-bottom: 10px;
               width: 50px;
               height: 50px;
+              border-radius: 3px;
             }
             span {
               font-size: 12px;

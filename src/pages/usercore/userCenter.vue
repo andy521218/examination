@@ -10,7 +10,7 @@
             ref="logo"
           />
           <img :src="current.avatar" alt="" v-if="current.avatar" />
-          <img src="../../assets/public/timg.png" alt v-else />
+          <img :src="$url + studentAvatar" alt v-else />
           <span class="edit">点击修改头像</span>
         </div>
         <!-- <span class="user_number">20200912</span> -->
