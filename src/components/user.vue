@@ -176,6 +176,7 @@ export default {
       this.axios.delete("message/my").then((res) => {
         if (res.code == "000000") {
           this.getmessage();
+          this.active_show = false;
         } else {
           this.$Message.error(res.msg);
         }

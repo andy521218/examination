@@ -5,9 +5,54 @@
       :editData="editData"
       @getResult="getResult"
     ></edit-score>
+
+    <div class="edit" v-if="load_show">
+      <div class="edit_title">
+        <span class="title">批量存档</span>
+        <span class="edit_switch" @click="load_show = false"></span>
+      </div>
+      <ul>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">班级:</span>
+          </div>
+          <select class="select" v-model="classroomId" @change="getReport">
+            <option value="">请选择班级</option>
+            <option
+              v-for="(item, index) in classrooms"
+              :key="index"
+              :value="item.id"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </li>
+        <li>
+          <div class="edit_left">
+            <span class="edit_red">*</span>
+            <span class="edit_text">试卷名称:</span>
+          </div>
+          <select v-model="testPaperId" class="select">
+            <option value="">请选择试卷名称</option>
+            <option
+              v-for="(item, index) in examName"
+              :key="index"
+              :value="item.testPaperId"
+            >
+              {{ item.name }}
+            </option>
+          </select>
+        </li>
+      </ul>
+      <div class="edit_btn_box">
+        <button class="edit_cancel" @click="load_show = false">取消</button>
+        <button class="edit_submit" @click="submit">确定</button>
+      </div>
+    </div>
     <div class="main_header">
       <div>
-        <button class="add">批量存档</button>
+        <button class="add" @click="load_show = true">批量存档</button>
       </div>
       <div>
         <label for>班级</label>
@@ -180,9 +225,12 @@ export default {
       examNumber: "",
       editscore_show: false,
       records_show: false,
+      load_show: false,
       editData: "",
       title_index: "",
       caseId: [],
+      selected: "",
+      uploadData: "",
     };
   },
   mounted() {
@@ -258,6 +306,25 @@ export default {
     },
     close() {
       this.records_show = false;
+    },
+    submit() {
+      this.axios
+        .get("/exam/result", {
+          params: {
+            classroomId: this.classroomId,
+            testPaperId: this.testPaperId,
+            page: 1,
+            size: "10",
+          },
+        })
+        .then((res) => {
+          if (res.data.total == 0) {
+            this.$Message.error("当前试卷无信息!");
+            return;
+          }
+          let url = this.$url.replace("/download/", "");
+          window.location.href = `${url}/exam/result/save?classroomId=${this.classroomId}&testPaperId=${this.testPaperId}&page=1&size=${res.data.total}`;
+        });
     },
   },
 };

@@ -246,7 +246,7 @@ export default {
           this.report = res.data;
           this.min = (res.data.minScore / 100) * 540;
           this.max = (res.data.maxScore / 100) * 540;
-          // this.avg = (res.data.avgScore / 100) * 540;
+          this.avg = (res.data.avgScore / 100) * 540;
           if (res.data.minScore == null) {
             this.score_show = false;
           }

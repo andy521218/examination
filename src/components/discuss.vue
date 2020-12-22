@@ -125,7 +125,7 @@
                 </div>
 
                 <!-- 三级回复 -->
-                <div class="message_three_cont" v-if="0">
+                <!-- <div class="message_three_cont" v-if="0">
                   <ul class="message_two">
                     <li class="message_two_item three">
                       <div class="message_two_top">
@@ -200,7 +200,7 @@
                       </div>
                     </li>
                   </ul>
-                </div>
+                </div> -->
               </li>
             </ul>
           </div>

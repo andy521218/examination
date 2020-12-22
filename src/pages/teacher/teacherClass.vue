@@ -28,7 +28,7 @@
         </select>
         <label for>年级</label>
         <select v-if="1" class="select" v-model="upData.gradeId">
-          <option :value="selected">请选择年纪</option>
+          <option :value="selected">请选择年级</option>
           <option
             :value="item.id"
             v-for="(item, index) in gradeData"

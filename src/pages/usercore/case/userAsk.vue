@@ -166,14 +166,20 @@
         <ul ref="scroll">
           <li v-for="(item, index) in askedArr" :key="index">
             <div class="asked_right">
-              <img src="../../../assets/public/timg1.jpg" alt="" />
+              <img
+                src="../../../assets/public/45cd92c819e6690dbd64f5fb99c291f.png"
+                alt=""
+              />
               <div class="asked_right_box">
                 <i></i>
                 <span>{{ item.question }}</span>
               </div>
             </div>
             <div class="asked_left">
-              <img src="../../../assets/public/timg1.jpg" alt="" />
+              <img
+                src="../../../assets/public/68942a0d1b1aea0154b9d7eeab7ce12.png"
+                alt=""
+              />
               <div class="asked_left_box">
                 <i></i>
                 <span>{{ item.answer }}</span>

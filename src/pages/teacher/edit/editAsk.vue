@@ -225,7 +225,7 @@ export default {
       let fromData = new window.FormData();
       fromData.append("file", this.excel);
       this.upload
-        .post(`/case/manage/${this.caseId}/ask/import`, fromData)
+        .post(`/case/manage/${this.caseId}/import`, fromData)
         .then((res) => {
           if (res.code == "000000") {
             this.route = "";

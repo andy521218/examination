@@ -9,7 +9,7 @@
           <li v-for="(item, index) in messagelist" :key="index">
             <input type="checkbox" v-model="topicArr" :value="item.id" />
             <div class="user_img">
-              <div class="border" v-show="item.hasUnread"></div>
+              <div class="border" v-show="item.hasUnread" v-if="0"></div>
               <img :src="$url + item.avatar" />
               <span>{{ item.name }}</span>
             </div>
