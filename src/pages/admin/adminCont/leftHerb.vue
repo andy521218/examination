@@ -72,7 +72,7 @@
           @blur="prescriptionSearchShow = false"
           @focus="prescriptionSearchShow = true"
         />
-        <button class="submit">检索</button>
+        <button class="submit" @click="getPrescriptionData()">检索</button>
       </li>
     </ul>
     <div class="scrollbar">
@@ -140,6 +140,7 @@ export default {
       this.axios
         .get("/meta/herb/agentia", {
           params: {
+            name: this.prescriptionSearch,
             size: "500",
           },
         })

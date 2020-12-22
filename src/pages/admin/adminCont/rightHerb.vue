@@ -115,7 +115,7 @@
             druggerySearch = '';
           "
         />
-        <button class="submit">检索</button>
+        <button class="submit" @click="getDruggeryData">检索</button>
       </li>
     </ul>
     <div class="scrollbar">
@@ -210,6 +210,7 @@ export default {
       this.axios
         .get("/meta/herb/druggery", {
           params: {
+            name: this.druggerySearch,
             size: "500",
           },
         })

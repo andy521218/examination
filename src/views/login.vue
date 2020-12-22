@@ -2,6 +2,9 @@
   <div class="login" ref="login">
     <div class="login-bg">
       <div class="center_auto">
+        <div class="setting_logo">
+          <img :src="url" alt="" />
+        </div>
         <div class="login-left">
           <img src="../assets/img/login/left.png" alt />
         </div>
@@ -36,7 +39,7 @@
           <div class="btn" @click="login">
             <span>登 入</span>
           </div>
-          <span class="count">访问次数:123456次</span>
+          <span class="count">访问次数:{{ count }}次</span>
           <div class="notes">技术支持:上海域园信息科技有限公司</div>
         </div>
       </div>
@@ -56,7 +59,16 @@ export default {
       pwd: "123456",
       isShow: true,
       isChecked: false,
+      count: "",
+      url: "",
     };
+  },
+  mounted() {
+    this.axios.get("/metrics/login").then((res) => {
+      this.count = res.data;
+    });
+    let url = this.$url.replace("/download/", "");
+    this.url = url + "/metrics/logo";
   },
   methods: {
     checked() {
@@ -130,6 +142,16 @@ export default {
       max-height: 937px;
       display: flex;
       margin: auto auto;
+      position: relative;
+    }
+    .setting_logo {
+      position: absolute;
+      width: 50%;
+      height: 84px;
+      top: 2%;
+      right: 2%;
+      display: flex;
+      justify-content: flex-end;
     }
   }
   .login-left {
