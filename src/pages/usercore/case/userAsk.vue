@@ -322,10 +322,10 @@ export default {
           },
         })
         .then((res) => {
+          if (typeId == 0) {
+            this.askData0 = res.data.rows;
+          }
           switch (typeId) {
-            case 0:
-              this.askData0 = res.data.rows;
-              break;
             case 1:
               this.askData1 = res.data.rows;
               break;

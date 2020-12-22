@@ -148,7 +148,7 @@ export default {
       position: absolute;
       width: 50%;
       height: 84px;
-      top: 2%;
+      top: 3%;
       right: 2%;
       display: flex;
       justify-content: flex-end;

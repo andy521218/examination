@@ -40,7 +40,7 @@
           @click="startExam(item)"
         >
           <div class="case_img">
-            <img src="../../../assets/public/timg.png" alt="" />
+            <img :src="$url + item.picUrl" alt="" />
             <div class="case_active">
               <div class="case_img_tips">
                 <img src="../../../assets/public/caseTips.png" alt="" />

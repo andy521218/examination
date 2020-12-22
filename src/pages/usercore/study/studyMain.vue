@@ -122,7 +122,7 @@
       <study-watch v-show="titleIndex == 2"></study-watch>
       <study-listen v-show="titleIndex == 3"></study-listen>
       <study-feel v-show="titleIndex == 4"></study-feel>
-      <study-disease v-show="titleIndex == 5"></study-disease>
+      <study-disease v-if="titleIndex == 5"></study-disease>
       <study-treat v-show="titleIndex == 6"></study-treat>
     </div>
   </div>
@@ -174,7 +174,6 @@ export default {
   methods: {
     getSettingScore() {
       this.axios.get("/case/manage/score/setting").then((res) => {
-        console.log(res);
         res.data.forEach((item) => {
           if (item.name == "问诊") {
             this.askscore = item.score;

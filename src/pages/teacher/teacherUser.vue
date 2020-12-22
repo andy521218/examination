@@ -87,7 +87,7 @@
           placeholder="请输入学生姓名"
           v-model="searchName"
         />
-        <button class="submit" @click="getData">检索</button>
+        <button class="submit" @click="getData(1)">检索</button>
       </div>
     </div>
     <table
