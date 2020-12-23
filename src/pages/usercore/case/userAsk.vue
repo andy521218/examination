@@ -189,6 +189,12 @@
         </ul>
       </div>
     </div>
+    <div id="bdtts_div_id">
+      <audio id="tts_autio_id" autoplay="autoplay">
+        <source id="tts_source_id" :src="vido" type="audio/mpeg" />
+        <embed id="tts_embed_id" height="0" width="0" src="" />
+      </audio>
+    </div>
   </div>
 </template>
 
@@ -259,6 +265,7 @@ export default {
       askData5: {},
       askData6: {},
       askedArr: [],
+      vido: "",
       caseId: "",
       typeId: "0",
       typeName: "主诉",
@@ -356,6 +363,24 @@ export default {
           }, 300);
           this.askedArr.push(item);
         });
+      var ttsDiv = document.getElementById("bdtts_div_id");
+      var ttsAudio = document.getElementById("tts_autio_id");
+      var ttsText = item.question + item.answer;
+
+      // 这样就可实现播放内容的替换了
+      ttsDiv.removeChild(ttsAudio);
+      var au1 = '<audio id="tts_autio_id" autoplay="autoplay">';
+      var sss =
+        '<source id="tts_source_id" src="http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=4&text=' +
+        ttsText +
+        '" type="audio/mpeg">';
+      var eee = '<embed id="tts_embed_id" height="0" width="0" src="">';
+      var au2 = "</audio>";
+      ttsDiv.innerHTML = au1 + sss + eee + au2;
+
+      ttsAudio = document.getElementById("tts_autio_id");
+
+      ttsAudio.play();
     },
     container(i) {
       this.typeId = i.moduleId;
