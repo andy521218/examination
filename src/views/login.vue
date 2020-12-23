@@ -147,8 +147,7 @@ export default {
     .setting_logo {
       position: absolute;
       width: 50%;
-      height: 84px;
-      top: 3%;
+      top: 2%;
       right: 2%;
       display: flex;
       justify-content: flex-end;
