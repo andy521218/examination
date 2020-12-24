@@ -454,6 +454,7 @@ export default {
           } else {
             this.imgsUrl = this.$url + res.data.picUrl;
           }
+          this.imgDesc = res.data.description;
           this.answer = res.data.answer;
         });
     },

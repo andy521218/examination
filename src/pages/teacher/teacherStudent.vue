@@ -52,7 +52,7 @@
     </div>
     <div class="main_header">
       <div>
-        <button class="add" @click="load_show = true">批量存档</button>
+        <!-- <button class="add" @click="load_show = true">批量存档</button> -->
       </div>
       <div>
         <label for>班级</label>

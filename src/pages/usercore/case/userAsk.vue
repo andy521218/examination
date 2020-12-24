@@ -367,7 +367,6 @@ export default {
       var ttsAudio = document.getElementById("tts_autio_id");
       var ttsText = item.question + item.answer;
 
-      // 这样就可实现播放内容的替换了
       ttsDiv.removeChild(ttsAudio);
       var au1 = '<audio id="tts_autio_id" autoplay="autoplay">';
       var sss =

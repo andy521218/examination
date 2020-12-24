@@ -21,14 +21,16 @@
           <span>训练总用时</span>
         </div>
         <div class="train_itm_main">
-          <span style="color: rgb(251, 138, 94)">{{ report.totalDuring }}</span>
+          <span style="color: rgb(251, 138, 94)">{{
+            parseInt(report.totalDuring / 60)
+          }}</span>
           <span style="color: rgb(251, 138, 94)" class="train_itm_main_smal"
             >分</span
           >
         </div>
         <div class="tarin_bottm_border">
           <span
-            >{{ report.totalCnt }}次训练完成{{ report.totalDuring }}分钟</span
+            >{{ report.totalCnt }}次训练完成{{ parseInt(report.totalDuring / 60) }}分钟</span
           >
           <p class="orange_border"></p>
         </div>
