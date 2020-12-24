@@ -31,11 +31,11 @@
           </div> -->
           <div
             class="sonserve"
-            @click="saveCase()"
+            @click="saveCase_show = true"
             v-if="authority == 'TEACHER'"
           >
             <img src="../../../assets/public/sonserve.png" alt="" />
-            <span>保存</span>
+            <span>撤销</span>
           </div>
         </div>
       </div>
@@ -161,6 +161,25 @@
             </div>
           </div>
         </div>
+        <!-- 撤销案例 -->
+        <div class="edit_dele" v-if="saveCase_show">
+          <div class="edit">
+            <div class="edit_title">
+              <span class="title">提示</span>
+            </div>
+            <ul>
+              <li style="text-align: center">
+                <span>确定放弃本次修改吗?</span>
+              </li>
+            </ul>
+            <div class="edit_btn_box">
+              <button class="edit_cancel" @click="saveCase_show = false">
+                取消
+              </button>
+              <button class="edit_submit" @click="revokeCase">确定</button>
+            </div>
+          </div>
+        </div>
         <router-view></router-view>
       </div>
     </div>
@@ -218,6 +237,7 @@ export default {
       mint: "",
       second: "59",
       duringLimit: "",
+      saveCase_show: false,
       total: 0,
       endtime: "",
     };
@@ -309,6 +329,16 @@ export default {
     },
     saveCase() {
       this.$router.push("/teachercase");
+    },
+    revokeCase() {
+      let caseId = localStorage.getItem("caseId");
+      this.axios.delete(`/case/manage/draft/${caseId}`).then((res) => {
+        if (res.code == "000000") {
+          this.$router.push("/teachercase");
+        } else {
+          this.$Message.error(res.msg);
+        }
+      });
     },
     //点击完成
     complete() {

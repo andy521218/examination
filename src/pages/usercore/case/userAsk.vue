@@ -363,9 +363,16 @@ export default {
           }, 300);
           this.askedArr.push(item);
         });
+      this.song(item.question);
+      let time = (item.question.length / 3.2) * 1000;
+      setTimeout(() => {
+        this.song(item.answer);
+      }, time + 1000);
+    },
+    song(text) {
       var ttsDiv = document.getElementById("bdtts_div_id");
       var ttsAudio = document.getElementById("tts_autio_id");
-      var ttsText = item.question + item.answer;
+      var ttsText = text;
 
       ttsDiv.removeChild(ttsAudio);
       var au1 = '<audio id="tts_autio_id" autoplay="autoplay">';

@@ -192,7 +192,7 @@ export default {
       background: rgb(26, 127, 195, 0.2);
     }
     .text_box::placeholder {
-      color: rgb(110, 111, 113);
+      color: rgb(255, 255, 255);
     }
     span {
       position: absolute;
@@ -212,6 +212,9 @@ export default {
       color: rgb(255, 255, 255);
       background: rgb(26, 127, 195, 0.2);
       padding: 20px;
+    }
+    textarea::placeholder {
+      color: rgb(255, 255, 255);
     }
     span {
       position: absolute;

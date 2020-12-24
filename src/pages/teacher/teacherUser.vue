@@ -133,7 +133,6 @@
         </tr>
       </tbody>
     </table>
-
     <main-itps v-show="main_show"></main-itps>
     <turn-page
       v-show="total > size"
@@ -210,10 +209,11 @@ export default {
           },
         })
         .then((res) => {
-          if (!res.data.rows) {
-            this.main_show = true;
-          } else {
+          console.log(res.data);
+          if (!res.data.rows.length==0) {
             this.main_show = false;
+          } else {
+            this.main_show = true;
           }
           this.studentData = res.data.rows;
           this.total = res.data.total;

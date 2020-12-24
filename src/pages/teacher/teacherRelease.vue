@@ -128,7 +128,8 @@
       </div>
     </div>
     <div class="main_table">
-      <ul class="caseList">
+      <main-itps v-show="main_show" :title="'请先添加考核案例'"></main-itps>
+      <ul class="caseList" v-show="!main_show">
         <li v-for="(item, index) in manageData" :key="index">
           <div class="case_top">
             <img src="../../assets/public/timg.png" alt="" />
@@ -155,7 +156,7 @@
         </li>
       </ul>
     </div>
-    <main-itps v-show="main_show"></main-itps>
+
     <turn-page
       ref="turnPage"
       v-show="total > size"
@@ -317,6 +318,7 @@ export default {
           },
         })
         .then((res) => {
+          console.log(!res.data.rows);
           if (!res.data.rows) {
             this.main_show = true;
           } else {

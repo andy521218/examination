@@ -29,7 +29,7 @@
         <tbody>
           <tr v-for="(item, index) in trainData" :key="index">
             <td>{{ index | sortNumber(page) }}</td>
-            <td>{{ item.diseaseType }}</td>
+            <td>{{ list[item.diseaseType - 1].name }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.totalUser }}</td>
             <td>{{ item.totalCnt }}</td>
@@ -39,6 +39,7 @@
           </tr>
         </tbody>
       </table>
+      <main-itps v-show="main_show"></main-itps>
       <turn-page
         v-show="total > 10"
         :totaltotal="Number(total)"
@@ -51,10 +52,12 @@
 
 <script>
 import turnPage from "../../../components/turnPage";
+import mainItps from "../../../components/mainItps";
 export default {
   name: "train-analysis",
   components: {
     turnPage,
+    mainItps,
   },
   data() {
     return {
@@ -83,6 +86,7 @@ export default {
       page: "1",
       total: "",
       diseaseType: "1",
+      main_show: false,
       trainData: {},
     };
   },
@@ -101,6 +105,11 @@ export default {
           },
         })
         .then((res) => {
+          if (res.data.rows.length == 0) {
+            this.main_show = true;
+          } else {
+            this.main_show = false;
+          }
           this.trainData = res.data.rows;
           this.total = res.data.total;
         });

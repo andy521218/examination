@@ -140,7 +140,7 @@ export default {
           },
         })
         .then((res) => {
-          if (!res.data.rows) {
+          if (res.data.rows.length == 0) {
             this.main_show = true;
           } else {
             this.main_show = false;
