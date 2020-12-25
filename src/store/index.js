@@ -203,7 +203,8 @@ export default new Vuex.Store({
       }
       http.put(`/my/profile?${qs.stringify(obj)}`,).then(res => {
         if (res.code == '000000') {
-          Message.error(res.msg)
+          state.editCurrent = false
+          return
         } else {
           Message.error(res.msg)
         }

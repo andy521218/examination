@@ -8,7 +8,7 @@
         <div class="login-left">
           <img src="../assets/img/login/left.png" alt />
         </div>
-        <div class="login-right">
+        <div class="login-right" v-show="!RetrievePassword_show">
           <div class="login-box user">
             <img src="../assets/img/login/user.png" alt />
             <input
@@ -33,7 +33,7 @@
               <label for>记住密码</label>
             </div>
             <div class="related_right">
-              <span>忘记密码?</span>
+              <span @click="RetrievePassword_show = true">忘记密码?</span>
             </div>
           </div>
           <div class="btn" @click="login">
@@ -42,6 +42,7 @@
           <span class="count">访问次数:{{ count }}次</span>
           <div class="notes">技术支持:上海域园信息科技有限公司</div>
         </div>
+        <RetrievePassword v-if="RetrievePassword_show" />
       </div>
     </div>
   </div>
@@ -51,6 +52,8 @@
 import user from "../router/user";
 import admin from "../router/admin";
 import teacher from "../router/teacher";
+import RetrievePassword from "../components/RetrievePassword";
+
 export default {
   name: "login",
   data() {
@@ -59,9 +62,13 @@ export default {
       pwd: "123456",
       isShow: true,
       isChecked: false,
+      RetrievePassword_show: false,
       count: "",
       url: "",
     };
+  },
+  components: {
+    RetrievePassword,
   },
   mounted() {
     this.axios.get("/metrics/login").then((res) => {
@@ -217,6 +224,9 @@ export default {
           height: 20px;
           vertical-align: middle;
           margin-right: 10px;
+        }
+        span {
+          cursor: pointer;
         }
       }
     }
