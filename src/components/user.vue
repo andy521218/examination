@@ -128,7 +128,6 @@ export default {
       if (item == "退出登入") {
         this.axios.get("logout").then(() => {
           this.$router.push("/");
-          localStorage.clear();
         });
       }
       this.$router.push(item.router);

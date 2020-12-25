@@ -29,7 +29,7 @@
           </div>
           <div class="related">
             <div class="related_left">
-              <input type="radio" :checked="isChecked" @click="checked" />
+              <input type="checkbox" v-model="isChecked" @change="delePwd" />
               <label for>记住密码</label>
             </div>
             <div class="related_right">
@@ -71,6 +71,9 @@ export default {
     RetrievePassword,
   },
   mounted() {
+    this.user = localStorage.getItem("user");
+    this.pwd = localStorage.getItem("pwd");
+    this.isChecked = localStorage.getItem("isChecked");
     this.axios.get("/metrics/login").then((res) => {
       this.count = res.data;
     });
@@ -78,14 +81,16 @@ export default {
     this.url = url + "/metrics/logo";
   },
   methods: {
-    checked() {
-      this.isChecked = !this.isChecked;
-    },
     userName() {
       if (!this.user) {
         return false;
       }
       return true;
+    },
+    delePwd() {
+      if (!this.isChecked) {
+        localStorage.clear();
+      }
     },
     password() {
       if (!this.pwd) {
@@ -117,6 +122,12 @@ export default {
             if (res.data.authority == "TEACHER") {
               this.$router.addRoutes(teacher);
             }
+            if (this.isChecked) {
+              localStorage.setItem("user", this.user);
+              localStorage.setItem("pwd", this.pwd);
+              localStorage.setItem("isChecked", this.isChecked);
+            }
+
             this.$store.state.authority = res.data.authority;
             this.$Message.warning(`${this.user},登入成功!`);
             this.$router.push("/index");

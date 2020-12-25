@@ -272,6 +272,8 @@ export default {
       examNo: "",
       currentIndex: "",
       keyword: "",
+      answerSong: "",
+      questionSong: "",
     };
   },
   mounted() {
@@ -363,9 +365,14 @@ export default {
           }, 300);
           this.askedArr.push(item);
         });
-      this.song(item.question);
+      clearTimeout(this.questionSong);
+      this.questionSong = setTimeout(() => {
+        this.song(item.question);
+      }, 500);
+
       let time = (item.question.length / 3.2) * 1000;
-      setTimeout(() => {
+      clearTimeout(this.answerSong);
+      this.answerSong = setTimeout(() => {
         this.song(item.answer);
       }, time + 1000);
     },
