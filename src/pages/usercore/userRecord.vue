@@ -14,7 +14,7 @@
         placeholder="请输入患者名字"
         v-model="searchName"
       />
-      <button class="submit" @click="getTrain(page)">检索</button>
+      <button class="submit" @click="getTrain(1)">检索</button>
     </div>
 
     <table

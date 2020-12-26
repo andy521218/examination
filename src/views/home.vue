@@ -32,7 +32,9 @@
               <span class="edit_red">*</span>
               <span class="edit_text">院系:</span>
             </div>
-            <span class="edit_text_i">111111</span>
+            <span class="edit_text_i">{{
+              $store.state.current.departmentName
+            }}</span>
           </template>
         </edit-user>
         <router-view name="main"></router-view>

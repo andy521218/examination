@@ -830,7 +830,7 @@ input[type="checkbox"]:checked:before {
               margin-top: 4px;
               color: rgb(255, 255, 255);
               text-align: center;
-
+              z-index: 999;
               .item_one {
                 background: url("../../assets/public/red.png") no-repeat center;
                 width: 33px;

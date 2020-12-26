@@ -35,7 +35,7 @@
             <td>{{ item.totalCnt }}</td>
             <td>{{ parseInt(item.maxScore) }}</td>
             <td>{{ parseInt(item.avgScore) }}</td>
-            <td>{{ parseInt(item.avgCostTime) }}</td>
+            <td>{{ parseInt(item.avgCostTime / 60) }}分</td>
           </tr>
         </tbody>
       </table>

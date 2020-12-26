@@ -72,7 +72,7 @@
               alt=""
             />
             <div class="exam_left_top_averageTime_main" v-show="!examtime_show">
-              <span>{{parseInt(report.avgCostTime / 60000) }}</span>
+              <span>{{ parseInt(report.avgCostTime / 60000) }}</span>
               <span style="font-size: 30px">分</span>
             </div>
             <div class="tarin_bottm_border" v-show="!examtime_show">
@@ -210,7 +210,7 @@
         </div>
         <div class="exam_right_bottom" v-show="!examNumber_show">
           <div class="tarin_bottm_border">
-            <span>共{{ report.userDone }}人</span>
+            <span>共{{ report.totalUser }}人</span>
             <p style="border: 3px rgb(34, 163, 255) solid"></p>
           </div>
         </div>

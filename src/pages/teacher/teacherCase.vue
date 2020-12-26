@@ -57,7 +57,7 @@
         <button class="submit" @click="getManage('1')">检索</button>
       </div>
     </div>
-    <div class="main_table">
+    <div class="main_table" v-show="!main_show">
       <ul class="caseList">
         <li v-for="(item, index) in manageData" :key="index">
           <div class="case_top">

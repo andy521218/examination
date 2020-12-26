@@ -132,7 +132,7 @@
       <ul class="caseList" v-show="!main_show">
         <li v-for="(item, index) in manageData" :key="index">
           <div class="case_top">
-            <img src="../../assets/public/timg.png" alt="" />
+            <img :src="$url + item.picUrl" alt="" />
             <div class="state">
               <input
                 type="checkbox"

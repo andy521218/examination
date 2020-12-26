@@ -37,6 +37,7 @@ Vue.prototype.$url = 'http://localhost:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message = Message
 Vue.prototype.$MessageBox = MessageBox
+Vue.prototype.$confirm = MessageBox.confirm;
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = '/api';
@@ -111,17 +112,19 @@ router.beforeEach((to, from, next) => {
     }
   }
   to.name == 'index' ? store.state.flag = false : store.state.flag = true
-  if (to.name == from.name) {
-    if (authority == 'ADMIN') {
-      router.addRoutes(admin)
+  if (to.name != 'login') {
+    if (to.name == from.name) {
+      if (authority == 'ADMIN') {
+        router.addRoutes(admin)
+      }
+      if (authority == 'TEACHER') {
+        router.addRoutes(teacher)
+      }
+      if (authority == 'STUDENT') {
+        router.addRoutes(user)
+      }
+      router.push(to.path)
     }
-    if (authority == 'TEACHER') {
-      router.addRoutes(teacher)
-    }
-    if (authority == 'STUDENT') {
-      router.addRoutes(user)
-    }
-    router.push(to.path)
   }
   NProgress.start()
   next()

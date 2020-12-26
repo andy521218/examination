@@ -2,7 +2,7 @@
   <div class="teacher_exam">
     <div class="edit release_exam" v-show="exam_show">
       <div class="edit_title">
-        <span class="title">发布考试</span>
+        <span class="title">查看考试</span>
         <span class="edit_switch" @click="close"></span>
       </div>
       <ul>

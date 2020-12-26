@@ -240,6 +240,7 @@ export default {
       saveCase_show: false,
       total: 0,
       endtime: "",
+      totalExam: "",
     };
   },
   components: {
@@ -304,19 +305,27 @@ export default {
         },
       ];
     }
-    let examNo = localStorage.getItem("examNo");
-    this.duringLimit = localStorage.getItem("duringLimit");
-    this.http
-      .put(
-        `/exam/${examNo}/during?${this.qs.stringify({
-          during: 0,
-        })}`
-      )
-      .then((res) => {
-        let duringLimit = res.data;
-        if (!duringLimit) return;
-        this.duringLimit = this.duringLimit - duringLimit / 60;
-      });
+    this.totalExam = localStorage.getItem("total");
+    if (!this.totalExam) {
+      localStorage.setItem("total", 1);
+    }
+
+    this.axios.get("/exam").then((res) => {
+      let startTime = res.data[0].startTime
+        ? res.data[0].startTime
+        : new Date();
+
+      let endTime = res.data[0].endTime;
+      let overTime = res.data[0].systemTime + res.data[0].duringLimit * 60000;
+      let time =
+        startTime + res.data[0].duringLimit * 60000 - res.data[0].systemTime;
+      if (overTime > endTime) {
+        this.duringLimit = parseInt((endTime - res.data[0].systemTime) / 60000);
+        return;
+      }
+      this.duringLimit = parseInt(time / 60000);
+    });
+
     setInterval(() => {
       this.countDown();
     }, 1000);
@@ -406,6 +415,18 @@ export default {
         this.hour--;
         this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
       }
+      if (this.hour == 0 && this.mint == 0 && this.second == 0) {
+        let examNo = localStorage.getItem("examNo");
+        this.axios.put(`/exam/${examNo}/finished`).then(() => {
+          localStorage.removeItem("total");
+          this.$confirm(`您考试时间已到,自动为您提交本次考试!`, "提示", {
+            confirmButtonText: "确定",
+            type: "warning",
+          }).then(() => {
+            this.$router.push("index");
+          });
+        });
+      }
     },
     //禁用考试项
     disableExam(flag) {
@@ -421,14 +442,33 @@ export default {
       if (flag) return;
       let _this = this;
       window.onblur = function () {
-        _this.$MessageBox.alert(
-          "您已经离开当前考试界面,成绩可能作废!",
+        let total = localStorage.getItem("total");
+        if (total >= 4) {
+          let examNo = localStorage.getItem("examNo");
+          _this.axios.put(`/exam/${examNo}/finished`).then(() => {
+            localStorage.removeItem("total");
+            _this
+              .$confirm(`您已经离开考试界面超过3次自动提交本次考试!`, "提示", {
+                confirmButtonText: "确定",
+                type: "warning",
+              })
+              .then(() => {
+                _this.$router.push("index");
+              });
+          });
+          return;
+        }
+        _this.$confirm(
+          `您已经离开考试界面${total}次,超过3次将会自动提交本次考试!`,
           "提示",
           {
             confirmButtonText: "确定",
-            type: "error",
+            type: "warning",
           }
         );
+
+        total++;
+        localStorage.setItem("total", total);
       };
       window.onbeforeunload = function (e) {
         var a = window.event || e;
