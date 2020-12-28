@@ -33,7 +33,7 @@
             :key="index"
           >
             <div class="private_right_left" v-if="item.userId != checkId">
-              <img :src="avatarUrl" />
+              <img :src="$url + avatarUrl" />
               <div class="frame">
                 <span>{{ item.message }}</span>
                 <div></div>
@@ -96,6 +96,14 @@ export default {
     getIm() {
       this.axios.get("/im").then((res) => {
         this.messagelist = res.data;
+        if (!this.userId) {
+          return;
+        }
+        res.data.forEach((item) => {
+          if (item.userId == this.userId) {
+            this.avatarUrl = item.avatar;
+          }
+        });
       });
     },
     //获取聊天信息列表
@@ -127,7 +135,7 @@ export default {
       this.userId = item.userId;
       this.id = item.id;
       this.name = item.name;
-      this.avatarUrl = this.$url + item.avatar;
+      this.avatarUrl = item.avatar;
       this.getImid(item.id);
     },
     //删除对话

@@ -22,7 +22,7 @@
             >
               <div class="user_img">
                 <div class="border" v-show="item.status"></div>
-                <img :src="item.avatar" alt />
+                <img :src="$url + item.avatar" alt />
               </div>
               <div class="user_column">
                 <div class="title">{{ item.name }}回复:{{ item.message }}</div>

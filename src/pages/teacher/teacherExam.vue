@@ -158,7 +158,7 @@
             >
               查看
             </p>
-            <p @click="deleExam(item)" v-if="item.classrooms[0].status == 1">
+            <p @click="deleExam(item)" v-if="item.classrooms[0].status == 0">
               取消
             </p>
           </td>
