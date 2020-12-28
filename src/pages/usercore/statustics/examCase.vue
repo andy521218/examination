@@ -181,7 +181,8 @@ export default {
         ctx.lineTo(x, item);
         ctx.fillText(this.rank[index] + "名", x - 15, item - 15);
         let img = new Image();
-        img.src = `http://localhost:8080/api/download/61/1608018030700.png`;
+        // img.src = `http://localhost:8080/api/download/61/1608018030700.png`;
+        img.src = `${this.$url}50/1609136198447.png`;
         (() => {
           let img_x = x;
           img.onload = () => {

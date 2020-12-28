@@ -66,6 +66,7 @@ export default {
     getcaseData() {
       this.axios.get(`/case/${this.caseId}`).then((res) => {
         localStorage.setItem("sex", res.data.gender);
+        localStorage.setItem("name", res.data.name);
         this.caseData = res.data;
         this.$store.state.sex = res.data.gender;
         this.caseData.diseaseTypeName = this.list[
