@@ -44,12 +44,12 @@
             </div>
             <div class="uploadImg">
               <div class="mask" v-show="imgUrl"></div>
-              <img :src="imgUrl" v-if="imgUrl" class="tipsImg" alt="" />
+              <img :src="imgUrl" v-show="imgUrl" class="tipsImg" alt="" />
               <input
                 type="file"
                 ref="imgs"
                 @change="uploadImg"
-                v-if="pulseShow"
+                v-show="pulseShow"
               />
               <img
                 :class="{ option: imgUrl != '' }"
@@ -321,25 +321,17 @@ export default {
     },
 
     seePulse(item) {
+      this.imgUrl = this.$url + item.picUrl;
       this.pulseShow = false;
       this.pulse = item;
       this.imgShow = true;
-      if (/localhost/.test(item.picUrl)) {
-        this.imgurl = item.picUrl.replace(/localhost/, "101.132.150.87");
-      } else {
-        this.imgurl = this.$url + item.picUrl;
-      }
       this.puleseTitle = "查看";
     },
     editPulse(item) {
+      this.imgUrl = this.$url + item.picUrl;
       this.pulseShow = true;
       this.pulse = item;
       this.imgShow = true;
-      if (/localhost/.test(item.picUrl)) {
-        this.imgurl = item.picUrl.replace(/localhost/, "101.132.150.87");
-      } else {
-        this.imgurl = this.$url + item.picUrl;
-      }
       this.puleseTitle = "编辑";
     },
   },
