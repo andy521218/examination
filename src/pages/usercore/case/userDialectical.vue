@@ -594,7 +594,10 @@ export default {
       this.diseaseUpdata = e;
       this.getAlldata();
       let flag = false;
-
+      let ask_flag = false;
+      let watch_flag = false;
+      let listen_flag = false;
+      let press_flag = false;
       try {
         this.diseasecorrectData.forEach((item) => {
           if (e.id == item.id) {
@@ -609,22 +612,38 @@ export default {
               if (issueIds.stageId == "1") {
                 this.diseaseAskData = issueIds.issueIds;
                 this.upDiseaseData.issues[0].issueIds = issueIds.issueIds;
+                ask_flag = true;
               }
               if (issueIds.stageId == "2") {
                 this.diseaseWatchData = issueIds.issueIds;
                 this.upDiseaseData.issues[1].issueIds = issueIds.issueIds;
+                watch_flag = true;
               }
               if (issueIds.stageId == "3") {
                 this.diseaselistenData = issueIds.issueIds;
                 this.upDiseaseData.issues[2].issueIds = issueIds.issueIds;
+                listen_flag = true;
               }
               if (issueIds.stageId == "4") {
                 this.upDiseaseData.issues[3].issueIds = issueIds.issueIds;
                 this.diseasePressData = issueIds.issueIds;
+                press_flag = true;
               }
             });
           }
         });
+        if (!ask_flag) {
+          this.diseaseAskData = [];
+        }
+        if (!watch_flag) {
+          this.diseaseWatchData = [];
+        }
+        if (!listen_flag) {
+          this.diseaselistenData = [];
+        }
+        if (!press_flag) {
+          this.diseasePressData = [];
+        }
         if (!flag) {
           this.diseaseWatchData = [];
           this.diseaselistenData = [];

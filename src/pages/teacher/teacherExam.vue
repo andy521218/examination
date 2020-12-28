@@ -75,7 +75,7 @@
     </div>
     <div class="main_header">
       <div>
-        <button class="add">批量存档</button>
+        <!-- <button class="add">批量存档</button> -->
       </div>
       <div>
         <label for>状态</label>
@@ -149,8 +149,18 @@
             >
           </td>
           <td class="see_dele">
-            <p @click="seeExam(item)">查看</p>
-            <p @click="deleExam(item)">取消</p>
+            <p
+              @click="seeExam(item)"
+              style="
+                color: rgb(255, 255, 255);
+                border: 1px solid rgb(0, 235, 255);
+              "
+            >
+              查看
+            </p>
+            <p @click="deleExam(item)" v-if="item.classrooms[0].status == 1">
+              取消
+            </p>
           </td>
         </tr>
       </tbody>

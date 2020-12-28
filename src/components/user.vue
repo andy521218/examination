@@ -126,9 +126,7 @@ export default {
       }
       this.itemIndex = index;
       if (item == "退出登入") {
-        this.axios.get("logout").then(() => {
-          this.$router.push("/");
-        });
+        this.$router.push("/");
       }
       this.$router.push(item.router);
       this.$store.state.menuId = index;

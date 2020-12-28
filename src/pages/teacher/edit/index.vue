@@ -395,9 +395,9 @@ export default {
       }
       if (!this.mint) {
         if (this.hour > 0) {
-          this.mint = parseInt(this.duringLimit - this.hour * 60) - 1;
+          this.mint = parseInt(this.duringLimit - this.hour * 60);
         } else {
-          this.mint = parseInt(this.duringLimit) - 1;
+          this.mint = parseInt(this.duringLimit);
         }
         if (this.mint == "60") {
           this.mint = 59;

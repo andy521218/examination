@@ -43,7 +43,7 @@
               <span class="edit_text">脉诊图片:</span>
             </div>
             <div class="uploadImg">
-              <div class="mask" v-show="imgUrl"></div>
+              <div class="mask" v-show="!imgUrl"></div>
               <img :src="imgUrl" v-show="imgUrl" class="tipsImg" alt="" />
               <input
                 type="file"

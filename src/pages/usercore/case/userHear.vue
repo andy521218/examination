@@ -20,7 +20,7 @@
               <i class="tips"></i>
             </ul>
             <div class="normal_edit" v-if="normal_edit_show">
-              按诊的结果均为正常
+              闻诊的结果均为正常
               <p></p>
             </div>
             <div class="content scrollbar" v-if="!normal_edit_show">
