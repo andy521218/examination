@@ -309,22 +309,26 @@ export default {
     if (!this.totalExam) {
       localStorage.setItem("total", 1);
     }
+    let exam_flag = localStorage.getItem("exam");
+    if (exam_flag) {
+      this.axios.get("/exam").then((res) => {
+        let startTime = res.data[0].startTime
+          ? res.data[0].startTime
+          : new Date();
 
-    this.axios.get("/exam").then((res) => {
-      let startTime = res.data[0].startTime
-        ? res.data[0].startTime
-        : new Date();
-
-      let endTime = res.data[0].endTime;
-      let overTime = res.data[0].systemTime + res.data[0].duringLimit * 60000;
-      let time =
-        startTime + res.data[0].duringLimit * 60000 - res.data[0].systemTime;
-      if (overTime > endTime) {
-        this.duringLimit = parseInt((endTime - res.data[0].systemTime) / 60000);
-        return;
-      }
-      this.duringLimit = parseInt(time / 60000);
-    });
+        let endTime = res.data[0].endTime;
+        let overTime = res.data[0].systemTime + res.data[0].duringLimit * 60000;
+        let time =
+          startTime + res.data[0].duringLimit * 60000 - res.data[0].systemTime;
+        if (overTime > endTime) {
+          this.duringLimit = parseInt(
+            (endTime - res.data[0].systemTime) / 60000
+          );
+          return;
+        }
+        this.duringLimit = parseInt(time / 60000);
+      });
+    }
 
     setInterval(() => {
       this.countDown();
@@ -402,7 +406,9 @@ export default {
         if (this.mint == "60") {
           this.mint = 59;
         }
-        this.mint < 9 ? "0" + this.mint : this.mint;
+        if (this.mint < 9) {
+          this.mint = "0" + this.mint;
+        }
       }
       this.second--;
       this.second = this.second < 10 ? "0" + this.second : this.second;

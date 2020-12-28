@@ -91,6 +91,7 @@ export default {
     localStorage.removeItem("pressItemData");
     localStorage.removeItem("sex");
     localStorage.removeItem("exam");
+    localStorage.removeItem("total");
   },
   methods: {
     getExam() {
