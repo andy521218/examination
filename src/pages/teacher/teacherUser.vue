@@ -209,8 +209,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
-          if (!res.data.rows.length==0) {
+          if (!res.data.rows.length == 0) {
             this.main_show = false;
           } else {
             this.main_show = true;

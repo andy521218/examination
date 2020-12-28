@@ -205,7 +205,7 @@ export default {
         this.answer = res.data.answer;
         res.data.optinos.forEach((item) => {
           if (res.data.answer == item.name) {
-            this.imgsUrl = item.picUrl;
+            this.imgsUrl = this.$url + item.picUrl;
             this.imgDesc = item.description;
           }
         });

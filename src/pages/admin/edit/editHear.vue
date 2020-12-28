@@ -39,7 +39,7 @@
           placeholder="请输入诊断结果"
           v-model="name"
         />
-        <span class="edit_text_i" v-else>{{ hearData.results[0].name }}</span>
+        <span class="edit_text_i" v-else>{{ hearData.resName }}</span>
         <p class="edit_tips">{{ tipsOptions }}</p>
       </li>
       <li class="relative">
@@ -138,7 +138,7 @@ export default {
             this.http
               .put(`/meta/listen/${this.songId}`, {
                 gender: this.hearData.gender,
-                name: this.hearData.name,
+                name: this.hearData.resName,
                 videoUrl: res.data,
               })
               .then((res) => {

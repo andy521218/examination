@@ -91,6 +91,7 @@ export default {
     editSong(item, i) {
       this.show = true;
       this.hearData = item;
+      this.hearData.resName = i.name;
       this.songId = i.id;
     },
     play(e) {

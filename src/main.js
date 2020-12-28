@@ -28,12 +28,12 @@ Vue.use(DatePicker, TimePicker)
 
 Vue.use(filters)
 Vue.prototype.http = http
-Vue.prototype.teacherAvatar = '5D/1608542353311.png'
-Vue.prototype.studentAvatar = 'BF/1608542374708.png'
+Vue.prototype.teacherAvatar = '09/1609119208449.png'
+Vue.prototype.studentAvatar = '82/1609119248774.png'
 Vue.prototype.qs = qs
-// Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
+Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
 // Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
-Vue.prototype.$url = 'http://localhost:8080/api/download/'
+// Vue.prototype.$url = 'http://localhost:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message = Message
 Vue.prototype.$MessageBox = MessageBox

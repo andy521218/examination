@@ -445,7 +445,7 @@ export default {
           if (!flag) {
             this.pulseData.push(arr);
           }
-
+          console.log(res.data.picUrl);
           if (/localhost/.test(res.data.picUrl)) {
             this.imgsUrl = res.data.picUrl.replace(
               /localhost/,

@@ -318,7 +318,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(!res.data.rows);
           if (!res.data.rows) {
             this.main_show = true;
           } else {
