@@ -6,9 +6,10 @@
     </header>
     <ul class="case_type">
       <li
+        :class="{ active: active_index == index }"
         v-for="(item, index) in list"
         :key="index"
-        @click="getCaseData('1', item.id)"
+        @click="getCaseData('1', item.id, index)"
       >
         <span>{{ item.name }}</span>
       </li>
@@ -21,7 +22,12 @@
           :key="index"
         >
           <div class="case_img" @click="examStart(item)">
-            <img :src="$url + item.picUrl" alt="" v-if="item.picUrl" />
+            <img
+              :src="$url + item.picUrl"
+              alt=""
+              v-if="item.picUrl"
+              class="caseimg_logo"
+            />
             <img src="../../../assets/public/timg.png" alt="" v-else />
             <div class="case_active">
               <div class="case_img_tips">
@@ -92,6 +98,7 @@ export default {
       caseData: {},
       main_show: false,
       index: false,
+      active_index: "-1",
     };
   },
   mounted() {
@@ -101,7 +108,7 @@ export default {
     localStorage.removeItem("pressItemData");
   },
   methods: {
-    getCaseData(page = "1", id = "") {
+    getCaseData(page = "1", id = "", index) {
       this.axios
         .get("/case", {
           params: {
@@ -116,6 +123,7 @@ export default {
           } else {
             this.main_show = false;
           }
+          this.active_index = index;
           this.caseData = res.data.rows;
           this.total = res.data.total;
         });
@@ -151,6 +159,12 @@ export default {
     font-size: 20px;
   }
   li:hover {
+    background: url("../../../assets/public/caseTypeActive.png") center
+      no-repeat;
+    background-size: 100% 100%;
+    cursor: pointer;
+  }
+  .active {
     background: url("../../../assets/public/caseTypeActive.png") center
       no-repeat;
     background-size: 100% 100%;
