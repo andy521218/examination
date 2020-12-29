@@ -32,6 +32,7 @@ Vue.prototype.teacherAvatar = '09/1609119208449.png'
 Vue.prototype.studentAvatar = '82/1609119248774.png'
 Vue.prototype.qs = qs
 // Vue.prototype.$url = 'http://101.132.150.87:8080/api/download/'
+// Vue.prototype.$url = 'http://192.168.16.121:8006/api/download/'
 // Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
 Vue.prototype.$url = 'http://localhost:8080/api/download/'
 Vue.prototype.upload = upload
@@ -78,6 +79,10 @@ axios.defaults.validateStatus = function (status) {
 axios.defaults.withCredentials = true;
 
 router.beforeEach((to, from, next) => {
+  // let url = window.location.href;
+  // url = url.match(/http:\/\/.+\//)[0]
+  // Vue.prototype.$url = url + 'api/download/'
+
   //获取提示消息
   if (to.name != 'login') {
     axios
