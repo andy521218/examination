@@ -84,6 +84,7 @@ export default {
         background-size: 100% 100%;
         height: 65%;
         width: 15%;
+        min-width: 260px;
         display: flex;
         font-size: 20px;
         justify-content: center;

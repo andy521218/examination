@@ -227,13 +227,19 @@ export default {
     height: 210px;
     display: flex;
     .chart_item {
-      width: 210px;
-      height: 210px;
+      flex: 1;
+      height: 100%;
       margin-right: 28px;
       background: url("../../../assets/public/chart_deafuly.png") no-repeat
         center;
       background-size: 100% 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
       .chart_item_title {
+        position: absolute;
         text-align: center;
         line-height: 30px;
         display: inline-block;
@@ -242,12 +248,14 @@ export default {
         background: url("../../../assets/public/chart_default_title.png")
           no-repeat center;
         background-size: 100% 100%;
+        left: 0;
+        top: 0;
       }
 
       .item {
-        width: 145px !important;
-        height: 145px !important;
-        margin: 17px 32px;
+        margin-top: 20px;
+        width: 70% !important;
+        height: 70% !important;
       }
     }
     .active {

@@ -427,6 +427,7 @@ export default {
         .then((res) => {
           if (res.code == "000000") {
             this.close();
+            this.$Message.warning("发布考试成功!");
           } else {
             this.$Message.error(res.msg);
           }

@@ -15,6 +15,7 @@
             editData.departmentName
           }}</span>
           <select class="select" v-model="upData.did" v-else>
+            <option :value="undefind">请选择院/系</option>
             <option
               :value="item.id"
               v-for="(item, index) in departmentsData"
@@ -35,6 +36,7 @@
             editData.specialtyName
           }}</span>
           <select v-else class="select" v-model="upData.sid">
+            <option :value="undefind">请选择专业</option>
             <option
               :value="item.id"
               v-for="(item, index) in specialtyData"
@@ -52,6 +54,7 @@
           </div>
           <span class="edit_text_i" v-if="tips">{{ editData.gradeName }}</span>
           <select v-else class="select" v-model="upData.gradeId">
+            <option :value="undefind">请选择年级</option>
             <option
               :value="item.id"
               v-for="(item, index) in gradeData"
@@ -112,12 +115,13 @@ export default {
     return {
       title: true,
       upData: {},
-      status: "true",
+      status: true,
     };
   },
   mounted() {
     if (this.tips) {
       this.upData = this.editData;
+      this.status = this.editData.status;
       this.upData.did = this.editData.departmentId;
       this.upData.sid = this.editData.specialtyId;
     }
@@ -151,7 +155,7 @@ export default {
         if (res.code == "000000") {
           this.close();
           this.$emit("getData");
-          this.$Message.warning("添加班级成功!");
+          this.$Message.warning(`${this.tips ? "编辑" : "新建"}班级成功!`);
         } else {
           this.$Message.error(res.msg);
         }

@@ -42,14 +42,16 @@
             <div class="exam_left_top_peopleTotal_main">
               <i-circle
                 v-show="!people_show"
-                :percent="(report.userDone / report.totalUser) * 100"
+                :percent="parseInt((report.userDone / report.totalUser) * 100)"
                 class="item"
                 :size="190"
                 stroke-color="rgb(0,235,245)"
                 trail-color="rgb(25,72,114)"
               >
                 <span class="demo-Circle-inner" style="font-size: 40px">
-                  {{ (report.userDone / report.totalUser) * 100 }}%</span
+                  {{
+                    parseInt((report.userDone / report.totalUser) * 100)
+                  }}%</span
                 >
               </i-circle>
             </div>

@@ -30,7 +30,9 @@
         </div>
         <div class="tarin_bottm_border">
           <span
-            >{{ report.totalCnt }}次训练完成{{ parseInt(report.totalDuring / 60) }}分钟</span
+            >{{ report.totalCnt }}次训练完成{{
+              parseInt(report.totalDuring / 60)
+            }}分钟</span
           >
           <p class="orange_border"></p>
         </div>
@@ -42,7 +44,7 @@
         </div>
         <div class="train_itm_main">
           <i-circle
-            :percent="(report.caseCnt / report.totalCaseCnt) * 100"
+            :percent="parseInt((report.caseCnt / report.totalCaseCnt) * 100)"
             class="item"
             :size="150"
             stroke-color="rgb(0,235,245)"
@@ -51,7 +53,7 @@
             <span class="demo-Circle-inner" style="font-size: 40px">
               {{
                 report.totalCaseCnt
-                  ? (report.caseCnt / report.totalCaseCnt) * 100
+                  ? parseInt((report.caseCnt / report.totalCaseCnt) * 100)
                   : "0"
               }}%</span
             >
@@ -125,8 +127,7 @@
         <div class="tarin_top_item_title">
           <i class="train_bottom_right_i"></i>
           <span>训练成绩分布</span>
-          <p class="train_bottom_right_total">共125次</p>
-          <p class="train_bottom_right_people">总次数:{{ report.totalCnt }}</p>
+          <p class="train_bottom_right_total">总次数:{{ report.totalCnt }}</p>
         </div>
         <div class="train_bottom_right_main">
           <div class="train_bottom_right_main_box">
