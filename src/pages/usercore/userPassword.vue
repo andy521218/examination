@@ -1,7 +1,7 @@
 <template>
   <div class="user_pwd">
     <ul>
-      <li>
+      <!-- <li>
         <span>旧密码:</span>
         <input
           type="text"
@@ -10,7 +10,7 @@
           v-model="password.oldPwd"
         />
         <p>{{ oldPwd }}</p>
-      </li>
+      </li> -->
       <li style="position: relative">
         <span>新密码:</span>
         <input
@@ -74,10 +74,10 @@ export default {
   },
   methods: {
     submit() {
-      if (!this.password.oldPwd) {
-        return (this.oldPwd = "请输入旧密码");
-      }
-      this.oldPwd = "";
+      // if (!this.password.oldPwd) {
+      //   return (this.oldPwd = "请输入旧密码");
+      // }
+      // this.oldPwd = "";
       if (!this.password.newPwd) {
         return (this.newPwd = "请输入新密码");
       }
@@ -92,7 +92,7 @@ export default {
       this.http
         .put(
           `/my/password?${this.qs.stringify({
-            oldPasswd: this.password.oldPwd,
+            oldPasswd: this.password.confirmPwd,
             newPasswd: this.password.newPwd,
           })}`
         )
@@ -115,6 +115,7 @@ export default {
   width: 700px;
   margin: 0 auto;
   ul {
+    margin-top: 25%;
     width: 100%;
     li {
       display: flex;

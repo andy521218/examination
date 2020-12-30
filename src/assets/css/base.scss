@@ -493,8 +493,8 @@ input[type="checkbox"]:checked:before {
       position: absolute;
       right: 20px;
       top: -10px;
-      width: 19px;
-      height: 19px;
+      width: 15px;
+      height: 15px;
       background: url("../public/switch.png") no-repeat center;
       cursor: pointer;
     }
@@ -950,7 +950,7 @@ input[type="checkbox"]:checked:before {
       height: 95px;
 
       img {
-        width: 95px;
+        width: 112px;
         height: 95px;
         border-radius: 50%;
         margin-right: 35px;

@@ -424,11 +424,11 @@ export default {
           }
         }
         .ask_tips {
-          width: 28px;
+          width: 20px;
           height: 20px;
           border-radius: 50%;
           background: url("../../../assets/public/askTips.png") no-repeat center;
-          background-size: 80% 100%;
+          background-size: 100% 100%;
         }
       }
     }

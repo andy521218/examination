@@ -1,7 +1,6 @@
 <template>
   <header>
-    <img :src="$url + caseData.picUrl" alt="" v-if="caseData.picUrl" />
-    <img src="../../../assets/public/timg.png" alt="" v-else />
+    <img :src="$url + caseData.picUrl" alt="" />
     <ul>
       <li>
         <span>姓名:</span>
