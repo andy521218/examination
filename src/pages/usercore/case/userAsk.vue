@@ -28,8 +28,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -50,8 +55,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -68,8 +78,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -86,8 +101,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -104,8 +124,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -122,8 +147,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -140,8 +170,13 @@
                   <div class="item_cont" style="flex-direction: column">
                     <span>{{ item.question }}</span>
                   </div>
-                  <div class="item_edit" @click="asked(item)">
-                    <span @click="item.typeId = '1'" v-if="item.typeId == '0'"
+                  <div class="item_edit">
+                    <span
+                      @click="
+                        asked(item);
+                        item.typeId = 1;
+                      "
+                      v-if="item.typeId == '0'"
                       >询问</span
                     >
                     <span class="ask_tips" v-if="item.typeId == '1'"></span>
@@ -402,7 +437,10 @@ export default {
   },
   watch: {
     keyword: function () {
-      if (!this.keyword) return;
+      let exam_flag = localStorage.getItem("exam");
+      if (exam_flag) {
+        if (!this.keyword) return;
+      }
       this.getAskData(this.typeId);
     },
   },

@@ -43,11 +43,7 @@ export default {
   name: "study-listen",
   data() {
     return {
-      list: [
-        { id: 0, name: "切诊" },
-        { id: 1, name: "按诊" },
-      ],
-      title: "切诊",
+      title: "闻诊",
       listen_item_data: [],
       typeId: "0",
       caseId: "",
@@ -55,7 +51,7 @@ export default {
       examNo: "",
     };
   },
-   computed: {
+  computed: {
     ...mapState(["examId"]),
   },
   mounted() {
@@ -77,10 +73,10 @@ export default {
         });
     },
   },
-   watch: {
+  watch: {
     examId: function () {
       this.caseId = this.examId;
-       this.getListen();
+      this.getListen();
     },
   },
 };

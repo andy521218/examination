@@ -402,6 +402,7 @@ export default {
           type: "error",
           callback: () => {
             this.number_show = true;
+            this.fractionshow = true;
           },
         });
         localStorage.removeItem("total");
@@ -458,6 +459,7 @@ export default {
                 type: "warning",
               })
               .then(() => {
+                _this.fractionshow = true;
                 _this.number_show = true;
               });
           });

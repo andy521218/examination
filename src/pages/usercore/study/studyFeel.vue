@@ -55,7 +55,7 @@ export default {
     return {
       list: [
         { id: 0, name: "切诊" },
-        { id: 1, name: "脉诊" },
+        { id: 1, name: "按诊" },
       ],
       title: "切诊",
       feel_item_data: [],

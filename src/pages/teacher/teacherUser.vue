@@ -261,17 +261,6 @@ export default {
             this.$Message.error("暂无学习记录");
             return;
           }
-          let flag = false;
-          for (let i = 0; i < res.data.rows.length; i++) {
-            if (res.data.rows[i].status == "2") {
-              flag = true;
-              break;
-            }
-          }
-          if (!flag) {
-            this.$Message.error("暂无学习记录");
-            return;
-          }
           this.recordshow = true;
           this.recordData = res.data;
         });

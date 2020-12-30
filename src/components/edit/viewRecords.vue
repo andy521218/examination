@@ -15,13 +15,9 @@
           <li class="table_smal">成绩</li>
         </ul>
         <ul class="records_cont">
-          <li
-            v-for="(item, index) in recordData.rows"
-            :key="index"
-            v-show="item.status == '2'"
-          >
+          <li v-for="(item, index) in recordData.rows" :key="index">
             <p class="table_smal">
-              {{ list[item.diseaseType].name }}
+              {{ diseType(item.diseaseType) }}
             </p>
             <p class="table_smal">
               {{ item.name }}
@@ -74,6 +70,9 @@ export default {
   methods: {
     close() {
       this.$parent.recordshow = false;
+    },
+    diseType(index) {
+      return this.list[index - 1].name;
     },
   },
 };
