@@ -12,7 +12,13 @@
 
     <see-img :url="url" v-show="imgs_show"></see-img>
     <div class="main_header">
-      <button class="dele" v-show="dele" @click="deleTopic">批量删除</button>
+      <button
+        class="dele"
+        v-show="dele || authority == 'TEACHER'"
+        @click="deleTopic"
+      >
+        批量删除
+      </button>
       <label for>分类</label>
       <select name id class="select" v-model="diseaseType">
         <option value>请选择病系</option>
@@ -43,7 +49,7 @@
           <div class="message_left">
             <input
               type="checkbox"
-              v-show="dele"
+              v-show="dele || authority == 'TEACHER'"
               v-model="deleCheck"
               :value="item.topicId"
             />
@@ -254,6 +260,7 @@ export default {
       url: "",
       index: "",
       textIpts: "",
+      authority: "",
     };
   },
   components: {
@@ -261,6 +268,7 @@ export default {
     seeImg,
   },
   mounted() {
+    this.authority = localStorage.getItem("authority");
     if (!this.privateTopic) {
       this.getTopic();
     } else {
@@ -340,7 +348,11 @@ export default {
     deleTopic() {
       this.axios.delete(`/topic/${this.deleCheck.toString()}`).then((res) => {
         if (res.code == "000000") {
-          this.getMine();
+          if (this.authority == "TEACHER") {
+            this.getTopic();
+          } else {
+            this.getMine();
+          }
         } else {
           this.$Message.error(res.msg);
         }
