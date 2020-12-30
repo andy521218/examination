@@ -86,6 +86,7 @@
             </div>
           </div>
         </div>
+
         <!-- 提交确认 -->
         <div class="edit_dele" v-if="confirm_show" style="z-index: 99999">
           <div class="edit">
@@ -185,7 +186,12 @@
     </div>
     <div class="timer" v-if="exam">
       <i></i>
-      <span>{{ hour }}:{{ mint }}:{{ second }}</span>
+      <span v-if="hour >= 10">{{ hour }}:</span>
+      <span v-else>0{{ hour }}:</span>
+      <span v-if="mint >= 10">{{ mint }}:</span>
+      <span v-else>0{{ mint }}:</span>
+      <span v-if="second >= 10">{{ second }}</span>
+      <span v-else>0{{ second }}</span>
     </div>
   </div>
 </template>
@@ -233,14 +239,15 @@ export default {
       stop_show: false,
       index_show: false,
       exam: null,
-      hour: "",
-      mint: "",
-      second: "59",
+      hour: 0,
+      mint: 0,
+      second: 59,
       duringLimit: "",
       saveCase_show: false,
       total: 0,
       endtime: "",
       totalExam: "",
+      timerTotal: "",
     };
   },
   components: {
@@ -248,16 +255,14 @@ export default {
   },
   mounted() {
     this.exam = localStorage.getItem("exam");
-    if (this.exam) {
-      this.disableExam(false);
-    }
+    this.examNo = localStorage.getItem("examNo");
+    this.authority = localStorage.getItem("authority");
     if (this.bgIndex == "0") {
       localStorage.getItem("caseMenuId")
         ? (this.bgIndex = localStorage.getItem("caseMenuId"))
         : "0";
     }
-    this.examNo = localStorage.getItem("examNo");
-    this.authority = localStorage.getItem("authority");
+
     if (this.authority == "STUDENT") {
       let url = window.location.href;
       if (
@@ -314,8 +319,7 @@ export default {
       this.axios.get("/exam").then((res) => {
         let startTime = res.data[0].startTime
           ? res.data[0].startTime
-          : new Date();
-
+          : new Date().getTime();
         let endTime = res.data[0].endTime;
         let overTime = res.data[0].systemTime + res.data[0].duringLimit * 60000;
         let time =
@@ -329,10 +333,6 @@ export default {
         this.duringLimit = parseInt(time / 60000);
       });
     }
-
-    setInterval(() => {
-      this.countDown();
-    }, 1000);
   },
   methods: {
     routeLink(i) {
@@ -393,45 +393,42 @@ export default {
     },
     //正式考试倒计时
     countDown() {
+      if (this.hour == 0 && this.mint == 0 && this.second == 1) {
+        clearInterval(this.timerTotal);
+        this.second = 0;
+        let examNo = localStorage.getItem("examNo");
+        this.$MessageBox.alert("您考试时间已到,自动为您提交本次考试!", "提示", {
+          confirmButtonText: "确定",
+          type: "error",
+          callback: () => {
+            this.number_show = true;
+          },
+        });
+        localStorage.removeItem("total");
+        this.axios.put(`/exam/${examNo}/finished`).then((res) => {
+          this.fraction = res.data;
+        });
+        return;
+      }
       if (!this.hour) {
         this.hour = parseInt(this.duringLimit / 60);
-        this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
       }
       if (!this.mint) {
-        if (this.hour > 0) {
-          this.mint = parseInt(this.duringLimit - this.hour * 60);
-        } else {
-          this.mint = parseInt(this.duringLimit);
-        }
-        if (this.mint == "60") {
-          this.mint = 59;
-        }
-        if (this.mint < 9) {
-          this.mint = "0" + this.mint;
-        }
+        this.mint = this.duringLimit - this.hour * 60;
       }
+
       this.second--;
-      this.second = this.second < 10 ? "0" + this.second : this.second;
+
       if (this.second == 0) {
         this.second = 59;
         this.mint--;
       }
-      if (this.mint == "0") {
-        this.mint = 59;
+      if (this.mint == 0 && this.hour >= 1) {
         this.hour--;
-        this.hour = this.hour < 9 ? "0" + this.hour : this.hour;
+        this.mint = 59;
       }
-      if (this.hour == 0 && this.mint == 0 && this.second == 0) {
-        let examNo = localStorage.getItem("examNo");
-        this.axios.put(`/exam/${examNo}/finished`).then(() => {
-          localStorage.removeItem("total");
-          this.$confirm(`您考试时间已到,自动为您提交本次考试!`, "提示", {
-            confirmButtonText: "确定",
-            type: "warning",
-          }).then(() => {
-            this.$router.push("index");
-          });
-        });
+      if (this.mint == 0 && this.hour == 0) {
+        this.mint = "0";
       }
     },
     //禁用考试项
@@ -451,7 +448,9 @@ export default {
         let total = localStorage.getItem("total");
         if (total >= 4) {
           let examNo = localStorage.getItem("examNo");
-          _this.axios.put(`/exam/${examNo}/finished`).then(() => {
+          _this.axios.put(`/exam/${examNo}/finished`).then((res) => {
+            _this.fraction = res.data;
+            clearInterval(_this.timerTotal);
             localStorage.removeItem("total");
             _this
               .$confirm(`您已经离开考试界面超过3次自动提交本次考试!`, "提示", {
@@ -459,7 +458,7 @@ export default {
                 type: "warning",
               })
               .then(() => {
-                _this.$router.push("index");
+                _this.number_show = true;
               });
           });
           return;
@@ -480,6 +479,17 @@ export default {
         var a = window.event || e;
         a.returnValue = "确定离开当前页面吗？";
       };
+    },
+  },
+  watch: {
+    duringLimit: function () {
+      if (this.exam) {
+        this.disableExam(false);
+        this.axios.post(`/exam/${this.examNo}/start`);
+        this.timerTotal = setInterval(() => {
+          this.countDown();
+        }, 1000);
+      }
     },
   },
   beforeRouteLeave(to, from, next) {

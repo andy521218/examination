@@ -31,10 +31,7 @@ Vue.prototype.http = http
 Vue.prototype.teacherAvatar = '09/1609119208449.png'
 Vue.prototype.studentAvatar = '82/1609119248774.png'
 Vue.prototype.qs = qs
-// Vue.prototype.$url = 'http://101.132.150.87/api/download/'
-// Vue.prototype.$url = 'http://192.168.16.121:8006/api/download/'
-// Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
-Vue.prototype.$url = 'http://localhost:8080/api/download/'
+Vue.prototype.$url = 'http://59.110.218.110:8080/api/download/'
 Vue.prototype.upload = upload
 Vue.prototype.$Message = Message
 Vue.prototype.$MessageBox = MessageBox
@@ -62,6 +59,15 @@ axios.interceptors.response.use(function onFulfilled(response) {
       }
     });
   }
+  if (response.data.code == '500192') {
+    MessageBox.alert("您考试时间已到!", "提示", {
+      confirmButtonText: "确定",
+      type: "error",
+      callback: () => {
+        router.push('/index')
+      }
+    });
+  }
   return response.data;
 }, function onRejected(reason) {
   Message.error('连接服务器超时')
@@ -79,9 +85,9 @@ axios.defaults.validateStatus = function (status) {
 axios.defaults.withCredentials = true;
 
 router.beforeEach((to, from, next) => {
-  let url = window.location.href;
-  url = url.match(/http:\/\/.+\//)[0]
-  Vue.prototype.$url = url + 'api/download/'
+  // let url = window.location.href;
+  // url = url.match(/http:\/\/.+\//)[0]
+  // Vue.prototype.$url = url + 'api/download/'
 
   //获取提示消息
   if (to.name != 'login') {

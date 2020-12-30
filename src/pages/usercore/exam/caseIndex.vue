@@ -1,9 +1,6 @@
 <template>
   <div class="home">
-    <header class="home_header">
-      <logo></logo>
-      <user></user>
-    </header>
+    <header class="home_header"></header>
     <div class="case_user_main exam_index_list">
       <edit-dele :title="'提示'" v-show="deleshow" @deleSubmit="submit">
         <template v-slot:edit_p>
@@ -62,14 +59,10 @@
 
 
 <script>
-import logo from "../../../components/logo";
-import user from "../../../components/user";
 import editDele from "../../../components/edit/editDele";
 export default {
   name: "case-index",
   components: {
-    logo,
-    user,
     editDele,
   },
   data() {
@@ -98,7 +91,6 @@ export default {
       this.axios.get("/exam").then((res) => {
         localStorage.setItem("examNo", res.data[0].examNo);
         let caseIds = res.data[0].caseId;
-        this.axios.post(`/exam/${res.data[0].examNo}/start`);
         this.axios.get(`/case/${caseIds}/meta`).then((res) => {
           this.examData = res.data;
         });
@@ -135,6 +127,10 @@ export default {
   position: relative;
   .case_user_item {
     margin: 20px 26px 60px 26px !important;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
   .import {
     width: 200px;
