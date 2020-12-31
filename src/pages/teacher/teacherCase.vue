@@ -185,20 +185,6 @@ export default {
   mounted() {
     localStorage.removeItem("caseMenuId");
     this.getManage();
-    let timeout;
-    window.onresize = () => {
-      this.screenWidth = document.body.clientWidth;
-      if (timeout) clearTimeout(timeout);
-      timeout = setTimeout(() => {
-        if (this.screenWidth >= "1900") {
-          this.size = "10";
-          this.getManage();
-        } else {
-          this.size = "8";
-          this.getManage();
-        }
-      }, 500);
-    };
   },
   methods: {
     dele(e) {

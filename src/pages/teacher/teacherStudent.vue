@@ -17,7 +17,11 @@
             <span class="edit_red">*</span>
             <span class="edit_text">班级:</span>
           </div>
-          <select class="select" v-model="classroomId" @change="getReport">
+          <select
+            class="select"
+            v-model="downloadClassroomId"
+            @change="getReport(downloadClassroomId)"
+          >
             <option value="">请选择班级</option>
             <option
               v-for="(item, index) in classrooms"
@@ -33,7 +37,7 @@
             <span class="edit_red">*</span>
             <span class="edit_text">试卷名称:</span>
           </div>
-          <select v-model="testPaperId" class="select">
+          <select v-model="downloadTestPaperId" class="select">
             <option value="">请选择试卷名称</option>
             <option
               v-for="(item, index) in examName"
@@ -61,7 +65,7 @@
           id
           class="select"
           v-model="classroomId"
-          @change="getReport"
+          @change="getReport(classroomId)"
         >
           <option value="">请选择班级</option>
           <option
@@ -216,6 +220,8 @@ export default {
     return {
       classrooms: "",
       classroomId: "",
+      downloadClassroomId: "",
+      downloadTestPaperId: "",
       examName: "",
       testPaperId: "",
       result: "",
@@ -252,12 +258,10 @@ export default {
         });
     },
     //试卷名称二级联动
-    getReport() {
-      this.axios
-        .get(`/case/report/testpaper/${this.classroomId}`)
-        .then((res) => {
-          this.examName = res.data;
-        });
+    getReport(id) {
+      this.axios.get(`/case/report/testpaper/${id}`).then((res) => {
+        this.examName = res.data;
+      });
     },
     //获取数据与检索
     getResult(page = "1") {
@@ -311,8 +315,8 @@ export default {
       this.axios
         .get("/exam/result", {
           params: {
-            classroomId: this.classroomId,
-            testPaperId: this.testPaperId,
+            classroomId: this.downloadClassroomId,
+            testPaperId: this.downloadTestPaperId,
             page: 1,
             size: "10",
           },
@@ -323,7 +327,7 @@ export default {
             return;
           }
           let url = this.$url.replace("/download/", "");
-          window.location.href = `${url}/exam/result/save?classroomId=${this.classroomId}&testPaperId=${this.testPaperId}&page=1&size=${res.data.total}`;
+          window.location.href = `${url}/exam/result/save?classroomId=${this.downloadClassroomId}&testPaperId=${this.downloadTestPaperId}&page=1&size=${res.data.total}`;
         });
     },
   },

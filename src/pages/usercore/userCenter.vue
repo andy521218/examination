@@ -9,7 +9,7 @@
             @change="uploadlogo"
             ref="logo"
           />
-          <img :src="$url + current.avatar" />
+          <img :src="$url + current.avatar" v-if="current.avatar" />
           <span class="edit">点击修改头像</span>
         </div>
         <!-- <span class="user_number">20200912</span> -->
